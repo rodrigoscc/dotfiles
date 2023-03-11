@@ -1,10 +1,26 @@
-vim.keymap.set('n', '<leader>db', require('dap').toggle_breakpoint)
-vim.keymap.set('n', '<leader>dB', require('dap').clear_breakpoints)
-vim.keymap.set('n', '<leader>dd', require('dap').continue)
-vim.keymap.set('n', '<leader>dr', require('dap').repl.open)
-vim.keymap.set('n', '<C-M-j>', require('dap').step_over)
-vim.keymap.set('n', '<C-M-l>', require('dap').step_into)
-vim.keymap.set('n', '<C-M-k>', require('dap').step_out)
+local wk = require('which-key')
+local dap = require('dap')
+local dapui = require('dapui')
 
-vim.keymap.set('v', '<leader>de', require('dapui').eval)
-vim.keymap.set('n', '<leader>dt', require('dapui').toggle)
+
+wk.register({
+	t = {
+		b = { dap.toggle_breakpoint, '[t]oggle [b]reakpoint' },
+		d = { dapui.toggle, '[t]oggle [d]apui' }
+	},
+	c = {
+		b = { dap.clear_breakpoints, '[c]lear [b]reakpoints' }
+	},
+	d = {
+		d = { dap.continue, '[d]ebug / continue' }
+	},
+	o = {
+		r = { dap.repl.open, '[o]pen [r]epl' }
+	},
+	s = {
+		o = { dap.step_over, '[s]tep [o]ver' },
+		i = { dap.step_into, '[s]tep [i]nto' },
+		u = { dap.step_out, '[s]tep o[u]t' },
+	},
+	e = { dapui.eval, '[e]val' },
+}, { prefix = '<leader>' })

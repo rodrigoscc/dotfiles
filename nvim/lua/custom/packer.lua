@@ -18,14 +18,32 @@ return require('packer').startup(function(use)
         'nvim-treesitter/nvim-treesitter-textobjects',
         after = 'nvim-treesitter',
         requires = 'nvim-treesitter/nvim-treesitter',
-        config = function ()
+        config = function()
             require('nvim-treesitter.configs').setup {
+                indent = {
+                    enable = false -- wont work well with python, use yati
+                },
                 textobjects = {
                     select = {
                         -- Makes sure surrounding whitespace is also deleted
                         -- when deleting parameters.
                         include_surrounding_whitespace = true,
                     }
+                }
+            }
+        end
+    })
+
+    -- Using yati instead of builtin treesitter indent functionality, since it
+    -- does not work well with python.
+    use({
+        "yioneko/nvim-yati",
+        tag = "*",
+        requires = "nvim-treesitter/nvim-treesitter",
+        config = function ()
+            require("nvim-treesitter.configs").setup {
+                yati = {
+                    enable = true,
                 }
             }
         end
@@ -63,7 +81,11 @@ return require('packer').startup(function(use)
 
     use {
         'windwp/nvim-autopairs',
-        config = function() require('nvim-autopairs').setup {} end
+        config = function()
+            require('nvim-autopairs').setup {
+                map_cr = false
+            }
+        end
     }
 
     use({
@@ -103,18 +125,18 @@ return require('packer').startup(function(use)
         requires = { 'kyazdani42/nvim-web-devicons', opt = true },
         config = function()
             require('lualine').setup({
-                -- options = {
-                --     component_separators = '|',
-                --     section_separators = '',
-                -- }
+                options = {
+                    component_separators = '|',
+                    section_separators = '',
+                }
             })
         end
     }
 
     use {
         'folke/tokyonight.nvim',
-        config = function ()
-            vim.cmd[[colorscheme tokyonight-night]]
+        config = function()
+            vim.cmd [[colorscheme tokyonight-night]]
         end
     }
 
@@ -195,7 +217,7 @@ return require('packer').startup(function(use)
 
     use {
         'mfussenegger/nvim-dap-python',
-        config = function ()
+        config = function()
             require('dap-python').setup('~/.venvs/debugpy/bin/python')
         end
     }
@@ -216,8 +238,8 @@ return require('packer').startup(function(use)
 
     use {
         'vim-test/vim-test',
-        after = {'vim-dispatch'},
-        config = function ()
+        after = { 'vim-dispatch' },
+        config = function()
             vim.cmd('let g:dispatch_compilers = {}')
             vim.cmd('let g:dispatch_compilers["python -m unittest"] = "pyunit"')
             vim.g["test#strategy"] = 'dispatch'
@@ -226,24 +248,31 @@ return require('packer').startup(function(use)
 
     use {
         'j-hui/fidget.nvim',
-        config = function ()
-            require('fidget').setup{}
+        config = function()
+            require('fidget').setup {}
         end
     }
 
     use {
         'lukas-reineke/virt-column.nvim',
-        config = function ()
+        config = function()
             require('virt-column').setup()
         end
     }
 
     use {
         'ntpeters/vim-better-whitespace',
-        config = function ()
+        config = function()
             vim.cmd('let g:better_whitespace_enabled=0')
             vim.cmd('let g:strip_whitespace_on_save=1')
             vim.cmd('let g:strip_whitespace_confirm=0')
+        end
+    }
+
+    use {
+        'christoomey/vim-tmux-navigator',
+        config = function()
+            vim.cmd('let g:tmux_navigator_no_mappings = 1')
         end
     }
 end)
