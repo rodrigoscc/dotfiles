@@ -38,6 +38,7 @@ fi
 
 zplug load
 
-zstyle ':completion:*' menu select  # Nicer z tab completion
+# Nicer z tab completion
+zstyle ':completion:*' menu select
 
 alias v=nvim
