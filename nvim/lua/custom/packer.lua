@@ -70,7 +70,8 @@ return require('packer').startup(function(use)
     use {
         'windwp/nvim-autopairs',
         config = function()
-            require('nvim-autopairs').setup {}
+            local npairs = require('nvim-autopairs')
+            npairs.setup {}
         end
     }
 

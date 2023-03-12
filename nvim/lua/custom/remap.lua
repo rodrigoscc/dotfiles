@@ -79,7 +79,7 @@ vim.keymap.set('i', 'jk', '<Esc>')
 
 --- Custom behaviour for a carriage return.
 -- Splits a string in two lines in a fancy way.
-function my_cr()
+local function my_cr()
     local bufnr = vim.api.nvim_get_current_buf()
 
     local cursor_node = ts_utils.get_node_at_cursor()
@@ -92,11 +92,11 @@ function my_cr()
 
     local node_text = vim.treesitter.query.get_node_text(cursor_node, bufnr)
     local quote = string.sub(node_text, -1)
-    local lastThreeChars = string.sub(node_text, -3)
+    local last_three_chars = string.sub(node_text, -3)
 
     -- Ignore triple quote strings since they already support new lines.
-    if node_type == 'string' and lastThreeChars ~= '"""' then
-        vim.cmd('execute "normal! i\\' .. quote .. '\\<cr>\\' .. quote .. '"')
+    if node_type == 'string' and last_three_chars ~= '"""' and last_three_chars ~= "'''" then
+        vim.cmd('execute "normal! i\\' .. quote .. '\\<cr>\\' .. quote .. '\\<esc>l"')
     else
         local input = npairs.autopairs_cr()
         local keys = vim.api.nvim_replace_termcodes(input, true, false, true)
