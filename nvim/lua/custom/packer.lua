@@ -21,7 +21,8 @@ return require('packer').startup(function(use)
         config = function()
             require('nvim-treesitter.configs').setup {
                 indent = {
-                    enable = false -- wont work well with python, use yati
+                    enable = true,
+                    disable = { 'python' } -- wont work well with python, use vim-python-pep8-indent
                 },
                 textobjects = {
                     select = {
@@ -34,20 +35,7 @@ return require('packer').startup(function(use)
         end
     })
 
-    -- Using yati instead of builtin treesitter indent functionality, since it
-    -- does not work well with python.
-    use({
-        "yioneko/nvim-yati",
-        tag = "*",
-        requires = "nvim-treesitter/nvim-treesitter",
-        config = function ()
-            require("nvim-treesitter.configs").setup {
-                yati = {
-                    enable = true,
-                }
-            }
-        end
-    })
+    use 'Vimjas/vim-python-pep8-indent'
 
     use('mbbill/undotree')
 
