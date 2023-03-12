@@ -54,7 +54,9 @@ vim.keymap.set('n', '<leader><leader>', function()
     local current_buffer = vim.fn.expand('%')
     local sourced_packer = string.find(current_buffer, 'packer.lua')
     if sourced_packer then
-        vim.cmd.PackerSync()
+        vim.cmd.PackerClean()
+        vim.cmd.PackerInstall()
+        vim.cmd.PackerCompile()
     end
 end)
 
