@@ -76,6 +76,13 @@ lsp.configure('pylsp', {
                 },
                 jedi_completion = {
                     enabled = true,
+                },
+                autopep8 = {
+                    enabled = false,
+                },
+                flake8 = {
+                    enabled = true,
+                    maxLineLength = 80,
                 }
             }
         },
