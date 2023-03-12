@@ -91,6 +91,8 @@ function my_cr()
     local node_text = vim.treesitter.query.get_node_text(cursor_node, bufnr)
     local quote = node_text:sub(1, 1)
 
+    -- TODO: Do not need to check first char, check last char, it is easier.
+    -- TODO: Handle triple double quotes for docstrings.
     if quote ~= '"' and quote ~= "'" then -- Handles r, f strings.
         quote = node_text:sub(2, 2)
     end

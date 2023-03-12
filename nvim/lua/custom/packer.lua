@@ -261,4 +261,18 @@ return require('packer').startup(function(use)
             vim.cmd('let g:tmux_navigator_no_mappings = 1')
         end
     }
+
+    use {
+        "folke/todo-comments.nvim",
+        requires = "nvim-lua/plenary.nvim",
+        config = function()
+            require("todo-comments").setup {
+                signs = false,
+                highlight = {
+                    keyword = 'fg',
+                    after = ''
+                }
+            }
+        end
+    }
 end)
