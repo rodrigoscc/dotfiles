@@ -91,15 +91,11 @@ function my_cr()
     end
 
     local node_text = vim.treesitter.query.get_node_text(cursor_node, bufnr)
-    local quote = node_text:sub(1, 1)
+    local quote = string.sub(node_text, -1)
+    local lastThreeChars = string.sub(node_text, -3)
 
-    -- TODO: Do not need to check first char, check last char, it is easier.
-    -- TODO: Handle triple double quotes for docstrings.
-    if quote ~= '"' and quote ~= "'" then -- Handles r, f strings.
-        quote = node_text:sub(2, 2)
-    end
-
-    if node_type == 'string' then
+    -- Ignore triple quote strings since they already support new lines.
+    if node_type == 'string' and lastThreeChars ~= '"""' then
         vim.cmd('execute "normal! i\\' .. quote .. '\\<cr>\\' .. quote .. '"')
     else
         local input = npairs.autopairs_cr()
