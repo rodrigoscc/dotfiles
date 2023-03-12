@@ -83,8 +83,15 @@ lsp.configure('pylsp', {
                 flake8 = {
                     enabled = true,
                     maxLineLength = 80,
+                },
+                pycodestyle = {
+                    enabled = false
+                },
+                pyflakes = {
+                    enabled = false
                 }
-            }
+            },
+            configurationSources = { 'flake8' }
         },
     }
 })
