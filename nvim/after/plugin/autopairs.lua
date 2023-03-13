@@ -17,10 +17,12 @@ local function my_opening_brace()
 	end
 
 	local node_text = vim.treesitter.query.get_node_text(cursor_node, bufnr)
-	local first_char = string.sub(node_text, 0, 1)
-	if first_char ~= "'" and first_char ~= '"' then
 
-	else
+    local last_three_chars = string.sub(node_text, -3)
+	local first_char = string.sub(node_text, 0, 1)
+	local is_multi_line_str = last_three_chars == "'''" or last_three_chars == '"""'
+
+	if not is_multi_line_str and (first_char == "'" or first_char == '"') then
 		local _, column, _ = cursor_node:start()
 		local current_line = vim.api.nvim_get_current_line()
 		local new_line = current_line:sub(0, column) .. 'f' .. current_line:sub(column + 1)
