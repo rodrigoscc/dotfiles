@@ -2,11 +2,15 @@ local ts_utils = require('nvim-treesitter.ts_utils')
 local npairs = require('nvim-autopairs')
 
 
-local function my_opening_brace()
+local function trigger_autopairs()
 	local bufnr = vim.api.nvim_get_current_buf()
 
 	local autopairs_keys = npairs.autopairs_map(bufnr, '{')
 	vim.api.nvim_feedkeys(autopairs_keys, 'n', false)
+end
+
+local function prepend_f_if_needed()
+	local bufnr = vim.api.nvim_get_current_buf()
 
 	local cursor_node = ts_utils.get_node_at_cursor()
 	local node_type = cursor_node:type()
@@ -37,6 +41,13 @@ end
 vim.api.nvim_create_autocmd('FileType', {
 	pattern = 'python',
 	callback = function()
-		vim.keymap.set('i', '{', my_opening_brace, { buffer = true, remap = true })
+		vim.keymap.set(
+			'i',
+			'{',
+			function()
+				trigger_autopairs()
+				prepend_f_if_needed()
+			end,
+			{ buffer = true, remap = true })
 	end
 })
