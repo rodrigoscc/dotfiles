@@ -32,7 +32,5 @@ zplug load
 # Nicer z tab completion
 zstyle ':completion:*' menu select
 
-export TMUX_FZF_LAUNCH_KEY="f"
-
 alias v=nvim
 alias ls=exa
