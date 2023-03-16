@@ -170,7 +170,7 @@ return require('packer').startup(function(use)
     use {
         'theHamsta/nvim-dap-virtual-text',
         config = function()
-            require('nvim-dap-virtual-text').setup()
+            require('nvim-dap-virtual-text').setup {}
         end
     }
     use {
@@ -198,7 +198,9 @@ return require('packer').startup(function(use)
         'Wansmer/treesj',
         requires = { 'nvim-treesitter' },
         config = function()
-            require('treesj').setup()
+            require('treesj').setup {
+                use_default_keymaps = false
+            }
         end,
     })
 
@@ -238,6 +240,7 @@ return require('packer').startup(function(use)
             vim.cmd('let g:better_whitespace_enabled=0')
             vim.cmd('let g:strip_whitespace_on_save=1')
             vim.cmd('let g:strip_whitespace_confirm=0')
+            vim.cmd("let g:better_whitespace_operator='_s'")
         end
     }
 

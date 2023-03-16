@@ -1,41 +1,27 @@
 local builtin = require('telescope.builtin')
-local wk = require('which-key')
 
 vim.keymap.set('n', '<C-p>', builtin.git_files, {})
 
 vim.keymap.set('n', '<leader>/', builtin.live_grep)
 
-wk.register({
-    s = {
-        s = { builtin.spell_suggest, '[s]pell [s]uggest' }
-    },
-    f = {
-        f = { function() builtin.find_files({ no_ignore = true }) end, '[f]ind [f]iles' }
-    },
-    h = {
-        t = { builtin.help_tags, '[h]elp [t]ags' },
-        k = { builtin.keymaps, '[h]elp [k]eymaps' }
-    },
-    c = {
-        c = { builtin.commands, '[c]ommands' }
-    },
-    r = {
-        r = { builtin.resume, '[r]esume' }
-    },
-    g = {
-        b = { builtin.git_branches, '[g]it [b]ranches' },
-        c = { builtin.git_commits, '[g]it [c]ommits' }
-    }
-}, { prefix = '<leader>' })
+vim.keymap.set('n', '<leader>ss', builtin.spell_suggest, { desc = '[s]pell [s]uggest' })
 
-wk.register({
-    ['<tab>'] = {
-        function()
-            builtin.buffers({
-                ignore_current_buffer = true,
-                sort_lastused = true
-            })
-        end,
-        'buffers'
-    },
-})
+vim.keymap.set('n', '<leader>ff', function() builtin.find_files({ no_ignore = true }) end, { desc = '[f]ind [f]iles' })
+
+vim.keymap.set('n', '<leader>ht', builtin.help_tags, { desc = '[h]elp [t]ags' })
+vim.keymap.set('n', '<leader>hk', builtin.keymaps, { desc = '[h]elp [k]eymaps' })
+
+vim.keymap.set('n', '<leader>cc', builtin.commands, { desc = '[c]ommands' })
+
+vim.keymap.set('n', '<leader>rr', builtin.resume, { desc = '[r]esume' })
+
+vim.keymap.set('n', '<leader>gb', builtin.git_branches, { desc = '[g]it [b]ranches' })
+vim.keymap.set('n', '<leader>gc', builtin.git_commits, { desc = '[g]it [c]ommits' })
+
+vim.keymap.set('n', '<tab>', function()
+    builtin.buffers({
+        ignore_current_buffer = true,
+        sort_lastused = true
+    })
+end, { desc = 'buffers' })
+

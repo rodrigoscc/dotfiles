@@ -48,17 +48,9 @@ lsp.on_attach(function(client, bufnr)
     vim.keymap.set('n', 'gy', telescope.lsp_dynamic_workspace_symbols, opts)
     vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
 
-    wk.register({
-        r = {
-            n = { vim.lsp.buf.rename, '[r]e[n]ame', opts }
-        },
-        o = {
-            f = { vim.diagnostic.open_float, '[o]pen [f]loat', opts }
-        },
-        c = {
-            a = { vim.lsp.buf.code_action, '[c]ode [a]ction', opts }
-        }
-    }, { prefix = '<leader>' })
+    vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { desc = '[r]e[n]ame' })
+    vim.keymap.set('n', '<leader>of', vim.diagnostic.open_float, { desc = '[o]pen [f]loat' })
+    vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, { desc = '[c]ode [a]ction' })
 
     vim.keymap.set('n', '[d', vim.diagnostic.goto_next, opts)
     vim.keymap.set('n', ']d', vim.diagnostic.goto_prev, opts)

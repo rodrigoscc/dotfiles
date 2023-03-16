@@ -1,26 +1,18 @@
-local wk = require('which-key')
 local dap = require('dap')
 local dapui = require('dapui')
 
 
-wk.register({
-    t = {
-        b = { dap.toggle_breakpoint, '[t]oggle [b]reakpoint' },
-        d = { dapui.toggle, '[t]oggle [d]apui' }
-    },
-    c = {
-        b = { dap.clear_breakpoints, '[c]lear [b]reakpoints' }
-    },
-    d = {
-        d = { dap.continue, '[d]ebug / continue' }
-    },
-    o = {
-        r = { dap.repl.open, '[o]pen [r]epl' }
-    },
-    s = {
-        o = { dap.step_over, '[s]tep [o]ver' },
-        i = { dap.step_into, '[s]tep [i]nto' },
-        u = { dap.step_out, '[s]tep o[u]t' },
-    },
-    e = { dapui.eval, '[e]val' },
-}, { prefix = '<leader>' })
+vim.keymap.set('n', '<leader>tb', dap.toggle_breakpoint, { desc = '[t]oggle [b]reakpoint' })
+vim.keymap.set('n', '<leader>td', dapui.toggle, { desc = '[t]oggle [d]apui' })
+
+vim.keymap.set('n', '<leader>cb', dap.clear_breakpoints, { desc = '[c]lear [b]reakpoints' })
+
+vim.keymap.set('n', '<leader>dd', dap.continue, { desc = '[d]ebug / continue' })
+
+vim.keymap.set('n', '<leader>or', dap.repl.open, { desc = '[o]pen [r]epl' })
+
+vim.keymap.set('n', '<leader>so', dap.step_over, { desc = '[s]tep [o]ver' })
+vim.keymap.set('n', '<leader>si', dap.step_into, { desc = '[s]tep [i]nto' })
+vim.keymap.set('n', '<leader>su', dap.step_out, { desc = '[s]tep o[u]t' })
+
+vim.keymap.set('n', '<leader>e', dapui.eval, { desc = '[e]val' })

@@ -14,20 +14,15 @@ vim.keymap.set('n', '<C-u>', '<C-u>zz')
 vim.keymap.set('n', 'n', 'nzzzv')
 vim.keymap.set('n', 'N', 'Nzzzv')
 
-wk.register({
-    s = {
-        -- Paste preserving previous copy
-        p = { [["_dP]], '[s]pecial [p]aste', mode = { 'n', 'v' } },
-        -- Delete preserving previous copy
-        d = { [["_d]], '[s]pecial [d]elete', mode = { 'n', 'v' } },
-    },
-    y = { [["+y]], '[y]ank to system clipboard', mode = { 'n', 'v' } },
-    Y = { [["+Y]], '[y]ank to system clipboard' },
-    b = {
-        f = { vim.lsp.buf.format, '[b]uffer [f]ormat' }
-    }
-}, { prefix = '<leader>' })
+-- Paste preserving previous copy
+vim.keymap.set({ 'n', 'v' }, '<leader>sp', [["_dP]], { desc = '[s]pecial [p]aste' })
+-- Delete preserving previous copy
+vim.keymap.set({ 'n', 'v' }, '<leader>sd', [["_d]], { desc = '[s]pecial [d]elete' })
 
+vim.keymap.set({ 'n', 'v' }, '<leader>y', [["+y]], { desc = '[y]ank to system clipboard' })
+vim.keymap.set('n', '<leader>Y', [["+Y]], { desc = '[y]ank to system clipboard' })
+
+vim.keymap.set('n', '<leader>bf', vim.lsp.buf.format, { desc = '[b]uffer [f]ormat' })
 
 -- This is going to get me cancelled
 vim.keymap.set('i', '<C-c>', '<Esc>')

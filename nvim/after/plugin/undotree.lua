@@ -1,7 +1,1 @@
-local wk = require('which-key')
-
-wk.register({
-    t = {
-        u = { vim.cmd.UndotreeToggle, '[t]oggle [u]ndo tree' }
-    }
-}, { prefix = '<leader>' })
+vim.keymap.set('n', '<leader>tu', vim.cmd.UndotreeToggle, { desc = '[t]oggle [u]ndo tree' })
