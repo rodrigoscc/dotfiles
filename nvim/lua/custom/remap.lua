@@ -74,9 +74,6 @@ vim.keymap.set('n', '<M-K>', '<cmd>split<cr>')        -- open split and don't go
 
 vim.keymap.set('n', '<M-q>', '<cmd>close<cr>')
 
-vim.keymap.set('i', 'jk', '<Esc>')
-
-
 --- Custom behaviour for a carriage return.
 -- Splits a string in two lines in a fancy way.
 local function my_cr()
