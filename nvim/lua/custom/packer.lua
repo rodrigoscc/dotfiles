@@ -18,20 +18,6 @@ return require('packer').startup(function(use)
         'nvim-treesitter/nvim-treesitter-textobjects',
         after = 'nvim-treesitter',
         requires = 'nvim-treesitter/nvim-treesitter',
-        config = function()
-            require('nvim-treesitter.configs').setup {
-                indent = {
-                    enable = true,
-                },
-                textobjects = {
-                    select = {
-                        -- Makes sure surrounding whitespace is also deleted
-                        -- when deleting parameters.
-                        include_surrounding_whitespace = true,
-                    }
-                }
-            }
-        end
     })
 
     use('mbbill/undotree')

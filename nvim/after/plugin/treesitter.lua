@@ -9,6 +9,9 @@ require'nvim-treesitter.configs'.setup {
     -- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
     auto_install = true,
 
+    indent = {
+        enable = true,
+    },
     highlight = {
         enable = true,
 
@@ -39,6 +42,9 @@ require'nvim-treesitter.configs'.setup {
                 ['ac'] = '@class.outer',
                 ['ic'] = '@class.inner',
             },
+            -- Makes sure surrounding whitespace is also deleted
+            -- when deleting parameters.
+            include_surrounding_whitespace = true,
         },
         move = {
             enable = true,
@@ -72,12 +78,12 @@ require'nvim-treesitter.configs'.setup {
     },
     -- Disabled for now because of bug with treesitter.
     incremental_selection = {
-        -- enable = true,
-        -- keymaps = {
-        --     -- init_selection = '<c-space>',
-        --     node_incremental = '<M-k>',
-        --     -- scope_incremental = '<c-s>',
-        --     node_decremental = '<M-j>',
-        -- },
+        enable = true,
+        keymaps = {
+            -- init_selection = '<c-space>',
+            node_incremental = '<C-s>',
+            -- scope_incremental = '<c-s>',
+            node_decremental = '<M-s>',
+        },
     },
 }
