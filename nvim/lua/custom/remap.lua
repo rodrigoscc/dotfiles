@@ -17,11 +17,11 @@ vim.keymap.set('n', 'N', 'Nzzzv')
 wk.register({
     s = {
         -- Paste preserving previous copy
-        p = { [["_dP]], '[s]pecial [p]aste', mode = {'n', 'v'} },
+        p = { [["_dP]], '[s]pecial [p]aste', mode = { 'n', 'v' } },
         -- Delete preserving previous copy
-        d = { [["_d]], '[s]pecial [d]elete', mode = {'n', 'v'} },
+        d = { [["_d]], '[s]pecial [d]elete', mode = { 'n', 'v' } },
     },
-    y = { [["+y]], '[y]ank to system clipboard', mode = {'n', 'v'} },
+    y = { [["+y]], '[y]ank to system clipboard', mode = { 'n', 'v' } },
     Y = { [["+Y]], '[y]ank to system clipboard' },
     b = {
         f = { vim.lsp.buf.format, '[b]uffer [f]ormat' }
@@ -68,9 +68,9 @@ vim.keymap.set('n', '<M-h>', '<cmd>TmuxNavigateLeft<cr>')
 vim.keymap.set('n', '<M-l>', '<cmd>TmuxNavigateRight<cr>')
 
 vim.keymap.set('n', '<M-L>', '<cmd>vsplit<cr><c-w>l') -- open split and go to it
-vim.keymap.set('n', '<M-J>', '<cmd>split<cr><c-w>j') -- open split and go to it
-vim.keymap.set('n', '<M-H>', '<cmd>vsplit<cr>') -- open split and don't go to it
-vim.keymap.set('n', '<M-K>', '<cmd>split<cr>') -- open split and don't go to it
+vim.keymap.set('n', '<M-J>', '<cmd>split<cr><c-w>j')  -- open split and go to it
+vim.keymap.set('n', '<M-H>', '<cmd>vsplit<cr>')       -- open split and don't go to it
+vim.keymap.set('n', '<M-K>', '<cmd>split<cr>')        -- open split and don't go to it
 
 vim.keymap.set('n', '<M-q>', '<cmd>close<cr>')
 

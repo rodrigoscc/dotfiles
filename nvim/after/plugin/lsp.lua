@@ -1,6 +1,7 @@
 local lsp = require('lsp-zero')
 local wk = require('which-key')
 
+require('neodev').setup {}
 
 lsp.preset('recommended')
 
@@ -96,7 +97,8 @@ lsp.configure('pylsp', {
     }
 })
 
-lsp.nvim_workspace()
+-- Using neodev instead.
+-- lsp.nvim_workspace()
 
 lsp.setup()
 
