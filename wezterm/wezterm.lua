@@ -16,5 +16,6 @@ return {
     },
     keys = {
         { key = '0', mods = 'SUPER', action = wezterm.action.ShowTabNavigator },
-    }
+    },
+    window_decorations = 'RESIZE',
 }
