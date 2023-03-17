@@ -4,6 +4,7 @@ return {
     color_scheme = 'tokyonight_night',
     font = wezterm.font { family = 'JetbrainsMono Nerd Font' },
     font_size = 13.0,
+    line_height = 1.2,
     window_frame = {
         font = wezterm.font { family = 'JetbrainsMono Nerd Font' },
         font_size = 13.0,
