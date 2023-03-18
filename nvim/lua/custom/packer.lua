@@ -108,6 +108,12 @@ return require('packer').startup(function(use)
     use {
         'folke/tokyonight.nvim',
         config = function()
+            require('tokyonight').setup({
+                style = 'night',
+                styles = {
+                    sidebars = 'normal'
+                }
+            })
             vim.cmd [[colorscheme tokyonight-night]]
         end
     }
@@ -265,12 +271,33 @@ return require('packer').startup(function(use)
         end
     }
 
-    use 'RRethy/vim-illuminate'
+    use {
+        'RRethy/vim-illuminate',
+        config = function()
+            require('illuminate').configure({
+                filetypes_denylist = { 'NvimTree' }
+            })
+        end
+    }
 
     use {
         'max397574/better-escape.nvim',
         config = function()
             require('better_escape').setup()
         end,
+    }
+
+    use {
+        'nvim-tree/nvim-tree.lua',
+        requires = {
+            'nvim-tree/nvim-web-devicons', -- optional
+        },
+        config = function()
+            require('nvim-tree').setup({
+                view = {
+                    side = 'right'
+                }
+            })
+        end
     }
 end)
