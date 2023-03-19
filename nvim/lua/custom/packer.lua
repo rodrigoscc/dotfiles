@@ -300,6 +300,8 @@ return require('packer').startup(function(use)
                 update_focused_file = {
                     enable = true,
                 },
+                sort_by = 'modification_time',
+                hijack_cursor = true,
             })
         end
     }
