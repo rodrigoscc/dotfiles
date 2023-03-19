@@ -309,4 +309,14 @@ return require('packer').startup(function(use)
     use {
         "benfowler/telescope-luasnip.nvim",
     }
+
+    use {
+        "danymat/neogen",
+        config = function()
+            require('neogen').setup {
+                snippet_engine = 'luasnip'
+            }
+        end,
+        requires = "nvim-treesitter/nvim-treesitter",
+    }
 end)
