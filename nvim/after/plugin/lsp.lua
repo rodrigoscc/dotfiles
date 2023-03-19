@@ -1,5 +1,4 @@
 local lsp = require('lsp-zero')
-local wk = require('which-key')
 
 require('neodev').setup {}
 
@@ -13,16 +12,12 @@ lsp.ensure_installed({
 })
 
 local cmp = require('cmp')
-local cmp_select = { behavior = cmp.SelectBehavior.Select }
-local cmp_mappings = lsp.defaults.cmp_mappings({
-    ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
-    ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
-    ['<C-y>'] = cmp.mapping.confirm({ select = true }),
-    ['<C-Space>'] = cmp.mapping.complete(),
-})
+local cmp_mappings = lsp.defaults.cmp_mappings()
 
 cmp_mappings['<Tab>'] = nil
 cmp_mappings['<S-Tab>'] = nil
+cmp_mappings['<C-d>'] = nil
+cmp_mappings['<C-b>'] = nil
 
 local cmp_autopairs = require('nvim-autopairs.completion.cmp')
 cmp.event:on(
@@ -31,7 +26,13 @@ cmp.event:on(
 )
 
 lsp.setup_nvim_cmp({
-    mapping = cmp_mappings
+    mapping = cmp_mappings,
+    sources = {
+        { name = 'path' },
+        { name = 'nvim_lsp' },
+        { name = 'buffer',  keyword_length = 3 },
+        -- { name = 'luasnip', keyword_length = 2 },
+    }
 })
 
 lsp.set_preferences({

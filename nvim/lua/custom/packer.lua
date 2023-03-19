@@ -305,4 +305,8 @@ return require('packer').startup(function(use)
             })
         end
     }
+
+    use {
+        "benfowler/telescope-luasnip.nvim",
+    }
 end)

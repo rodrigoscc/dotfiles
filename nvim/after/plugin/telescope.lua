@@ -1,4 +1,7 @@
 local builtin = require('telescope.builtin')
+local telescope = require('telescope')
+
+telescope.load_extension('luasnip')
 
 vim.keymap.set('n', '<C-p>', builtin.git_files, {})
 
@@ -25,3 +28,4 @@ vim.keymap.set('n', '<tab>', function()
     })
 end, { desc = 'buffers' })
 
+vim.keymap.set('n', '<leader>is', '<cmd>Telescope luasnip<cr>', { desc = '[i]nsert [s]nippet' })
