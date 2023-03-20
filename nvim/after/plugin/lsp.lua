@@ -68,21 +68,14 @@ lsp.configure('pylsp', {
                 jedi_completion = {
                     enabled = true,
                 },
-                autopep8 = {
-                    enabled = false,
-                },
-                flake8 = {
+                black = {
                     enabled = true,
-                    maxLineLength = 80,
+                    line_length = 79,
                 },
-                pycodestyle = {
-                    enabled = false
-                },
-                pyflakes = {
-                    enabled = false
+                pyls_isort = {
+                    enabled = true
                 }
             },
-            configurationSources = { 'flake8' }
         },
     }
 })
