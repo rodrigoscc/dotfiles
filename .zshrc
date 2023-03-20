@@ -2,6 +2,9 @@ export PATH=/opt/homebrew/opt/python@3.9/libexec/bin:$PATH
 
 eval "$(starship init zsh)"
 
+# Vi mode
+bindkey -v
+
 export ZPLUG_HOME=/opt/homebrew/opt/zplug
 source $ZPLUG_HOME/init.zsh
 
