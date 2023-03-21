@@ -222,7 +222,7 @@ return require('packer').startup(function(use)
         config = function()
             vim.cmd('let g:dispatch_compilers = {}')
             vim.cmd('let g:dispatch_compilers["python -m unittest"] = "pyunit"')
-            vim.g["test#strategy"] = 'dispatch'
+            vim.g['test#strategy'] = 'dispatch'
         end
     }
 
@@ -267,10 +267,10 @@ return require('packer').startup(function(use)
     }
 
     use {
-        "folke/todo-comments.nvim",
-        requires = "nvim-lua/plenary.nvim",
+        'folke/todo-comments.nvim',
+        requires = 'nvim-lua/plenary.nvim',
         config = function()
-            require("todo-comments").setup {
+            require('todo-comments').setup {
                 signs = false,
                 highlight = {
                     keyword = 'fg',
@@ -316,16 +316,16 @@ return require('packer').startup(function(use)
     }
 
     use {
-        "benfowler/telescope-luasnip.nvim",
+        'benfowler/telescope-luasnip.nvim',
     }
 
     use {
-        "danymat/neogen",
+        'danymat/neogen',
         config = function()
             require('neogen').setup {
                 snippet_engine = 'luasnip'
             }
         end,
-        requires = "nvim-treesitter/nvim-treesitter",
+        requires = 'nvim-treesitter/nvim-treesitter',
     }
 end)
