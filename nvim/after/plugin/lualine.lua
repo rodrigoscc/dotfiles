@@ -1,11 +1,10 @@
 local colors = {
-    blue   = '#80a0ff',
-    cyan   = '#79dac8',
+    blue   = '#7aa2f7',
     black  = '#080808',
-    white  = '#c6c6c6',
+    white  = '#8d98cc',
     red    = '#ff5189',
     violet = '#d183e8',
-    grey   = '#303030',
+    grey   = '#2A2E40',
     green  = '#A8CC76',
     bg     = '#16161D',
 }
@@ -34,7 +33,7 @@ require('lualine').setup {
     },
     sections = {
         lualine_a = {
-            { 'mode', separator = { left = '' }, right_padding = 2 },
+            { 'mode', separator = { left = '', right = '' } },
         },
         lualine_b = { 'filename', 'branch' },
         lualine_c = { 'diff', 'diagnostics' },
