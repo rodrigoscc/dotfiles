@@ -328,4 +328,6 @@ return require('packer').startup(function(use)
         end,
         requires = 'nvim-treesitter/nvim-treesitter',
     }
+
+    use 'Vimjas/vim-python-pep8-indent'
 end)

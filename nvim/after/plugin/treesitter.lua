@@ -1,4 +1,4 @@
-require'nvim-treesitter.configs'.setup {
+require 'nvim-treesitter.configs'.setup {
     -- A list of parser names, or 'all' (the four listed parsers should always be installed)
     ensure_installed = { 'help', 'javascript', 'typescript', 'python', 'go', 'c', 'lua', 'vim', 'help' },
 
@@ -11,10 +11,10 @@ require'nvim-treesitter.configs'.setup {
 
     indent = {
         enable = true,
+        disable = { 'python' }
     },
     highlight = {
         enable = true,
-
         -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
         -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
         -- Using this option may slow down your editor, and you may see some duplicate highlights.
