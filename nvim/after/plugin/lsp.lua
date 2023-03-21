@@ -45,6 +45,8 @@ lsp.on_attach(function(client, bufnr)
     local opts = { buffer = bufnr, remap = false }
 
     vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
+    vim.keymap.set('n', 'gD', vim.lsp.buf.type_definition, opts)
+    vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
     vim.keymap.set('n', 'gr', telescope.lsp_references, opts)
     vim.keymap.set('n', 'gy', telescope.lsp_dynamic_workspace_symbols, opts)
     vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
