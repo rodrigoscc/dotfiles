@@ -50,7 +50,7 @@ return require('packer').startup(function(use)
         }
     }
 
-    use 'mrjones2014/nvim-ts-rainbow'
+    use 'HiPhish/nvim-ts-rainbow2'
 
     use {
         'windwp/nvim-autopairs',
