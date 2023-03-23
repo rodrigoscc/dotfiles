@@ -57,10 +57,10 @@ end)
 
 vim.keymap.set('t', '<esc>', '<c-\\><c-n>')
 
-vim.keymap.set('n', '<M-k>', '<cmd>KittyNavigateUp<cr>')
-vim.keymap.set('n', '<M-j>', '<cmd>KittyNavigateDown<cr>')
-vim.keymap.set('n', '<M-h>', '<cmd>KittyNavigateLeft<cr>')
-vim.keymap.set('n', '<M-l>', '<cmd>KittyNavigateRight<cr>')
+vim.keymap.set('n', '<M-k>', '<cmd>NavigatorUp<cr>')
+vim.keymap.set('n', '<M-j>', '<cmd>NavigatorDown<cr>')
+vim.keymap.set('n', '<M-h>', '<cmd>NavigatorLeft<cr>')
+vim.keymap.set('n', '<M-l>', '<cmd>NavigatorRight<cr>')
 
 vim.keymap.set('n', '<M-L>', '<cmd>vsplit<cr><c-w>l') -- open split and go to it
 vim.keymap.set('n', '<M-J>', '<cmd>split<cr><c-w>j')  -- open split and go to it

@@ -259,10 +259,18 @@ return require('packer').startup(function(use)
     --     end
     -- }
 
+    -- use {
+    --     'knubie/vim-kitty-navigator',
+    --     config = function()
+    --         vim.cmd('let g:kitty_navigator_no_mappings = 1')
+    --     end
+    -- }
+    --
+
     use {
-        'knubie/vim-kitty-navigator',
+        'numToStr/Navigator.nvim',
         config = function()
-            vim.cmd('let g:kitty_navigator_no_mappings = 1')
+            require('Navigator').setup()
         end
     }
 
