@@ -330,4 +330,6 @@ return require('packer').startup(function(use)
     }
 
     use 'Vimjas/vim-python-pep8-indent'
+
+    use 'onsails/lspkind.nvim'
 end)
