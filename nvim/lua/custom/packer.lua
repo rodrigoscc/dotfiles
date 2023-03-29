@@ -329,7 +329,16 @@ return require('packer').startup(function(use)
             require('neotest').setup {
                 adapters = {
                     require('neotest-python')({
-                        python = './.venv/bin/python'
+                        is_test_file = function(file_path)
+                            local Path = require('plenary.path')
+
+                            if not vim.endswith(file_path, '.py') then
+                                return false
+                            end
+                            local elems = vim.split(file_path, Path.path.sep, {})
+                            local file_name = elems[#elems]
+                            return (vim.startswith(file_name, 'test_') or vim.endswith(file_name, '_test.py') or file_name == 'tests.py')
+                        end
                     }),
                     require('neotest-go'),
                     require('neotest-jest'),
