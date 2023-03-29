@@ -1,0 +1,34 @@
+#!/bin/bash
+
+# Get the list of directories from zoxide
+dirs=`zoxide query --list`
+
+# Use Fzf to select the directory
+selected_dir=`echo "$dirs" | fzf-tmux -w 60% -h 50% | rev | cut -d "/" -f 1 | rev`
+if [ -z "$selected_dir" ]; then
+    exit 0
+fi
+
+selected_dir=`echo "$selected_dir" | tr -d "."`  # trim dots
+
+if ! pgrep -x "tmux" > /dev/null; then
+    tmux new -s "$selected_dir"
+else
+    selected_dir_session=`tmux list-sessions -F "#S" | grep "$selected_dir$"`
+
+    if [ -z "$selected_dir_session" ]; then
+        if [ -n "$TMUX" ]
+        then
+            tmux new -ds "$selected_dir"
+            tmux switch-client -t "$selected_dir"
+        else
+            tmux new -s "$selected_dir"
+        fi
+    else
+        if [ -n "$TMUX" ]; then
+            tmux switch-client -t "$selected_dir"
+        else
+            tmux attach -t "$selected_dir"
+        fi
+    fi
+fi

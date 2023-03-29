@@ -1,12 +1,10 @@
-export PATH=/opt/homebrew/opt/python@3.9/libexec/bin:$PATH
+export PATH=/opt/homebrew/opt/python@3.9/libexec/bin:~/.config/bin:$PATH
 export EDITOR=nvim
 
 eval "$(starship init zsh)"
 
 export ZPLUG_HOME=/opt/homebrew/opt/zplug
 source $ZPLUG_HOME/init.zsh
-
-zplug "agkozak/zsh-z"
 
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
 
@@ -32,6 +30,8 @@ zplug load
 
 # Nicer z tab completion
 zstyle ':completion:*' menu select
+
+eval "$(zoxide init zsh)"
 
 alias v=nvim
 alias ls=exa
