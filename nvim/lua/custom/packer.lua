@@ -217,16 +217,6 @@ return require('packer').startup(function(use)
     }
 
     use {
-        'vim-test/vim-test',
-        after = { 'vim-dispatch' },
-        config = function()
-            vim.cmd('let g:dispatch_compilers = {}')
-            vim.cmd('let g:dispatch_compilers["python -m unittest"] = "pyunit"')
-            vim.g['test#strategy'] = 'dispatch'
-        end
-    }
-
-    use {
         'j-hui/fidget.nvim',
         config = function()
             require('fidget').setup {}
@@ -325,4 +315,26 @@ return require('packer').startup(function(use)
     use 'Vimjas/vim-python-pep8-indent'
 
     use 'onsails/lspkind.nvim'
+
+    use {
+        'nvim-neotest/neotest',
+        requires = {
+            'nvim-lua/plenary.nvim',
+            'nvim-treesitter/nvim-treesitter',
+            'nvim-neotest/neotest-python',
+            'nvim-neotest/neotest-go',
+            'haydenmeade/neotest-jest',
+        },
+        config = function()
+            require('neotest').setup {
+                adapters = {
+                    require('neotest-python')({
+                        python = './.venv/bin/python'
+                    }),
+                    require('neotest-go'),
+                    require('neotest-jest'),
+                }
+            }
+        end
+    }
 end)
