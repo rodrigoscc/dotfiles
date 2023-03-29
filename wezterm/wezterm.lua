@@ -18,7 +18,7 @@ local config = {
     hide_tab_bar_if_only_one_tab = true,
     disable_default_key_bindings = true,
     keys = {
-        { key = 'Enter', mods = 'ALT',  action = act.DisableDefaultAssignment }, -- no full screen
+        { key = 'Enter', mods = 'ALT', action = act.DisableDefaultAssignment }, -- no full screen
         { key = 'p',     mods = 'CMD', action = act.ActivateCommandPalette },
 
         -- tmux shortcut bindings
