@@ -118,6 +118,23 @@ local config = {
                 act.SendKey { key = 'S' },
             }
         },
+        -- window cycling
+        {
+            key = 'n',
+            mods = 'CMD',
+            action = act.Multiple {
+                act.SendKey { key = 'b', mods = 'CTRL' },
+                act.SendKey { key = 'n' },
+            }
+        },
+        {
+            key = 'p',
+            mods = 'CMD',
+            action = act.Multiple {
+                act.SendKey { key = 'b', mods = 'CTRL' },
+                act.SendKey { key = 'p' },
+            }
+        },
     },
     front_end = 'WebGpu',
     -- window_background_opacity = 0.9,
