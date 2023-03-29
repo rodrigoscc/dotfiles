@@ -252,21 +252,6 @@ return require('packer').startup(function(use)
         end
     }
 
-    -- use {
-    --     'christoomey/vim-tmux-navigator',
-    --     config = function()
-    --         vim.cmd('let g:tmux_navigator_no_mappings = 1')
-    --     end
-    -- }
-
-    -- use {
-    --     'knubie/vim-kitty-navigator',
-    --     config = function()
-    --         vim.cmd('let g:kitty_navigator_no_mappings = 1')
-    --     end
-    -- }
-    --
-
     use {
         'numToStr/Navigator.nvim',
         config = function()
