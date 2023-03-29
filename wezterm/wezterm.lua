@@ -19,7 +19,17 @@ local config = {
     disable_default_key_bindings = true,
     keys = {
         { key = 'Enter', mods = 'ALT', action = act.DisableDefaultAssignment }, -- no full screen
-        { key = 'p',     mods = 'CMD', action = act.ActivateCommandPalette },
+        { key = 'P',     mods = 'CMD', action = act.ActivateCommandPalette },
+        {
+            key = 'c',
+            mods = 'CMD',
+            action = act.CopyTo 'ClipboardAndPrimarySelection',
+        },
+        {
+            key = 'v',
+            mods = 'CMD',
+            action = act.PasteFrom 'Clipboard',
+        },
 
         -- tmux shortcut bindings
         -- new window
@@ -42,7 +52,7 @@ local config = {
         },
         -- split vertically
         {
-            key = 'x',
+            key = 'X',
             mods = 'CMD',
             action = act.Multiple {
                 act.SendKey { key = 'b', mods = 'CTRL' },
@@ -51,7 +61,7 @@ local config = {
         },
         -- split horizontally
         {
-            key = 'v',
+            key = 'V',
             mods = 'CMD',
             action = act.Multiple {
                 act.SendKey { key = 'b', mods = 'CTRL' },
