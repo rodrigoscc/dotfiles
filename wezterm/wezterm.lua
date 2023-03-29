@@ -5,7 +5,7 @@ local config = {
     color_scheme = 'tokyonight_night',
     font = wezterm.font { family = 'JetbrainsMono Nerd Font', weight = 'Medium' },
     font_size = 13.0,
-    line_height = 1.1,
+    line_height = 1.2,
     window_frame = {
         font = wezterm.font { family = 'JetbrainsMono Nerd Font' },
         font_size = 13.0,
@@ -19,7 +19,7 @@ local config = {
     disable_default_key_bindings = true,
     keys = {
         { key = 'Enter', mods = 'ALT',  action = act.DisableDefaultAssignment }, -- no full screen
-        { key = 'P',     mods = 'CTRL', action = act.ActivateCommandPalette },   -- no full screen
+        { key = 'p',     mods = 'CMD', action = act.ActivateCommandPalette },
 
         -- tmux shortcut bindings
         -- new window
