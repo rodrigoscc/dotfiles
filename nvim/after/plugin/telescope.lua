@@ -4,6 +4,7 @@ local telescope = require('telescope')
 telescope.load_extension('luasnip')
 
 vim.keymap.set('n', '<C-p>', builtin.git_files, {})
+vim.keymap.set('n', '<C-s>', builtin.current_buffer_fuzzy_find)
 
 vim.keymap.set('n', '<leader>/', builtin.live_grep)
 
@@ -20,6 +21,11 @@ vim.keymap.set('n', '<leader>rr', builtin.resume, { desc = '[r]esume' })
 
 vim.keymap.set('n', '<leader>gb', builtin.git_branches, { desc = '[g]it [b]ranches' })
 vim.keymap.set('n', '<leader>gc', builtin.git_commits, { desc = '[g]it [c]ommits' })
+vim.keymap.set('n', '<leader>gC', builtin.git_bcommits, { desc = '[g]it buffer [C]ommits' })
+
+vim.keymap.set('n', '<leader>ir', builtin.registers, { desc = '[i]nsert [r]egisters' })
+
+vim.keymap.set('n', '<leader>T', builtin.builtin, { desc = '[T]elescope builtins' })
 
 vim.keymap.set('n', '<leader>,', function()
     builtin.buffers({

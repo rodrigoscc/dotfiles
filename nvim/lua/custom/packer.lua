@@ -286,9 +286,6 @@ return require('packer').startup(function(use)
         },
         config = function()
             require('nvim-tree').setup({
-                view = {
-                    side = 'right'
-                },
                 update_focused_file = {
                     enable = true,
                 },
