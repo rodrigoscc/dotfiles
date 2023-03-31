@@ -4,7 +4,7 @@ local telescope = require("telescope")
 telescope.load_extension("luasnip")
 
 vim.keymap.set("n", "<C-p>", builtin.git_files, {})
-vim.keymap.set("n", "<C-s>", builtin.current_buffer_fuzzy_find)
+vim.keymap.set("n", "<C-f>", builtin.current_buffer_fuzzy_find)
 
 vim.keymap.set("n", "<leader>/", builtin.live_grep)
 

@@ -14,6 +14,8 @@ vim.keymap.set("n", "<C-u>", "<C-u>zz")
 vim.keymap.set("n", "n", "nzzzv")
 vim.keymap.set("n", "N", "Nzzzv")
 
+vim.keymap.set("n", "<C-s>", "<cmd>write<cr>")
+
 -- Paste preserving previous copy
 vim.keymap.set({ "n", "v" }, "<leader>sp", [["_dP]], { desc = "[s]pecial [p]aste" })
 -- Delete preserving previous copy
