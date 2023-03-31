@@ -1,1 +1,1 @@
-vim.keymap.set({ 'n', 't' }, '<M-x>', vim.cmd.ToggleTerm)
+vim.keymap.set({ "n", "t" }, "<M-x>", vim.cmd.ToggleTerm)
