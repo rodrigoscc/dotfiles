@@ -21,7 +21,7 @@ vim.keymap.set('n', '<leader>rr', builtin.resume, { desc = '[r]esume' })
 vim.keymap.set('n', '<leader>gb', builtin.git_branches, { desc = '[g]it [b]ranches' })
 vim.keymap.set('n', '<leader>gc', builtin.git_commits, { desc = '[g]it [c]ommits' })
 
-vim.keymap.set('n', '<tab>', function()
+vim.keymap.set('n', '<leader>,', function()
     builtin.buffers({
         ignore_current_buffer = true,
         sort_lastused = true
