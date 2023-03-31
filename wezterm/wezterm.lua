@@ -30,6 +30,13 @@ local config = {
             mods = 'CMD',
             action = act.PasteFrom 'Clipboard',
         },
+        -- Make sure Ctrl+q does not need to be pressed twice
+        -- https://github.com/wez/wezterm/issues/2630
+        {
+            key = 'q',
+            mods = 'CTRL',
+            action = act.SendString '\x11'
+        },
 
         -- tmux shortcut bindings
         -- new window
@@ -88,7 +95,7 @@ local config = {
         },
         -- pane resizing
         {
-            key = 'k',
+            key = 'K',
             mods = 'CMD',
             action = act.Multiple {
                 act.SendKey { key = 'b', mods = 'CTRL' },
@@ -96,7 +103,7 @@ local config = {
             }
         },
         {
-            key = 'j',
+            key = 'J',
             mods = 'CMD',
             action = act.Multiple {
                 act.SendKey { key = 'b', mods = 'CTRL' },
@@ -104,7 +111,7 @@ local config = {
             }
         },
         {
-            key = 'l',
+            key = 'L',
             mods = 'CMD',
             action = act.Multiple {
                 act.SendKey { key = 'b', mods = 'CTRL' },
@@ -112,7 +119,7 @@ local config = {
             }
         },
         {
-            key = 'h',
+            key = 'H',
             mods = 'CMD',
             action = act.Multiple {
                 act.SendKey { key = 'b', mods = 'CTRL' },
@@ -130,7 +137,7 @@ local config = {
         },
         -- window cycling
         {
-            key = 'n',
+            key = 'l',
             mods = 'CMD',
             action = act.Multiple {
                 act.SendKey { key = 'b', mods = 'CTRL' },
@@ -138,7 +145,7 @@ local config = {
             }
         },
         {
-            key = 'p',
+            key = 'h',
             mods = 'CMD',
             action = act.Multiple {
                 act.SendKey { key = 'b', mods = 'CTRL' },
