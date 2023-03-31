@@ -1,6 +1,9 @@
 export PATH=/opt/homebrew/opt/python@3.9/libexec/bin:~/.config/bin:$PATH
 export EDITOR=nvim
 
+# Restore C-f and other zsh shortcuts, setting EDITOR to nvim was disabling them.
+bindkey -e
+
 eval "$(starship init zsh)"
 
 export ZPLUG_HOME=/opt/homebrew/opt/zplug
