@@ -108,9 +108,5 @@ vim.api.nvim_create_autocmd("FileType", {
 
 vim.keymap.set("n", "<leader>tc", function()
 	vim.cmd.IndentBlanklineToggle()
-	if vim.o.list == true then
-		vim.opt.list = false
-	else
-		vim.opt.list = true
-	end
+	vim.o.list = not vim.o.list
 end, { desc = "[t]oggle list [c]hars" })
