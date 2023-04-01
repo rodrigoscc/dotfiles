@@ -1,8 +1,10 @@
 local ls = require("luasnip")
-local fmt = require("luasnip.extras.fmt").fmt
 
-local s = ls.s
-local i = ls.insert_node
+ls.setup({
+	enable_autosnippets = true,
+})
+
+local load = require("luasnip.loaders.from_lua").load
 
 vim.keymap.set({ "i", "s" }, "<C-k>", function()
 	if ls.expand_or_jumpable() then
@@ -16,20 +18,10 @@ vim.keymap.set({ "i", "s" }, "<C-j>", function()
 	end
 end, { silent = true, desc = "jump snippet backwards" })
 
-vim.keymap.set("i", "<C-l>", function()
+vim.keymap.set({ "i", "s" }, "<C-l>", function()
 	if ls.choice_active() then
 		ls.change_choice(1)
 	end
-end)
+end, { desc = "next snippet choice" })
 
-ls.add_snippets("lua", {
-	s(
-		"conf",
-		fmt(
-			[[config = function()
-	{}
-end]],
-			{ i(1, "-- conf") }
-		)
-	),
-}, { key = "lua" })
+load({ paths = "./snippets" })
