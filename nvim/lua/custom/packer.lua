@@ -291,6 +291,19 @@ return require("packer").startup(function(use)
 				},
 				sort_by = "modification_time",
 				hijack_cursor = true,
+				view = {
+					mappings = {
+						list = {
+							{
+								key = "ga",
+								action = "Git add",
+								action_cb = function(node)
+									vim.cmd("Git add " .. node.absolute_path)
+								end,
+							},
+						},
+					},
+				},
 			})
 		end,
 	})
