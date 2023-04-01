@@ -27,7 +27,7 @@ ls.add_snippets("lua", {
 		"conf",
 		fmt(
 			[[config = function()
-    {}
+	{}
 end]],
 			{ i(1, "-- conf") }
 		)

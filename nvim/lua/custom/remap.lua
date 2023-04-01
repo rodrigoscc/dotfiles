@@ -1,5 +1,4 @@
 local ts_utils = require("nvim-treesitter.ts_utils")
-local wk = require("which-key")
 local npairs = require("nvim-autopairs")
 
 vim.g.mapleader = " "
@@ -106,3 +105,12 @@ vim.api.nvim_create_autocmd("FileType", {
 		vim.keymap.set("i", "<c-m>", my_cr, { buffer = true })
 	end,
 })
+
+vim.keymap.set("n", "<leader>tc", function()
+	vim.cmd.IndentBlanklineToggle()
+	if vim.o.list == true then
+		vim.opt.list = false
+	else
+		vim.opt.list = true
+	end
+end, { desc = "[t]oggle list [c]hars" })
