@@ -1,7 +1,7 @@
 local gitsigns = require("gitsigns")
 
-vim.keymap.set("n", "<leader>ph", gitsigns.preview_hunk, { desc = "[p]review [h]unk" })
-vim.keymap.set("n", "<leader>pH", gitsigns.preview_hunk_inline, { desc = "[p]review [h]unk inline" })
+vim.keymap.set("n", "<leader>ph", gitsigns.preview_hunk_inline, { desc = "[p]review [h]unk" })
+vim.keymap.set("n", "<leader>pH", gitsigns.preview_hunk, { desc = "[p]review [h]unk popup" })
 vim.keymap.set("n", "<leader>rh", gitsigns.reset_hunk, { desc = "[r]eset [h]unk" })
 vim.keymap.set("n", "<leader>bl", gitsigns.blame_line, { desc = "[b]lame [l]ine" })
 
