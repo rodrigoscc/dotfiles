@@ -110,10 +110,7 @@ return require("packer").startup(function(use)
 		"folke/tokyonight.nvim",
 		config = function()
 			require("tokyonight").setup({
-				style = "night",
-				styles = {
-					sidebars = "normal",
-				},
+				sidebars = { "qf", "help", "neotest-summary" },
 			})
 			vim.cmd([[colorscheme tokyonight-night]])
 		end,
@@ -245,7 +242,7 @@ return require("packer").startup(function(use)
 	use({
 		"numToStr/Navigator.nvim",
 		config = function()
-			require("Navigator").setup()
+			require("Navigator").setup({})
 		end,
 	})
 
@@ -288,6 +285,9 @@ return require("packer").startup(function(use)
 			require("nvim-tree").setup({
 				update_focused_file = {
 					enable = true,
+				},
+				hijack_directories = {
+					enable = false, -- no auto open
 				},
 				sort_by = "modification_time",
 				hijack_cursor = true,

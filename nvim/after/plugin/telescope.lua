@@ -37,3 +37,15 @@ vim.keymap.set("n", "<leader>,", function()
 end, { desc = "buffers" })
 
 vim.keymap.set("n", "<leader>is", "<cmd>Telescope luasnip<cr>", { desc = "[i]nsert [s]nippet" })
+
+local function open_file_at_startup(data)
+	local directory = vim.fn.isdirectory(data.file) == 1
+
+	if not directory then
+		return
+	end
+
+	builtin.git_files()
+end
+
+vim.api.nvim_create_autocmd({ "VimEnter" }, { callback = open_file_at_startup })
