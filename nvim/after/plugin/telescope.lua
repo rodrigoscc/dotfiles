@@ -1,6 +1,21 @@
 local builtin = require("telescope.builtin")
 local telescope = require("telescope")
 
+telescope.setup({
+	defaults = {
+		layout_config = {
+			prompt_position = "top",
+			flex = {
+				flip_columns = 170,
+			},
+			vertical = {
+				mirror = true,
+			},
+		},
+		layout_strategy = "flex",
+	},
+})
+
 telescope.load_extension("luasnip")
 
 vim.keymap.set("n", "<C-p>", builtin.git_files, {})
