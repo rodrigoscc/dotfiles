@@ -1,4 +1,4 @@
-return {
+return {}, {
 	s(
 		"use",
 		c(1, {
