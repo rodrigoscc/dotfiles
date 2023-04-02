@@ -14,9 +14,15 @@ telescope.setup({
 		},
 		layout_strategy = "flex",
 	},
+	extensions = {
+		["ui-select"] = {
+			require("telescope.themes").get_dropdown(),
+		},
+	},
 })
 
 telescope.load_extension("luasnip")
+telescope.load_extension("ui-select")
 
 vim.keymap.set("n", "<C-p>", builtin.git_files, {})
 vim.keymap.set("n", "<C-f>", builtin.current_buffer_fuzzy_find)
