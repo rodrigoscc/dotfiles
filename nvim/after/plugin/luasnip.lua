@@ -1,4 +1,5 @@
 local ls = require("luasnip")
+local loaders = require("luasnip.loaders")
 
 ls.setup({
 	enable_autosnippets = true,
@@ -23,5 +24,7 @@ vim.keymap.set({ "i", "s" }, "<C-l>", function()
 		ls.change_choice(1)
 	end
 end, { desc = "next snippet choice" })
+
+vim.keymap.set("n", "<leader>es", loaders.edit_snippet_files, { desc = "[e]dit [s]nippets" })
 
 load({ paths = "./snippets" })
