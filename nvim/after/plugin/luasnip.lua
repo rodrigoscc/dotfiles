@@ -25,6 +25,12 @@ vim.keymap.set({ "i", "s" }, "<C-l>", function()
 	end
 end, { desc = "next snippet choice" })
 
+vim.keymap.set({ "i", "s" }, "<C-h>", function()
+	if ls.choice_active() then
+		ls.change_choice(-1)
+	end
+end, { desc = "previous snippet choice" })
+
 vim.keymap.set("n", "<leader>es", loaders.edit_snippet_files, { desc = "[e]dit [s]nippets" })
 
 load({ paths = "./snippets" })
