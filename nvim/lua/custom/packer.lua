@@ -367,5 +367,5 @@ return require("packer").startup(function(use)
 		"jay-babu/mason-null-ls.nvim",
 	})
 
-	use({ "nvim-telescope/telescope-ui-select.nvim" })
+	use({ "stevearc/dressing.nvim" })
 end)
