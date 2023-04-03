@@ -96,7 +96,7 @@ lsp.format_on_save({
 		timeout_ms = 10000,
 	},
 	servers = {
-		["null-ls"] = { "javascript", "typescript", "lua", "python" },
+		["null-ls"] = { "javascript", "typescript", "lua", "python", "go" },
 	},
 })
 
@@ -107,7 +107,9 @@ vim.diagnostic.config({
 })
 
 local null_ls = require("null-ls")
-null_ls.setup({})
+null_ls.setup({
+	sources = { null_ls.builtins.formatting.gofmt },
+})
 
 require("mason-null-ls").setup({
 	ensure_installed = { "black", "isort", "stylua", "prettier" },
