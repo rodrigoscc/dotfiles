@@ -108,11 +108,16 @@ vim.diagnostic.config({
 
 local null_ls = require("null-ls")
 null_ls.setup({
-	sources = { null_ls.builtins.formatting.gofmt },
+	sources = {
+		null_ls.builtins.formatting.gofmt,
+		null_ls.builtins.formatting.autoflake.with({
+			extra_args = { "--remove-all-unused-imports" },
+		}),
+	},
 })
 
 require("mason-null-ls").setup({
-	ensure_installed = { "black", "isort", "stylua", "prettier" },
+	ensure_installed = { "black", "isort", "stylua", "prettier", "autoflake" },
 	automatic_installation = false,
 	automatic_setup = true,
 })
