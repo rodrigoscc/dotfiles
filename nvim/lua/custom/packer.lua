@@ -332,7 +332,7 @@ return require("packer").startup(function(use)
 			"nvim-lua/plenary.nvim",
 			"nvim-treesitter/nvim-treesitter",
 			"nvim-neotest/neotest-python",
-			"nvim-neotest/neotest-go",
+			"rstcruzo/neotest-go", -- for testify workarounds
 			"haydenmeade/neotest-jest",
 		},
 		config = function()
