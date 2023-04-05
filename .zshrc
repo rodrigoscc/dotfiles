@@ -1,4 +1,4 @@
-export PATH=/opt/homebrew/opt/python@3.9/libexec/bin:~/.config/bin:$PATH
+export PATH=/opt/homebrew/opt/python@3.9/libexec/bin:~/.config/bin:~/go/bin:$PATH
 export EDITOR=nvim
 
 # Restore C-f and other zsh shortcuts, setting EDITOR to nvim was disabling them.
