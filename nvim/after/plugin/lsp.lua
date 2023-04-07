@@ -6,7 +6,7 @@ require("neodev").setup({})
 lsp.ensure_installed({
 	"tsserver",
 	"gopls",
-	"pylsp",
+	"pyright",
 	"lua_ls",
 })
 
@@ -73,19 +73,10 @@ lsp.on_attach(function(client, bufnr)
 	vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help, opts)
 end)
 
-lsp.configure("pylsp", {
-	settings = {
-		pylsp = {
-			plugins = {
-				rope_autoimport = {
-					enabled = true,
-				},
-				jedi_completion = {
-					enabled = true,
-				},
-			},
-		},
-	},
+lsp.configure("pyright", {
+	root_dir = function()
+		return vim.fn.getcwd()
+	end,
 })
 
 -- Using neodev instead.
