@@ -38,7 +38,10 @@ lsp.setup_nvim_cmp({
 	formatting = {
 		fields = { "kind", "abbr", "menu" },
 		format = function(entry, vim_item)
-			local kind = require("lspkind").cmp_format({ mode = "symbol_text", maxwidth = 50 })(entry, vim_item)
+			local kind = require("lspkind").cmp_format({
+				mode = "symbol_text",
+				maxwidth = 50,
+			})(entry, vim_item)
 			local strings = vim.split(kind.kind, "%s", { trimempty = true })
 			kind.kind = " " .. (strings[1] or "") .. " "
 			kind.menu = "    (" .. (strings[2] or "") .. ")"
@@ -65,9 +68,24 @@ lsp.on_attach(function(client, bufnr)
 	vim.keymap.set("n", "gY", telescope.lsp_document_symbols, opts)
 	vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
 
-	vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "[r]e[n]ame" })
-	vim.keymap.set("n", "<leader>df", vim.diagnostic.open_float, { desc = "[d]iagnostics open [f]loat" })
-	vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "[c]ode [a]ction" })
+	vim.keymap.set(
+		"n",
+		"<leader>rn",
+		vim.lsp.buf.rename,
+		{ desc = "[r]e[n]ame" }
+	)
+	vim.keymap.set(
+		"n",
+		"<leader>df",
+		vim.diagnostic.open_float,
+		{ desc = "[d]iagnostics open [f]loat" }
+	)
+	vim.keymap.set(
+		"n",
+		"<leader>ca",
+		vim.lsp.buf.code_action,
+		{ desc = "[c]ode [a]ction" }
+	)
 
 	vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
 	vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
@@ -105,6 +123,9 @@ null_ls.setup({
 		null_ls.builtins.formatting.autoflake.with({
 			extra_args = { "--remove-all-unused-imports" },
 		}),
+		null_ls.builtins.formatting.stylua.with({
+			extra_args = { "--column-width=80" },
+		}),
 		null_ls.builtins.diagnostics.pylint.with({
 			prefer_local = ".venv/bin",
 			extra_args = { "--max-line-length=80" },
@@ -113,7 +134,14 @@ null_ls.setup({
 })
 
 require("mason-null-ls").setup({
-	ensure_installed = { "black", "isort", "stylua", "prettier", "autoflake", "pylint" },
+	ensure_installed = {
+		"black",
+		"isort",
+		"stylua",
+		"prettier",
+		"autoflake",
+		"pylint",
+	},
 	automatic_installation = false,
 	automatic_setup = true,
 })
