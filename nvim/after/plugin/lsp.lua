@@ -81,7 +81,7 @@ lsp.on_attach(function(client, bufnr)
 		{ desc = "[d]iagnostics open [f]loat" }
 	)
 	vim.keymap.set(
-		"n",
+		{ "n", "v" },
 		"<leader>ca",
 		vim.lsp.buf.code_action,
 		{ desc = "[c]ode [a]ction" }
