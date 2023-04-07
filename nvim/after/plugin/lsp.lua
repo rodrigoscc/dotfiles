@@ -62,15 +62,16 @@ lsp.on_attach(function(client, bufnr)
 	vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
 	vim.keymap.set("n", "gr", telescope.lsp_references, opts)
 	vim.keymap.set("n", "gy", telescope.lsp_dynamic_workspace_symbols, opts)
+	vim.keymap.set("n", "gY", telescope.lsp_document_symbols, opts)
 	vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
 
 	vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "[r]e[n]ame" })
-	vim.keymap.set("n", "<leader>of", vim.diagnostic.open_float, { desc = "[o]pen [f]loat" })
+	vim.keymap.set("n", "<leader>df", vim.diagnostic.open_float, { desc = "[d]iagnostics open [f]loat" })
 	vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "[c]ode [a]ction" })
 
-	vim.keymap.set("n", "[d", vim.diagnostic.goto_next, opts)
-	vim.keymap.set("n", "]d", vim.diagnostic.goto_prev, opts)
-	vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help, opts)
+	vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
+	vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
+	vim.keymap.set("i", "<C-s>", vim.lsp.buf.signature_help, opts)
 end)
 
 lsp.configure("pyright", {
@@ -104,11 +105,15 @@ null_ls.setup({
 		null_ls.builtins.formatting.autoflake.with({
 			extra_args = { "--remove-all-unused-imports" },
 		}),
+		null_ls.builtins.diagnostics.pylint.with({
+			prefer_local = ".venv/bin",
+			extra_args = { "--max-line-length=80" },
+		}),
 	},
 })
 
 require("mason-null-ls").setup({
-	ensure_installed = { "black", "isort", "stylua", "prettier", "autoflake" },
+	ensure_installed = { "black", "isort", "stylua", "prettier", "autoflake", "pylint" },
 	automatic_installation = false,
 	automatic_setup = true,
 })
