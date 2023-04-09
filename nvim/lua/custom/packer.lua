@@ -158,7 +158,32 @@ return require("packer").startup(function(use)
 		config = function()
 			local dap, dapui = require("dap"), require("dapui")
 
-			dapui.setup()
+			dapui.setup({
+				layouts = {
+					{
+						elements = {
+							{ id = "scopes", size = 0.8 },
+							{ id = "watches", size = 0.2 },
+						},
+						position = "left",
+						size = 40,
+					},
+					{
+						elements = {
+							{
+								id = "repl",
+								size = 0.5,
+							},
+							{
+								id = "console",
+								size = 0.5,
+							},
+						},
+						position = "bottom",
+						size = 10,
+					},
+				},
+			})
 
 			dap.listeners.after.event_initialized["dapui_config"] = function()
 				dapui.open()
@@ -345,7 +370,8 @@ return require("packer").startup(function(use)
 							if not vim.endswith(file_path, ".py") then
 								return false
 							end
-							local elems = vim.split(file_path, Path.path.sep, {})
+							local elems =
+								vim.split(file_path, Path.path.sep, {})
 							local file_name = elems[#elems]
 							return (
 								vim.startswith(file_name, "test_")

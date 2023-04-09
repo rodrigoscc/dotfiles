@@ -1,7 +1,16 @@
 local dap = require("dap")
 local dapui = require("dapui")
 
-vim.keymap.set("n", "<leader>tb", dap.toggle_breakpoint, { desc = "[t]oggle [b]reakpoint" })
+vim.keymap.set(
+	"n",
+	"<leader>tb",
+	dap.toggle_breakpoint,
+	{ desc = "[t]oggle [b]reakpoint" }
+)
+vim.keymap.set("n", "<leader>lb", function()
+	dapui.float_element("breakpoints")
+end, { desc = "[l]ist [b]reakpoints" })
+
 vim.keymap.set("n", "<leader>bL", function()
 	vim.ui.input({ prompt = "Log breakpoint message:" }, function(input)
 		dap.set_breakpoint(nil, nil, input)
@@ -15,7 +24,12 @@ end, { desc = "[b]reakpoint [c]ondition" })
 
 vim.keymap.set("n", "<leader>td", dapui.toggle, { desc = "[t]oggle [d]apui" })
 
-vim.keymap.set("n", "<leader>cb", dap.clear_breakpoints, { desc = "[c]lear [b]reakpoints" })
+vim.keymap.set(
+	"n",
+	"<leader>cb",
+	dap.clear_breakpoints,
+	{ desc = "[c]lear [b]reakpoints" }
+)
 
 vim.keymap.set("n", "<leader>dd", dap.continue, { desc = "[d]ebug / continue" })
 
@@ -32,11 +46,25 @@ vim.api.nvim_set_hl(0, "DapLogPoint", { ctermbg = 0, fg = "#61afef" })
 vim.api.nvim_set_hl(0, "DapStopped", { ctermbg = 0, fg = "#98c379" })
 vim.api.nvim_set_hl(0, "DapStoppedLine", { ctermbg = 0, bg = "#31353f" })
 
-vim.fn.sign_define("DapBreakpoint", { text = "", texthl = "DapBreakpoint", numhl = "DapBreakpoint" })
-vim.fn.sign_define("DapBreakpointCondition", { text = "ﳁ", texthl = "DapBreakpoint", numhl = "DapBreakpoint" })
-vim.fn.sign_define("DapBreakpointRejected", { text = "", texthl = "DapBreakpoint", numhl = "DapBreakpoint" })
-vim.fn.sign_define("DapLogPoint", { text = "", texthl = "DapLogPoint", numhl = "DapLogPoint" })
 vim.fn.sign_define(
-	"DapStopped",
-	{ text = "", texthl = "DapStopped", linehl = "DapStoppedLine", numhl = "DapStopped" }
+	"DapBreakpoint",
+	{ text = "", texthl = "DapBreakpoint", numhl = "DapBreakpoint" }
 )
+vim.fn.sign_define(
+	"DapBreakpointCondition",
+	{ text = "ﳁ", texthl = "DapBreakpoint", numhl = "DapBreakpoint" }
+)
+vim.fn.sign_define(
+	"DapBreakpointRejected",
+	{ text = "", texthl = "DapBreakpoint", numhl = "DapBreakpoint" }
+)
+vim.fn.sign_define(
+	"DapLogPoint",
+	{ text = "", texthl = "DapLogPoint", numhl = "DapLogPoint" }
+)
+vim.fn.sign_define("DapStopped", {
+	text = "",
+	texthl = "DapStopped",
+	linehl = "DapStoppedLine",
+	numhl = "DapStopped",
+})
