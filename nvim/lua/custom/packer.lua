@@ -157,6 +157,10 @@ return require("packer").startup(function(use)
 		requires = { "mfussenegger/nvim-dap" },
 		config = function()
 			local dap, dapui = require("dap"), require("dapui")
+			dap.defaults.fallback.external_terminal = {
+				command = "tmux",
+				args = { "split-window", "-p", "20" },
+			}
 
 			dapui.setup({
 				layouts = {
@@ -167,20 +171,6 @@ return require("packer").startup(function(use)
 						},
 						position = "left",
 						size = 40,
-					},
-					{
-						elements = {
-							{
-								id = "repl",
-								size = 0.5,
-							},
-							{
-								id = "console",
-								size = 0.5,
-							},
-						},
-						position = "bottom",
-						size = 10,
 					},
 				},
 			})
@@ -219,7 +209,9 @@ return require("packer").startup(function(use)
 	use({
 		"mfussenegger/nvim-dap-python",
 		config = function()
-			require("dap-python").setup("~/.venvs/debugpy/bin/python")
+			require("dap-python").setup("~/.venvs/debugpy/bin/python", {
+				console = "externalTerminal",
+			})
 		end,
 	})
 

@@ -33,7 +33,7 @@ vim.keymap.set(
 
 vim.keymap.set("n", "<leader>dd", dap.continue, { desc = "[d]ebug / continue" })
 
-vim.keymap.set("n", "<leader>or", dap.repl.open, { desc = "[o]pen [r]epl" })
+vim.keymap.set("n", "<leader>tr", dap.repl.toggle, { desc = "[t]oggle [r]epl" })
 
 vim.keymap.set("n", "<leader>so", dap.step_over, { desc = "[s]tep [o]ver" })
 vim.keymap.set("n", "<leader>si", dap.step_into, { desc = "[s]tep [i]nto" })
