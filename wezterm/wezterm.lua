@@ -13,9 +13,10 @@ local config = {
 		font = wezterm.font({ family = "JetbrainsMono Nerd Font" }),
 		font_size = 13.0,
 	},
-	window_decorations = "RESIZE",
+	window_decorations = "INTEGRATED_BUTTONS|RESIZE",
 	window_padding = {
 		bottom = 0,
+		top = 70,
 	},
 	use_fancy_tab_bar = true,
 	enable_tab_bar = false,
