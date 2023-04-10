@@ -151,6 +151,5 @@ require("mason-null-ls").setup({
 	},
 	automatic_installation = false,
 	automatic_setup = true,
+	handlers = {},
 })
-
-require("mason-null-ls").setup_handlers()
