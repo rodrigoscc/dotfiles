@@ -133,9 +133,12 @@ null_ls.setup({
 		null_ls.builtins.formatting.stylua.with({
 			extra_args = { "--column-width=80" },
 		}),
-		null_ls.builtins.diagnostics.pylint.with({
+		null_ls.builtins.diagnostics.flake8.with({
 			prefer_local = ".venv/bin",
-			extra_args = { "--max-line-length=80" },
+			extra_args = {
+				"--max-line-length=80",
+				"--extend-ignore=E1,W1,E2,W2,E3,W3,E4,W4,E5,W5", -- no formatting rules, black handles it
+			},
 		}),
 	},
 })
@@ -147,7 +150,7 @@ require("mason-null-ls").setup({
 		"stylua",
 		"prettier",
 		"autoflake",
-		"pylint",
+		"flake8",
 	},
 	automatic_installation = false,
 	automatic_setup = true,
