@@ -18,6 +18,7 @@ telescope.setup({
 
 telescope.load_extension("luasnip")
 telescope.load_extension("fzf")
+telescope.load_extension("harpoon")
 
 vim.keymap.set("n", "<C-p>", builtin.git_files, {})
 vim.keymap.set("n", "<C-f>", builtin.current_buffer_fuzzy_find)
@@ -92,6 +93,13 @@ vim.keymap.set(
 	"<leader>is",
 	"<cmd>Telescope luasnip<cr>",
 	{ desc = "[i]nsert [s]nippet" }
+)
+
+vim.keymap.set(
+	"n",
+	"<M-m>",
+	"<cmd>Telescope harpoon marks<cr>",
+	{ desc = "harpoon marks" }
 )
 
 local function open_file_at_startup(data)
