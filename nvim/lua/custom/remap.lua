@@ -7,6 +7,9 @@ vim.g.mapleader = " "
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 
+vim.keymap.set("v", "<", "<gv")
+vim.keymap.set("v", ">", ">gv")
+
 vim.keymap.set("n", "J", "mzJ`z")
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
 vim.keymap.set("n", "<C-u>", "<C-u>zz")
@@ -16,14 +19,39 @@ vim.keymap.set("n", "N", "Nzzzv")
 vim.keymap.set("n", "<C-s>", "<cmd>write<cr>")
 
 -- Paste preserving previous copy
-vim.keymap.set({ "n", "v" }, "<leader>sp", [["_dP]], { desc = "[s]pecial [p]aste" })
+vim.keymap.set(
+	{ "n", "v" },
+	"<leader>sp",
+	[["_dP]],
+	{ desc = "[s]pecial [p]aste" }
+)
 -- Delete preserving previous copy
-vim.keymap.set({ "n", "v" }, "<leader>sd", [["_d]], { desc = "[s]pecial [d]elete" })
+vim.keymap.set(
+	{ "n", "v" },
+	"<leader>sd",
+	[["_d]],
+	{ desc = "[s]pecial [d]elete" }
+)
 
-vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]], { desc = "[y]ank to system clipboard" })
-vim.keymap.set("n", "<leader>Y", [["+Y]], { desc = "[y]ank to system clipboard" })
+vim.keymap.set(
+	{ "n", "v" },
+	"<leader>y",
+	[["+y]],
+	{ desc = "[y]ank to system clipboard" }
+)
+vim.keymap.set(
+	"n",
+	"<leader>Y",
+	[["+Y]],
+	{ desc = "[y]ank to system clipboard" }
+)
 
-vim.keymap.set("n", "<leader>bf", vim.lsp.buf.format, { desc = "[b]uffer [f]ormat" })
+vim.keymap.set(
+	"n",
+	"<leader>bf",
+	vim.lsp.buf.format,
+	{ desc = "[b]uffer [f]ormat" }
+)
 
 -- This is going to get me cancelled
 vim.keymap.set("i", "<C-c>", "<Esc>")
@@ -90,8 +118,18 @@ local function my_cr()
 	local last_three_chars = string.sub(node_text, -3)
 
 	-- Ignore triple quote strings since they already support new lines.
-	if node_type == "string" and last_three_chars ~= '"""' and last_three_chars ~= "'''" then
-		vim.cmd('execute "normal! i\\' .. quote .. "\\<cr>\\" .. quote .. '\\<esc>l"')
+	if
+		node_type == "string"
+		and last_three_chars ~= '"""'
+		and last_three_chars ~= "'''"
+	then
+		vim.cmd(
+			'execute "normal! i\\'
+				.. quote
+				.. "\\<cr>\\"
+				.. quote
+				.. '\\<esc>l"'
+		)
 	else
 		local input = npairs.autopairs_cr()
 		local keys = vim.api.nvim_replace_termcodes(input, true, false, true)
