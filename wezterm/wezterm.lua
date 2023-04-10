@@ -3,7 +3,10 @@ local act = wezterm.action
 
 local config = {
 	color_scheme = "tokyonight_night",
-	font = wezterm.font({ family = "JetbrainsMono Nerd Font", weight = "Medium" }),
+	font = wezterm.font({
+		family = "JetbrainsMono Nerd Font",
+		weight = "Medium",
+	}),
 	font_size = 13.0,
 	line_height = 1.2,
 	window_frame = {
@@ -31,14 +34,6 @@ local config = {
 			mods = "CMD",
 			action = act.PasteFrom("Clipboard"),
 		},
-		-- Make sure Ctrl+q does not need to be pressed twice
-		-- https://github.com/wez/wezterm/issues/2630
-		{
-			key = "q",
-			mods = "CTRL",
-			action = act.SendString("\x11"),
-		},
-
 		-- tmux shortcut bindings
 		-- new window
 		{
