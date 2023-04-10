@@ -96,6 +96,13 @@ lsp.configure("pyright", {
 	root_dir = function()
 		return vim.fn.getcwd()
 	end,
+	capabilities = {
+		workspace = {
+			didChangeWatchedFiles = {
+				dynamicRegistration = true,
+			},
+		},
+	},
 })
 
 -- Using neodev instead.
