@@ -313,7 +313,7 @@ return require("packer").startup(function(use)
 						list = {
 							{
 								key = "ga",
-								action = "Git add",
+								action = "Git Add",
 								action_cb = function(node)
 									vim.cmd("Git add " .. node.absolute_path)
 								end,
