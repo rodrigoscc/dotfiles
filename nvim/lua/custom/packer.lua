@@ -306,7 +306,6 @@ return require("packer").startup(function(use)
 				hijack_directories = {
 					enable = false, -- no auto open
 				},
-				sort_by = "modification_time",
 				hijack_cursor = true,
 				view = {
 					mappings = {
