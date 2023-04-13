@@ -61,6 +61,19 @@ def {}():
 		)
 	),
 	s(
+		"forit",
+		fmt(
+			[[for {}, {} in {}.items():
+    {}]],
+			{
+				i(1, "key"),
+				i(2, "value"),
+				i(3, "dict"),
+				i(4, "pass"),
+			}
+		)
+	),
+	s(
 		"deft",
 		fmt(
 			[[def test_{}({}):
@@ -69,6 +82,28 @@ def {}():
 				i(1, "test_name"),
 				i(2),
 				i(3, "pass"),
+			}
+		)
+	),
+	s(
+		"ifn",
+		fmt(
+			[[if {} is None:
+    {}]],
+			{
+				i(1, "value"),
+				i(2, "pass"),
+			}
+		)
+	),
+	s(
+		"ifnn",
+		fmt(
+			[[if {} is not None:
+    {}]],
+			{
+				i(1, "value"),
+				i(2, "pass"),
 			}
 		)
 	),
