@@ -7,16 +7,14 @@ local config = {
 		family = "JetbrainsMono Nerd Font",
 		weight = "Medium",
 	}),
-	font_size = 13.0,
+	font_size = 12.0,
 	line_height = 1.2,
 	window_frame = {
 		font = wezterm.font({ family = "JetbrainsMono Nerd Font" }),
-		font_size = 13.0,
 	},
-	window_decorations = "INTEGRATED_BUTTONS|RESIZE",
+	window_decorations = "RESIZE",
 	window_padding = {
 		bottom = 0,
-		top = 70,
 	},
 	use_fancy_tab_bar = true,
 	enable_tab_bar = false,
