@@ -281,7 +281,12 @@ return require("packer").startup(function(use)
 		"RRethy/vim-illuminate",
 		config = function()
 			require("illuminate").configure({
-				filetypes_denylist = { "NvimTree" },
+				filetypes_denylist = {
+					"NvimTree",
+					"fugitive",
+					"DressingInput",
+					"TelescopePrompt",
+				},
 			})
 		end,
 	})
