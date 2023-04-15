@@ -7,3 +7,20 @@ vim.keymap.set("n", "<leader>gp", function()
 end, { desc = "[g]it [p]ush" })
 
 vim.cmd("autocmd User FugitiveEditor startinsert")
+
+local fugitiveGroup = vim.api.nvim_create_augroup("Fugitive", { clear = true })
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = { "fugitive" },
+	group = fugitiveGroup,
+	callback = function()
+		vim.keymap.set("n", "cc", function()
+			vim.cmd.Git("commit --quiet")
+		end, { buffer = true })
+		vim.keymap.set("n", "ca", function()
+			vim.cmd.Git("commit --quiet --amend")
+		end, { buffer = true })
+		vim.keymap.set("n", "ce", function()
+			vim.cmd.Git("commit --quiet --amend --no-edit")
+		end, { buffer = true })
+	end,
+})
