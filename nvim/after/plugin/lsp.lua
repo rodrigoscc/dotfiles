@@ -86,6 +86,24 @@ lsp.on_attach(function(client, bufnr)
 		vim.lsp.buf.code_action,
 		{ desc = "[c]ode [a]ction" }
 	)
+	vim.keymap.set({ "n", "v" }, "<leader>bf", function()
+		local active_clients = vim.lsp.get_active_clients()
+		local is_null_ls_attached = false
+		for _, client in pairs(active_clients) do
+			if client.name == "null-ls" then
+				is_null_ls_attached = true
+			end
+		end
+
+		local filter_func = nil
+		if is_null_ls_attached then
+			filter_func = function(client)
+				return client.name == "null-ls"
+			end
+		end
+
+		vim.lsp.buf.format({ filter = filter_func })
+	end, { desc = "[b]uffer [f]ormat" })
 
 	vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
 	vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)

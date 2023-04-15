@@ -25,6 +25,13 @@ local bubbles_theme = {
 	},
 }
 
+local function format_on_save()
+	if not vim.g.format_on_save then
+		return " 󰉥 "
+	end
+	return ""
+end
+
 require("lualine").setup({
 	options = {
 		theme = bubbles_theme,
@@ -37,7 +44,7 @@ require("lualine").setup({
 		},
 		lualine_b = { "filename", "branch" },
 		lualine_c = { "diff", "diagnostics" },
-		lualine_x = {},
+		lualine_x = { format_on_save },
 		lualine_y = { "filetype", "fileformat", "progress" },
 		lualine_z = {
 			{ "location", separator = { right = "" }, left_padding = 2 },

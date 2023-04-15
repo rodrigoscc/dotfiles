@@ -16,7 +16,19 @@ vim.keymap.set("n", "<C-u>", "<C-u>zz")
 vim.keymap.set("n", "n", "nzzzv")
 vim.keymap.set("n", "N", "Nzzzv")
 
+-- Save
 vim.keymap.set("n", "<C-s>", "<cmd>write<cr>")
+
+vim.g.format_on_save = true
+vim.keymap.set("n", "<leader>tw", function()
+	if vim.g.format_on_save then
+		vim.g.format_on_save = false
+		vim.keymap.set("n", "<C-s>", "<cmd>noautocmd write<cr>")
+	else
+		vim.g.format_on_save = true
+		vim.keymap.set("n", "<C-s>", "<cmd>write<cr>")
+	end
+end, { desc = "[t]oggle [w]rite" })
 
 -- Paste preserving previous copy
 vim.keymap.set(
