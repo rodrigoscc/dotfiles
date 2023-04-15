@@ -22,5 +22,10 @@ vim.api.nvim_create_autocmd("FileType", {
 		vim.keymap.set("n", "ce", function()
 			vim.cmd.Git("commit --quiet --amend --no-edit")
 		end, { buffer = true })
+
+		vim.keymap.set("n", "<C-s>", function()
+			vim.cmd.write()
+			vim.cmd.quit()
+		end, { buffer = true })
 	end,
 })
