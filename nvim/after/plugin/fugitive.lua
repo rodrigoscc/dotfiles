@@ -9,6 +9,7 @@ end, { desc = "[g]it [p]ush" })
 vim.cmd("autocmd User FugitiveEditor startinsert")
 
 local fugitiveGroup = vim.api.nvim_create_augroup("Fugitive", { clear = true })
+-- I do not like PRESS ENTER prompts after comitting.
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = { "fugitive" },
 	group = fugitiveGroup,
@@ -24,6 +25,7 @@ vim.api.nvim_create_autocmd("FileType", {
 		end, { buffer = true })
 	end,
 })
+-- Quickly save and quit gitcommit windows.
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = { "gitcommit" },
 	group = fugitiveGroup,
