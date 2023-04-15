@@ -130,6 +130,15 @@ local config = {
 				act.SendKey({ key = "S" }),
 			}),
 		},
+		-- last session switch
+		{
+			key = "S",
+			mods = "CMD",
+			action = act.Multiple({
+				act.SendKey({ key = "b", mods = "CTRL" }),
+				act.SendKey({ key = "l" }),
+			}),
+		},
 		-- window cycling
 		{
 			key = "l",

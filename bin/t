@@ -3,14 +3,21 @@
 # Get the list of directories from zoxide
 dirs=`zoxide query --list`
 
-# Use Fzf to select the directory
-selected_dir=`echo "$dirs" | fzf-tmux -w 60% -h 50%`
+default_session_name="default"
+
+# Use Fzf to select the directory or a default session
+selected_dir=`echo -e "$default_session_name\n$dirs" | fzf-tmux -w 60% -h 50%`
 if [ -z "$selected_dir" ]; then
     exit 0
 fi
 
-session_name=`echo "$selected_dir" | rev | cut -d "/" -f 1 | rev`
-session_name=`echo "$session_name" | tr -d "."`  # trim dots
+if [ "$selected_dir" == "$default_session_name" ]; then
+    selected_dir="~"
+    session_name=$default_session_name
+else
+    session_name=`echo "$selected_dir" | rev | cut -d "/" -f 1 | rev`
+    session_name=`echo "$session_name" | tr -d "."`  # trim dots
+fi
 
 if ! pgrep -x "tmux" > /dev/null; then
     tmux new -s "$session_name" -c "$selected_dir"
