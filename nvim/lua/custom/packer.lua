@@ -216,7 +216,13 @@ return require("packer").startup(function(use)
 	use({
 		"j-hui/fidget.nvim",
 		config = function()
-			require("fidget").setup({})
+			require("fidget").setup({
+				align = {
+					top = true,
+					bottom = false,
+					right = true,
+				},
+			})
 		end,
 	})
 
@@ -380,6 +386,18 @@ return require("packer").startup(function(use)
 		"simrat39/symbols-outline.nvim",
 		config = function()
 			require("symbols-outline").setup()
+		end,
+	})
+
+	use({
+		"petertriho/nvim-scrollbar",
+		config = function()
+			require("scrollbar").setup({
+				handlers = {
+					cursor = false,
+				},
+			})
+			require("scrollbar.handlers.gitsigns").setup()
 		end,
 	})
 end)
