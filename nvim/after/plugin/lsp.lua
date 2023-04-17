@@ -78,9 +78,9 @@ lsp.on_attach(function(client, bufnr)
 	)
 	vim.keymap.set(
 		"n",
-		"<leader>df",
+		"<leader>od",
 		vim.diagnostic.open_float,
-		{ desc = "[d]iagnostics open [f]loat" }
+		{ desc = "[o]pen [d]iagnostics float" }
 	)
 	vim.keymap.set(
 		{ "n", "v" },
