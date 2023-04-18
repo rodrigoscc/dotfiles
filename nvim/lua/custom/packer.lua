@@ -402,4 +402,11 @@ return require("packer").startup(function(use)
 			require("scrollbar.handlers.gitsigns").setup()
 		end,
 	})
+
+	use({
+		"norcalli/nvim-colorizer.lua",
+		config = function()
+			require("colorizer").setup()
+		end,
+	})
 end)
