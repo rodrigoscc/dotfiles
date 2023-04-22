@@ -411,4 +411,6 @@ return require("packer").startup(function(use)
 			require("colorizer").setup()
 		end,
 	})
+
+	use({ "anuvyklack/hydra.nvim" })
 end)
