@@ -36,7 +36,8 @@ vim.keymap.set("n", "]h", gitsigns.next_hunk, { desc = "next hunk" })
 vim.keymap.set("n", "[h", gitsigns.prev_hunk, { desc = "previous hunk" })
 
 local hint = [[
- _J_: next hunk   _S_: stage hunk
+Git stage:
+ _J_: next hunk   _S_: stage hunk            _U_: undo stage hunk
  _K_: prev hunk   _P_: preview hunk inline
  ^
  _q_: exit
@@ -48,29 +49,41 @@ Hydra({
 	hint = hint,
 	body = "<leader>G",
 	config = {
-		on_key = function()
-			-- vim.wait(50)
-		end,
 		color = "pink",
 		invoke_on_body = true,
+		hint = {
+			border = "rounded",
+		},
 	},
 	heads = {
 		{
 			"J",
 			function()
 				gitsigns.next_hunk()
+				vim.schedule(function()
+					vim.api.nvim_feedkeys("zz", "n", false)
+				end)
 			end,
 		},
 		{
 			"K",
 			function()
 				gitsigns.prev_hunk()
+				vim.schedule(function()
+					vim.api.nvim_feedkeys("zz", "n", false)
+				end)
 			end,
 		},
 		{
 			"S",
 			function()
 				gitsigns.stage_hunk()
+			end,
+		},
+		{
+			"U",
+			function()
+				gitsigns.undo_stage_hunk()
 			end,
 		},
 		{
