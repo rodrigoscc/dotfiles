@@ -394,18 +394,6 @@ return require("packer").startup(function(use)
 	})
 
 	use({
-		"petertriho/nvim-scrollbar",
-		config = function()
-			require("scrollbar").setup({
-				handlers = {
-					cursor = false,
-				},
-			})
-			require("scrollbar.handlers.gitsigns").setup()
-		end,
-	})
-
-	use({
 		"norcalli/nvim-colorizer.lua",
 		config = function()
 			require("colorizer").setup()
