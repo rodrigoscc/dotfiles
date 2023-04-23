@@ -38,7 +38,7 @@ vim.keymap.set("n", "[h", gitsigns.prev_hunk, { desc = "previous hunk" })
 local hint = [[
 Git stage:
  _J_: next hunk   _S_: stage hunk            _U_: undo stage hunk
- _K_: prev hunk   _P_: preview hunk inline
+ _K_: prev hunk   _P_: preview hunk inline   _R_: reset hunk
  ^
  _q_: exit
 ]]
@@ -84,6 +84,12 @@ Hydra({
 			"U",
 			function()
 				gitsigns.undo_stage_hunk()
+			end,
+		},
+		{
+			"R",
+			function()
+				gitsigns.reset_hunk()
 			end,
 		},
 		{
