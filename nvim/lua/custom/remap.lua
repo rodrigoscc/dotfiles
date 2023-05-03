@@ -1,5 +1,6 @@
 local ts_utils = require("nvim-treesitter.ts_utils")
 local npairs = require("nvim-autopairs")
+local cmp = require("cmp")
 
 vim.g.mapleader = " "
 -- vim.keymap.set('n', '<leader>pv', vim.cmd.Ex)
@@ -120,6 +121,10 @@ local function my_cr()
 	local bufnr = vim.api.nvim_get_current_buf()
 
 	local cursor_node = ts_utils.get_node_at_cursor()
+	if cursor_node == nil then
+		return
+	end
+
 	local node_type = cursor_node:type()
 
 	if node_type == "string_content" then
@@ -127,7 +132,7 @@ local function my_cr()
 		node_type = cursor_node:type()
 	end
 
-	local node_text = vim.treesitter.query.get_node_text(cursor_node, bufnr)
+	local node_text = vim.treesitter.get_node_text(cursor_node, bufnr)
 	local quote = string.sub(node_text, -1)
 	local last_three_chars = string.sub(node_text, -3)
 
@@ -137,24 +142,25 @@ local function my_cr()
 		and last_three_chars ~= '"""'
 		and last_three_chars ~= "'''"
 	then
-		vim.cmd(
-			'execute "normal! i\\'
-				.. quote
-				.. "\\<cr>\\"
-				.. quote
-				.. '\\<esc>l"'
-		)
+		return quote .. "<CR>" .. quote
 	else
-		local input = npairs.autopairs_cr()
-		local keys = vim.api.nvim_replace_termcodes(input, true, false, true)
-		vim.api.nvim_feedkeys(keys, "n", false)
+		if cmp.visible() then
+			cmp.confirm({ select = false })
+		else
+			local input = npairs.autopairs_cr()
+			local keys =
+				vim.api.nvim_replace_termcodes(input, true, false, true)
+			vim.api.nvim_feedkeys(keys, "n", false)
+		end
+
+		return "<Ignore>"
 	end
 end
 
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "python",
 	callback = function()
-		vim.keymap.set("i", "<c-m>", my_cr, { buffer = true })
+		vim.keymap.set("i", "<c-m>", my_cr, { buffer = true, expr = true })
 	end,
 })
 
