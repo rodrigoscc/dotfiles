@@ -167,6 +167,8 @@ return require("packer").startup(function(use)
 			dap.listeners.before.event_exited["dapui_config"] = function()
 				dapui.close()
 			end
+
+			require("dap.ext.vscode").load_launchjs()
 		end,
 	})
 	use({
