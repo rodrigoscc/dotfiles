@@ -298,6 +298,11 @@ return require("packer").startup(function(use)
 		},
 		config = function()
 			require("nvim-tree").setup({
+				actions = {
+					open_file = {
+						resize_window = false,
+					},
+				},
 				update_focused_file = {
 					enable = true,
 				},
