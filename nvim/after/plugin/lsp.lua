@@ -27,7 +27,7 @@ lsp.setup_nvim_cmp({
 		{ name = "path" },
 		{ name = "nvim_lsp" },
 		{ name = "buffer", keyword_length = 3 },
-		-- { name = 'luasnip', keyword_length = 2 },
+		{ name = "luasnip", keyword_length = 2 },
 	},
 	window = {
 		completion = {
