@@ -85,6 +85,14 @@ local function ins_right(component)
 	table.insert(config.sections.lualine_x, component)
 end
 
+local function ins_inactive_left(component)
+	table.insert(config.inactive_sections.lualine_c, component)
+end
+
+local function ins_inactive_right(component)
+	table.insert(config.inactive_sections.lualine_x, component)
+end
+
 ins_left({
 	function()
 		return ""
@@ -208,6 +216,26 @@ ins_right({
 		removed = { fg = colors.red },
 	},
 	cond = conditions.hide_in_width,
+})
+
+ins_inactive_left({
+	"filename",
+	cond = conditions.buffer_not_empty,
+	color = { fg = colors.fg },
+})
+
+ins_inactive_right({
+	"o:encoding",
+	fmt = string.upper,
+	cond = conditions.hide_in_width,
+	color = { fg = colors.fg },
+})
+
+ins_inactive_right({
+	"fileformat",
+	fmt = string.upper,
+	icons_enabled = false, -- I think icons are cool but Eviline doesn't have them. sigh
+	color = { fg = colors.fg },
 })
 
 -- Now don't forget to initialize lualine
