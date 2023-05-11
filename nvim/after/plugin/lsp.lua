@@ -12,11 +12,14 @@ lsp.ensure_installed({
 
 local cmp_mappings = lsp.defaults.cmp_mappings()
 
-cmp_mappings["<Tab>"] = nil
 cmp_mappings["<S-Tab>"] = nil
 cmp_mappings["<C-d>"] = nil
 cmp_mappings["<C-b>"] = nil
 cmp_mappings["<C-Space>"] = cmp.mapping.complete()
+cmp_mappings["<Tab>"] = cmp.mapping.confirm({
+	behavior = cmp.ConfirmBehavior.Replace,
+	select = true,
+})
 
 local cmp_autopairs = require("nvim-autopairs.completion.cmp")
 cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
