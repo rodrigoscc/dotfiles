@@ -185,6 +185,10 @@ ins_right({
 	format_on_save,
 })
 
+ins_right({
+	"filetype",
+})
+
 -- Add components to right sections
 ins_right({
 	"o:encoding", -- option component same as &encoding in viml
@@ -225,17 +229,7 @@ ins_inactive_left({
 })
 
 ins_inactive_right({
-	"o:encoding",
-	fmt = string.upper,
-	cond = conditions.hide_in_width,
-	color = { fg = colors.fg },
-})
-
-ins_inactive_right({
-	"fileformat",
-	fmt = string.upper,
-	icons_enabled = false, -- I think icons are cool but Eviline doesn't have them. sigh
-	color = { fg = colors.fg },
+	"filetype",
 })
 
 -- Now don't forget to initialize lualine
