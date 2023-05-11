@@ -17,8 +17,7 @@ vim.keymap.set("n", "<C-u>", "<C-u>zz")
 vim.keymap.set("n", "n", "nzzzv")
 vim.keymap.set("n", "N", "Nzzzv")
 
--- Save
-vim.keymap.set("n", "<C-s>", "<cmd>write<cr>")
+vim.keymap.set("n", "<C-s>", "<cmd>silent write<cr>")
 
 vim.g.format_on_save = true
 vim.keymap.set("n", "<leader>tw", function()
@@ -136,6 +135,11 @@ local function my_cr()
 	local quote = string.sub(node_text, -1)
 	local last_three_chars = string.sub(node_text, -3)
 
+	if cmp.visible() then
+		cmp.confirm({ select = false })
+		return "<Ignore>"
+	end
+
 	-- Ignore triple quote strings since they already support new lines.
 	if
 		node_type == "string"
@@ -144,14 +148,9 @@ local function my_cr()
 	then
 		return quote .. "<CR>" .. quote
 	else
-		if cmp.visible() then
-			cmp.confirm({ select = false })
-		else
-			local input = npairs.autopairs_cr()
-			local keys =
-				vim.api.nvim_replace_termcodes(input, true, false, true)
-			vim.api.nvim_feedkeys(keys, "n", false)
-		end
+		local input = npairs.autopairs_cr()
+		local keys = vim.api.nvim_replace_termcodes(input, true, false, true)
+		vim.api.nvim_feedkeys(keys, "n", false)
 
 		return "<Ignore>"
 	end

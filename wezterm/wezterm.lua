@@ -15,6 +15,7 @@ local config = {
 	window_decorations = "RESIZE",
 	window_padding = {
 		bottom = 0,
+		top = 15,
 	},
 	use_fancy_tab_bar = true,
 	enable_tab_bar = false,
