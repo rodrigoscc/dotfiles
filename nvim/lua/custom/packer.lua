@@ -116,6 +116,9 @@ return require("packer").startup(function(use)
 		end,
 	})
 
+	use({ "rose-pine/neovim", as = "rose-pine" })
+	use({ "catppuccin/nvim", as = "catppuccin" })
+
 	use({
 		"lewis6991/gitsigns.nvim",
 		config = function()
