@@ -103,6 +103,7 @@ return require("packer").startup(function(use)
 		config = function()
 			require("tokyonight").setup({
 				sidebars = { "qf", "help", "neotest-summary" },
+				styles = { sidebars = "transparent", floats = "transparent" },
 			})
 			vim.cmd([[colorscheme tokyonight-night]])
 		end,
@@ -218,6 +219,9 @@ return require("packer").startup(function(use)
 					top = true,
 					bottom = false,
 					right = true,
+				},
+				window = {
+					blend = 0,
 				},
 			})
 		end,
@@ -403,4 +407,16 @@ return require("packer").startup(function(use)
 	})
 
 	use({ "anuvyklack/hydra.nvim" })
+
+	use({
+		"xiyaowong/transparent.nvim",
+		config = function()
+			require("transparent").setup({
+				extra_groups = {
+					"NormalFloat",
+				},
+			})
+			vim.g.transparent_enabled = true
+		end,
+	})
 end)

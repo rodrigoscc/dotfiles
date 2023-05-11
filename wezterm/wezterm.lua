@@ -159,8 +159,8 @@ local config = {
 		},
 	},
 	front_end = "WebGpu",
-	-- window_background_opacity = 0.9,
-	-- macos_window_background_blur = 20
+	window_background_opacity = 0.9,
+	macos_window_background_blur = 20,
 }
 
 local function add_tmux_windows_bindings()
