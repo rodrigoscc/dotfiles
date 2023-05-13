@@ -126,15 +126,15 @@ ins_left({
 })
 
 ins_left({
-	-- filesize component
-	"filesize",
-	cond = conditions.buffer_not_empty,
+	"branch",
+	icon = "",
+	color = { fg = colors.violet, gui = "bold" },
 })
 
 ins_left({
-	"filename",
+	-- filesize component
+	"filesize",
 	cond = conditions.buffer_not_empty,
-	color = { fg = colors.blue, gui = "bold" },
 })
 
 ins_left({ "location" })
@@ -160,33 +160,8 @@ ins_left({
 	end,
 })
 
-ins_left({
-	-- Lsp server name .
-	function()
-		local msg = "No Active Lsp"
-		local buf_ft = vim.api.nvim_buf_get_option(0, "filetype")
-		local clients = vim.lsp.get_active_clients()
-		if next(clients) == nil then
-			return msg
-		end
-		for _, client in ipairs(clients) do
-			local filetypes = client.config.filetypes
-			if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
-				return client.name
-			end
-		end
-		return msg
-	end,
-	icon = " ",
-	color = { fg = "#555555", gui = "bold" },
-})
-
 ins_right({
 	format_on_save,
-})
-
-ins_right({
-	"filetype",
 })
 
 -- Add components to right sections
@@ -202,12 +177,6 @@ ins_right({
 	fmt = string.upper,
 	icons_enabled = false, -- I think icons are cool but Eviline doesn't have them. sigh
 	color = { fg = colors.green, gui = "bold" },
-})
-
-ins_right({
-	"branch",
-	icon = "",
-	color = { fg = colors.violet, gui = "bold" },
 })
 
 ins_right({

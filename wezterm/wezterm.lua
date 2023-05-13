@@ -7,7 +7,7 @@ local config = {
 		family = "JetbrainsMono Nerd Font",
 		weight = "Medium",
 	}),
-	font_size = 12.5,
+	font_size = 13.0,
 	line_height = 1.2,
 	window_frame = {
 		font = wezterm.font({ family = "JetbrainsMono Nerd Font" }),
@@ -159,8 +159,8 @@ local config = {
 		},
 	},
 	front_end = "WebGpu",
-	window_background_opacity = 0.9,
-	macos_window_background_blur = 20,
+	window_background_opacity = 0.85,
+	macos_window_background_blur = 0,
 }
 
 local function add_tmux_windows_bindings()

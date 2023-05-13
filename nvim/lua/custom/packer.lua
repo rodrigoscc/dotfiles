@@ -414,6 +414,8 @@ return require("packer").startup(function(use)
 			require("transparent").setup({
 				extra_groups = {
 					"NormalFloat",
+					"DapUINormal",
+					"FidgetTitle",
 				},
 			})
 			vim.g.transparent_enabled = true
