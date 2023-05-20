@@ -40,7 +40,9 @@ vim.keymap.set("n", "<leader>so", dap.step_over, { desc = "[s]tep [o]ver" })
 vim.keymap.set("n", "<leader>si", dap.step_into, { desc = "[s]tep [i]nto" })
 vim.keymap.set("n", "<leader>su", dap.step_out, { desc = "[s]tep o[u]t" })
 
-vim.keymap.set("n", "<leader>de", dapui.eval, { desc = "[d]ebug [e]val" })
+vim.keymap.set("n", "<F4>", dap.step_over, { desc = "step over" })
+vim.keymap.set("n", "<F5>", dap.step_into, { desc = "step into" })
+vim.keymap.set("n", "<F6>", dap.step_out, { desc = "step out" })
 
 vim.api.nvim_set_hl(0, "DapBreakpoint", { ctermbg = 0, fg = "#993939" })
 vim.api.nvim_set_hl(0, "DapLogPoint", { ctermbg = 0, fg = "#61afef" })
