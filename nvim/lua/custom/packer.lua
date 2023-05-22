@@ -421,4 +421,6 @@ return require("packer").startup(function(use)
 			vim.g.transparent_enabled = true
 		end,
 	})
+
+	use({ "windwp/nvim-ts-autotag" })
 end)

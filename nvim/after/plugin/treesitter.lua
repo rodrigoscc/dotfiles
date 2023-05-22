@@ -96,4 +96,7 @@ require("nvim-treesitter.configs").setup({
 			node_decremental = "<C-j>",
 		},
 	},
+	autotag = {
+		enable = true,
+	},
 })
