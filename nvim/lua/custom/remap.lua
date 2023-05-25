@@ -12,8 +12,8 @@ vim.keymap.set("v", "<", "<gv")
 vim.keymap.set("v", ">", ">gv")
 
 vim.keymap.set("n", "J", "mzJ`z")
-vim.keymap.set("n", "<C-d>", ":normal! <C-d>zz<CR>")
-vim.keymap.set("n", "<C-u>", ":normal! <C-v><C-u>zz<CR>")
+vim.keymap.set("n", "<C-d>", "<cmd>normal! <C-d>zz<CR>")
+vim.keymap.set("n", "<C-u>", "<cmd>normal! <C-u>zz<CR>")
 vim.keymap.set("n", "n", "nzzzv")
 vim.keymap.set("n", "N", "Nzzzv")
 
