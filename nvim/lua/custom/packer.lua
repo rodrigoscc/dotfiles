@@ -231,6 +231,7 @@ return require("packer").startup(function(use)
 		"lukas-reineke/virt-column.nvim",
 		config = function()
 			require("virt-column").setup({
+				virtcolumn = "80",
 				char = "│",
 			})
 		end,

@@ -26,7 +26,10 @@ vim.opt.isfname:append("@-@")
 
 vim.opt.updatetime = 50
 
-vim.opt.colorcolumn = "80"
+vim.opt.cursorline = true
+
+-- Not setting this since virt-column handles this.
+-- vim.opt.colorcolumn = "80"
 
 vim.opt.foldmethod = "indent"
 vim.opt.foldlevel = 99
