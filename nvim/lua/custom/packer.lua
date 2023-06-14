@@ -297,6 +297,27 @@ return require("packer").startup(function(use)
 			"nvim-tree/nvim-web-devicons", -- optional
 		},
 		config = function()
+			local function on_attach(bufnr)
+				local api = require("nvim-tree.api")
+
+				local function opts(desc)
+					return {
+						desc = "nvim-tree: " .. desc,
+						buffer = bufnr,
+						noremap = true,
+						silent = true,
+						nowait = true,
+					}
+				end
+
+				api.config.mappings.default_on_attach(bufnr)
+
+				vim.keymap.set("n", "ga", function()
+					local node = api.tree.get_node_under_cursor()
+					vim.cmd("Git add " .. node.absolute_path)
+				end, opts("Git Add"))
+			end
+
 			require("nvim-tree").setup({
 				actions = {
 					open_file = {
@@ -310,19 +331,7 @@ return require("packer").startup(function(use)
 					enable = false, -- no auto open
 				},
 				hijack_cursor = true,
-				view = {
-					mappings = {
-						list = {
-							{
-								key = "ga",
-								action = "Git Add",
-								action_cb = function(node)
-									vim.cmd("Git add " .. node.absolute_path)
-								end,
-							},
-						},
-					},
-				},
+				on_attach = on_attach,
 			})
 		end,
 	})
