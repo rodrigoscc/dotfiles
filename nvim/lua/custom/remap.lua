@@ -156,10 +156,101 @@ local function my_cr()
 	end
 end
 
+local function find_result_node(node)
+	local parent = node:parent()
+
+	while parent ~= nil do
+		local parent_result_nodes = parent:field("result")
+		if
+			next(parent_result_nodes) ~= nil
+			and parent_result_nodes[1]:equal(node)
+		then
+			return parent_result_nodes[1]
+		end
+
+		node = parent
+		parent = node:parent()
+	end
+
+	return nil
+end
+
+local function get_left_node()
+	local current_win = vim.api.nvim_get_current_win()
+	local row, col = unpack(vim.api.nvim_win_get_cursor(current_win))
+
+	local bufnr = vim.api.nvim_get_current_buf()
+	return vim.treesitter.get_node({ bufnr = bufnr, pos = { row - 1, col - 1 } })
+end
+
+local function my_comma()
+	local current_line = vim.api.nvim_get_current_line()
+	local current_win = vim.api.nvim_get_current_win()
+	local row, col = unpack(vim.api.nvim_win_get_cursor(current_win))
+
+	local cursor_node = ts_utils.get_node_at_cursor()
+	if cursor_node == nil then
+		return
+	end
+
+	local new_line = current_line
+
+	local result_node = find_result_node(cursor_node)
+	if result_node == nil then
+		local previous_node = get_left_node()
+
+		result_node = find_result_node(previous_node)
+		if result_node == nil then
+			new_line = current_line:sub(0, col)
+				.. ","
+				.. current_line:sub(col + 1)
+
+			-- Update cursor after adding the comma
+			col = col + 1
+		end
+	end
+
+	if result_node ~= nil then
+		local bufnr = vim.api.nvim_get_current_buf()
+		local result_node_text =
+			vim.treesitter.get_node_text(result_node, bufnr)
+
+		local need_parentheses = result_node_text:sub(1, 1) ~= "("
+
+		if need_parentheses then
+			local _, start_column, _ = result_node:start()
+			local _, end_column, _ = result_node:end_()
+			new_line = current_line:sub(0, start_column)
+				.. "("
+				.. current_line:sub(start_column + 1, end_column)
+				.. ")"
+				.. current_line:sub(end_column + 1)
+
+			-- Update cursor after adding the parenthesis
+			col = col + 1
+
+			new_line = new_line:sub(0, col) .. "," .. new_line:sub(col + 1)
+
+			-- Update cursor after adding the comma
+			col = col + 1
+		end
+	end
+
+	vim.api.nvim_set_current_line(new_line)
+	vim.api.nvim_win_set_cursor(current_win, { row, col })
+end
+
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "python",
 	callback = function()
 		vim.keymap.set("i", "<c-m>", my_cr, { buffer = true, expr = true })
+	end,
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "go",
+	callback = function()
+		vim.keymap.set("i", ",", my_comma, { buffer = true })
 	end,
 })
 
