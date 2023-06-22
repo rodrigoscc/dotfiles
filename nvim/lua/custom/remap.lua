@@ -197,6 +197,8 @@ local function my_comma()
 
 	local result_node = find_result_node(cursor_node)
 	if result_node == nil then
+		-- Try node to the left since cursor might be right after the result
+		-- node to insert a comma.
 		local previous_node = get_left_node()
 
 		result_node = find_result_node(previous_node)
