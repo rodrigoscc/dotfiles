@@ -200,19 +200,15 @@ local function my_comma()
 		-- Try node to the left since cursor might be right after the result
 		-- node to insert a comma.
 		local previous_node = get_left_node()
-
 		result_node = find_result_node(previous_node)
-		if result_node == nil then
-			new_line = current_line:sub(0, col)
-				.. ","
-				.. current_line:sub(col + 1)
-
-			-- Update cursor after adding the comma
-			col = col + 1
-		end
 	end
 
-	if result_node ~= nil then
+	if result_node == nil then
+		new_line = current_line:sub(0, col) .. "," .. current_line:sub(col + 1)
+
+		-- Update cursor after adding the comma
+		col = col + 1
+	else
 		local bufnr = vim.api.nvim_get_current_buf()
 		local result_node_text =
 			vim.treesitter.get_node_text(result_node, bufnr)
@@ -230,12 +226,12 @@ local function my_comma()
 
 			-- Update cursor after adding the parenthesis
 			col = col + 1
-
-			new_line = new_line:sub(0, col) .. "," .. new_line:sub(col + 1)
-
-			-- Update cursor after adding the comma
-			col = col + 1
 		end
+
+		new_line = new_line:sub(0, col) .. "," .. new_line:sub(col + 1)
+
+		-- Update cursor after adding the comma
+		col = col + 1
 	end
 
 	vim.api.nvim_set_current_line(new_line)
