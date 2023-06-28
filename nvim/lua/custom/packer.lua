@@ -424,8 +424,10 @@ return require("packer").startup(function(use)
 			require("transparent").setup({
 				extra_groups = {
 					"NormalFloat",
+					"StatusLine",
 					"DapUINormal",
 					"FidgetTitle",
+					"FoldColumn",
 				},
 			})
 			vim.g.transparent_enabled = true

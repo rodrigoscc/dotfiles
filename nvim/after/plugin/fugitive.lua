@@ -5,6 +5,7 @@ end, { desc = "[g]it [l]og" })
 vim.keymap.set("n", "<leader>gp", function()
 	vim.cmd.Git("push")
 end, { desc = "[g]it [p]ush" })
+vim.keymap.set("n", "<leader>gd", vim.cmd.Gdiff, { desc = "[g]it [d]iff" })
 
 vim.cmd("autocmd User FugitiveEditor startinsert")
 

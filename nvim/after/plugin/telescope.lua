@@ -14,6 +14,19 @@ telescope.setup({
 		},
 		layout_strategy = "flex",
 	},
+	pickers = {
+		git_status = {
+			attach_mappings = function(_, map)
+				map({ "i", "n" }, "<C-d>", function(_)
+					local action_state = require("telescope.actions.state")
+					local entry = action_state.get_selected_entry()
+					vim.cmd("edit! " .. entry.value)
+					vim.cmd.Ghdiffsplit()
+				end)
+				return true
+			end,
+		},
+	},
 })
 
 telescope.load_extension("luasnip")
@@ -73,6 +86,7 @@ vim.keymap.set(
 	builtin.git_bcommits,
 	{ desc = "[g]it buffer [C]ommits" }
 )
+vim.keymap.set("n", "<leader>gg", builtin.git_status, { desc = "[g]it status" })
 
 vim.keymap.set(
 	"n",
