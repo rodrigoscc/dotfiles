@@ -425,6 +425,7 @@ return require("packer").startup(function(use)
 				extra_groups = {
 					"NormalFloat",
 					"StatusLine",
+					"StatusLineNC",
 					"DapUINormal",
 					"FidgetTitle",
 					"FoldColumn",
