@@ -20,7 +20,14 @@ telescope.load_extension("luasnip")
 telescope.load_extension("fzf")
 telescope.load_extension("harpoon")
 
-vim.keymap.set("n", "<C-p>", builtin.git_files, {})
+vim.keymap.set("n", "<C-p>", function()
+	local cwd = vim.loop.cwd()
+	if cwd and string.find(cwd, ".config") then
+		builtin.git_files()
+	else
+		builtin.find_files()
+	end
+end, {})
 vim.keymap.set("n", "<C-f>", builtin.current_buffer_fuzzy_find)
 
 vim.keymap.set("n", "<leader>/", builtin.live_grep)
@@ -109,7 +116,11 @@ local function open_file_at_startup(data)
 		return
 	end
 
-	builtin.git_files()
+	if string.find(data.file, ".config") then
+		builtin.git_files()
+	else
+		builtin.find_files()
+	end
 end
 
 vim.api.nvim_create_autocmd({ "VimEnter" }, { callback = open_file_at_startup })
