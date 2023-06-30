@@ -1,5 +1,5 @@
 ; extends
 (
     (string_content) @json
-    (#lua-match? "^{\".*")
+    (#lua-match? @json "\{%s*\"")
 )
