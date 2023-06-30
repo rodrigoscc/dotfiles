@@ -121,7 +121,7 @@ local function my_cr()
 
 	local cursor_node = ts_utils.get_node_at_cursor()
 	if cursor_node == nil then
-		return
+		return "<Ignore>"
 	end
 
 	local node_type = cursor_node:type()
