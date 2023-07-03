@@ -184,16 +184,16 @@ local function get_left_node()
 end
 
 local function my_comma()
-	local current_line = vim.api.nvim_get_current_line()
 	local current_win = vim.api.nvim_get_current_win()
-	local row, col = unpack(vim.api.nvim_win_get_cursor(current_win))
+	local _, original_cursor_column =
+		unpack(vim.api.nvim_win_get_cursor(current_win))
+
+	local expression = ","
 
 	local cursor_node = ts_utils.get_node_at_cursor()
 	if cursor_node == nil then
-		return
+		return expression
 	end
-
-	local new_line = current_line
 
 	local result_node = find_result_node(cursor_node)
 	if result_node == nil then
@@ -213,24 +213,21 @@ local function my_comma()
 		if need_parentheses then
 			local _, start_column, _ = result_node:start()
 			local _, end_column, _ = result_node:end_()
-			new_line = new_line:sub(0, start_column)
-				.. "("
-				.. new_line:sub(start_column + 1, end_column)
-				.. ")"
-				.. new_line:sub(end_column + 1)
 
-			-- Update cursor after adding the parenthesis
-			col = col + 1
+			-- TODO: This is not repeatable with dot command.
+			expression = expression
+				.. string.rep(
+					"<Left>",
+					original_cursor_column - start_column + 1
+				)
+				.. "("
+				.. string.rep("<Right>", end_column - start_column + 1)
+				.. ")"
+				.. string.rep("<Left>", end_column - original_cursor_column + 1)
 		end
 	end
 
-	new_line = new_line:sub(0, col) .. "," .. new_line:sub(col + 1)
-
-	-- Update cursor after adding the comma
-	col = col + 1
-
-	vim.api.nvim_set_current_line(new_line)
-	vim.api.nvim_win_set_cursor(current_win, { row, col })
+	return expression
 end
 
 vim.api.nvim_create_autocmd("FileType", {
@@ -243,7 +240,7 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "go",
 	callback = function()
-		vim.keymap.set("i", ",", my_comma, { buffer = true })
+		vim.keymap.set("i", ",", my_comma, { buffer = true, expr = true })
 	end,
 })
 
