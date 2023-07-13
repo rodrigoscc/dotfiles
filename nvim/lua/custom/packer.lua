@@ -151,6 +151,14 @@ return require("packer").startup(function(use)
 						position = "left",
 						size = 40,
 					},
+					{
+						elements = {
+							{ id = "console", size = 0.5 },
+							{ id = "repl", size = 0.5 },
+						},
+						position = "bottom",
+						size = 10,
+					},
 				},
 			})
 
