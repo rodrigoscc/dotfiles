@@ -1,13 +1,23 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
 export PATH=/opt/homebrew/opt/python@3.9/libexec/bin:~/.config/bin:~/go/bin:$PATH
 export EDITOR=nvim
+
+# Make sure the history is appended to new shells.
+setopt incappendhistory
 
 # Restore C-f and other zsh shortcuts, setting EDITOR to nvim was disabling them.
 bindkey -e
 
-eval "$(starship init zsh)"
-
 export ZPLUG_HOME=/opt/homebrew/opt/zplug
 source $ZPLUG_HOME/init.zsh
+
+zplug "romkatv/powerlevel10k", as:theme, depth:1
 
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
 
@@ -38,3 +48,6 @@ eval "$(zoxide init zsh)"
 
 alias v=nvim
 alias ls=exa
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
