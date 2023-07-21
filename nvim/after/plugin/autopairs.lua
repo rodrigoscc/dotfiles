@@ -18,11 +18,11 @@ local function prepend_f_if_needed()
 
 	local node_type = cursor_node:type()
 
-	if node_type ~= "string_content" and node_type ~= "string" then
+	if not string.find(node_type, "string") then
 		return
 	end
 
-	if node_type == "string_content" then
+	if node_type ~= "string" then
 		cursor_node = cursor_node:parent()
 		node_type = cursor_node:type()
 	end
