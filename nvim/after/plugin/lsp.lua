@@ -8,6 +8,7 @@ lsp.ensure_installed({
 	"gopls",
 	"pyright",
 	"lua_ls",
+	"bashls",
 })
 
 local cmp_mappings = lsp.defaults.cmp_mappings()
@@ -16,6 +17,10 @@ cmp_mappings["<S-Tab>"] = nil
 cmp_mappings["<C-d>"] = nil
 cmp_mappings["<C-b>"] = nil
 cmp_mappings["<C-Space>"] = cmp.mapping.complete()
+cmp_mappings["<CR>"] = cmp.mapping.confirm({
+	behavior = cmp.ConfirmBehavior.Insert,
+	select = true,
+})
 cmp_mappings["<Tab>"] = cmp.mapping.confirm({
 	behavior = cmp.ConfirmBehavior.Replace,
 	select = true,
@@ -131,16 +136,38 @@ lsp.configure("pyright", {
 
 -- Using neodev instead.
 -- lsp.nvim_workspace()
+--
 
-lsp.format_on_save({
-	format_opts = {
-		timeout_ms = 10000,
-	},
-	servers = {
-		["null-ls"] = { "javascript", "typescript", "lua", "python", "go" },
-	},
-})
+vim.g.format_on_save = true
+local function enable_format_on_save()
+	lsp.format_on_save({
+		format_opts = {
+			timeout_ms = 10000,
+		},
+		servers = {
+			["null-ls"] = { "javascript", "typescript", "lua", "python", "go" },
+		},
+	})
+	-- Reattach LSP
+	vim.cmd.edit()
+	vim.g.format_on_save = true
+end
 
+local function disable_format_on_save()
+	vim.api.nvim_clear_autocmds({ group = "lsp_zero_format" })
+	vim.api.nvim_clear_autocmds({ group = "lsp_zero_format_setup" })
+	vim.g.format_on_save = false
+end
+
+vim.keymap.set("n", "<leader>tF", function()
+	if vim.g.format_on_save then
+		disable_format_on_save()
+	else
+		enable_format_on_save()
+	end
+end, { desc = "[t]oggle [f]ormat on save" })
+
+enable_format_on_save()
 lsp.setup()
 
 vim.diagnostic.config({
@@ -148,8 +175,15 @@ vim.diagnostic.config({
 })
 
 local null_ls = require("null-ls")
+
 null_ls.setup({
 	sources = {
+		null_ls.builtins.formatting.black.with({
+			extra_args = { "--skip-magic-trailing-comma" },
+		}),
+		null_ls.builtins.formatting.isort,
+		null_ls.builtins.formatting.stylua,
+		null_ls.builtins.formatting.prettier,
 		null_ls.builtins.formatting.gofmt,
 		null_ls.builtins.formatting.autoflake.with({
 			extra_args = { "--remove-all-unused-imports" },
@@ -176,7 +210,5 @@ require("mason-null-ls").setup({
 		"autoflake",
 		"flake8",
 	},
-	automatic_installation = false,
-	automatic_setup = true,
-	handlers = {},
+	automatic_installation = true,
 })

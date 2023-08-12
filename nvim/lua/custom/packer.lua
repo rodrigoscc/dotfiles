@@ -105,12 +105,31 @@ return require("packer").startup(function(use)
 				sidebars = { "qf", "help", "neotest-summary" },
 				styles = { sidebars = "transparent", floats = "transparent" },
 			})
-			vim.cmd([[colorscheme tokyonight-night]])
+			-- vim.cmd([[colorscheme tokyonight-night]])
 		end,
 	})
 
 	use({ "rose-pine/neovim", as = "rose-pine" })
-	use({ "catppuccin/nvim", as = "catppuccin" })
+	use({
+		"catppuccin/nvim",
+		as = "catppuccin",
+		config = function()
+			require("catppuccin").setup({
+				transparent_background = true,
+				integrations = {
+					barbecue = {
+						dim_context = true,
+					},
+					neogit = true,
+					illuminate = true,
+					gitgutter = true,
+					ts_rainbow2 = true,
+					neotree = true,
+				},
+			})
+			vim.cmd("colorscheme catppuccin")
+		end,
+	})
 
 	use({
 		"lewis6991/gitsigns.nvim",
@@ -119,12 +138,7 @@ return require("packer").startup(function(use)
 		end,
 	})
 
-	use({
-		"ggandor/leap.nvim",
-		config = function()
-			require("leap").add_default_mappings()
-		end,
-	})
+	use({ "folke/flash.nvim" })
 
 	use("lukas-reineke/indent-blankline.nvim")
 
@@ -285,6 +299,8 @@ return require("packer").startup(function(use)
 					"fugitive",
 					"DressingInput",
 					"TelescopePrompt",
+					"DiffviewFiles",
+					"NeogitStatus",
 				},
 			})
 		end,
@@ -444,4 +460,26 @@ return require("packer").startup(function(use)
 	})
 
 	use({ "windwp/nvim-ts-autotag" })
+
+	use({
+		"sindrets/diffview.nvim",
+		config = function()
+			-- Diagonal lines in place of deleted lines in diff-mode
+			vim.opt.fillchars:append({ diff = " " })
+		end,
+	})
+
+	use({
+		"NeogitOrg/neogit",
+		requires = "nvim-lua/plenary.nvim",
+		config = function()
+			local neogit = require("neogit")
+			neogit.setup({
+				disable_insert_on_commit = false,
+				integrations = {
+					diffview = false,
+				},
+			})
+		end,
+	})
 end)

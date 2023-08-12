@@ -14,6 +14,15 @@ setopt incappendhistory
 # Restore C-f and other zsh shortcuts, setting EDITOR to nvim was disabling them.
 bindkey -e
 
+# Edit command line in $EDITOR.
+autoload edit-command-line
+zle -N edit-command-line
+bindkey "^X^E" edit-command-line
+
+export HISTSIZE=1000000000
+export SAVEHIST=$HISTSIZE
+setopt EXTENDED_HISTORY
+
 export ZPLUG_HOME=/opt/homebrew/opt/zplug
 source $ZPLUG_HOME/init.zsh
 
