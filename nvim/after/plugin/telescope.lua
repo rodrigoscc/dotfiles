@@ -2,18 +2,11 @@ local builtin = require("telescope.builtin")
 local telescope = require("telescope")
 
 telescope.setup({
-	defaults = {
-		layout_config = {
-			prompt_position = "top",
-			flex = {
-				flip_columns = 170,
-			},
-			vertical = {
-				mirror = true,
-			},
-		},
-		layout_strategy = "flex",
-	},
+	defaults = vim.tbl_extend(
+		"force",
+		require("telescope.themes").get_ivy(),
+		{}
+	),
 	pickers = {
 		git_status = {
 			attach_mappings = function(_, map)
@@ -43,7 +36,14 @@ vim.keymap.set("n", "<C-p>", function()
 end, {})
 vim.keymap.set("n", "<C-f>", builtin.current_buffer_fuzzy_find)
 
-vim.keymap.set("n", "<leader>/", builtin.live_grep)
+vim.keymap.set("n", "<leader>/", function()
+	builtin.grep_string({
+		shorten_path = true,
+		word_match = "-w",
+		only_sort_text = true,
+		search = "",
+	})
+end)
 
 vim.keymap.set(
 	"n",
@@ -76,15 +76,15 @@ vim.keymap.set(
 )
 vim.keymap.set(
 	"n",
-	"<leader>gc",
+	"<leader>gh",
 	builtin.git_commits,
-	{ desc = "[g]it [c]ommits" }
+	{ desc = "[g]it [h]istory" }
 )
 vim.keymap.set(
 	"n",
-	"<leader>gC",
+	"<leader>gH",
 	builtin.git_bcommits,
-	{ desc = "[g]it buffer [C]ommits" }
+	{ desc = "[g]it buffer [H]istory" }
 )
 vim.keymap.set("n", "<leader>gg", builtin.git_status, { desc = "[g]it status" })
 

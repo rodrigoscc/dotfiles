@@ -33,3 +33,13 @@ vim.opt.foldmethod = "indent"
 vim.opt.foldlevel = 99
 
 vim.opt.listchars = { space = "⋅", eol = "↴", tab = "»⋅" }
+
+-- Make sure requirements.txt are correctly highlighted.
+vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
+	pattern = "requirements.txt",
+	callback = function(ev)
+		vim.cmd([[setfiletype requirements]])
+	end,
+})
+
+vim.treesitter.language.register("requirements", "requirements")

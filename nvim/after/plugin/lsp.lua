@@ -75,7 +75,11 @@ lsp.on_attach(function(client, bufnr)
 	vim.keymap.set("n", "gr", function()
 		telescope.lsp_references({ show_line = false }) -- need to see the full file name
 	end, opts)
-	vim.keymap.set("n", "gy", telescope.lsp_dynamic_workspace_symbols, opts)
+	vim.keymap.set("n", "gy", function()
+		telescope.lsp_dynamic_workspace_symbols({
+			ignore_symbols = "variable",
+		})
+	end, opts)
 	vim.keymap.set("n", "gY", telescope.lsp_document_symbols, opts)
 	vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
 
@@ -178,18 +182,16 @@ local null_ls = require("null-ls")
 
 null_ls.setup({
 	sources = {
-		null_ls.builtins.formatting.black.with({
-			extra_args = { "--skip-magic-trailing-comma" },
+		-- Python:
+		-- Important to execute isort before black.
+		null_ls.builtins.formatting.isort.with({
+			extra_args = { "--profile", "black" },
 		}),
-		null_ls.builtins.formatting.isort,
-		null_ls.builtins.formatting.stylua,
-		null_ls.builtins.formatting.prettier,
-		null_ls.builtins.formatting.gofmt,
+		null_ls.builtins.formatting.black.with({
+			extra_args = { "--line-length=79" },
+		}),
 		null_ls.builtins.formatting.autoflake.with({
 			extra_args = { "--remove-all-unused-imports" },
-		}),
-		null_ls.builtins.formatting.stylua.with({
-			extra_args = { "--column-width=80" },
 		}),
 		null_ls.builtins.diagnostics.flake8.with({
 			prefer_local = ".venv/bin",
@@ -197,6 +199,14 @@ null_ls.setup({
 				"--max-line-length=80",
 				"--extend-ignore=E1,W1,E2,W2,E3,W3,E4,W4,E5,W5", -- no formatting rules, black handles it
 			},
+		}),
+		-- Javascript and Typescript.
+		null_ls.builtins.formatting.prettier,
+		-- Go:
+		null_ls.builtins.formatting.gofmt,
+		-- Lua:
+		null_ls.builtins.formatting.stylua.with({
+			extra_args = { "--column-width=80" },
 		}),
 	},
 })

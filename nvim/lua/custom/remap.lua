@@ -128,11 +128,6 @@ local function my_cr()
 	local quote = string.sub(node_text, -1)
 	local last_three_chars = string.sub(node_text, -3)
 
-	if cmp.visible() then
-		cmp.confirm({ select = false })
-		return "<Ignore>"
-	end
-
 	-- Ignore triple quote strings since they already support new lines.
 	if
 		node_type == "string"
@@ -226,7 +221,14 @@ end
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "python",
 	callback = function()
-		vim.keymap.set("i", "<c-m>", my_cr, { buffer = true, expr = true })
+		vim.keymap.set("i", "<c-m>", function()
+			if cmp.visible() then
+				cmp.confirm({ select = false })
+				return "<Ignore>"
+			else
+				return my_cr()
+			end
+		end, { buffer = true, expr = true })
 	end,
 })
 

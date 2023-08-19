@@ -3,9 +3,13 @@ vim.keymap.set("n", "<leader>gs", function()
 	neogit.open({ kind = "replace" })
 end, { desc = "[g]it [s]tatus" })
 
-vim.keymap.set("n", "<leader>gm", function()
+vim.keymap.set("n", "<leader>gc", function()
 	neogit.open({ "commit" })
-end, { desc = "[g]it co[m]mit" })
+end, { desc = "[g]it [c]ommit" })
+
+vim.keymap.set("n", "<leader>gp", function()
+	neogit.open({ "push" })
+end, { desc = "[g]it [p]ush" })
 
 local neogitGroup = vim.api.nvim_create_augroup("Neogit", { clear = true })
 
