@@ -105,7 +105,6 @@ return require("packer").startup(function(use)
 				sidebars = { "qf", "help", "neotest-summary" },
 				styles = { sidebars = "transparent", floats = "transparent" },
 			})
-			-- vim.cmd([[colorscheme tokyonight-night]])
 		end,
 	})
 
@@ -127,7 +126,6 @@ return require("packer").startup(function(use)
 					neotree = true,
 				},
 			})
-			vim.cmd("colorscheme catppuccin")
 		end,
 	})
 
@@ -235,6 +233,7 @@ return require("packer").startup(function(use)
 
 	use({
 		"j-hui/fidget.nvim",
+		tag = "legacy",
 		config = function()
 			require("fidget").setup({
 				align = {
