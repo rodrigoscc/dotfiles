@@ -46,6 +46,7 @@ local config = {
 			normal = { c = { fg = colors.fg } },
 			inactive = { c = { fg = colors.fg } },
 		},
+		globalstatus = true,
 	},
 	sections = {
 		-- these are to remove the defaults
@@ -83,14 +84,6 @@ end
 -- Inserts a component in lualine_x at right section
 local function ins_right(component)
 	table.insert(config.sections.lualine_x, component)
-end
-
-local function ins_inactive_left(component)
-	table.insert(config.inactive_sections.lualine_c, component)
-end
-
-local function ins_inactive_right(component)
-	table.insert(config.inactive_sections.lualine_x, component)
 end
 
 ins_left({
@@ -131,6 +124,8 @@ ins_left({
 	color = { fg = colors.violet, gui = "bold" },
 })
 
+ins_left({ "filename", file_status = true, newfile_status = true })
+
 ins_left({
 	-- filesize component
 	"filesize",
@@ -164,6 +159,8 @@ ins_right({
 	format_on_save,
 })
 
+ins_right({ "filetype", colored = true })
+
 -- Add components to right sections
 ins_right({
 	"o:encoding", -- option component same as &encoding in viml
@@ -189,16 +186,6 @@ ins_right({
 		removed = { fg = colors.red },
 	},
 	cond = conditions.hide_in_width,
-})
-
-ins_inactive_left({
-	"filename",
-	cond = conditions.buffer_not_empty,
-	color = { fg = colors.fg },
-})
-
-ins_inactive_right({
-	"filetype",
 })
 
 -- Now don't forget to initialize lualine
