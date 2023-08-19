@@ -1,6 +1,6 @@
 vim.g.colorscheme = "tokyonight-night"
 
-vim.cmd([[colorscheme ]] .. vim.o.colorcolumn)
+vim.cmd([[colorscheme ]] .. vim.g.colorscheme)
 
 if vim.g.colorscheme ~= "tokyonight-night" then
 	vim.cmd([[highlight IlluminatedWordText gui=bold]])
