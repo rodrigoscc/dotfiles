@@ -61,6 +61,12 @@ vim.keymap.set(
 -- This is going to get me cancelled
 vim.keymap.set("i", "<C-c>", "<Esc>")
 
+-- Super Esc key.
+vim.keymap.set("n", "<Esc>", function()
+	vim.cmd([[nohlsearch]])
+	return "<Esc>"
+end, { expr = true })
+
 vim.keymap.set("n", "Q", "<nop>")
 -- vim.keymap.set('n', '<C-f>', '<cmd>silent !tmux neww tmux-sessionizer<CR>')
 

@@ -73,6 +73,14 @@ local function format_on_save()
 	return ""
 end
 
+local function wrap()
+	if vim.wo.wrap then
+		return " 󰖶 "
+	end
+
+	return ""
+end
+
 -- Inserts a component in lualine_c at left section
 local function ins_left(component)
 	table.insert(config.sections.lualine_c, component)
@@ -154,6 +162,8 @@ ins_left({
 ins_right({
 	format_on_save,
 })
+
+ins_right({ wrap })
 
 ins_right({ "filetype", colored = true })
 
