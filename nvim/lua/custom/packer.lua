@@ -419,7 +419,16 @@ return require("packer").startup(function(use)
 		"jay-babu/mason-null-ls.nvim",
 	})
 
-	use({ "stevearc/dressing.nvim" })
+	use({
+		"stevearc/dressing.nvim",
+		config = function()
+			require("dressing").setup({
+				input = {
+					relative = "editor",
+				},
+			})
+		end,
+	})
 
 	use({ "ThePrimeagen/harpoon" })
 
