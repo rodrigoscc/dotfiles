@@ -8,7 +8,7 @@ vim.keymap.set(
 )
 vim.keymap.set("n", "<leader>tf", function()
 	neotest.run.run(vim.fn.expand("%"))
-end, { desc = "[t]est [n]earest" })
+end, { desc = "[t]est [f]ile" })
 vim.keymap.set("n", "<leader>tS", function()
 	neotest.run.run({ suite = true })
 end, { desc = "[t]est [S]uite" })

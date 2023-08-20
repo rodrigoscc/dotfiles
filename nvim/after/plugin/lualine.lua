@@ -68,14 +68,22 @@ local config = {
 
 local function format_on_save()
 	if not vim.g.format_on_save then
-		return " 󰉥 "
+		return "󰉥"
 	end
 	return ""
 end
 
 local function wrap()
 	if vim.wo.wrap then
-		return " 󰖶 "
+		return "󰖶"
+	end
+
+	return ""
+end
+
+local function list_chars()
+	if vim.o.list then
+		return "󰇙"
 	end
 
 	return ""
@@ -164,6 +172,8 @@ ins_right({
 })
 
 ins_right({ wrap })
+
+ins_right({ list_chars })
 
 ins_right({ "filetype", colored = true })
 

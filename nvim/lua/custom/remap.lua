@@ -21,7 +21,7 @@ vim.keymap.set("n", "<C-s>", "<cmd>silent write<cr>")
 
 vim.keymap.set("n", "<leader>tw", function()
 	vim.wo.wrap = not vim.wo.wrap
-end)
+end, { desc = "[t]oggle [w]rap" })
 
 -- Paste preserving previous copy
 vim.keymap.set(

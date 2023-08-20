@@ -169,7 +169,7 @@ vim.keymap.set("n", "<leader>tF", function()
 	else
 		enable_format_on_save()
 	end
-end, { desc = "[t]oggle [f]ormat on save" })
+end, { desc = "[t]oggle [F]ormat on save" })
 
 enable_format_on_save()
 lsp.setup()
