@@ -83,7 +83,7 @@ end
 
 local function list_chars()
 	if vim.o.list then
-		return "󰇙"
+		return "󱇇"
 	end
 
 	return ""
@@ -137,7 +137,12 @@ ins_left({
 	color = { fg = colors.violet, gui = "bold" },
 })
 
-ins_left({ "filename", file_status = true, newfile_status = true })
+ins_left({
+	"filename",
+	file_status = true,
+	newfile_status = true,
+	color = { fg = colors.violet },
+})
 
 ins_left({
 	"filesize",
@@ -146,7 +151,7 @@ ins_left({
 
 ins_left({ "location" })
 
-ins_left({ "progress", color = { fg = colors.fg, gui = "bold" } })
+ins_left({ "progress" })
 
 ins_left({
 	"diagnostics",
@@ -167,9 +172,7 @@ ins_left({
 	end,
 })
 
-ins_right({
-	format_on_save,
-})
+ins_right({ format_on_save })
 
 ins_right({ wrap })
 
