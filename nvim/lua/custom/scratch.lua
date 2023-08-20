@@ -65,5 +65,15 @@ end
 vim.api.nvim_create_user_command("NewScratch", new_scratch, {})
 vim.api.nvim_create_user_command("OpenScratch", open_scratch, {})
 
-vim.keymap.set("n", "<leader>ns", "<cmd>NewScratch<cr>")
-vim.keymap.set("n", "<leader>os", "<cmd>OpenScratch<cr>")
+vim.keymap.set(
+	"n",
+	"<leader>ns",
+	"<cmd>NewScratch<cr>",
+	{ desc = "[n]ew [s]cratch" }
+)
+vim.keymap.set(
+	"n",
+	"<leader>os",
+	"<cmd>OpenScratch<cr>",
+	{ desc = "[o]pen [s]cratch" }
+)
