@@ -278,7 +278,7 @@ local go_package_query = vim.treesitter.query.parse(
 	]]
 )
 
-local function DebugTestify(test, suite, package)
+local function debug_testify(test, suite, package)
 	require("dap").run({
 		type = "go",
 		name = "test",
@@ -292,7 +292,7 @@ local function DebugTestify(test, suite, package)
 	})
 end
 
-local function Debug(test, package)
+local function debug(test, package)
 	require("dap").run({
 		type = "go",
 		name = "test",
@@ -350,9 +350,9 @@ function DebugGoTest()
 		end
 
 		if test.type == "default" then
-			Debug(test.name, package)
+			debug(test.name, package)
 		else
-			DebugTestify(test.name, test.suite_function, package)
+			debug_testify(test.name, test.suite_function, package)
 		end
 	end)
 end
