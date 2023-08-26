@@ -310,10 +310,8 @@ function DebugGoTest()
 	local parser = vim.treesitter.get_parser(0, "go")
 	local tree = parser:parse()[1]
 
-	local package = ""
-	for _, node in go_package_query:iter_captures(tree:root(), 0) do
-		package = vim.treesitter.get_node_text(node, 0)
-	end
+	local _, package_node, _ = go_package_query:iter_captures(tree:root(), 0)()
+	local package = vim.treesitter.get_node_text(package_node, 0)
 
 	local all_tests = {}
 
