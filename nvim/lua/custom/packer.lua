@@ -103,7 +103,14 @@ return require("packer").startup(function(use)
 		requires = { "kyazdani42/nvim-web-devicons", opt = true },
 	})
 
-	use({ "folke/tokyonight.nvim" })
+	use({
+		"folke/tokyonight.nvim",
+		config = function()
+			require("tokyonight").setup({
+				sidebars = { "qf", "help", "NeogitCommitMessage" },
+			})
+		end,
+	})
 
 	use({ "rose-pine/neovim", as = "rose-pine" })
 	use({

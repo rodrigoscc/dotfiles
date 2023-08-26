@@ -2,7 +2,6 @@ require("custom.remap")
 require("custom.set")
 
 require("custom.scratch")
-require("custom.colorscheme")
 require("custom.jump")
 
 -- [[ Highlight on yank ]]
