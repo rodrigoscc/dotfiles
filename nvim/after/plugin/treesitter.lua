@@ -44,14 +44,15 @@ require("nvim-treesitter.configs").setup({
 				-- You can use the capture groups defined in textobjects.scm
 				["aa"] = "@parameter.outer",
 				["ia"] = "@parameter.inner",
+
 				["af"] = "@function.outer",
 				["if"] = "@function.inner",
-				["ac"] = "@class.outer",
-				["ic"] = "@class.inner",
+
+				["ac"] = "@conditional.outer",
+				["ic"] = "@conditional.inner",
 			},
-			-- Makes sure surrounding whitespace is also deleted
-			-- when deleting parameters.
-			include_surrounding_whitespace = true,
+			-- More convenient than including it most of the time.
+			include_surrounding_whitespace = false,
 		},
 		move = {
 			enable = true,
