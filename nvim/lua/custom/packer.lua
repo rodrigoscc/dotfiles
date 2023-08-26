@@ -24,6 +24,7 @@ return require("packer").startup(function(use)
 	use("mbbill/undotree")
 
 	use("tpope/vim-fugitive")
+
 	use("tpope/vim-rhubarb")
 
 	use({ "folke/neodev.nvim" })
@@ -51,13 +52,15 @@ return require("packer").startup(function(use)
 		},
 	})
 
-	use("HiPhish/nvim-ts-rainbow2")
-
 	use({
 		"windwp/nvim-autopairs",
 		config = function()
 			local npairs = require("nvim-autopairs")
-			npairs.setup({})
+			npairs.setup({
+				fast_wrap = {
+					map = "<C-f>",
+				},
+			})
 		end,
 	})
 
@@ -89,7 +92,9 @@ return require("packer").startup(function(use)
 		},
 		after = "nvim-web-devicons", -- keep this if you're using NvChad
 		config = function()
-			require("barbecue").setup()
+			require("barbecue").setup({
+				theme = "tokyonight",
+			})
 		end,
 	})
 
@@ -98,15 +103,7 @@ return require("packer").startup(function(use)
 		requires = { "kyazdani42/nvim-web-devicons", opt = true },
 	})
 
-	use({
-		"folke/tokyonight.nvim",
-		config = function()
-			require("tokyonight").setup({
-				sidebars = { "qf", "help", "neotest-summary" },
-				styles = { sidebars = "transparent", floats = "transparent" },
-			})
-		end,
-	})
+	use({ "folke/tokyonight.nvim" })
 
 	use({ "rose-pine/neovim", as = "rose-pine" })
 	use({
@@ -132,7 +129,7 @@ return require("packer").startup(function(use)
 	use({
 		"lewis6991/gitsigns.nvim",
 		config = function()
-			require("gitsigns").setup()
+			require("gitsigns").setup({})
 		end,
 	})
 
@@ -220,33 +217,22 @@ return require("packer").startup(function(use)
 		"Wansmer/treesj",
 		requires = { "nvim-treesitter" },
 		config = function()
-			require("treesj").setup({
+			local treesj = require("treesj")
+
+			treesj.setup({
 				use_default_keymaps = false,
 			})
+
+			vim.keymap.set(
+				"n",
+				"<leader>J",
+				treesj.toggle,
+				{ desc = "trees[J] toggle" }
+			)
 		end,
 	})
 
-	use({
-		"tpope/vim-dispatch",
-		config = function() end,
-	})
-
-	use({
-		"j-hui/fidget.nvim",
-		tag = "legacy",
-		config = function()
-			require("fidget").setup({
-				align = {
-					top = true,
-					bottom = false,
-					right = true,
-				},
-				window = {
-					blend = 0,
-				},
-			})
-		end,
-	})
+	use({ "tpope/vim-dispatch" })
 
 	use({
 		"lukas-reineke/virt-column.nvim",
@@ -286,6 +272,12 @@ return require("packer").startup(function(use)
 					after = "",
 				},
 			})
+			vim.keymap.set(
+				"n",
+				"<leader>tq",
+				vim.cmd.TodoQuickFix,
+				{ desc = "[t]odo [q]uickfix" }
+			)
 		end,
 	})
 
@@ -359,9 +351,7 @@ return require("packer").startup(function(use)
 		end,
 	})
 
-	use({
-		"benfowler/telescope-luasnip.nvim",
-	})
+	use({ "benfowler/telescope-luasnip.nvim" })
 
 	use({
 		"danymat/neogen",
@@ -442,30 +432,13 @@ return require("packer").startup(function(use)
 	})
 
 	use({
-		"norcalli/nvim-colorizer.lua",
+		"NvChad/nvim-colorizer.lua",
 		config = function()
-			require("colorizer").setup()
+			require("colorizer").setup({})
 		end,
 	})
 
 	use({ "anuvyklack/hydra.nvim" })
-
-	use({
-		"xiyaowong/transparent.nvim",
-		config = function()
-			require("transparent").setup({
-				extra_groups = {
-					"NormalFloat",
-					"StatusLine",
-					"StatusLineNC",
-					"DapUINormal",
-					"FidgetTitle",
-					"FoldColumn",
-				},
-			})
-			vim.g.transparent_enabled = true
-		end,
-	})
 
 	use({ "windwp/nvim-ts-autotag" })
 

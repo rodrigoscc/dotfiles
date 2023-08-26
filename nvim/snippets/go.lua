@@ -67,4 +67,78 @@ return {
 			}
 		)
 	),
+	s(
+		"str",
+		fmt(
+			[[type {} struct {{
+	{}
+}}]],
+			{
+				i(1, "name"),
+				i(2),
+			}
+		)
+	),
+	postfix(
+		".pf",
+		d(1, function(_, parent)
+			return sn(
+				nil,
+				fmt(
+					[[func ({} *]]
+						.. parent.snippet.env.POSTFIX_MATCH
+						.. [[) {}({}){} {{
+	{}
+}}]],
+					{
+						i(1, "structName"),
+						i(2, "functionName"),
+						i(3),
+						i(4),
+						i(5),
+					}
+				)
+			)
+		end)
+	),
+	postfix(
+		".f",
+		d(1, function(_, parent)
+			return sn(
+				nil,
+				fmt(
+					[[func ({} ]]
+						.. parent.snippet.env.POSTFIX_MATCH
+						.. [[) {}({}){} {{
+	{}
+}}]],
+					{
+						i(1, "structName"),
+						i(2, "functionName"),
+						i(3),
+						i(4),
+						i(5),
+					}
+				)
+			)
+		end)
+	),
+	postfix(
+		{ trig = ".nn", match_pattern = "[%w%.%_%-]+%(.*%)$" },
+		d(1, function(_, parent)
+			return sn(
+				nil,
+				fmt(
+					[[if err := ]]
+						.. parent.snippet.env.POSTFIX_MATCH
+						.. [[; err != nil {{
+	{}
+}}]],
+					{
+						i(1, ""),
+					}
+				)
+			)
+		end)
+	),
 }

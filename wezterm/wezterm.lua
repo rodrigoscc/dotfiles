@@ -2,6 +2,7 @@ local wezterm = require("wezterm")
 local act = wezterm.action
 
 local config = {
+	color_scheme = "Tokyo Night Storm",
 	font = wezterm.font({
 		family = "JetbrainsMono Nerd Font",
 	}),
@@ -9,15 +10,26 @@ local config = {
 	window_frame = {
 		font = wezterm.font({ family = "JetbrainsMono Nerd Font" }),
 	},
-	window_decorations = "RESIZE",
+	window_decorations = "INTEGRATED_BUTTONS | RESIZE",
 	window_padding = {
 		bottom = 0,
-		top = 15,
+		top = 50,
 	},
 	use_fancy_tab_bar = true,
 	enable_tab_bar = false,
 	hide_tab_bar_if_only_one_tab = true,
 	disable_default_key_bindings = true,
+	animation_fps = 120,
+	audible_bell = "Disabled",
+	visual_bell = {
+		fade_in_function = "EaseIn",
+		fade_in_duration_ms = 80,
+		fade_out_function = "EaseOut",
+		fade_out_duration_ms = 80,
+	},
+	colors = {
+		visual_bell = "#803030",
+	},
 	keys = {
 		{ key = "Enter", mods = "ALT", action = act.DisableDefaultAssignment }, -- no full screen
 		{ key = "P", mods = "CMD", action = act.ActivateCommandPalette },
@@ -154,10 +166,17 @@ local config = {
 				act.SendKey({ key = "p" }),
 			}),
 		},
+		-- send keys to all panes
+		{
+			key = "a",
+			mods = "CMD",
+			action = act.Multiple({
+				act.SendKey({ key = "b", mods = "CTRL" }),
+				act.SendKey({ key = "s", mods = "CTRL" }),
+			}),
+		},
 	},
 	front_end = "WebGpu",
-	window_background_opacity = 0.85,
-	macos_window_background_blur = 0,
 }
 
 local function add_tmux_windows_bindings()

@@ -3,6 +3,8 @@ local npairs = require("nvim-autopairs")
 local cmp = require("cmp")
 
 vim.g.mapleader = " "
+vim.g.maplocalleader = "  "
+
 -- vim.keymap.set('n', '<leader>pv', vim.cmd.Ex)
 
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
@@ -64,6 +66,7 @@ vim.keymap.set("i", "<C-c>", "<Esc>")
 -- Super Esc key.
 vim.keymap.set("n", "<Esc>", function()
 	vim.cmd([[nohlsearch]])
+	vim.cmd([[echon '']]) -- Clear command line
 	return "<Esc>"
 end, { expr = true })
 
@@ -85,7 +88,7 @@ vim.keymap.set("n", "<leader>j", "<cmd>lnext<CR>zz")
 vim.keymap.set("n", "]<space>", "mzo<esc>`z")
 vim.keymap.set("n", "[<space>", "mzO<esc>`z")
 
-vim.keymap.set("n", "<leader><leader>", function()
+vim.keymap.set("n", "<leader>sf", function()
 	vim.cmd("so")
 
 	local current_buffer = vim.fn.expand("%")
@@ -95,7 +98,7 @@ vim.keymap.set("n", "<leader><leader>", function()
 		vim.cmd.PackerInstall()
 		vim.cmd.PackerCompile()
 	end
-end)
+end, { desc = "[s]ource [f]ile" })
 
 vim.keymap.set("t", "<esc>", "<c-\\><c-n>")
 
@@ -249,3 +252,121 @@ vim.keymap.set("n", "<leader>tc", function()
 	vim.cmd.IndentBlanklineToggle()
 	vim.o.list = not vim.o.list
 end, { desc = "[t]oggle list [c]hars" })
+
+local go_tests_query = vim.treesitter.query.parse(
+	"go",
+	[[
+[
+ (function_declaration
+   name: (identifier) @function_name
+   (#lua-match? @function_name "^Test.*"))
+ (
+  (method_declaration
+    receiver: (parameter_list (parameter_declaration type: (pointer_type (type_identifier) @suite_name)))
+    name: (field_identifier) @method_name
+    (#lua-match? @method_name "^Test.*"))
+  (function_declaration name: (identifier) @suite_function body: (block (expression_statement (call_expression function: (selector_expression) @suite_run (#eq? @suite_run "suite.Run") arguments: (argument_list (call_expression function: (identifier) @call (#eq? @call "new") arguments: (argument_list (type_identifier) @suite_name_2 (#eq? @suite_name @suite_name_2))))))))
+  )
+]
+]]
+)
+
+local go_package_query = vim.treesitter.query.parse(
+	"go",
+	[[
+	(package_clause (package_identifier) @package_name)
+	]]
+)
+
+local function DebugTestify(test, suite, package)
+	require("dap").run({
+		type = "go",
+		name = "test",
+		request = "launch",
+		mode = "test",
+		program = "./" .. package,
+		args = {
+			"-test.run",
+			suite .. "/" .. test,
+		},
+	})
+end
+
+local function Debug(test, package)
+	require("dap").run({
+		type = "go",
+		name = "test",
+		request = "launch",
+		mode = "test",
+		program = "./" .. package,
+		args = {
+			"-test.run",
+			test,
+		},
+	})
+end
+
+function DebugGoTest()
+	local parser = vim.treesitter.get_parser(0, "go")
+	local tree = parser:parse()[1]
+
+	local package = ""
+	for _, node in go_package_query:iter_captures(tree:root(), 0) do
+		package = vim.treesitter.get_node_text(node, 0)
+	end
+
+	local all_tests = {}
+
+	for _, match in go_tests_query:iter_matches(tree:root(), 0) do
+		local test = {}
+
+		for id, node in pairs(match) do
+			local capture_name = go_tests_query.captures[id]
+			local capture_value = vim.treesitter.get_node_text(node, 0)
+
+			if capture_name == "function_name" then
+				test["name"] = capture_value
+				test["type"] = "default"
+			elseif capture_name == "method_name" then
+				test["name"] = capture_value
+				test["type"] = "testify"
+			else
+				test[capture_name] = capture_value
+			end
+		end
+
+		table.insert(all_tests, test)
+	end
+
+	vim.ui.select(all_tests, {
+		prompt = "Debug a test",
+		format_item = function(test)
+			if test.type == "testify" then
+				return test.name .. " (" .. test.suite_function .. ")"
+			end
+			return test.name
+		end,
+	}, function(test)
+		if test == nil then
+			return
+		end
+
+		if test.type == "default" then
+			Debug(test.name, package)
+		else
+			DebugTestify(test.name, test.suite_function, package)
+		end
+	end)
+end
+
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "go",
+	callback = function()
+		vim.keymap.set(
+			"n",
+			"<localleader>d",
+			DebugGoTest,
+			{ buffer = true, desc = "go: [d]ebug" }
+		)
+	end,
+})

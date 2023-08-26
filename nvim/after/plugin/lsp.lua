@@ -120,9 +120,15 @@ lsp.on_attach(function(client, bufnr)
 		vim.lsp.buf.format({ filter = filter_func })
 	end, { desc = "[b]uffer [f]ormat" })
 
-	vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
-	vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
-	vim.keymap.set("i", "<C-s>", vim.lsp.buf.signature_help, opts)
+	vim.keymap.set("n", "]d", function()
+		vim.g.set_jump(vim.diagnostic.goto_next, vim.diagnostic.goto_prev)
+		vim.diagnostic.goto_next()
+	end, opts)
+
+	vim.keymap.set("n", "[d", function()
+		vim.g.set_jump(vim.diagnostic.goto_next, vim.diagnostic.goto_prev)
+		vim.diagnostic.goto_prev()
+	end, opts)
 end)
 
 lsp.configure("pyright", {

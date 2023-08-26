@@ -28,6 +28,8 @@ vim.opt.isfname:append("@-@")
 
 vim.opt.updatetime = 50
 
+vim.opt.showmode = false
+
 -- Not setting this since virt-column handles this.
 -- vim.opt.colorcolumn = "80"
 

@@ -30,3 +30,10 @@ end, { desc = "harpoon window 8" })
 vim.keymap.set("n", "<M-9>", function()
 	ui.nav_file(9)
 end, { desc = "harpoon window 9" })
+
+vim.keymap.set(
+	"n",
+	"<leader>m",
+	ui.toggle_quick_menu,
+	{ desc = "harpoon quick [m]enu" }
+)

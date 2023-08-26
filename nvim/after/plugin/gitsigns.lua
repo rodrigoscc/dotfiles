@@ -32,8 +32,15 @@ vim.keymap.set(
 	{ desc = "[b]lame [l]ine" }
 )
 
-vim.keymap.set("n", "]h", gitsigns.next_hunk, { desc = "next hunk" })
-vim.keymap.set("n", "[h", gitsigns.prev_hunk, { desc = "previous hunk" })
+vim.keymap.set("n", "]h", function()
+	vim.g.set_jump(gitsigns.next_hunk, gitsigns.prev_hunk)
+	gitsigns.next_hunk()
+end, { desc = "next hunk" })
+
+vim.keymap.set("n", "[h", function()
+	vim.g.set_jump(gitsigns.next_hunk, gitsigns.prev_hunk)
+	gitsigns.prev_hunk()
+end, { desc = "previous hunk" })
 
 local hint = [[
 Git stage:
