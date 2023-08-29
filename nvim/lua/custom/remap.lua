@@ -279,6 +279,10 @@ local go_package_query = vim.treesitter.query.parse(
 )
 
 local function debug_testify(test, suite, package)
+	if package == "main" then
+		package = ""
+	end
+
 	require("dap").run({
 		type = "go",
 		name = "test",

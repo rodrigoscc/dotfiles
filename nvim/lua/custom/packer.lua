@@ -140,7 +140,12 @@ return require("packer").startup(function(use)
 		end,
 	})
 
-	use({ "folke/flash.nvim" })
+	use({
+		"folke/flash.nvim",
+		config = function()
+			require("flash").toggle(false)
+		end,
+	})
 
 	use("lukas-reineke/indent-blankline.nvim")
 
