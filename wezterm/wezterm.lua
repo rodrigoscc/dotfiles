@@ -2,7 +2,7 @@ local wezterm = require("wezterm")
 local act = wezterm.action
 
 local config = {
-	color_scheme = "Tokyo Night Storm",
+	color_scheme = "Tokyo Night",
 	font = wezterm.font({
 		family = "JetbrainsMono Nerd Font",
 	}),
@@ -173,6 +173,15 @@ local config = {
 			action = act.Multiple({
 				act.SendKey({ key = "b", mods = "CTRL" }),
 				act.SendKey({ key = "s", mods = "CTRL" }),
+			}),
+		},
+		-- rename window
+		{
+			key = "R",
+			mods = "CMD",
+			action = act.Multiple({
+				act.SendKey({ key = "b", mods = "CTRL" }),
+				act.SendKey({ key = "," }),
 			}),
 		},
 	},

@@ -1,4 +1,4 @@
-vim.g.colorscheme = "tokyonight-storm"
+vim.g.colorscheme = "tokyonight-night"
 
 vim.cmd([[colorscheme ]] .. vim.g.colorscheme)
 
