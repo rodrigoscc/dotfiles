@@ -143,7 +143,17 @@ return require("packer").startup(function(use)
 	use({
 		"folke/flash.nvim",
 		config = function()
-			require("flash").toggle(false)
+			require("flash").setup({
+				modes = {
+					search = {
+						enabled = false,
+					},
+					char = {
+						jump_labels = true,
+						highlight = { backdrop = false },
+					},
+				},
+			})
 		end,
 	})
 
