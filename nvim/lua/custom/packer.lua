@@ -149,7 +149,7 @@ return require("packer").startup(function(use)
 						enabled = false,
 					},
 					char = {
-						jump_labels = true,
+						config = nil,
 						highlight = { backdrop = false },
 					},
 				},
