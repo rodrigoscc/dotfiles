@@ -108,6 +108,10 @@ return require("packer").startup(function(use)
 		config = function()
 			require("tokyonight").setup({
 				sidebars = { "qf", "help", "NeogitCommitMessage" },
+				on_colors = function(colors)
+					-- Border between splits is too dim by default.
+					colors.border = "#565f89"
+				end,
 			})
 		end,
 	})
