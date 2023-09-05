@@ -54,6 +54,7 @@ vim.treesitter.language.register("requirements", "requirements")
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "json",
 	callback = function(ev)
-		vim.o.formatprg = "jq"
+		vim.bo.formatprg = "jq"
+		vim.bo.formatexpr = ""
 	end,
 })
