@@ -58,5 +58,9 @@ eval "$(zoxide init zsh)"
 alias v=nvim
 alias ls=exa
 
+# Home and end keys.
+bindkey "^[[1~" beginning-of-line
+bindkey "^[[4~" end-of-line
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
