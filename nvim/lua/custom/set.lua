@@ -50,3 +50,10 @@ vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
 })
 
 vim.treesitter.language.register("requirements", "requirements")
+
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "json",
+	callback = function(ev)
+		vim.o.formatprg = "jq"
+	end,
+})
