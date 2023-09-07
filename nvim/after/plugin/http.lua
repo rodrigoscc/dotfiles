@@ -409,7 +409,10 @@ local function on_curl_exit(result)
 
 			vim.api.nvim_set_current_buf(buf)
 
-			vim.cmd([[normal gq%]])
+			if buffer.file_type ~= "text" then
+				vim.cmd([[normal gq%]])
+			end
+
 			vim.keymap.set("n", "q", vim.cmd.close, { buffer = true })
 		end
 	end)
