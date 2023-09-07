@@ -9,6 +9,8 @@ local filetype_extension = {
 	javascript = ".js",
 	json = ".json",
 	yaml = ".yml",
+	text = ".txt",
+	csv = ".csv",
 }
 
 local function new_scratch()
