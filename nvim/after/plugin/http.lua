@@ -409,6 +409,8 @@ local function on_curl_exit(result)
 
 			vim.api.nvim_set_current_buf(buf)
 
+			-- Avoid formatting curl error messages which are meant to be shown
+			-- on text buffers.
 			if buffer.file_type ~= "text" then
 				vim.cmd([[normal gq%]])
 			end
