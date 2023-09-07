@@ -162,6 +162,17 @@ ins_left({
 	end,
 })
 
+local function http_project_env()
+	local env = GetProjectEnv()
+	if env == nil then
+		return ""
+	end
+
+	return "[ " .. env .. "]"
+end
+
+ins_right({ http_project_env, color = { fg = colors.magenta } })
+
 ins_right({ format_on_save })
 
 ins_right({ wrap })

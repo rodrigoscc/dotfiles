@@ -13,7 +13,6 @@ require("nvim-treesitter.configs").setup({
 		"regex",
 		"sql",
 		"json",
-		"http",
 		"vim",
 		"help",
 	},
@@ -93,5 +92,23 @@ require("nvim-treesitter.configs").setup({
 	},
 	autotag = {
 		enable = true,
+	},
+})
+
+local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
+parser_config.http2 = {
+	install_info = {
+		url = "https://github.com/rstcruzo/tree-sitter-http2",
+		branch = "main",
+		files = { "src/parser.c" },
+	},
+	filetype = "http",
+}
+
+vim.treesitter.language.register("http2", "http")
+
+vim.filetype.add({
+	extension = {
+		http = "http",
 	},
 })

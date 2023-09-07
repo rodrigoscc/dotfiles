@@ -58,6 +58,9 @@ eval "$(zoxide init zsh)"
 alias v=nvim
 alias ls=exa
 
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
+
 # Home and end keys.
 bindkey "^[[1~" beginning-of-line
 bindkey "^[[4~" end-of-line
