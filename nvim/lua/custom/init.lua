@@ -1,9 +1,6 @@
 require("custom.remap")
 require("custom.set")
 
-require("custom.scratch")
-require("custom.jump")
-
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
 local highlight_group =
