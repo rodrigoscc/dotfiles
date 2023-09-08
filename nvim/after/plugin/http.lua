@@ -2,6 +2,8 @@ local Job = require("plenary.job")
 
 local DEFAULT_BODY_TYPE = "text"
 
+local diagnostics_namespace = vim.api.nvim_create_namespace("http")
+
 -- TODO: Change parser name from http2 to something else.
 local request_query = vim.treesitter.query.parse(
 	"http2",
@@ -560,10 +562,52 @@ function OpenHooksFile()
 	vim.cmd([[split ]] .. hooks_path)
 end
 
+function ShowCursorVariableValue()
+	local node = vim.treesitter.get_node()
+
+	assert(node ~= nil, "There must be a node here.")
+
+	if node:type() ~= "variable_ref" then
+		vim.api.nvim_err_writeln("Cursor is not at a variable reference node.")
+		return
+	end
+
+	local node_text = vim.treesitter.get_node_text(node, 0)
+	local variable_name = string.sub(node_text, 3, #node_text - 2)
+
+	local request = get_closest_request()
+	local context = get_context(request)
+
+	local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+
+	local value = context[variable_name]
+	if value == nil then
+		value = ""
+	end
+
+	vim.diagnostic.set(diagnostics_namespace, 0, {
+		{
+			lnum = row - 1,
+			col = col,
+			message = variable_name .. " = " .. value,
+			severity = vim.diagnostic.severity.INFO,
+		},
+	}, {
+		signs = false,
+		virtual_text = {
+			prefix = "",
+			format = function(diagnostic)
+				return diagnostic.message
+			end,
+		},
+	})
+end
+
 vim.api.nvim_create_autocmd({ "FileType" }, {
 	pattern = "http",
 	callback = function()
 		vim.keymap.set("n", "R", RunClosestRequest, { buffer = true })
+		vim.keymap.set("n", "K", ShowCursorVariableValue, { buffer = true })
 	end,
 })
 
