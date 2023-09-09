@@ -211,7 +211,7 @@ local function get_request_context_in(source, source_type, request)
 		local variable = {}
 
 		for id, node in pairs(match) do
-			local capture_name = requests_query.captures[id]
+			local capture_name = variables_query.captures[id]
 			local capture_value =
 				vim.trim(vim.treesitter.get_node_text(node, source))
 
@@ -365,6 +365,10 @@ local function get_body_file_type(headers)
 	local body_file_type = DEFAULT_BODY_TYPE
 
 	local content_type = headers["Content-Type"]
+	if content_type == nil then
+		return body_file_type
+	end
+
 	if string.find(content_type, "application/json") then
 		body_file_type = "json"
 	elseif
@@ -373,7 +377,7 @@ local function get_body_file_type(headers)
 	then
 		body_file_type = "xml"
 	elseif string.find(content_type, "text/html") then
-		body_file_type = "xml"
+		body_file_type = "html"
 	end
 
 	return body_file_type
