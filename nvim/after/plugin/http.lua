@@ -175,7 +175,9 @@ local function get_request_list(source, source_type)
 				vim.trim(vim.treesitter.get_node_text(node, source))
 
 			if capture_name == "request" then
-				requests[#requests].request = capture_value
+				local method, url = unpack(vim.split(capture_value, " "))
+				requests[#requests].method = method
+				requests[#requests].url = url
 				requests[#requests].node = node
 
 				table.insert(requests, { local_context = {} })
@@ -310,7 +312,8 @@ local function get_closest_request()
 end
 
 local function get_raw_request_content(request)
-	local raw_content = { request = interp(request.request, request.context) }
+	local raw_content =
+		{ method = request.method, url = interp(request.url, request.context) }
 
 	if request.content.json_body ~= nil then
 		raw_content.json_body =
@@ -350,9 +353,9 @@ local function request_to_job(request, on_exit)
 	end
 
 	table.insert(args, "--request")
-	for _, s in ipairs(vim.split(request.request, " ")) do
-		table.insert(args, s)
-	end
+	table.insert(args, request.method)
+
+	table.insert(args, request.url)
 
 	return Job:new({
 		command = "curl",
@@ -721,11 +724,13 @@ function GoToRequest()
 			local title = request.local_context["request.title"]
 
 			if title == nil then
-				return request.request
+				return request.method .. " " .. request.url
 			else
 				return request.local_context["request.title"]
 					.. " ("
-					.. request.request
+					.. request.method
+					.. " "
+					.. request.url
 					.. ")"
 			end
 		end,
@@ -752,11 +757,13 @@ function RunRequest()
 			local title = request.local_context["request.title"]
 
 			if title == nil then
-				return request.request
+				return request.method .. " " .. request.url
 			else
 				return request.local_context["request.title"]
 					.. " ("
-					.. request.request
+					.. request.method
+					.. " "
+					.. request.url
 					.. ")"
 			end
 		end,
