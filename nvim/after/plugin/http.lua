@@ -146,7 +146,20 @@ local function get_source_parser(source, source_type)
 	return parser
 end
 
+local function get_source(source, source_type)
+	if source_type == "buffer" then
+		return source
+	elseif source_type == "file" then
+		local contents = with(open(source, "r"), function(reader)
+			return reader:read("*a")
+		end)
+
+		return contents
+	end
+end
+
 local function get_request_list(source, source_type)
+	source = get_source(source, source_type)
 	local parser = get_source_parser(source, source_type)
 
 	local tree = parser:parse()[1]
@@ -185,6 +198,7 @@ local function get_request_list(source, source_type)
 end
 
 local function get_request_context_in(source, source_type, request)
+	source = get_source(source, source_type)
 	local parser = get_source_parser(source, source_type)
 
 	local tree = parser:parse()[1]
@@ -211,6 +225,7 @@ local function get_request_context_in(source, source_type, request)
 end
 
 local function get_request_content(request, source, source_type)
+	source = get_source(source, source_type)
 	local parser = get_source_parser(source, source_type)
 
 	local tree = parser:parse()[1]
@@ -268,7 +283,7 @@ local function get_request_detail(request, source, source_type)
 end
 
 local function get_closest_request()
-	local requests = get_request_list(0, "buffer")
+	local requests = get_request_list(vim.fn.bufnr(), "buffer")
 
 	local closest_distance = nil
 	local closest_request = nil
@@ -581,7 +596,11 @@ local function get_hooks(before_hook, after_hook)
 	return nil, nil
 end
 
+LastRun = nil
+
 local function run_request(request, source, source_type)
+	LastRun = { request = request, source = source, source_type = source_type }
+
 	request = get_request_detail(request, source, source_type)
 
 	local before_hook, after_hook = get_hooks(
@@ -616,7 +635,7 @@ end
 
 function RunClosestRequest()
 	local request = get_closest_request()
-	run_request(request, 0, "buffer")
+	run_request(request, vim.fn.bufnr(), "buffer")
 end
 
 function OpenHooksFile()
@@ -634,13 +653,13 @@ function ShowCursorVariableValue()
 		return
 	end
 
-	local node_text = vim.treesitter.get_node_text(node, 0)
+	local node_text = vim.treesitter.get_node_text(node, vim.fn.bufnr())
 	local variable_name = string.sub(node_text, 3, #node_text - 2)
 
 	local request = get_closest_request()
-	local context = get_context(request, 0, "buffer")
+	local context = get_context(request, vim.fn.bufnr(), "buffer")
 
-	local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+	local row, col = unpack(vim.api.nvim_win_get_cursor(vim.fn.bufnr()))
 
 	local value = context[variable_name]
 	if value == nil then
@@ -677,11 +696,7 @@ local function get_project_requests()
 	local requests = {}
 
 	for _, file in ipairs(files) do
-		local content = with(open(file), function(reader)
-			return reader:read("*a")
-		end)
-
-		local file_requests = get_request_list(content, "file")
+		local file_requests = get_request_list(file, "file")
 
 		for _, request in ipairs(file_requests) do
 			table.insert(requests, { file, request })
@@ -748,12 +763,14 @@ function RunRequest()
 
 		local file, request = unpack(item)
 
-		local contents = with(open(file, "r"), function(reader)
-			return reader:read("*a")
-		end)
-
-		run_request(request, contents, "file")
+		run_request(request, file, "file")
 	end)
+end
+
+function RunLastRequest()
+	if LastRun ~= nil then
+		run_request(LastRun.request, LastRun.source, LastRun.source_type)
+	end
 end
 
 vim.api.nvim_create_autocmd({ "FileType" }, {
@@ -775,3 +792,4 @@ vim.keymap.set(
 )
 vim.keymap.set("n", "gh", GoToRequest, { desc = "[g]o to [h]ttp request" })
 vim.keymap.set("n", "gH", RunRequest, { desc = "[g]o to [h]ttp request" })
+vim.keymap.set("n", "gL", RunLastRequest, { desc = "[g]o to [h]ttp request" })
