@@ -659,7 +659,7 @@ function ShowCursorVariableValue()
 	local request = get_closest_request()
 	local context = get_context(request, vim.fn.bufnr(), "buffer")
 
-	local row, col = unpack(vim.api.nvim_win_get_cursor(vim.fn.bufnr()))
+	local row, col = unpack(vim.api.nvim_win_get_cursor(0))
 
 	local value = context[variable_name]
 	if value == nil then
