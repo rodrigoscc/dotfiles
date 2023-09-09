@@ -1,17 +1,22 @@
 local Job = require("plenary.job")
+local open = require("plenary.context_manager").open
+local with = require("plenary.context_manager").with
+
+local ts_utils = require("nvim-treesitter.ts_utils")
 
 local DEFAULT_BODY_TYPE = "text"
 
 local diagnostics_namespace = vim.api.nvim_create_namespace("http")
 
 -- TODO: Change parser name from http2 to something else.
-local request_query = vim.treesitter.query.parse(
+local requests_query = vim.treesitter.query.parse(
 	"http2",
 	[[
 [
- (method_url) @method_url
- (header) @header
- (json_body) @json_body
+ (variable_declaration
+	variable_name: (identifier) @variable_name (#lua-match? @variable_name "request.*")
+	variable_value: (rest_of_line) @variable_value)
+ (method_url) @request
 ]
 ]]
 )
@@ -19,15 +24,20 @@ local request_query = vim.treesitter.query.parse(
 local variables_query = vim.treesitter.query.parse(
 	"http2",
 	[[
-(
  (variable_declaration
-	variable_name: (identifier) @name
+	variable_name: (identifier) @name (#not-lua-match? @name "request.*")
 	variable_value: (rest_of_line) @value)
- .
- (variable_declaration)*
- .
- (method_url)? @request_below
+]]
 )
+
+local request_content_query = vim.treesitter.query.parse(
+	"http2",
+	[[
+[
+ (header) @header
+ (json_body) @json_body
+ (method_url) @next_request
+]
 ]]
 )
 
@@ -124,95 +134,141 @@ local function get_context_from_env()
 	return vim.json.decode(env_file_contents)
 end
 
-local builtin_variables = {
-	["request.title"] = "title",
-	["request.before_hook"] = "before_hook",
-	["request.after_hook"] = "after_hook",
-}
+local function get_source_parser(source, source_type)
+	local parser = nil
 
-local function apply_current_buffer_context(context, request)
-	local parser = vim.treesitter.get_parser(0, "http2")
+	if source_type == "buffer" then
+		parser = vim.treesitter.get_parser(source, "http2")
+	elseif source_type == "file" then
+		parser = vim.treesitter.get_string_parser(source, "http2")
+	end
+
+	return parser
+end
+
+local function get_request_list(source, source_type)
+	local parser = get_source_parser(source, source_type)
+
 	local tree = parser:parse()[1]
 
-	local cursor_row, _ = unpack(vim.api.nvim_win_get_cursor(0))
+	local requests = { { local_context = {} } }
 
-	for _, match in variables_query:iter_matches(tree:root(), 0, 0, cursor_row) do
+	for _, match in requests_query:iter_matches(tree:root(), source) do
 		local variable = {}
 
-		local request_below_node = nil
-
 		for id, node in pairs(match) do
-			local capture_name = variables_query.captures[id]
+			local capture_name = requests_query.captures[id]
 			local capture_value =
-				vim.trim(vim.treesitter.get_node_text(node, 0))
+				vim.trim(vim.treesitter.get_node_text(node, source))
 
-			if capture_name == "request_below" then
-				request_below_node = node
-			else
-				variable[capture_name] = capture_value
+			if capture_name == "request" then
+				requests[#requests].request = capture_value
+				requests[#requests].node = node
+
+				table.insert(requests, { local_context = {} })
+			elseif capture_name == "variable_name" then
+				variable.name = capture_value
+			elseif capture_name == "variable_value" then
+				variable.value = capture_value
 			end
 		end
 
-		local is_local_variable = vim.startswith(variable.name, "request.")
-		local below_request_matches =
-			request.request_node:equal(request_below_node)
-
-		local variable_applies = not is_local_variable
-			or (is_local_variable and below_request_matches)
-
-		local builtin_variable_name = builtin_variables[variable.name]
-		local is_builtin_variable = builtin_variable_name ~= nil
-
-		if variable_applies then
-			if is_builtin_variable then
-				request[builtin_variable_name] = variable.value
-			else
-				context[variable.name] = variable.value
-			end
+		if variable.name then
+			requests[#requests].local_context[variable.name] = variable.value
 		end
 	end
-end
 
-local function get_context(request)
-	local context = get_context_from_env()
-	apply_current_buffer_context(context, request)
-	return context
-end
-
-local function get_all_requests()
-	local requests = {}
-
-	local parser = vim.treesitter.get_parser(0, "http2")
-	local tree = parser:parse()[1]
-
-	for _, match in request_query:iter_matches(tree:root(), 0) do
-		for id, node in pairs(match) do
-			local capture_name = request_query.captures[id]
-			local capture_value =
-				vim.trim(vim.treesitter.get_node_text(node, 0))
-
-			if capture_name == "method_url" then
-				local new_request =
-					{ method_url = capture_value, request_node = node }
-				-- method_url defines the start of the next request.
-				table.insert(requests, new_request)
-			elseif capture_name == "header" then
-				if requests[#requests]["headers"] == nil then
-					requests[#requests]["headers"] = {}
-				end
-
-				table.insert(requests[#requests]["headers"], capture_value)
-			else
-				requests[#requests][capture_name] = capture_value
-			end
-		end
-	end
+	-- TODO: Review this
+	requests = vim.list_slice(requests, 0, #requests - 1)
 
 	return requests
 end
 
+local function get_request_context_in(source, source_type, request)
+	local parser = get_source_parser(source, source_type)
+
+	local tree = parser:parse()[1]
+
+	local stop, _, _, _ = request.node:range()
+
+	local context = {}
+
+	for _, match in variables_query:iter_matches(tree:root(), source, 0, stop) do
+		local variable = {}
+
+		for id, node in pairs(match) do
+			local capture_name = requests_query.captures[id]
+			local capture_value =
+				vim.trim(vim.treesitter.get_node_text(node, source))
+
+			variable[capture_name] = capture_value
+		end
+
+		context[variable.name] = variable.value
+	end
+
+	return context
+end
+
+local function get_request_content(request, source, source_type)
+	local parser = get_source_parser(source, source_type)
+
+	local tree = parser:parse()[1]
+
+	local start, _, _, _ = request.node:range()
+	local _, _, stop, _ = tree:root():range()
+
+	local content = {}
+
+	for _, match in
+		request_content_query:iter_matches(tree:root(), source, start, stop + 1)
+	do
+		for id, node in pairs(match) do
+			local capture_name = request_content_query.captures[id]
+			local capture_value =
+				vim.trim(vim.treesitter.get_node_text(node, source))
+
+			if capture_name == "next_request" then
+				break
+			elseif capture_name == "header" then
+				if content.headers == nil then
+					content.headers = {}
+				end
+
+				content.headers[#content.headers + 1] = capture_value
+			elseif capture_name == "json_body" then
+				content.json_body = capture_value
+			end
+		end
+	end
+
+	return content
+end
+
+local function get_context(request, source, source_type)
+	local env_context = get_context_from_env()
+	local source_context = get_request_context_in(source, source_type, request)
+
+	return vim.tbl_extend(
+		"force",
+		env_context,
+		source_context,
+		request.local_context
+	)
+end
+
+local function get_request_detail(request, source, source_type)
+	request.context = get_context(request, source, source_type)
+
+	local content = get_request_content(request, source, source_type)
+
+	request.content = content
+
+	return request
+end
+
 local function get_closest_request()
-	local requests = get_all_requests()
+	local requests = get_request_list(0, "buffer")
 
 	local closest_distance = nil
 	local closest_request = nil
@@ -220,7 +276,7 @@ local function get_closest_request()
 	local cursor_row, _ = unpack(vim.api.nvim_win_get_cursor(0))
 
 	for _, request in ipairs(requests) do
-		local row, _, _, _ = request.request_node:range()
+		local row, _, _, _ = request.node:range()
 
 		local request_distance = cursor_row - row
 		local request_is_above_cursor = request_distance > 0
@@ -238,26 +294,29 @@ local function get_closest_request()
 	return closest_request
 end
 
-local function replace_context(request, context)
-	request.context = context
+local function get_raw_request_content(request)
+	local raw_content = { request = interp(request.request, request.context) }
 
-	if request.json_body ~= nil then
-		request.json_body = interp(request.json_body, context)
+	if request.content.json_body ~= nil then
+		raw_content.json_body =
+			interp(request.content.json_body, request.context)
 	end
 
-	request.method_url = interp(request.method_url, context)
-
-	if request.headers ~= nil then
+	if request.content.headers ~= nil then
 		local replaced_headers = {}
-		for _, header in ipairs(request.headers) do
-			table.insert(replaced_headers, interp(header, context))
+		for _, header in ipairs(request.content.headers) do
+			table.insert(replaced_headers, interp(header, request.context))
 		end
 
-		request.headers = replaced_headers
+		raw_content.headers = replaced_headers
 	end
+
+	return raw_content
 end
 
 local function request_to_job(request, on_exit)
+	request = get_raw_request_content(request)
+
 	local args = {
 		"--include",
 		"--no-progress-meter",
@@ -276,7 +335,7 @@ local function request_to_job(request, on_exit)
 	end
 
 	table.insert(args, "--request")
-	for _, s in ipairs(vim.split(request.method_url, " ")) do
+	for _, s in ipairs(vim.split(request.request, " ")) do
 		table.insert(args, s)
 	end
 
@@ -522,19 +581,17 @@ local function get_hooks(before_hook, after_hook)
 	return nil, nil
 end
 
-function RunClosestRequest()
-	local request = get_closest_request()
+local function run_request(request, source, source_type)
+	request = get_request_detail(request, source, source_type)
 
-	local context = get_context(request)
-
-	local before_hook, after_hook =
-		get_hooks(request.before_hook, request.after_hook)
+	local before_hook, after_hook = get_hooks(
+		request.local_context["request.before_hook"],
+		request.local_context["request.after_hook"]
+	)
 
 	if before_hook ~= nil then
-		before_hook(request, context)
+		before_hook(request)
 	end
-
-	replace_context(request, context)
 
 	local project_env = GetProjectEnv()
 
@@ -543,7 +600,7 @@ function RunClosestRequest()
 			parse_job_results(return_value, j:result(), j:stderr_result())
 
 		if after_hook ~= nil then
-			after_hook(request, context, {
+			after_hook(request, {
 				status_code = result.status_code,
 				body = result.body,
 				headers = result.headers,
@@ -555,6 +612,11 @@ function RunClosestRequest()
 	end)
 	vim.print("Executing HTTP request...")
 	job:start()
+end
+
+function RunClosestRequest()
+	local request = get_closest_request()
+	run_request(request, 0, "buffer")
 end
 
 function OpenHooksFile()
@@ -576,7 +638,7 @@ function ShowCursorVariableValue()
 	local variable_name = string.sub(node_text, 3, #node_text - 2)
 
 	local request = get_closest_request()
-	local context = get_context(request)
+	local context = get_context(request, 0, "buffer")
 
 	local row, col = unpack(vim.api.nvim_win_get_cursor(0))
 
@@ -595,12 +657,103 @@ function ShowCursorVariableValue()
 	}, {
 		signs = false,
 		virtual_text = {
-			prefix = "",
+			prefix = "󰀫",
 			format = function(diagnostic)
 				return diagnostic.message
 			end,
 		},
 	})
+end
+
+local function get_all_http_files()
+	return vim.fs.find(function(name)
+		return vim.endswith(name, ".http")
+	end, { type = "file" })
+end
+
+local function get_project_requests()
+	local files = get_all_http_files()
+
+	local requests = {}
+
+	for _, file in ipairs(files) do
+		local content = with(open(file), function(reader)
+			return reader:read("*a")
+		end)
+
+		local file_requests = get_request_list(content, "file")
+
+		for _, request in ipairs(file_requests) do
+			table.insert(requests, { file, request })
+		end
+	end
+
+	return requests
+end
+
+function GoToRequest()
+	local requests = get_project_requests()
+
+	vim.ui.select(requests, {
+		prompt = "Go to HTTP request",
+		format_item = function(item)
+			local _, request = unpack(item)
+
+			local title = request.local_context["request.title"]
+
+			if title == nil then
+				return request.request
+			else
+				return request.local_context["request.title"]
+					.. " ("
+					.. request.request
+					.. ")"
+			end
+		end,
+	}, function(item)
+		if item == nil then
+			return
+		end
+
+		local file, request = unpack(item)
+
+		vim.cmd([[edit ]] .. file)
+		ts_utils.goto_node(request.node, false, true)
+	end)
+end
+
+function RunRequest()
+	local requests = get_project_requests()
+
+	vim.ui.select(requests, {
+		prompt = "Run HTTP request",
+		format_item = function(item)
+			local _, request = unpack(item)
+
+			local title = request.local_context["request.title"]
+
+			if title == nil then
+				return request.request
+			else
+				return request.local_context["request.title"]
+					.. " ("
+					.. request.request
+					.. ")"
+			end
+		end,
+	}, function(item)
+		if item == nil then
+			return
+		end
+
+		local file, request = unpack(item)
+
+		local contents = with(open(file, "r"), function(reader)
+			return reader:read("*a")
+		end)
+
+		run_request(request, contents, "file")
+	end)
 end
 
 vim.api.nvim_create_autocmd({ "FileType" }, {
@@ -620,3 +773,5 @@ vim.keymap.set(
 	OpenHooksFile,
 	{ desc = "[o]pen [h]ooks file" }
 )
+vim.keymap.set("n", "gh", GoToRequest, { desc = "[g]o to [h]ttp request" })
+vim.keymap.set("n", "gH", RunRequest, { desc = "[g]o to [h]ttp request" })
