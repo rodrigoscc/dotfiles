@@ -238,7 +238,12 @@ local function get_request_content(request, source, source_type)
 	local content = {}
 
 	for _, match in
-		request_content_query:iter_matches(tree:root(), source, start, stop + 1)
+		request_content_query:iter_matches(
+			tree:root(),
+			source,
+			start + 1,
+			stop + 1
+		)
 	do
 		for id, node in pairs(match) do
 			local capture_name = request_content_query.captures[id]
@@ -246,7 +251,8 @@ local function get_request_content(request, source, source_type)
 				vim.trim(vim.treesitter.get_node_text(node, source))
 
 			if capture_name == "next_request" then
-				break
+				-- Got to next request, no need to keep going.
+				return content
 			elseif capture_name == "header" then
 				if content.headers == nil then
 					content.headers = {}
