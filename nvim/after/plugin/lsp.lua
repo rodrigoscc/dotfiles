@@ -155,7 +155,14 @@ local function enable_format_on_save()
 			timeout_ms = 10000,
 		},
 		servers = {
-			["null-ls"] = { "javascript", "typescript", "lua", "python", "go" },
+			["null-ls"] = {
+				"javascript",
+				"typescript",
+				"lua",
+				"python",
+				"go",
+				"vue",
+			},
 		},
 	})
 	-- Reattach LSP
