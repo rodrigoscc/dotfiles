@@ -807,6 +807,6 @@ vim.keymap.set(
 	OpenHooksFile,
 	{ desc = "[o]pen [h]ooks file" }
 )
-vim.keymap.set("n", "gh", GoToRequest, { desc = "[g]o to [h]ttp request" })
-vim.keymap.set("n", "gH", RunRequest, { desc = "[g]o to [h]ttp request" })
-vim.keymap.set("n", "gL", RunLastRequest, { desc = "[g]o to [h]ttp request" })
+vim.keymap.set("n", "gh", GoToRequest, { desc = "go to http request" })
+vim.keymap.set("n", "gH", RunRequest, { desc = "run http request" })
+vim.keymap.set("n", "gL", RunLastRequest, { desc = "run last http request" })

@@ -14,7 +14,7 @@ vim.keymap.set(
 	{ desc = "[p]review [h]unk popup" }
 )
 vim.keymap.set(
-	"n",
+	{ "n", "v" },
 	"<leader>sh",
 	gitsigns.stage_hunk,
 	{ desc = "[s]tage [h]unk" }
