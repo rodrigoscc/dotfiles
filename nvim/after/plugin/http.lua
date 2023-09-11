@@ -787,6 +787,8 @@ end
 function RunLastRequest()
 	if LastRun ~= nil then
 		run_request(LastRun.request, LastRun.source, LastRun.source_type)
+	else
+		vim.print("No last http request.")
 	end
 end
 
