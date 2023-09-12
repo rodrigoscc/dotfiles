@@ -700,7 +700,7 @@ end
 local function get_all_http_files()
 	return vim.fs.find(function(name)
 		return vim.endswith(name, ".http")
-	end, { type = "file" })
+	end, { type = "file", limit = math.huge })
 end
 
 local function get_project_requests()
