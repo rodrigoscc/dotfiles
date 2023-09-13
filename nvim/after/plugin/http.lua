@@ -794,6 +794,61 @@ function RunLastRequest()
 	end
 end
 
+local http_source = {}
+
+function http_source:is_available()
+	local node = vim.treesitter.get_node()
+
+	if node == nil then
+		return false
+	end
+
+	local cursor_node_is_variable_ref = node:type() == "variable_ref"
+
+	local child = node:child(0)
+	local child_is_variable_ref = false
+
+	if child ~= nil then
+		child_is_variable_ref = child:type() == "variable_ref"
+	end
+
+	return cursor_node_is_variable_ref or child_is_variable_ref
+end
+
+function http_source:complete(params, callback)
+	local options = {}
+
+	local request = get_closest_request()
+	local context = get_context(request, 0, "buffer")
+
+	for variable, value in pairs(context) do
+		table.insert(options, {
+			label = variable,
+			detail = value,
+			kind = 6, -- variable
+		})
+	end
+
+	callback(options)
+end
+
+function http_source:get_debug_name()
+	return "http source"
+end
+
+local cmp = require("cmp")
+
+cmp.register_source("http", http_source)
+cmp.setup.filetype("http", {
+	sources = cmp.config.sources({
+		{ name = "http" },
+	}, {
+		{ name = "buffer" },
+		{ name = "path" },
+		{ name = "luasnip", keyword_length = 2 },
+	}),
+})
+
 vim.api.nvim_create_autocmd({ "FileType" }, {
 	pattern = "http",
 	callback = function()
