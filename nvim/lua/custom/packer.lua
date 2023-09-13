@@ -161,7 +161,14 @@ return require("packer").startup(function(use)
 		end,
 	})
 
-	use("lukas-reineke/indent-blankline.nvim")
+	use({
+		"lukas-reineke/indent-blankline.nvim",
+		config = function()
+			vim.cmd(
+				"let g:indent_blankline_buftype_exclude = ['terminal', 'quickfix', 'prompt']"
+			)
+		end,
+	})
 
 	use("tpope/vim-sleuth")
 
