@@ -259,7 +259,9 @@ local function get_request_content(request, source, source_type)
 				end
 
 				content.headers[#content.headers + 1] = capture_value
-			elseif capture_name == "json_body" then
+			elseif capture_name == "json_body" and content.json_body == nil then
+				-- Checking if json_body is null to make sure we're not replacing
+				-- the body with a nested json.
 				content.json_body = capture_value
 			end
 		end
