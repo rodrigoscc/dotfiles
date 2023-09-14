@@ -509,19 +509,18 @@ local function on_curl_exit(result)
 end
 
 local function update_project_env(env)
-	local envs_file = get_envs_file("r")
-	local contents = envs_file:read("*a")
-	envs_file:close()
+	local contents = with(get_envs_file("r"), function(reader)
+		return reader:read("*a")
+	end)
+
 	local envs = vim.json.decode(contents)
 
 	envs[vim.fn.getcwd()] = env
 
-	envs_file = get_envs_file("w+")
-
-	local envs_file_updated = vim.json.encode(envs)
-
-	envs_file:write(envs_file_updated)
-	envs_file:close()
+	with(get_envs_file("w+"), function(file)
+		local envs_file_updated = vim.json.encode(envs)
+		file:write(envs_file_updated)
+	end)
 end
 
 local function update_env(env_name)
