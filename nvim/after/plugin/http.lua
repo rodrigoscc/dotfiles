@@ -1,6 +1,7 @@
 local Job = require("plenary.job")
 local open = require("plenary.context_manager").open
 local with = require("plenary.context_manager").with
+local Path = require("plenary.path")
 
 local ts_utils = require("nvim-treesitter.ts_utils")
 
@@ -56,27 +57,19 @@ local function create_file(filename, mode)
 	local dir = vim.fs.dirname(filename)
 	vim.fn.mkdir(dir, "p", "0o755")
 
-	local file, err = io.open(filename, "w+")
-	if file == nil then
-		error("Unable to create file " .. filename .. ": " .. err)
-	end
-
-	local success, err = file:write("{}")
-	if not success then
-		error("Unable to create file " .. filename .. ": " .. err)
-	end
-
-	file:close()
+	with(open(filename, "w+"), function(file)
+		file:write("{}")
+	end)
 
 	-- Reopening it with a different mode.
-	return io.open(filename, mode)
+	return open(filename, mode)
 end
 
 local function get_envs_file(mode)
 	local data_path = vim.fn.stdpath("data")
 	local envs_file_path = data_path .. "/http/envs.json"
 
-	local envs_file, err = io.open(envs_file_path, mode)
+	local envs_file, err = open(envs_file_path, mode)
 	if envs_file == nil then
 		vim.print(
 			"Unable to open envs file "
@@ -92,8 +85,9 @@ local function get_envs_file(mode)
 end
 
 local function get_envs()
-	local envs_file = get_envs_file("r")
-	local contents = envs_file:read("*a")
+	local contents = with(get_envs_file("r"), function(reader)
+		return reader:read("*a")
+	end)
 	return vim.json.decode(contents)
 end
 
@@ -109,7 +103,7 @@ end
 local function get_env_file(env, mode)
 	local project_env_file = vim.g.http_envs_dir .. "/" .. env .. ".json"
 
-	local env_file, err = io.open(project_env_file, mode)
+	local env_file, err = open(project_env_file, mode)
 	if err ~= nil then
 		vim.api.nvim_err_writeln(
 			"Unable to open env file " .. project_env_file .. ": " .. err
@@ -125,12 +119,13 @@ local function get_context_from_env()
 		return {}
 	end
 
-	local env_file = get_env_file(project_env, "r")
-	if env_file == nil then
-		return {}
-	end
+	local env_file_contents = with(
+		get_env_file(project_env, "r"),
+		function(reader)
+			return reader:read("*a")
+		end
+	)
 
-	local env_file_contents = env_file:read("*a")
 	return vim.json.decode(env_file_contents)
 end
 
@@ -365,6 +360,8 @@ local function request_to_job(request, on_exit)
 
 	table.insert(args, request.url)
 
+	-- TODO: Add logs to executed curl.
+
 	return Job:new({
 		command = "curl",
 		args = args,
@@ -514,6 +511,7 @@ end
 local function update_project_env(env)
 	local envs_file = get_envs_file("r")
 	local contents = envs_file:read("*a")
+	envs_file:close()
 	local envs = vim.json.decode(contents)
 
 	envs[vim.fn.getcwd()] = env
@@ -528,20 +526,21 @@ end
 
 local function update_env(env_name)
 	return function(tbl)
-		local env_file = get_env_file(env_name, "r")
-		if env_file == nil then
-			return
-		end
+		local env_file_contents = with(
+			get_env_file(env_name, "r"),
+			function(reader)
+				return reader:read("*a")
+			end
+		)
 
-		local env_file_contents = env_file:read("*a")
 		local env = vim.json.decode(env_file_contents)
 		env = vim.tbl_extend("force", env, tbl)
 
 		local new_env_file_contents = vim.json.encode(env)
-		env_file = get_env_file(env_name, "w+")
-		env_file:write(new_env_file_contents)
-		env_file:close()
 
+		with(get_env_file(env_name, "w+"), function(file)
+			file:write(new_env_file_contents)
+		end)
 		-- TODO: format json
 	end
 end
@@ -598,13 +597,17 @@ function OpenProjectEnv()
 end
 
 local function get_hooks(before_hook, after_hook)
-	local hooks_path = vim.g.http_envs_dir .. "/" .. vim.g.http_hooks_file
+	local hooks_path = Path:new(vim.g.http_envs_dir, vim.g.http_hooks_file)
 
-	local f = io.open(hooks_path, "r")
-	local hooks_file_exists = f ~= nil
+	local hooks_file_exists = with(
+		open(hooks_path:absolute(), "r"),
+		function(file)
+			return file ~= nil
+		end
+	)
 
 	if hooks_file_exists then
-		local hooks = dofile(hooks_path)
+		local hooks = dofile(hooks_path:absolute())
 		return hooks[before_hook], hooks[after_hook]
 	end
 
@@ -654,8 +657,8 @@ function RunClosestRequest()
 end
 
 function OpenHooksFile()
-	local hooks_path = vim.g.http_envs_dir .. "/" .. vim.g.http_hooks_file
-	vim.cmd([[split ]] .. hooks_path)
+	local hooks_path = Path:new(vim.g.http_envs_dir, vim.g.http_hooks_file)
+	vim.cmd([[split ]] .. hooks_path:absolute())
 end
 
 function ShowCursorVariableValue()
