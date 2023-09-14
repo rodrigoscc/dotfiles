@@ -3,6 +3,8 @@ local open = require("plenary.context_manager").open
 local with = require("plenary.context_manager").with
 local Path = require("plenary.path")
 
+local log = require("plenary.log").new({ plugin = "http" })
+
 local ts_utils = require("nvim-treesitter.ts_utils")
 
 local DEFAULT_BODY_TYPE = "text"
@@ -48,6 +50,16 @@ local function interp(s, tab)
 			return tab[w:sub(3, -3)] or w
 		end)
 	)
+end
+
+local function request_title(request)
+	local title = request.local_context["request.title"]
+
+	if title == nil then
+		return request.method .. " " .. request.url
+	else
+		return title .. " (" .. request.method .. " " .. request.url .. ")"
+	end
 end
 
 vim.g.http_envs_dir = ".envs"
@@ -335,6 +347,10 @@ local function get_raw_request_content(request)
 	return raw_content
 end
 
+local function minify_json(json_body)
+	return vim.json.encode(vim.json.decode(json_body))
+end
+
 local function request_to_job(request, on_exit)
 	request = get_raw_request_content(request)
 
@@ -345,7 +361,7 @@ local function request_to_job(request, on_exit)
 
 	if request.json_body ~= nil then
 		table.insert(args, "--data")
-		table.insert(args, request.json_body)
+		table.insert(args, minify_json(request.json_body))
 	end
 
 	if request.headers ~= nil then
@@ -359,8 +375,6 @@ local function request_to_job(request, on_exit)
 	table.insert(args, request.method)
 
 	table.insert(args, request.url)
-
-	-- TODO: Add logs to executed curl.
 
 	return Job:new({
 		command = "curl",
@@ -490,9 +504,9 @@ local function on_curl_exit(result)
 			vim.api.nvim_buf_set_lines(buf, 0, -1, false, buffer.content)
 
 			if buffer.vertical_split then
-				vim.cmd.vsplit()
+				vim.cmd([[vsplit]])
 			else
-				vim.cmd.split()
+				vim.cmd([[15split]])
 			end
 
 			vim.api.nvim_set_current_buf(buf)
@@ -500,7 +514,7 @@ local function on_curl_exit(result)
 			-- Avoid formatting curl error messages which are meant to be shown
 			-- on text buffers.
 			if buffer.file_type ~= "text" then
-				vim.cmd([[normal gq%]])
+				vim.cmd([[silent exe "normal gq%"]])
 			end
 
 			vim.keymap.set("n", "q", vim.cmd.close, { buffer = true })
@@ -615,6 +629,16 @@ end
 
 LastRun = nil
 
+local function job_to_string(job)
+	local str = job.command
+
+	for _, arg in ipairs(job.args) do
+		str = str .. " " .. arg
+	end
+
+	return str
+end
+
 local function run_request(request, source, source_type)
 	LastRun = { request = request, source = source, source_type = source_type }
 
@@ -646,7 +670,11 @@ local function run_request(request, source, source_type)
 
 		on_curl_exit(result)
 	end)
-	vim.print("Executing HTTP request...")
+
+	local title = request_title(request)
+	log.fmt_info("Running HTTP request %s: %s", title, job_to_string(job))
+	vim.print("Running HTTP request " .. title)
+
 	job:start()
 end
 
@@ -730,19 +758,7 @@ function GoToRequest()
 		prompt = "Go to HTTP request",
 		format_item = function(item)
 			local _, request = unpack(item)
-
-			local title = request.local_context["request.title"]
-
-			if title == nil then
-				return request.method .. " " .. request.url
-			else
-				return request.local_context["request.title"]
-					.. " ("
-					.. request.method
-					.. " "
-					.. request.url
-					.. ")"
-			end
+			return request_title(request)
 		end,
 	}, function(item)
 		if item == nil then
@@ -763,19 +779,7 @@ function RunRequest()
 		prompt = "Run HTTP request",
 		format_item = function(item)
 			local _, request = unpack(item)
-
-			local title = request.local_context["request.title"]
-
-			if title == nil then
-				return request.method .. " " .. request.url
-			else
-				return request.local_context["request.title"]
-					.. " ("
-					.. request.method
-					.. " "
-					.. request.url
-					.. ")"
-			end
+			return request_title(request)
 		end,
 	}, function(item)
 		if item == nil then
