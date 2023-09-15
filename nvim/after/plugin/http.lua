@@ -3,7 +3,7 @@ local open = require("plenary.context_manager").open
 local with = require("plenary.context_manager").with
 local Path = require("plenary.path")
 
-local log = require("plenary.log").new({ plugin = "http" })
+local log = require("plenary.log").new({ plugin = "http", use_console = false })
 
 local ts_utils = require("nvim-treesitter.ts_utils")
 
@@ -529,12 +529,13 @@ local function parse_job_results(return_value, result, stderr_result)
 	}
 end
 
-local function on_curl_exit(result)
+local function on_curl_exit(request, result)
 	vim.schedule(function()
+		local title = request_title(request)
 		if result.is_error then
-			vim.api.nvim_err_writeln("Error running request")
+			vim.print("Running HTTP request " .. title .. "...ERROR")
 		else
-			vim.print("Done")
+			vim.print("Running HTTP request " .. title .. "...Done")
 		end
 
 		for _, buffer in ipairs(result.buffers) do
@@ -707,12 +708,12 @@ local function run_request(request, source, source_type)
 			}, update_env(project_env))
 		end
 
-		on_curl_exit(result)
+		on_curl_exit(request, result)
 	end)
 
 	local title = request_title(request)
 	log.fmt_info("Running HTTP request %s: %s", title, job_to_string(job))
-	vim.print("Running HTTP request " .. title)
+	vim.print("Running HTTP request " .. title .. "...")
 
 	job:start()
 end
