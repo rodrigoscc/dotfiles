@@ -44,6 +44,19 @@ local request_content_query = vim.treesitter.query.parse(
 ]]
 )
 
+local function url_encode(str)
+	if type(str) ~= "number" then
+		str = str:gsub("\r?\n", "\r\n")
+		str = str:gsub("([^%w%-%.%_%~ ])", function(c)
+			return string.format("%%%02X", c:byte())
+		end)
+		str = str:gsub(" ", "+")
+		return str
+	else
+		return str
+	end
+end
+
 local function interp(s, tab)
 	return (
 		s:gsub("({%b{}})", function(w)
@@ -52,13 +65,27 @@ local function interp(s, tab)
 	)
 end
 
+local function get_request_url(request)
+	local url = request.url
+	if request.query ~= nil then
+		url = url .. "?" .. request.query
+	end
+
+	return url
+end
+
 local function request_title(request)
 	local title = request.local_context["request.title"]
 
 	if title == nil then
-		return request.method .. " " .. request.url
+		return request.method .. " " .. get_request_url(request)
 	else
-		return title .. " (" .. request.method .. " " .. request.url .. ")"
+		return title
+			.. " ("
+			.. request.method
+			.. " "
+			.. get_request_url(request)
+			.. ")"
 	end
 end
 
@@ -183,8 +210,11 @@ local function get_request_list(source, source_type)
 
 			if capture_name == "request" then
 				local method, url = unpack(vim.split(capture_value, " "))
+				local domain_path, query = unpack(vim.split(url, "?"))
+
 				requests[#requests].method = method
-				requests[#requests].url = url
+				requests[#requests].url = domain_path
+				requests[#requests].query = query
 				requests[#requests].node = node
 
 				table.insert(requests, { local_context = {} })
@@ -327,8 +357,17 @@ local function get_closest_request()
 end
 
 local function get_raw_request_content(request)
-	local raw_content =
-		{ method = request.method, url = interp(request.url, request.context) }
+	local encoded_context = vim.deepcopy(request.context)
+
+	for key, value in pairs(encoded_context) do
+		encoded_context[key] = url_encode(value)
+	end
+
+	local raw_content = {
+		method = request.method,
+		url = interp(request.url, request.context),
+		query = request.query and interp(request.query, encoded_context),
+	}
 
 	if request.content.json_body ~= nil then
 		raw_content.json_body =
@@ -374,7 +413,7 @@ local function request_to_job(request, on_exit)
 	table.insert(args, "--request")
 	table.insert(args, request.method)
 
-	table.insert(args, request.url)
+	table.insert(args, get_request_url(request))
 
 	return Job:new({
 		command = "curl",
