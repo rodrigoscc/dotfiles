@@ -652,6 +652,10 @@ end
 local function get_hooks(before_hook, after_hook)
 	local hooks_path = Path:new(vim.g.http_envs_dir, vim.g.http_hooks_file)
 
+	if not hooks_path:exists() then
+		return nil, nil
+	end
+
 	local hooks_file_exists = with(
 		open(hooks_path:absolute(), "r"),
 		function(file)
@@ -661,6 +665,10 @@ local function get_hooks(before_hook, after_hook)
 
 	if hooks_file_exists then
 		local hooks = dofile(hooks_path:absolute())
+		if hooks == nil then
+			return nil, nil
+		end
+
 		return hooks[before_hook], hooks[after_hook]
 	end
 
