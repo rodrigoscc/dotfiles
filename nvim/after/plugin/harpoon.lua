@@ -18,7 +18,7 @@ end, { desc = "harpoon window 4" })
 
 vim.keymap.set(
 	"n",
-	"<leader>m",
+	"mM",
 	ui.toggle_quick_menu,
 	{ desc = "harpoon quick [m]enu" }
 )

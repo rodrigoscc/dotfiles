@@ -116,6 +116,16 @@ vim.keymap.set("n", "<M-q>", "<cmd>close<cr>")
 
 vim.keymap.set("n", "<leader>ts", "<cmd>TSJToggle<cr>")
 
+vim.keymap.set("n", "md", "<cmd>diffthis<cr>")
+vim.keymap.set("n", "mD", "<cmd>diffoff!<cr>")
+
+vim.keymap.set(
+	"n",
+	"<leader>m",
+	"<C-w>T",
+	{ desc = "[m}aximize window to tab" }
+)
+
 --- Custom behaviour for a carriage return.
 -- Splits a string in two lines in a fancy way.
 local function my_cr()
