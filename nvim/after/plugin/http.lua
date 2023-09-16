@@ -483,6 +483,7 @@ local function parse_job_results(return_value, result, stderr_result)
 		local is_empty_line = line == ""
 		if is_empty_line then
 			separation_line = index
+			-- First empty line is the separation line between headers and body.
 			break
 		end
 	end
