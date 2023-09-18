@@ -16,7 +16,7 @@ vim.keymap.set(
 vim.keymap.set(
 	{ "n", "v" },
 	"<leader>sh",
-	gitsigns.stage_hunk,
+	"<cmd>Gitsigns stage_hunk<cr>",
 	{ desc = "[s]tage [h]unk" }
 )
 vim.keymap.set(
