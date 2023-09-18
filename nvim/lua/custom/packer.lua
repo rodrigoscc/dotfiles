@@ -92,9 +92,7 @@ return require("packer").startup(function(use)
 		},
 		after = "nvim-web-devicons", -- keep this if you're using NvChad
 		config = function()
-			require("barbecue").setup({
-				theme = "tokyonight",
-			})
+			require("barbecue").setup({})
 		end,
 	})
 
@@ -513,6 +511,13 @@ return require("packer").startup(function(use)
 				-- https://github.com/ray-x/lsp_signature.nvim/issues/267
 				toggle_key_flip_floatwin_setting = true,
 			})
+		end,
+	})
+
+	use({
+		"sainnhe/gruvbox-material",
+		config = function()
+			vim.cmd([[let g:gruvbox_material_background = "hard"]])
 		end,
 	})
 end)
