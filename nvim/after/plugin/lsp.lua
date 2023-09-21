@@ -157,7 +157,9 @@ local function enable_format_on_save()
 		servers = {
 			["null-ls"] = {
 				"javascript",
+				"javascriptreact",
 				"typescript",
+				"typescriptreact",
 				"lua",
 				"python",
 				"go",
