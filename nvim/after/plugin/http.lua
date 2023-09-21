@@ -23,6 +23,12 @@ local requests_query = vim.treesitter.query.parse(
 ]
 ]]
 )
+local requests_only_query = vim.treesitter.query.parse(
+	"http2",
+	[[
+ (method_url) @request
+]]
+)
 
 local variables_query = vim.treesitter.query.parse(
 	"http2",
@@ -850,6 +856,42 @@ function RunLastRequest()
 	end
 end
 
+function JumpNextRequest()
+	local parser = get_source_parser(0, "buffer")
+
+	local tree = parser:parse()[1]
+
+	local cursor_row, _ = unpack(vim.api.nvim_win_get_cursor(0))
+	local _, _, stop, _ = tree:root():range()
+
+	local _, match =
+		requests_only_query:iter_matches(tree:root(), 0, cursor_row, stop)()
+
+	local ids = vim.tbl_keys(match)
+	local node = match[ids[1]]
+	ts_utils.goto_node(node, false, true)
+end
+
+function JumpPreviousRequest()
+	local parser = get_source_parser(0, "buffer")
+
+	local tree = parser:parse()[1]
+
+	local cursor_row, _ = unpack(vim.api.nvim_win_get_cursor(0))
+
+	local last_match = nil
+
+	for _, match in
+		requests_only_query:iter_matches(tree:root(), 0, 0, cursor_row - 1)
+	do
+		last_match = match
+	end
+
+	local ids = vim.tbl_keys(last_match)
+	local node = last_match[ids[1]]
+	ts_utils.goto_node(node, false, true)
+end
+
 local http_source = {}
 
 function http_source:is_available()
@@ -925,3 +967,12 @@ vim.keymap.set(
 vim.keymap.set("n", "gh", GoToRequest, { desc = "go to http request" })
 vim.keymap.set("n", "gH", RunRequest, { desc = "run http request" })
 vim.keymap.set("n", "gL", RunLastRequest, { desc = "run last http request" })
+
+vim.keymap.set("n", "]r", function()
+	vim.g.set_jump(JumpNextRequest, JumpPreviousRequest)
+	JumpNextRequest()
+end, { desc = "jump to next request" })
+vim.keymap.set("n", "[r", function()
+	vim.g.set_jump(JumpNextRequest, JumpPreviousRequest)
+	JumpPreviousRequest()
+end, { desc = "jump to previous request" })
