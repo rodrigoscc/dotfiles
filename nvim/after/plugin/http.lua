@@ -856,6 +856,28 @@ function RunLastRequest()
 	end
 end
 
+function RunRequest(title)
+	local requests = get_project_requests()
+
+	local request_item = nil
+
+	for _, item in ipairs(requests) do
+		local _, r = unpack(item)
+		local r_title = r.local_context["request.title"]
+		if r_title == title then
+			request_item = item
+			break
+		end
+	end
+
+	if request_item == nil then
+		error("request not found")
+	end
+
+	local file, request = unpack(request_item)
+	run_request(request, file, "file")
+end
+
 function JumpNextRequest()
 	local parser = get_source_parser(0, "buffer")
 
