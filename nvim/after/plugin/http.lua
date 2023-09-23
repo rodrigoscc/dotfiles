@@ -87,11 +87,6 @@ local function request_title(request)
 		return request.method .. " " .. get_request_url(request)
 	else
 		return title
-			.. " ("
-			.. request.method
-			.. " "
-			.. get_request_url(request)
-			.. ")"
 	end
 end
 
