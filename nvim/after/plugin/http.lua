@@ -325,8 +325,20 @@ local function get_context(request, source, source_type)
 	)
 end
 
-local function get_request_detail(request, source, source_type)
-	request.context = get_context(request, source, source_type)
+local function get_request_detail(
+	request,
+	source,
+	source_type,
+	override_context
+)
+	local request_context = get_context(request, source, source_type)
+
+	if override_context ~= nil then
+		request_context =
+			vim.tbl_extend("force", request_context, override_context)
+	end
+
+	request.context = request_context
 
 	local content = get_request_content(request, source, source_type)
 
@@ -366,7 +378,7 @@ local function get_raw_request_content(request)
 	local encoded_context = vim.deepcopy(request.context)
 
 	for key, value in pairs(encoded_context) do
-		encoded_context[key] = url_encode(value)
+		encoded_context[key] = url_encode(tostring(value))
 	end
 
 	local raw_content = {
@@ -695,10 +707,10 @@ local function job_to_string(job)
 	return str
 end
 
-local function run_request(request, source, source_type)
+local function run_request(request, source, source_type, override_context)
 	LastRun = { request = request, source = source, source_type = source_type }
 
-	request = get_request_detail(request, source, source_type)
+	request = get_request_detail(request, source, source_type, override_context)
 
 	local before_hook, after_hook = get_hooks(
 		request.local_context["request.before_hook"],
@@ -716,12 +728,19 @@ local function run_request(request, source, source_type)
 			parse_job_results(return_value, j:result(), j:stderr_result())
 
 		if after_hook ~= nil then
-			after_hook(request, {
+			local request_result = {
 				status_code = result.status_code,
 				body = result.body,
 				headers = result.headers,
 				is_error = result.is_error,
-			}, update_env(project_env))
+			}
+
+			after_hook(
+				request,
+				request_result,
+				update_env(project_env),
+				RunRequestWithTitle
+			)
 		end
 
 		on_curl_exit(request, result)
@@ -856,7 +875,7 @@ function RunLastRequest()
 	end
 end
 
-function RunRequest(title)
+function RunRequestWithTitle(title, override_context)
 	local requests = get_project_requests()
 
 	local request_item = nil
@@ -875,7 +894,7 @@ function RunRequest(title)
 	end
 
 	local file, request = unpack(request_item)
-	run_request(request, file, "file")
+	run_request(request, file, "file", override_context)
 end
 
 function JumpNextRequest()
