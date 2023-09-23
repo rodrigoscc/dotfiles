@@ -520,4 +520,6 @@ return require("packer").startup(function(use)
 			vim.cmd([[let g:gruvbox_material_background = "hard"]])
 		end,
 	})
+
+	use({ "Mofiqul/vscode.nvim" })
 end)
