@@ -712,40 +712,44 @@ local function run_request(request, source, source_type, override_context)
 		request.local_context["request.after_hook"]
 	)
 
-	if before_hook ~= nil then
-		before_hook(request)
+	local start_request = function()
+		local project_env = GetProjectEnv()
+
+		local job = request_to_job(request, function(j, return_value)
+			local result =
+				parse_job_results(return_value, j:result(), j:stderr_result())
+
+			if after_hook ~= nil then
+				local request_result = {
+					status_code = result.status_code,
+					body = result.body,
+					headers = result.headers,
+					is_error = result.is_error,
+				}
+
+				after_hook(
+					request,
+					request_result,
+					update_env(project_env),
+					RunRequestWithTitle
+				)
+			end
+
+			on_curl_exit(request, result)
+		end)
+
+		local title = request_title(request)
+		log.fmt_info("Running HTTP request %s: %s", title, job_to_string(job))
+		vim.print("Running HTTP request " .. title .. "...")
+
+		job:start()
 	end
 
-	local project_env = GetProjectEnv()
-
-	local job = request_to_job(request, function(j, return_value)
-		local result =
-			parse_job_results(return_value, j:result(), j:stderr_result())
-
-		if after_hook ~= nil then
-			local request_result = {
-				status_code = result.status_code,
-				body = result.body,
-				headers = result.headers,
-				is_error = result.is_error,
-			}
-
-			after_hook(
-				request,
-				request_result,
-				update_env(project_env),
-				RunRequestWithTitle
-			)
-		end
-
-		on_curl_exit(request, result)
-	end)
-
-	local title = request_title(request)
-	log.fmt_info("Running HTTP request %s: %s", title, job_to_string(job))
-	vim.print("Running HTTP request " .. title .. "...")
-
-	job:start()
+	if before_hook ~= nil then
+		before_hook(request, start_request)
+	else
+		start_request()
+	end
 end
 
 function RunClosestRequest()
