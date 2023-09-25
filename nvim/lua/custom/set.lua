@@ -49,6 +49,9 @@ vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
 	end,
 })
 
+-- Avoid neovim to create maps in python mode (e.g. [[ and ]]).
+vim.g.no_python_maps = true
+
 vim.treesitter.language.register("requirements", "requirements")
 
 vim.api.nvim_create_autocmd("FileType", {
