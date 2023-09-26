@@ -8,6 +8,7 @@ local filetype_extension = {
 	go = ".go",
 	javascript = ".js",
 	json = ".json",
+	html = ".html",
 	yaml = ".yml",
 	text = ".txt",
 	csv = ".csv",
