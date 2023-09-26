@@ -9,8 +9,6 @@ local ts_utils = require("nvim-treesitter.ts_utils")
 
 local DEFAULT_BODY_TYPE = "text"
 
-local diagnostics_namespace = vim.api.nvim_create_namespace("http")
-
 -- TODO: Change parser name from http2 to something else.
 local requests_query = vim.treesitter.query.parse(
 	"http2",
@@ -778,28 +776,29 @@ function ShowCursorVariableValue()
 	local request = get_closest_request()
 	local context = get_context(request, vim.fn.bufnr(), "buffer")
 
-	local row, col = unpack(vim.api.nvim_win_get_cursor(0))
-
 	local value = context[variable_name]
 	if value == nil then
 		value = ""
 	end
 
-	vim.diagnostic.set(diagnostics_namespace, 0, {
-		{
-			lnum = row - 1,
-			col = col,
-			message = variable_name .. " = " .. value,
-			severity = vim.diagnostic.severity.INFO,
-		},
-	}, {
-		signs = false,
-		virtual_text = {
-			prefix = "󰀫",
-			format = function(diagnostic)
-				return diagnostic.message
-			end,
-		},
+	local buf = vim.api.nvim_create_buf(false, true)
+	vim.api.nvim_buf_set_lines(buf, 0, -1, true, { value })
+	local win = vim.api.nvim_open_win(buf, false, {
+		relative = "cursor",
+		width = #value,
+		height = 1,
+		col = 0,
+		row = 1,
+		anchor = "NW",
+		style = "minimal",
+		border = "single",
+	})
+
+	vim.api.nvim_create_autocmd({ "WinEnter", "CursorMoved" }, {
+		callback = function()
+			vim.api.nvim_win_close(win, false)
+		end,
+		once = true,
 	})
 end
 
