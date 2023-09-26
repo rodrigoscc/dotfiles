@@ -440,7 +440,17 @@ return require("packer").startup(function(use)
 
 	use({ "chaoren/vim-wordmotion" })
 
-	use({ "HiPhish/rainbow-delimiters.nvim" })
+	use({
+		"HiPhish/rainbow-delimiters.nvim",
+		config = function()
+			vim.g.rainbow_delimiters = {
+				query = {
+					javascript = "rainbow-parens",
+					tsx = "rainbow-parens",
+				},
+			}
+		end,
+	})
 
 	use({
 		"ray-x/lsp_signature.nvim",
