@@ -8,9 +8,9 @@ if
 	not string.find(vim.g.colorscheme, "tokyonight")
 	and not string.find(vim.g.colorscheme, "gruvbox-material")
 then
-	vim.cmd([[highlight IlluminatedWordText guibg=#333333 gui=none]])
-	vim.cmd([[highlight IlluminatedWordRead guibg=#333333 gui=none]])
-	vim.cmd([[highlight IlluminatedWordWrite guibg=#333333 gui=none]])
+	hl(0, "IlluminatedWordText", { bg = "#333333", underline = false })
+	hl(0, "IlluminatedWordRead", { bg = "#333333", underline = false })
+	hl(0, "IlluminatedWordWrite", { bg = "#333333", underline = false })
 end
 
 if vim.g.colorscheme == "vscode" then
