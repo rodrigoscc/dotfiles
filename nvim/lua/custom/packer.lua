@@ -25,8 +25,6 @@ return require("packer").startup(function(use)
 
 	use("tpope/vim-fugitive")
 
-	use("tpope/vim-rhubarb")
-
 	use({ "folke/neodev.nvim" })
 
 	use({
@@ -110,26 +108,6 @@ return require("packer").startup(function(use)
 					-- Border between splits is too dim by default.
 					colors.border = "#565f89"
 				end,
-			})
-		end,
-	})
-
-	use({
-		"catppuccin/nvim",
-		as = "catppuccin",
-		config = function()
-			require("catppuccin").setup({
-				transparent_background = true,
-				integrations = {
-					barbecue = {
-						dim_context = true,
-					},
-					neogit = true,
-					illuminate = true,
-					gitgutter = true,
-					ts_rainbow2 = true,
-					neotree = true,
-				},
 			})
 		end,
 	})
@@ -261,8 +239,6 @@ return require("packer").startup(function(use)
 			)
 		end,
 	})
-
-	use({ "tpope/vim-dispatch" })
 
 	use({
 		"lukas-reineke/virt-column.nvim",
@@ -438,8 +414,6 @@ return require("packer").startup(function(use)
 			require("colorizer").setup({})
 		end,
 	})
-
-	use({ "anuvyklack/hydra.nvim" })
 
 	use({ "windwp/nvim-ts-autotag" })
 
