@@ -405,42 +405,6 @@ return require("packer").startup(function(use)
 	use("onsails/lspkind.nvim")
 
 	use({
-		"nvim-neotest/neotest",
-		requires = {
-			"nvim-lua/plenary.nvim",
-			"nvim-treesitter/nvim-treesitter",
-			"nvim-neotest/neotest-python",
-			"rstcruzo/neotest-go", -- for testify workarounds
-			"haydenmeade/neotest-jest",
-		},
-		config = function()
-			require("neotest").setup({
-				adapters = {
-					require("neotest-python")({
-						is_test_file = function(file_path)
-							local Path = require("plenary.path")
-
-							if not vim.endswith(file_path, ".py") then
-								return false
-							end
-							local elems =
-								vim.split(file_path, Path.path.sep, {})
-							local file_name = elems[#elems]
-							return (
-								vim.startswith(file_name, "test_")
-								or vim.endswith(file_name, "_test.py")
-								or file_name == "tests.py"
-							)
-						end,
-					}),
-					require("neotest-go"),
-					require("neotest-jest"),
-				},
-			})
-		end,
-	})
-
-	use({
 		"williamboman/mason.nvim",
 		"jose-elias-alvarez/null-ls.nvim",
 		"jay-babu/mason-null-ls.nvim",
