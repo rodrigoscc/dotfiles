@@ -18,9 +18,9 @@ if vim.g.colorscheme == "vscode" then
 
 	hl(0, "RainbowDelimiterRed", { fg = c.vscLightRed })
 	hl(0, "RainbowDelimiterYellow", { fg = c.vscYellowOrange })
-	hl(0, "RainbowDelimiterBlue", { fg = c.vscDarkBlue })
+	hl(0, "RainbowDelimiterBlue", { fg = c.vscBlue })
 	hl(0, "RainbowDelimiterOrange", { fg = c.vscOrange })
-	hl(0, "RainbowDelimiterGreen", { fg = c.vscBlueGreen })
+	hl(0, "RainbowDelimiterGreen", { fg = c.vscGreen })
 	hl(0, "RainbowDelimiterViolet", { fg = c.vscViolet })
 	hl(0, "RainbowDelimiterCyan", { fg = c.vscMediumBlue })
 end
