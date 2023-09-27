@@ -794,7 +794,7 @@ function ShowCursorVariableValue()
 	vim.api.nvim_buf_set_lines(buf, 0, -1, true, { value })
 	local win = vim.api.nvim_open_win(buf, false, {
 		relative = "cursor",
-		width = #value,
+		width = math.max(#value, 8),
 		height = 1,
 		col = 0,
 		row = 1,
