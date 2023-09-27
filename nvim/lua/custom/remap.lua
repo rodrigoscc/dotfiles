@@ -159,11 +159,7 @@ local function my_cr()
 	then
 		return quote .. "<CR>" .. quote
 	else
-		local input = npairs.autopairs_cr()
-		local keys = vim.api.nvim_replace_termcodes(input, true, false, true)
-		vim.api.nvim_feedkeys(keys, "n", false)
-
-		return "<Ignore>"
+		return npairs.autopairs_cr()
 	end
 end
 
@@ -251,7 +247,7 @@ vim.api.nvim_create_autocmd("FileType", {
 			else
 				return my_cr()
 			end
-		end, { buffer = true, expr = true })
+		end, { buffer = true, expr = true, noremap = true })
 	end,
 })
 
