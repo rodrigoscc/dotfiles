@@ -43,6 +43,7 @@ local request_content_query = vim.treesitter.query.parse(
 [
  (header) @header
  (json_body) @json_body
+ (url_encoded_body) @url_encoded_body
  (method_url) @next_request
 ]
 ]]
@@ -299,6 +300,8 @@ local function get_request_content(request, source, source_type)
 				-- Checking if json_body is null to make sure we're not replacing
 				-- the body with a nested json.
 				content.json_body = capture_value
+			elseif capture_name == "url_encoded_body" then
+				content.url_encoded_body = capture_value
 			end
 		end
 	end
@@ -383,6 +386,9 @@ local function get_raw_request_content(request)
 	if request.content.json_body ~= nil then
 		raw_content.json_body =
 			interp(request.content.json_body, request.context)
+	elseif request.content.url_encoded_body ~= nil then
+		raw_content.url_encoded_body =
+			interp(request.content.url_encoded_body, request.context)
 	end
 
 	if request.content.headers ~= nil then
@@ -412,6 +418,9 @@ local function request_to_job(request, on_exit)
 	if request.json_body ~= nil then
 		table.insert(args, "--data")
 		table.insert(args, minify_json(request.json_body))
+	elseif request.url_encoded_body ~= nil then
+		table.insert(args, "--data")
+		table.insert(args, request.url_encoded_body)
 	end
 
 	if request.headers ~= nil then
@@ -794,11 +803,14 @@ function ShowCursorVariableValue()
 		border = "single",
 	})
 
-	vim.api.nvim_create_autocmd({ "WinEnter", "CursorMoved" }, {
+	vim.api.nvim_create_autocmd({ "WinLeave", "CursorMoved" }, {
 		callback = function()
-			vim.api.nvim_win_close(win, false)
+			if vim.api.nvim_win_is_valid(win) then -- Needed in case window is already closed.
+				vim.api.nvim_win_close(win, false)
+			end
 		end,
 		once = true,
+		buffer = 0,
 	})
 end
 
