@@ -116,6 +116,13 @@ vim.keymap.set(
 	{ desc = "[i]nsert [s]nippet" }
 )
 
+vim.keymap.set(
+	"n",
+	"<leader>D",
+	"<cmd>Telescope diagnostics<cr>",
+	{ desc = "[D]iagnostics" }
+)
+
 local function open_file_at_startup(data)
 	local directory = vim.fn.isdirectory(data.file) == 1
 
