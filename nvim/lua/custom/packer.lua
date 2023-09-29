@@ -136,9 +136,10 @@ return require("packer").startup(function(use)
 	use({
 		"lukas-reineke/indent-blankline.nvim",
 		config = function()
-			vim.cmd(
-				"let g:indent_blankline_buftype_exclude = ['terminal', 'quickfix', 'prompt']"
-			)
+			require("ibl").setup({
+				indent = { char = "│" },
+				scope = { enabled = false },
+			})
 		end,
 	})
 
