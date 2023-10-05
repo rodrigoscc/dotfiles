@@ -12,6 +12,7 @@ local filetype_extension = {
 	yaml = ".yml",
 	text = ".txt",
 	csv = ".csv",
+	sql = ".sql",
 }
 
 local function new_scratch()
