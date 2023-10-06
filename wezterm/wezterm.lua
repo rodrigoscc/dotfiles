@@ -149,6 +149,15 @@ local config = {
 				act.SendKey({ key = "l" }),
 			}),
 		},
+		-- copy mode
+		{
+			key = "C",
+			mods = "CMD",
+			action = act.Multiple({
+				act.SendKey({ key = "b", mods = "CTRL" }),
+				act.SendKey({ key = "[" }),
+			}),
+		},
 		-- window cycling
 		{
 			key = "l",
