@@ -151,7 +151,7 @@ local config = {
 		},
 		-- copy mode
 		{
-			key = "C",
+			key = "f",
 			mods = "CMD",
 			action = act.Multiple({
 				act.SendKey({ key = "b", mods = "CTRL" }),
