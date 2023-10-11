@@ -3,6 +3,7 @@ local loaders = require("luasnip.loaders")
 
 ls.setup({
 	enable_autosnippets = true,
+	update_events = { "TextChanged", "TextChangedI" },
 })
 
 local load = require("luasnip.loaders.from_lua").load
@@ -31,6 +32,11 @@ vim.keymap.set({ "i", "s" }, "<C-h>", function()
 	end
 end, { desc = "previous snippet choice" })
 
-vim.keymap.set("n", "<leader>es", loaders.edit_snippet_files, { desc = "[e]dit [s]nippets" })
+vim.keymap.set(
+	"n",
+	"<leader>es",
+	loaders.edit_snippet_files,
+	{ desc = "[e]dit [s]nippets" }
+)
 
 load({ paths = "./snippets" })
