@@ -412,6 +412,7 @@ local function request_to_job(request, on_exit)
 
 	local args = {
 		"--include",
+		"--location",
 		"--no-progress-meter",
 	}
 
@@ -445,7 +446,7 @@ end
 local function get_body_file_type(headers)
 	local body_file_type = DEFAULT_BODY_TYPE
 
-	local content_type = headers["Content-Type"]
+	local content_type = headers["Content-Type"] or headers["content-type"]
 	if content_type == nil then
 		return body_file_type
 	end
@@ -467,10 +468,14 @@ end
 local function parse_http_headers_lines(headers_lines)
 	local parsed_headers = {}
 	for _, header_line in ipairs(headers_lines) do
-		local name, value = unpack(vim.split(header_line, ": "))
-		-- NOTE: Header lines lacking ": " will have a value of nil, therefore
-		-- will be ignored (header[name) = nil).
-		parsed_headers[name] = value
+		local is_a_header_line = not vim.startswith(header_line, "HTTP/")
+
+		if is_a_header_line then
+			local name, value = unpack(vim.split(header_line, ": "))
+			-- NOTE: Header lines lacking ": " will have a value of nil, therefore
+			-- will be ignored (header[name) = nil).
+			parsed_headers[name] = value
+		end
 	end
 
 	return parsed_headers
@@ -503,8 +508,9 @@ local function parse_job_results(return_value, result, stderr_result)
 		local is_empty_line = line == ""
 		if is_empty_line then
 			separation_line = index
-			-- First empty line is the separation line between headers and body.
-			break
+			-- Last empty line is the separation line between headers and body.
+			-- Using last empty line to handle redirects which return more than
+			-- one group of headers.
 		end
 	end
 
@@ -512,8 +518,7 @@ local function parse_job_results(return_value, result, stderr_result)
 		error("Unable to parse curl response")
 	end
 
-	-- Starting at 1 to drop the http version line, like "HTTP/1.1 200 OK".
-	local headers_lines = vim.list_slice(result, 1, separation_line - 1)
+	local headers_lines = vim.list_slice(result, 0, separation_line - 1)
 	local body_lines = vim.list_slice(result, separation_line + 1, #result)
 
 	local parsed_headers = parse_http_headers_lines(headers_lines)
