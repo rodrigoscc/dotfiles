@@ -471,7 +471,11 @@ local function parse_http_headers_lines(headers_lines)
 		local is_a_header_line = not vim.startswith(header_line, "HTTP/")
 
 		if is_a_header_line then
-			local name, value = unpack(vim.split(header_line, ": "))
+			local name, value = unpack(vim.split(header_line, ":"))
+
+			name = vim.trim(name)
+			value = vim.trim(value)
+
 			-- NOTE: Header lines lacking ": " will have a value of nil, therefore
 			-- will be ignored (header[name) = nil).
 			parsed_headers[name] = value
@@ -784,7 +788,8 @@ function ShowCursorVariableValue()
 		return
 	end
 
-	local node_text = vim.treesitter.get_node_text(node, vim.fn.bufnr())
+	local node_text =
+		vim.trim(vim.treesitter.get_node_text(node, vim.fn.bufnr()))
 	local variable_name = string.sub(node_text, 3, #node_text - 2)
 
 	local request = get_closest_request()
