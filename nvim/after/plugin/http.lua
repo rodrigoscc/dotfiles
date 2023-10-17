@@ -91,6 +91,7 @@ end
 
 vim.g.http_dir = ".http"
 vim.g.http_hooks_file = "hooks.lua"
+vim.g.http_environments_file = "environments.json"
 
 local function create_file(filename, mode)
 	local dir = vim.fs.dirname(filename)
@@ -140,7 +141,9 @@ function GetProjectEnv()
 end
 
 local function get_envs_file(mode)
-	local project_envs_file = vim.g.http_dir .. "/environments.json"
+	local project_envs_file = vim.g.http_dir
+		.. "/"
+		.. vim.g.http_environments_file
 
 	local envs_file, err = open(project_envs_file, mode)
 	if err ~= nil then
@@ -675,6 +678,15 @@ function ChangeEnv()
 	)
 end
 
+local function jump_to_env(env)
+	vim.fn.search('"' .. env .. '"')
+end
+
+local function open_env(env)
+	vim.cmd("split " .. vim.g.http_dir .. "/" .. vim.g.http_environments_file)
+	jump_to_env(env)
+end
+
 function NewProjectEnv()
 	vim.fn.mkdir(vim.g.http_dir, "p")
 	vim.ui.input({ prompt = "New environment" }, function(input)
@@ -694,14 +706,9 @@ function NewProjectEnv()
 			file:write(new_envs_file_contents)
 		end)
 
-		vim.cmd([[split ]] .. vim.g.http_dir .. "/environments.json")
+		open_env(input)
 		update_project_env(input)
 	end)
-end
-
-local function open_env(env)
-	vim.cmd("split " .. vim.g.http_dir .. "/environments.json")
-	vim.fn.search('"' .. env .. '"')
 end
 
 function OpenProjectEnv()
