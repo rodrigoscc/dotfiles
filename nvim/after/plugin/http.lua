@@ -89,7 +89,7 @@ local function request_title(request)
 	end
 end
 
-vim.g.http_envs_dir = ".envs"
+vim.g.http_dir = ".http"
 vim.g.http_hooks_file = "hooks.lua"
 
 local function create_file(filename, mode)
@@ -104,7 +104,7 @@ local function create_file(filename, mode)
 	return open(filename, mode)
 end
 
-local function get_envs_file(mode)
+local function get_projects_envs_file(mode)
 	local data_path = vim.fn.stdpath("data")
 	local envs_file_path = data_path .. "/http/envs.json"
 
@@ -123,15 +123,15 @@ local function get_envs_file(mode)
 	return envs_file
 end
 
-local function get_envs()
-	local contents = with(get_envs_file("r"), function(reader)
+local function get_projects_envs()
+	local contents = with(get_projects_envs_file("r"), function(reader)
 		return reader:read("*a")
 	end)
 	return vim.json.decode(contents)
 end
 
 function GetProjectEnv()
-	local envs = get_envs()
+	local envs = get_projects_envs()
 	if envs == nil then
 		error("Unable to get project environments")
 	end
@@ -139,17 +139,17 @@ function GetProjectEnv()
 	return envs[vim.fn.getcwd()]
 end
 
-local function get_env_file(env, mode)
-	local project_env_file = vim.g.http_envs_dir .. "/" .. env .. ".json"
+local function get_envs_file(mode)
+	local project_envs_file = vim.g.http_dir .. "/environments.json"
 
-	local env_file, err = open(project_env_file, mode)
+	local envs_file, err = open(project_envs_file, mode)
 	if err ~= nil then
 		vim.api.nvim_err_writeln(
-			"Unable to open env file " .. project_env_file .. ": " .. err
+			"Unable to open env file " .. project_envs_file .. ": " .. err
 		)
 	end
 
-	return env_file
+	return envs_file
 end
 
 local function get_context_from_env()
@@ -158,14 +158,16 @@ local function get_context_from_env()
 		return {}
 	end
 
-	local env_file_contents = with(
-		get_env_file(project_env, "r"),
-		function(reader)
-			return reader:read("*a")
-		end
-	)
+	local envs_file_contents = with(get_envs_file("r"), function(reader)
+		return reader:read("*a")
+	end)
 
-	return vim.json.decode(env_file_contents)
+	local envs = vim.json.decode(envs_file_contents)
+	if envs == nil then
+		return {}
+	end
+
+	return envs[project_env]
 end
 
 local function get_source_parser(source, source_type)
@@ -593,8 +595,16 @@ local function on_curl_exit(request, result)
 	end)
 end
 
+local function format_if_jq_installed(json)
+	if vim.fn.executable("jq") == 1 then
+		return vim.fn.system("jq --sort-keys '.' <<< '" .. json .. "'")
+	else
+		return json
+	end
+end
+
 local function update_project_env(env)
-	local contents = with(get_envs_file("r"), function(reader)
+	local contents = with(get_projects_envs_file("r"), function(reader)
 		return reader:read("*a")
 	end)
 
@@ -602,44 +612,53 @@ local function update_project_env(env)
 
 	envs[vim.fn.getcwd()] = env
 
-	with(get_envs_file("w+"), function(file)
+	with(get_projects_envs_file("w+"), function(file)
 		local envs_file_updated = vim.json.encode(envs)
+
+		envs_file_updated = format_if_jq_installed(envs_file_updated)
+
 		file:write(envs_file_updated)
 	end)
 end
 
 local function update_env(env_name)
 	return function(tbl)
-		local env_file_contents = with(
-			get_env_file(env_name, "r"),
-			function(reader)
-				return reader:read("*a")
-			end
-		)
+		local envs_file_contents = with(get_envs_file("r"), function(reader)
+			return reader:read("*a")
+		end)
 
-		local env = vim.json.decode(env_file_contents)
+		local envs = vim.json.decode(envs_file_contents)
+
+		local env = envs[env_name]
+
 		env = vim.tbl_extend("force", env, tbl)
 
-		local new_env_file_contents = vim.json.encode(env)
+		envs[env_name] = env
 
-		with(get_env_file(env_name, "w+"), function(file)
-			file:write(new_env_file_contents)
+		local new_envs_file_contents = vim.json.encode(envs)
+
+		vim.schedule(function()
+			new_envs_file_contents =
+				format_if_jq_installed(new_envs_file_contents)
+
+			with(get_envs_file("w+"), function(file)
+				file:write(new_envs_file_contents)
+			end)
 		end)
-		-- TODO: format json
 	end
 end
 
 local function get_available_envs()
-	local available_envs = {}
+	local envs_file_contents = with(get_envs_file("r"), function(reader)
+		return reader:read("*a")
+	end)
 
-	for file in vim.fs.dir(vim.g.http_envs_dir) do
-		if vim.endswith(file, ".json") then
-			local env_name = string.sub(file, 0, -6)
-			table.insert(available_envs, env_name)
-		end
+	local envs = vim.json.decode(envs_file_contents)
+	if envs == nil then
+		return {}
 	end
 
-	return available_envs
+	return vim.tbl_keys(envs)
 end
 
 function ChangeEnv()
@@ -657,17 +676,32 @@ function ChangeEnv()
 end
 
 function NewProjectEnv()
-	vim.fn.mkdir(vim.g.http_envs_dir, "p")
+	vim.fn.mkdir(vim.g.http_dir, "p")
 	vim.ui.input({ prompt = "New environment" }, function(input)
-		local env_file = input .. ".json"
-		vim.cmd([[split ]] .. vim.g.http_envs_dir .. "/" .. env_file)
-		-- TODO: Automatically populate an empty json and activate this env.
+		local contents = with(get_envs_file("r"), function(reader)
+			return reader:read("*a")
+		end)
+
+		local envs = vim.json.decode(contents)
+
+		envs[input] = vim.empty_dict()
+
+		local new_envs_file_contents = vim.json.encode(envs)
+
+		new_envs_file_contents = format_if_jq_installed(new_envs_file_contents)
+
+		with(get_envs_file("w+"), function(file)
+			file:write(new_envs_file_contents)
+		end)
+
+		vim.cmd([[split ]] .. vim.g.http_dir .. "/environments.json")
+		update_project_env(input)
 	end)
 end
 
 local function open_env(env)
-	local env_file = vim.g.http_envs_dir .. "/" .. env .. ".json"
-	vim.cmd("split " .. env_file)
+	vim.cmd("split " .. vim.g.http_dir .. "/environments.json")
+	vim.fn.search('"' .. env .. '"')
 end
 
 function OpenProjectEnv()
@@ -681,7 +715,7 @@ function OpenProjectEnv()
 end
 
 local function get_hooks(before_hook, after_hook)
-	local hooks_path = Path:new(vim.g.http_envs_dir, vim.g.http_hooks_file)
+	local hooks_path = Path:new(vim.g.http_dir, vim.g.http_hooks_file)
 
 	if not hooks_path:exists() then
 		return nil, nil
@@ -774,7 +808,7 @@ function RunClosestRequest()
 end
 
 function OpenHooksFile()
-	local hooks_path = Path:new(vim.g.http_envs_dir, vim.g.http_hooks_file)
+	local hooks_path = Path:new(vim.g.http_dir, vim.g.http_hooks_file)
 	vim.cmd([[split ]] .. hooks_path:absolute())
 end
 
