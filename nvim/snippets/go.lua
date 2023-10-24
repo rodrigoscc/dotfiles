@@ -126,18 +126,16 @@ return {
 	postfix(
 		{ trig = ".nn", match_pattern = "[%w%.%_%-]+%(.*%)$" },
 		d(1, function(_, parent)
+			local match = parent.snippet.env.POSTFIX_MATCH:gsub("{", "{{")
+			match = match:gsub("}", "}}")
+
 			return sn(
 				nil,
-				fmt(
-					[[if err := ]]
-						.. parent.snippet.env.POSTFIX_MATCH
-						.. [[; err != nil {{
+				fmt([[if err := ]] .. match .. [[; err != nil {{
 	{}
-}}]],
-					{
-						i(1, ""),
-					}
-				)
+}}]], {
+					i(1, ""),
+				})
 			)
 		end)
 	),
