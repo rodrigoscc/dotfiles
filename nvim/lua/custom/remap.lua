@@ -142,7 +142,7 @@ local function my_cr()
 
 	local cursor_node = ts_utils.get_node_at_cursor()
 	if cursor_node == nil then
-		return "<Ignore>"
+		return
 	end
 
 	local node_type = cursor_node:type()
@@ -166,8 +166,6 @@ local function my_cr()
 	else
 		local input = npairs.autopairs_cr()
 		vim.api.nvim_feedkeys(input, "n", false)
-
-		return "<Ignore>"
 	end
 end
 
@@ -251,11 +249,10 @@ vim.api.nvim_create_autocmd("FileType", {
 		vim.keymap.set("i", "<c-m>", function()
 			if cmp.visible() then
 				cmp.confirm({ select = false })
-				return "<Ignore>"
 			else
-				return my_cr()
+				my_cr()
 			end
-		end, { buffer = true, expr = true })
+		end, { buffer = true })
 	end,
 })
 
