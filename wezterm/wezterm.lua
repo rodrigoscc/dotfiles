@@ -6,7 +6,7 @@ local config = {
 	font = wezterm.font({
 		family = "JetbrainsMono Nerd Font",
 	}),
-	line_height = 1.2,
+	line_height = 1.15,
 	font_size = 13.0,
 	window_frame = {
 		font = wezterm.font({ family = "JetbrainsMono Nerd Font" }),
