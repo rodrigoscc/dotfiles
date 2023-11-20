@@ -36,6 +36,7 @@ lsp.setup_nvim_cmp({
 		{ name = "nvim_lsp" },
 		{ name = "buffer", keyword_length = 3 },
 		{ name = "luasnip", keyword_length = 2 },
+		{ name = "orgmode" },
 	},
 	window = {
 		completion = {
