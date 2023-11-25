@@ -13,7 +13,6 @@ require("nvim-treesitter.configs").setup({
 		"regex",
 		"sql",
 		"json",
-		"org",
 		"vim",
 		"help",
 	},
