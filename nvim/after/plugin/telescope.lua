@@ -56,10 +56,6 @@ vim.keymap.set("n", "<leader>ff", function()
 	builtin.find_files({ no_ignore = true, hidden = true })
 end, { desc = "[f]ind all [f]iles" })
 
-vim.keymap.set("n", "<leader>of", function()
-	builtin.find_files({ cwd = "~/org/" })
-end, { desc = "[o]rg mode [f]iles find" })
-
 vim.keymap.set("n", "<leader>ht", builtin.help_tags, { desc = "[h]elp [t]ags" })
 vim.keymap.set(
 	"n",

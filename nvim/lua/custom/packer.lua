@@ -474,34 +474,4 @@ return require("packer").startup(function(use)
 	})
 
 	use({ "Mofiqul/vscode.nvim" })
-
-	use({
-		"nvim-orgmode/orgmode",
-		config = function()
-			require("orgmode").setup_ts_grammar()
-
-			require("orgmode").setup({
-				org_agenda_files = { "~/org/*" },
-				org_todo_keywords = {
-					"TODO(t)",
-					"IN_PROGRESS(i)",
-					"BLOCKED(b)",
-					"IN_REVIEW(r)",
-					"|",
-					"DONE(d)",
-					"CANCELED(c)",
-				},
-				org_todo_keyword_faces = {
-					IN_PROGRESS = ":foreground orange",
-					IN_REVIEW = ":foreground #FFF261",
-					BLOCKED = ":foreground red",
-					TODO = ":foreground #7CFC00",
-					DONE = ":foreground gray",
-					CANCELED = ":foreground gray",
-				},
-				org_default_notes_file = "~/org/refile.org",
-				org_startup_folded = "showeverything",
-			})
-		end,
-	})
 end)
