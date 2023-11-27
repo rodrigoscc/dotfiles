@@ -419,6 +419,8 @@ local function request_to_job(request, on_exit)
 		"--include",
 		"--location",
 		"--no-progress-meter",
+		"--write-out",
+		"\n%{size_header}", -- Used to split header from body when parsing
 	}
 
 	if request.json_body ~= nil then
@@ -496,6 +498,28 @@ local function parse_status_code(status_code_line)
 	return tonumber(splits[2])
 end
 
+local function split_header_and_body(result)
+	local last_line = result[#result]
+	local header_size = tonumber(last_line)
+
+	for index, line in ipairs(result) do
+		header_size = header_size - #line - 2 -- new line characters \r\n
+
+		if header_size <= 0 then
+			local separation_line = index
+
+			local headers_lines = vim.list_slice(result, 0, separation_line - 1) -- Exclude empty line
+			local body_lines =
+				vim.list_slice(result, separation_line + 1, #result - 1) -- Exclude header size line and empty line
+
+			return headers_lines, body_lines
+		end
+	end
+
+	-- All the output is headers
+	return result, {}
+end
+
 local function parse_job_results(return_value, result, stderr_result)
 	if return_value ~= 0 then
 		vim.list_extend(result, stderr_result)
@@ -511,24 +535,7 @@ local function parse_job_results(return_value, result, stderr_result)
 		}
 	end
 
-	local separation_line = nil
-
-	for index, line in ipairs(result) do
-		local is_empty_line = line == ""
-		if is_empty_line then
-			separation_line = index
-			-- Last empty line is the separation line between headers and body.
-			-- Using last empty line to handle redirects which return more than
-			-- one group of headers.
-		end
-	end
-
-	if separation_line == nil then
-		error("Unable to parse curl response")
-	end
-
-	local headers_lines = vim.list_slice(result, 0, separation_line - 1)
-	local body_lines = vim.list_slice(result, separation_line + 1, #result)
+	local headers_lines, body_lines = split_header_and_body(result)
 
 	local parsed_headers = parse_http_headers_lines(headers_lines)
 
