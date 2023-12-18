@@ -52,7 +52,7 @@ vim.api.nvim_set_hl(0, "DapStoppedLine", { ctermbg = 0, bg = "#31353f" })
 
 vim.fn.sign_define(
 	"DapBreakpoint",
-	{ text = "", texthl = "DapBreakpoint", numhl = "DapBreakpoint" }
+	{ text = "", texthl = "DapBreakpoint", numhl = "DapBreakpoint" }
 )
 vim.fn.sign_define(
 	"DapBreakpointCondition",

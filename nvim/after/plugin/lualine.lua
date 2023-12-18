@@ -119,7 +119,7 @@ local function mode_color()
 	return { fg = mode_color[vim.fn.mode()], gui = "bold" }
 end
 
-ins_left({ "mode", icon = "", color = mode_color })
+ins_left({ "mode", icon = "", color = mode_color })
 
 ins_left({
 	"branch",
