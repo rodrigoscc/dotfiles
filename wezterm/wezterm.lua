@@ -2,7 +2,7 @@ local wezterm = require("wezterm")
 local act = wezterm.action
 
 local config = {
-	color_scheme = "Tokyo Night",
+	color_scheme = "Vs Code Dark+ (Gogh)",
 	font = wezterm.font({
 		family = "JetbrainsMono Nerd Font",
 	}),
