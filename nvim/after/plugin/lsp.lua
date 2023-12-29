@@ -11,6 +11,21 @@ lsp.ensure_installed({
 	"bashls",
 })
 
+local mason_ensure_installed = {
+	"isort",
+	"black",
+	"autoflake",
+	"flake8",
+	"prettier",
+	"stylua",
+	"goimports",
+}
+
+-- Ensure installed for formatters and diagnostics
+vim.api.nvim_create_user_command("MasonInstallAll", function()
+	vim.cmd("MasonInstall " .. table.concat(mason_ensure_installed, " "))
+end, {})
+
 local cmp_mappings = lsp.defaults.cmp_mappings()
 
 cmp_mappings["<S-Tab>"] = nil
@@ -25,9 +40,6 @@ cmp_mappings["<Tab>"] = cmp.mapping.confirm({
 	behavior = cmp.ConfirmBehavior.Replace,
 	select = true,
 })
-
-local cmp_autopairs = require("nvim-autopairs.completion.cmp")
-cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
 
 lsp.setup_nvim_cmp({
 	mapping = cmp_mappings,
@@ -103,22 +115,7 @@ lsp.on_attach(function(client, bufnr)
 		{ desc = "[c]ode [a]ction" }
 	)
 	vim.keymap.set({ "n", "v" }, "<leader>bf", function()
-		local active_clients = vim.lsp.get_active_clients()
-		local is_null_ls_attached = false
-		for _, client in pairs(active_clients) do
-			if client.name == "null-ls" then
-				is_null_ls_attached = true
-			end
-		end
-
-		local filter_func = nil
-		if is_null_ls_attached then
-			filter_func = function(client)
-				return client.name == "null-ls"
-			end
-		end
-
-		vim.lsp.buf.format({ filter = filter_func })
+		require("conform").format({ bufnr = bufnr })
 	end, { desc = "[b]uffer [f]ormat" })
 
 	vim.keymap.set("n", "]d", function()
@@ -149,95 +146,21 @@ lsp.configure("pyright", {
 -- lsp.nvim_workspace()
 --
 
-vim.g.format_on_save = true
-local function enable_format_on_save()
-	lsp.format_on_save({
-		format_opts = {
-			timeout_ms = 10000,
-		},
-		servers = {
-			["null-ls"] = {
-				"javascript",
-				"javascriptreact",
-				"typescript",
-				"typescriptreact",
-				"lua",
-				"python",
-				"go",
-				"vue",
-			},
-		},
-	})
-	-- Reattach LSP
-	vim.cmd.edit()
-	vim.g.format_on_save = true
-end
-
-local function disable_format_on_save()
-	vim.api.nvim_clear_autocmds({ group = "lsp_zero_format" })
-	vim.api.nvim_clear_autocmds({ group = "lsp_zero_format_setup" })
-	vim.g.format_on_save = false
-end
-
-vim.keymap.set("n", "<leader>tF", function()
-	if vim.g.format_on_save then
-		disable_format_on_save()
+local function toggle_format_on_save()
+	if vim.g.disable_autoformat then
+		vim.g.disable_autoformat = false
 	else
-		enable_format_on_save()
+		vim.g.disable_autoformat = true
 	end
-end, { desc = "[t]oggle [F]ormat on save" })
+end
 
-enable_format_on_save()
+vim.keymap.set("n", "<leader>tf", function()
+	toggle_format_on_save()
+end, { desc = "[t]oggle [f]ormat on save" })
+
 lsp.setup()
 
 vim.diagnostic.config({
 	virtual_text = true,
 	signs = false,
-})
-
-local null_ls = require("null-ls")
-
-null_ls.setup({
-	sources = {
-		-- Python:
-		-- Important to execute isort before black.
-		null_ls.builtins.formatting.isort.with({
-			extra_args = { "--profile", "black" },
-		}),
-		null_ls.builtins.formatting.black.with({
-			extra_args = { "--line-length=79" },
-		}),
-		null_ls.builtins.formatting.autoflake.with({
-			extra_args = { "--remove-all-unused-imports" },
-		}),
-		null_ls.builtins.diagnostics.flake8.with({
-			prefer_local = ".venv/bin",
-			extra_args = {
-				"--max-line-length=80",
-				"--extend-ignore=E1,W1,E2,W2,E3,W3,E4,W4,E5,W5", -- no formatting rules, black handles it
-			},
-		}),
-		-- Javascript and Typescript.
-		null_ls.builtins.formatting.prettier.with({
-			extra_args = { "--tab-width=4" },
-		}),
-		-- Go:
-		null_ls.builtins.formatting.gofmt,
-		-- Lua:
-		null_ls.builtins.formatting.stylua.with({
-			extra_args = { "--column-width=80" },
-		}),
-	},
-})
-
-require("mason-null-ls").setup({
-	ensure_installed = {
-		"black",
-		"isort",
-		"stylua",
-		"prettier",
-		"autoflake",
-		"flake8",
-	},
-	automatic_installation = true,
 })

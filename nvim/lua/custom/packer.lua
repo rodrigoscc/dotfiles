@@ -48,18 +48,6 @@ return require("packer").startup(function(use)
 	})
 
 	use({
-		"windwp/nvim-autopairs",
-		config = function()
-			local npairs = require("nvim-autopairs")
-			npairs.setup({
-				fast_wrap = {
-					map = "<C-f>",
-				},
-			})
-		end,
-	})
-
-	use({
 		"kylechui/nvim-surround",
 		tag = "*", -- Use for stability; omit to use `main` branch for the latest features
 		config = function()
@@ -378,11 +366,7 @@ return require("packer").startup(function(use)
 
 	use("onsails/lspkind.nvim")
 
-	use({
-		"williamboman/mason.nvim",
-		"jose-elias-alvarez/null-ls.nvim",
-		"jay-babu/mason-null-ls.nvim",
-	})
+	use({ "williamboman/mason.nvim" })
 
 	use({
 		"stevearc/dressing.nvim",
@@ -466,12 +450,80 @@ return require("packer").startup(function(use)
 		end,
 	})
 
+	use({ "Mofiqul/vscode.nvim" })
+
 	use({
-		"sainnhe/gruvbox-material",
+		"stevearc/conform.nvim",
 		config = function()
-			vim.cmd([[let g:gruvbox_material_background = "hard"]])
+			require("conform").setup({
+				format_on_save = function(bufnr)
+					if vim.g.disable_autoformat then
+						return
+					end
+
+					return { timeout_ms = 500, lsp_fallback = true }
+				end,
+				formatters_by_ft = {
+					lua = { "stylua" },
+					python = {
+						"isort",
+						"autoflake",
+						"black",
+					},
+					javascript = { "prettier" },
+					typescript = { "prettier" },
+					go = { "goimports", "gofmt" },
+				},
+				formatters = {
+					stylua = {
+						prepend_args = { "--column-width=80" },
+					},
+					isort = {
+						prepend_args = { "--profile", "black" },
+					},
+					black = {
+						prepend_args = { "--line-length=79" },
+					},
+					autoflake = {
+						prepend_args = { "--remove-all-unused-imports" },
+					},
+					prettier = {
+						prepend_args = { "--tab-width", "4" },
+					},
+				},
+			})
 		end,
 	})
 
-	use({ "Mofiqul/vscode.nvim" })
+	use({
+		"mfussenegger/nvim-lint",
+		config = function()
+			require("lint").linters_by_ft = {
+				python = { "flake8" },
+			}
+
+			vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+				callback = function()
+					require("lint").try_lint()
+				end,
+			})
+		end,
+	})
+
+	use({
+		"altermo/ultimate-autopair.nvim",
+		branch = "v0.6",
+		config = function()
+			require("ultimate-autopair").setup({
+				fastwarp = {
+					map = "<C-f>",
+					rmap = "<C-r>",
+					cmap = "<C-f>",
+					rcmap = "<C-r>",
+				},
+			})
+		end,
+	})
+
+	use({ "catppuccin/nvim", as = "catppuccin" })
 end)

@@ -79,6 +79,20 @@ return {
 			}
 		)
 	),
+	s(
+		"rnil",
+		fmt([[require.Nil(t, {}, "{}")]], {
+			i(1, "err"),
+			i(2, "must succeed"),
+		})
+	),
+	s(
+		"fmte",
+		fmt([[fmt.Errorf("{}: {}", err)]], {
+			i(1),
+			i(2, "%w"),
+		})
+	),
 	postfix(
 		".pf",
 		d(1, function(_, parent)
@@ -136,6 +150,26 @@ return {
 }}]], {
 					i(1, ""),
 				})
+			)
+		end)
+	),
+	postfix(
+		".new",
+		d(1, function(_, parent)
+			return sn(
+				nil,
+				fmt(
+					[[func New]]
+						.. parent.snippet.env.POSTFIX_MATCH
+						.. [[({}){} {{
+	{}
+}}]],
+					{
+						i(1),
+						i(2),
+						i(3),
+					}
+				)
 			)
 		end)
 	),

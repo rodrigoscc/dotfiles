@@ -59,8 +59,8 @@ local config = {
 	},
 }
 
-local function format_on_save()
-	if not vim.g.format_on_save then
+local function disable_autoformat()
+	if vim.g.disable_autoformat then
 		return "󰉥"
 	end
 	return ""
@@ -173,7 +173,7 @@ end
 
 ins_right({ http_project_env, color = { fg = colors.magenta } })
 
-ins_right({ format_on_save })
+ins_right({ disable_autoformat })
 
 ins_right({ wrap })
 

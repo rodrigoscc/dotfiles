@@ -1,12 +1,13 @@
 local hl = vim.api.nvim_set_hl
 
-vim.g.colorscheme = "vscode"
+vim.g.colorscheme = "tokyonight-night"
 
 vim.cmd([[colorscheme ]] .. vim.g.colorscheme)
 
 if
 	not string.find(vim.g.colorscheme, "tokyonight")
 	and not string.find(vim.g.colorscheme, "gruvbox-material")
+	and not string.find(vim.g.colorscheme, "catppuccin")
 then
 	hl(0, "IlluminatedWordText", { bg = "#444444", underline = false })
 	hl(0, "IlluminatedWordRead", { bg = "#444444", underline = false })

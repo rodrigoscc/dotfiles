@@ -1,5 +1,6 @@
 local ts_utils = require("nvim-treesitter.ts_utils")
-local npairs = require("nvim-autopairs")
+-- local npairs = require("nvim-autopairs")
+local autopairs = require("ultimate-autopair.core")
 local cmp = require("cmp")
 
 vim.g.mapleader = " "
@@ -162,10 +163,14 @@ local function my_cr()
 		and last_three_chars ~= '"""'
 		and last_three_chars ~= "'''"
 	then
-		return quote .. "<CR>" .. quote
+		local input = quote .. "<CR>" .. quote
+		vim.api.nvim_feedkeys(
+			vim.api.nvim_replace_termcodes(input, true, false, true),
+			"n",
+			false
+		)
 	else
-		local input = npairs.autopairs_cr()
-		vim.api.nvim_feedkeys(input, "n", false)
+		vim.api.nvim_feedkeys(autopairs.run_run("\r"), "n", false)
 	end
 end
 
