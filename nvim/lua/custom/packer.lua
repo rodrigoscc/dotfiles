@@ -471,7 +471,9 @@ return require("packer").startup(function(use)
 						"black",
 					},
 					javascript = { "prettier" },
+					javascriptreact = { "prettier" },
 					typescript = { "prettier" },
+					typescriptreact = { "prettier" },
 					go = { "goimports", "gofmt" },
 				},
 				formatters = {
