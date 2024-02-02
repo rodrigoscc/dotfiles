@@ -62,8 +62,8 @@ alias ls=exa
 # bindkey '^[[B' history-substring-search-down
 
 # Home and end keys.
-bindkey "^[[D" beginning-of-line
-bindkey "^[[C" end-of-line
+bindkey "^[[1~" beginning-of-line
+bindkey "^[[4~" end-of-line
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
