@@ -364,7 +364,7 @@ return require("packer").startup(function(use)
 		requires = "nvim-treesitter/nvim-treesitter",
 	})
 
-	use("Vimjas/vim-python-pep8-indent")
+	-- use("Vimjas/vim-python-pep8-indent")
 
 	use("onsails/lspkind.nvim")
 
