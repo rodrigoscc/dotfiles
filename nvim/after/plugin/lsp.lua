@@ -86,7 +86,10 @@ lsp.on_attach(function(client, bufnr)
 	vim.keymap.set("n", "gD", vim.lsp.buf.type_definition, opts)
 	vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
 	vim.keymap.set("n", "gr", function()
-		telescope.lsp_references({ show_line = false }) -- need to see the full file name
+		telescope.lsp_references({
+			show_line = false,
+			include_declaration = false,
+		}) -- need to see the full file name
 	end, opts)
 	vim.keymap.set("n", "gy", function()
 		telescope.lsp_dynamic_workspace_symbols({
