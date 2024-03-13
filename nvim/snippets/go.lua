@@ -3,10 +3,10 @@ return {
 		"enn",
 		fmt(
 			[[if err != nil {{
-	{}
+	return {}
 }}]],
 			{
-				i(1),
+				i(1, "err"),
 			}
 		)
 	),
@@ -41,7 +41,7 @@ return {
 		"fnn",
 		fmt(
 			[[if err {} {}; err != nil {{
-	{}
+	return {}
 }}]],
 			{
 				c(1, {
@@ -49,7 +49,7 @@ return {
 					t("="),
 				}),
 				i(2, "function"),
-				i(3),
+				i(3, "err"),
 			}
 		)
 	),
@@ -146,9 +146,9 @@ return {
 			return sn(
 				nil,
 				fmt([[if err := ]] .. match .. [[; err != nil {{
-	{}
+	return {}
 }}]], {
-					i(1, ""),
+					i(1, "err"),
 				})
 			)
 		end)
