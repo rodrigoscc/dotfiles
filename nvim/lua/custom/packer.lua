@@ -520,9 +520,9 @@ return require("packer").startup(function(use)
 		config = function()
 			require("ultimate-autopair").setup({
 				fastwarp = {
-					map = "<C-f>",
+					map = "<C-h>",
 					rmap = "<C-r>",
-					cmap = "<C-f>",
+					cmap = "<C-h>",
 					rcmap = "<C-r>",
 				},
 			})
@@ -534,7 +534,7 @@ return require("packer").startup(function(use)
 	use({
 		"github/copilot.vim",
 		config = function()
-			vim.keymap.set("i", "<C-d>", 'copilot#Accept("\\<CR>")', {
+			vim.keymap.set("i", "<C-f>", 'copilot#Accept("\\<CR>")', {
 				expr = true,
 				replace_keycodes = false,
 			})
