@@ -13,8 +13,7 @@ local config = {
 	},
 	window_decorations = "INTEGRATED_BUTTONS | RESIZE",
 	window_padding = {
-		bottom = 0,
-		top = 50,
+		top = "1.5cell",
 	},
 	use_fancy_tab_bar = true,
 	enable_tab_bar = false,
