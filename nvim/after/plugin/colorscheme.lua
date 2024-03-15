@@ -1,6 +1,6 @@
 local hl = vim.api.nvim_set_hl
 
-vim.g.colorscheme = "tokyonight-night"
+vim.g.colorscheme = "rose-pine"
 
 vim.cmd([[colorscheme ]] .. vim.g.colorscheme)
 

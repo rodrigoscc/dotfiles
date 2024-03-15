@@ -41,6 +41,7 @@ return require("packer").startup(function(use)
 			{ "hrsh7th/cmp-nvim-lsp" },
 			{ "hrsh7th/cmp-buffer" },
 			{ "hrsh7th/cmp-path" },
+			{ "saadparwaiz1/cmp_luasnip" },
 
 			-- Snippets
 			{ "L3MON4D3/LuaSnip" }, -- Required
@@ -520,9 +521,9 @@ return require("packer").startup(function(use)
 		config = function()
 			require("ultimate-autopair").setup({
 				fastwarp = {
-					map = "<C-h>",
+					map = "<C-d>",
 					rmap = "<C-r>",
-					cmap = "<C-h>",
+					cmap = "<C-d>",
 					rcmap = "<C-r>",
 				},
 			})
@@ -541,5 +542,47 @@ return require("packer").startup(function(use)
 			vim.g.copilot_no_tab_map = true
 			vim.g.copilot_assume_mapped = true
 		end,
+	})
+
+	use({
+		"stevearc/oil.nvim",
+		config = function()
+			require("oil").setup({
+				default_file_explorer = false,
+				delete_to_trash = true,
+				use_default_keymaps = false,
+				keymaps = {
+					["g?"] = "actions.show_help",
+					["<CR>"] = "actions.select",
+					["<C-v>"] = "actions.select_vsplit",
+					["<C-x>"] = "actions.select_split",
+					["<C-t>"] = "actions.select_tab",
+					["<C-l>"] = "actions.preview",
+					["q"] = "actions.close",
+					["<C-R>"] = "actions.refresh",
+					["-"] = "actions.parent",
+					["_"] = "actions.open_cwd",
+					["`"] = "actions.cd",
+					["~"] = "actions.tcd",
+					["gs"] = "actions.change_sort",
+					["gx"] = "actions.open_external",
+					["g."] = "actions.toggle_hidden",
+					["g\\"] = "actions.toggle_trash",
+				},
+				float = {
+					max_width = 100,
+				},
+			})
+
+			local oil = require("oil")
+			vim.keymap.set("n", "-", function()
+				oil.open_float()
+			end, { desc = "oil" })
+		end,
+	})
+
+	use({
+		"rose-pine/neovim",
+		as = "rose-pine",
 	})
 end)
