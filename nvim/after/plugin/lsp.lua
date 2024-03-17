@@ -40,6 +40,11 @@ cmp_mappings["<Tab>"] = cmp.mapping.confirm({
 	behavior = cmp.ConfirmBehavior.Replace,
 	select = true,
 })
+cmp_mappings["<C-y>"] = nil
+cmp_mappings["<C-f>"] = nil
+cmp_mappings["<C-d>"] = nil
+cmp_mappings["<C-h>"] = cmp.mapping.scroll_docs(5)
+cmp_mappings["<C-y>"] = cmp.mapping.scroll_docs(-5)
 
 lsp.setup_nvim_cmp({
 	mapping = cmp_mappings,
