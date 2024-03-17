@@ -19,6 +19,8 @@ local mason_ensure_installed = {
 	"prettier",
 	"stylua",
 	"goimports",
+	"fixjson",
+	"sql-formatter",
 }
 
 -- Ensure installed for formatters and diagnostics
