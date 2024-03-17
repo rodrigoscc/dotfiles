@@ -323,6 +323,9 @@ require("lazy").setup({
 				go = { "goimports", "gofmt" },
 				json = { "fixjson" },
 				sql = { "sql_formatter" },
+				sh = { "beautysh" },
+				bash = { "beautysh" },
+				zsh = { "beautysh" },
 			},
 			formatters = {
 				stylua = {

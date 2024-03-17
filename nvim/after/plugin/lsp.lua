@@ -21,6 +21,7 @@ local mason_ensure_installed = {
 	"goimports",
 	"fixjson",
 	"sql-formatter",
+	"beautysh",
 }
 
 -- Ensure installed for formatters and diagnostics
