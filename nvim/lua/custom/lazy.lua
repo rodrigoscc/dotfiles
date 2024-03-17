@@ -318,6 +318,8 @@ require("lazy").setup({
 				typescript = { "prettier" },
 				typescriptreact = { "prettier" },
 				go = { "goimports", "gofmt" },
+				json = { "fixjson" },
+				sql = { "sql_formatter" },
 			},
 			formatters = {
 				stylua = {
