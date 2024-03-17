@@ -416,6 +416,10 @@ require("lazy").setup({
 		"folke/zen-mode.nvim",
 		opts = {},
 	},
+	{
+		"folke/twilight.nvim",
+		opts = {},
+	},
 	{ "echasnovski/mini.trailspace", version = "*", opts = {} },
 	{
 		"hedyhli/outline.nvim",
