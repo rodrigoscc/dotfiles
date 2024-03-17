@@ -211,6 +211,9 @@ require("lazy").setup({
 				keyword = "fg",
 				after = "",
 			},
+			gui_style = {
+				fg = "BOLD",
+			},
 		},
 	},
 	{
