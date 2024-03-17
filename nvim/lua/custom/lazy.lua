@@ -246,7 +246,6 @@ require("lazy").setup({
 		opts = { input = { relative = "editor" } },
 	},
 	{ "ThePrimeagen/harpoon" },
-	{ "simrat39/symbols-outline.nvim", opts = { autofold_depth = 1 } },
 	{ "NvChad/nvim-colorizer.lua", opts = {} },
 	{ "windwp/nvim-ts-autotag" },
 	{
@@ -409,4 +408,20 @@ require("lazy").setup({
 		opts = {},
 	},
 	{ "echasnovski/mini.trailspace", version = "*", opts = {} },
+	{
+		"hedyhli/outline.nvim",
+		config = function()
+			-- Example mapping to toggle outline
+			vim.keymap.set(
+				"n",
+				"<leader>O",
+				vim.cmd.Outline,
+				{ desc = "Toggle Outline" }
+			)
+
+			require("outline").setup({
+				-- Your setup opts here (leave empty to use defaults)
+			})
+		end,
+	},
 })
