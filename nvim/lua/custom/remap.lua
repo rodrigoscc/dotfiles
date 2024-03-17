@@ -1,12 +1,10 @@
+local lazy = require("lazy")
+
 local ts_utils = require("nvim-treesitter.ts_utils")
--- local npairs = require("nvim-autopairs")
 local autopairs = require("ultimate-autopair.core")
 local cmp = require("cmp")
 
-vim.g.mapleader = " "
-vim.g.maplocalleader = "  "
-
--- vim.keymap.set('n', '<leader>pv', vim.cmd.Ex)
+vim.keymap.set("n", "<leader>L", lazy.show, { desc = "show [l]azy" })
 
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")

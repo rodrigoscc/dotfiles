@@ -1,5 +1,9 @@
-require("custom.remap")
+vim.g.mapleader = " "
+vim.g.maplocalleader = "  "
+
+require("custom.lazy")
 require("custom.set")
+require("custom.remap")
 
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
