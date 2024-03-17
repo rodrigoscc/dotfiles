@@ -112,6 +112,9 @@ require("lazy").setup({
 					highlight = { backdrop = false },
 				},
 			},
+			label = {
+				uppercase = false,
+			},
 		},
 	},
 	{
