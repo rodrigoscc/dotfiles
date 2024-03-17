@@ -15,6 +15,7 @@ require("nvim-treesitter.configs").setup({
 		"regex",
 		"sql",
 		"json",
+		"gitcommit",
 	},
 
 	-- Install parsers synchronously (only applied to `ensure_installed`)
