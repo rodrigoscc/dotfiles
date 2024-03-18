@@ -37,11 +37,17 @@ end, {})
 vim.keymap.set("n", "<C-f>", builtin.current_buffer_fuzzy_find)
 
 vim.keymap.set("n", "<leader>/", function()
+	builtin.live_grep({
+		file_ignore_patterns = { ".git", "node_modules", "raycast" },
+	})
+end)
+
+vim.keymap.set("n", "<leader>*", function()
 	builtin.grep_string({
 		shorten_path = true,
-		word_match = "-w",
 		only_sort_text = true,
-		search = "",
+		file_ignore_patterns = { ".git", "node_modules", "raycast" },
+		word_match = "-w",
 	})
 end)
 
