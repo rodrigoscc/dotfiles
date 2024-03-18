@@ -1,8 +1,6 @@
 local lsp = require("lsp-zero").preset({ name = "recommended" })
 local cmp = require("cmp")
 
-require("neodev").setup({})
-
 lsp.ensure_installed({
 	"tsserver",
 	"gopls",
@@ -152,10 +150,6 @@ lsp.configure("pyright", {
 		},
 	},
 })
-
--- Using neodev instead.
--- lsp.nvim_workspace()
---
 
 local function toggle_format_on_save()
 	if vim.g.disable_autoformat then

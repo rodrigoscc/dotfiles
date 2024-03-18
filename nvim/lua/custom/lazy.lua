@@ -27,7 +27,7 @@ require("lazy").setup({
 	{ "nvim-treesitter/nvim-treesitter-textobjects" },
 	{ "mbbill/undotree" },
 	{ "tpope/vim-fugitive" },
-	{ "folke/neodev.nvim" },
+	{ "folke/neodev.nvim", opts = {} },
 	{
 		"VonHeikemen/lsp-zero.nvim",
 		branch = "v1.x",
