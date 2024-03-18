@@ -338,7 +338,7 @@ require("lazy").setup({
 					prepend_args = { "--profile", "black" },
 				},
 				black = {
-					prepend_args = { "--line-length=79" },
+					prepend_args = { "--line-length", "79" },
 				},
 				autoflake = {
 					prepend_args = { "--remove-all-unused-imports" },
