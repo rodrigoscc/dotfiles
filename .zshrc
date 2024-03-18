@@ -2,7 +2,7 @@
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+    source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
 export PATH=/opt/homebrew/opt/python@3.9/libexec/bin:~/.config/bin:~/go/bin:~/.local/bin:/opt/homebrew/opt/mysql-client/bin:$PATH
@@ -56,7 +56,16 @@ zstyle ':completion:*' menu select
 eval "$(zoxide init zsh)"
 
 alias v=nvim
+alias vv="nvim ."
+
 alias ls=exa
+alias ll="exa --long"
+alias lt="exa --tree --ignore-glob='node_modules|.git'"
+
+alias gs="git status"
+alias ga="git add"
+alias gc="git commit"
+alias gl="git log"
 
 # bindkey '^[[A' history-substring-search-up
 # bindkey '^[[B' history-substring-search-down
