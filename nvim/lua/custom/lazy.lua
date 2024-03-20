@@ -289,6 +289,7 @@ require("lazy").setup({
 					javascript = "rainbow-parens",
 					tsx = "rainbow-parens",
 					vue = "rainbow-parens",
+					html = "rainbow-parens",
 				},
 			}
 		end,
@@ -325,6 +326,8 @@ require("lazy").setup({
 				typescript = { "prettier" },
 				typescriptreact = { "prettier" },
 				vue = { "prettier" },
+				css = { "prettier" },
+				html = { "prettier" },
 				go = { "goimports", "gofmt" },
 				json = { "fixjson" },
 				sql = { "sql_formatter" },

@@ -16,6 +16,7 @@ require("nvim-treesitter.configs").setup({
 		"sql",
 		"json",
 		"gitcommit",
+		"html",
 		"css",
 		"vue",
 	},
