@@ -429,16 +429,6 @@ require("lazy").setup({
 	{ "echasnovski/mini.trailspace", version = "*", opts = {} },
 	{
 		"hedyhli/outline.nvim",
-		config = function()
-			-- Example mapping to toggle outline
-			vim.keymap.set(
-				"n",
-				"<leader>O",
-				vim.cmd.Outline,
-				{ desc = "Toggle Outline" }
-			)
-
-			require("outline").setup({})
-		end,
+		opts = {},
 	},
 })
