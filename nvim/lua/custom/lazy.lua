@@ -288,6 +288,7 @@ require("lazy").setup({
 				query = {
 					javascript = "rainbow-parens",
 					tsx = "rainbow-parens",
+					vue = "rainbow-parens",
 				},
 			}
 		end,
