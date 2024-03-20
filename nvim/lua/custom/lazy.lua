@@ -324,6 +324,7 @@ require("lazy").setup({
 				javascriptreact = { "prettier" },
 				typescript = { "prettier" },
 				typescriptreact = { "prettier" },
+				vue = { "prettier" },
 				go = { "goimports", "gofmt" },
 				json = { "fixjson" },
 				sql = { "sql_formatter" },
