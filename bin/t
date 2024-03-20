@@ -1,12 +1,38 @@
 #!/bin/bash
 
+switch_to_session() {
+    session_name=$1
+    if [ -n "$TMUX" ]; then
+        tmux switch-client -t "$session_name"
+    else
+        tmux attach -t "$session_name"
+    fi
+}
+
+create_session() {
+    session_name=$1
+    session_dir=$2
+
+    if [ -n "$TMUX" ]; then
+        tmux new -ds "$session_name" -c "$session_dir"
+        tmux switch-client -t "$session_name"
+    else
+        tmux new -s "$session_name" -c "$session_dir"
+    fi
+}
+
 dirs=`zoxide query --list | grep "Code\|.config"`
 
 default_session_name="default"
 
 tmux_sessions=`tmux list-sessions -F "#S"`
 
-selected=`echo -e "$default_session_name\n$tmux_sessions\n$dirs" | fzf-tmux -w 60% -h 50%`
+all_entries=`echo -e "$default_session_name\n$tmux_sessions\n$dirs"`
+
+# Remove tmux sessions duplicates (e.g. default session may be duplicate if a session already exists.)
+all_entries=`echo -e "$all_entries" | awk '!seen[$0]++'`
+
+selected=`echo -e "$all_entries" | fzf-tmux -w 60% -h 50%`
 if [ -z "$selected" ]; then
     exit 0
 fi
@@ -22,20 +48,17 @@ fi
 if ! pgrep -x "tmux" > /dev/null; then
     tmux new -s "$session_name" -c "$selected"
 else
-    # If it is a directory.
-    if [ "${selected:0:1}" == "/" ]; then
-        if [ -n "$TMUX" ]
-        then
-            tmux new -ds "$session_name" -c "$selected"
-            tmux switch-client -t "$session_name"
+    if [ $session_name == "default" ]; then
+        default_session_is_created=`echo "$tmux_sessions" | grep -c "$default_session_name"`
+
+        if [ $default_session_is_created == 0 ]; then
+            create_session "$default_session_name" "$selected"
         else
-            tmux new -s "$session_name" -c "$selected"
+            switch_to_session "$session_name"
         fi
+    elif [ "${selected:0:1}" == "/" ]; then # If it is a directory.
+        create_session "$session_name" "$selected"
     else
-        if [ -n "$TMUX" ]; then
-            tmux switch-client -t "$session_name"
-        else
-            tmux attach -t "$session_name"
-        fi
+        switch_to_session "$session_name"
     fi
 fi
