@@ -230,6 +230,7 @@ require("lazy").setup({
 					"TelescopePrompt",
 					"DiffviewFiles",
 					"NeogitStatus",
+					"Outline",
 				},
 			})
 		end,
