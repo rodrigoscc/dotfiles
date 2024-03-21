@@ -3,8 +3,9 @@ local act = wezterm.action
 
 local config = {
 	color_scheme = "rose-pine",
-	font = wezterm.font({
-		family = "JetbrainsMono Nerd Font",
+	font = wezterm.font_with_fallback({
+		"JetbrainsMono Nerd Font",
+		"JetbrainsMono",
 	}),
 	line_height = 1.15,
 	font_size = 13.0,
