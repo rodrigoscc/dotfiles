@@ -61,3 +61,5 @@ vim.api.nvim_create_autocmd("FileType", {
 		vim.bo.formatexpr = ""
 	end,
 })
+
+vim.opt.conceallevel = 1

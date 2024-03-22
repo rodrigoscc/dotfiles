@@ -19,6 +19,7 @@ require("nvim-treesitter.configs").setup({
 		"html",
 		"css",
 		"vue",
+		"markdown",
 	},
 
 	-- Install parsers synchronously (only applied to `ensure_installed`)

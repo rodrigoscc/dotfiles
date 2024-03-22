@@ -437,4 +437,20 @@ require("lazy").setup({
 		"hedyhli/outline.nvim",
 		opts = {},
 	},
+	{
+		"epwalsh/obsidian.nvim",
+		version = "*", -- recommended, use latest release instead of latest commit
+		ft = "markdown",
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+		},
+		opts = {
+			workspaces = {
+				{
+					name = "work",
+					path = "~/Documents/Obsidian Vault/",
+				},
+			},
+		},
+	},
 })
