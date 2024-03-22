@@ -460,10 +460,5 @@ require("lazy").setup({
 			},
 		},
 	},
-	{
-		"dhruvasagar/vim-table-mode",
-		init = function()
-			vim.cmd("let g:table_mode_disable_mappings = 1")
-		end,
-	},
+	{ "dhruvasagar/vim-table-mode" },
 })
