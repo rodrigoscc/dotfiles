@@ -442,7 +442,12 @@ require("lazy").setup({
 		version = "*", -- recommended, use latest release instead of latest commit
 		ft = "markdown",
 		lazy = true,
-		cmd = { "ObsidianQuickSwitch", "ObsidianTags", "ObsidianSearch" },
+		cmd = {
+			"ObsidianQuickSwitch",
+			"ObsidianTags",
+			"ObsidianSearch",
+			"ObsidianNew",
+		},
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 		},

@@ -16,3 +16,9 @@ vim.keymap.set(
 	vim.cmd.ObsidianSearch,
 	{ desc = "[O]bsidian [s]earch" }
 )
+vim.keymap.set(
+	"n",
+	"<leader>on",
+	vim.cmd.ObsidianNew,
+	{ desc = "[O]bsidian [n]ew" }
+)
