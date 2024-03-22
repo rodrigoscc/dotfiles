@@ -460,4 +460,5 @@ require("lazy").setup({
 			},
 		},
 	},
+	{ "dhruvasagar/vim-table-mode" },
 })
