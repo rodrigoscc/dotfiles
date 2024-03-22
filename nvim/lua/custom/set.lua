@@ -56,10 +56,15 @@ vim.treesitter.language.register("requirements", "requirements")
 
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "json",
-	callback = function(ev)
+	callback = function()
 		vim.bo.formatprg = "jq"
 		vim.bo.formatexpr = ""
 	end,
 })
 
-vim.opt.conceallevel = 1
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "markdown",
+	callback = function()
+		vim.opt.conceallevel = 1
+	end,
+})
