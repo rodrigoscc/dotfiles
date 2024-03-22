@@ -441,6 +441,8 @@ require("lazy").setup({
 		"epwalsh/obsidian.nvim",
 		version = "*", -- recommended, use latest release instead of latest commit
 		ft = "markdown",
+		lazy = true,
+		cmd = { "ObsidianQuickSwitch", "ObsidianTags", "ObsidianSearch" },
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 		},
@@ -448,7 +450,7 @@ require("lazy").setup({
 			workspaces = {
 				{
 					name = "work",
-					path = "~/Documents/Obsidian Vault/",
+					path = "~/obsidian-vault/",
 				},
 			},
 		},
