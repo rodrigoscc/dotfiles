@@ -349,9 +349,6 @@ require("lazy").setup({
 				autoflake = {
 					prepend_args = { "--remove-all-unused-imports" },
 				},
-				prettier = {
-					prepend_args = { "--tab-width", "4" },
-				},
 			},
 		},
 	},
