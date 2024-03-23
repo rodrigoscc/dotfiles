@@ -267,7 +267,7 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 vim.keymap.set("n", "<leader>tc", function()
-	vim.cmd.IndentBlanklineToggle()
+	vim.cmd.IBLToggle()
 	vim.o.list = not vim.o.list
 end, { desc = "[t]oggle list [c]hars" })
 

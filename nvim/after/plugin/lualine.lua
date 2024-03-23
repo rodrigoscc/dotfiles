@@ -171,9 +171,22 @@ local function http_project_env()
 	return "[ " .. env .. "]"
 end
 
+local function table_mode()
+	if
+		vim.b["table_mode_active"] ~= nil
+		and vim.b["table_mode_active"] == 1
+	then
+		return ""
+	end
+
+	return ""
+end
+
 ins_right({ http_project_env, color = { fg = colors.magenta } })
 
 ins_right({ disable_autoformat })
+
+ins_right({ table_mode })
 
 ins_right({ wrap })
 
