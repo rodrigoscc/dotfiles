@@ -390,3 +390,18 @@ vim.api.nvim_create_autocmd("FileType", {
 		)
 	end,
 })
+
+local function init_prettier()
+	local prettier_config = {
+		semi = true,
+		tabWidth = 4,
+		singleQuote = false,
+		trailingComma = "all",
+	}
+
+	local prettier_config_str = vim.fn.json_encode(prettier_config)
+
+	vim.fn.writefile({ prettier_config_str }, ".prettierrc.json")
+end
+
+vim.api.nvim_create_user_command("InitPrettier", init_prettier, {})
