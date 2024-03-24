@@ -1,3 +1,38 @@
+function struct_receiver_name(type_name, is_pointer)
+	local receiver_type = type_name
+	if is_pointer then
+		receiver_type = "*" .. receiver_type
+	end
+
+	local query = vim.treesitter.query.parse(
+		"go",
+		'(parameter_list (parameter_declaration name: (identifier) @name type: (_) @type (#lua-match? @type "'
+			.. receiver_type
+			.. '")))'
+	)
+
+	local parser = vim.treesitter.get_parser(0, "go")
+	local tree = parser:parse()[1]
+
+	local receiver_name = "receiver"
+
+	local _, first_match = query:iter_matches(tree:root(), 0)()
+
+	if first_match ~= nil then
+		for id, node in pairs(first_match) do
+			local capture_name = query.captures[id]
+			local capture_value = vim.treesitter.get_node_text(node, 0)
+
+			if capture_name == "name" then
+				receiver_name = capture_value
+				break
+			end
+		end
+	end
+
+	return receiver_name
+end
+
 return {
 	s(
 		"enn",
@@ -98,31 +133,7 @@ return {
 		d(1, function(_, parent)
 			local struct_name = parent.snippet.env.POSTFIX_MATCH
 
-			local query = vim.treesitter.query.parse(
-				"go",
-				'(parameter_list (parameter_declaration name: (identifier) @name type: (pointer_type) @type (#lua-match? @type "*'
-					.. struct_name
-					.. '")))'
-			)
-
-			local parser = vim.treesitter.get_parser(0, "go")
-			local tree = parser:parse()[1]
-
-			local receiver_name = "receiver"
-
-			local _, first_match = query:iter_matches(tree:root(), 0)()
-
-			if first_match ~= nil then
-				for id, node in pairs(first_match) do
-					local capture_name = query.captures[id]
-					local capture_value = vim.treesitter.get_node_text(node, 0)
-
-					if capture_name == "name" then
-						receiver_name = capture_value
-						break
-					end
-				end
-			end
+			local receiver_name = struct_receiver_name(struct_name, true)
 
 			return sn(
 				nil,
@@ -143,31 +154,7 @@ return {
 		d(1, function(_, parent)
 			local struct_name = parent.snippet.env.POSTFIX_MATCH
 
-			local query = vim.treesitter.query.parse(
-				"go",
-				'(parameter_list (parameter_declaration name: (identifier) @name type: (pointer_type) @type (#lua-match? @type "'
-					.. struct_name
-					.. '")))'
-			)
-
-			local parser = vim.treesitter.get_parser(0, "go")
-			local tree = parser:parse()[1]
-
-			local receiver_name = "receiver"
-
-			local _, first_match = query:iter_matches(tree:root(), 0)()
-
-			if first_match ~= nil then
-				for id, node in pairs(first_match) do
-					local capture_name = query.captures[id]
-					local capture_value = vim.treesitter.get_node_text(node, 0)
-
-					if capture_name == "name" then
-						receiver_name = capture_value
-						break
-					end
-				end
-			end
+			local receiver_name = struct_receiver_name(struct_name, false)
 
 			return sn(
 				nil,
