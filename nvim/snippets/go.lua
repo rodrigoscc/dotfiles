@@ -14,7 +14,7 @@ function struct_receiver_name(type_name, is_pointer)
 	local parser = vim.treesitter.get_parser(0, "go")
 	local tree = parser:parse()[1]
 
-	local receiver_name = "receiver"
+	local receiver_name = nil
 
 	local _, first_match = query:iter_matches(tree:root(), 0)()
 
@@ -135,16 +135,31 @@ return {
 
 			local receiver_name = struct_receiver_name(struct_name, true)
 
+			if receiver_name == nil then
+				return sn(
+					nil,
+					fmt([[func ({} *]] .. struct_name .. [[) {}({}){} {{
+	{}
+}}]], {
+						i(1, "receiver"),
+						i(2, "functionName"),
+						i(3),
+						i(4),
+						i(5),
+					})
+				)
+			end
+
 			return sn(
 				nil,
 				fmt([[func ({} *]] .. struct_name .. [[) {}({}){} {{
 	{}
 }}]], {
-					i(1, receiver_name),
-					i(2, "functionName"),
+					t(receiver_name),
+					i(1, "functionName"),
+					i(2),
 					i(3),
 					i(4),
-					i(5),
 				})
 			)
 		end)
@@ -156,12 +171,27 @@ return {
 
 			local receiver_name = struct_receiver_name(struct_name, false)
 
+			if receiver_name == nil then
+				return sn(
+					nil,
+					fmt([[func ({} ]] .. struct_name .. [[) {}({}){} {{
+	{}
+}}]], {
+						i(1, "receiver"),
+						i(2, "functionName"),
+						i(3),
+						i(4),
+						i(5),
+					})
+				)
+			end
+
 			return sn(
 				nil,
 				fmt([[func ({} ]] .. struct_name .. [[) {}({}){} {{
 	{}
 }}]], {
-					i(1, receiver_name),
+					t(receiver_name),
 					i(2, "functionName"),
 					i(3),
 					i(4),
