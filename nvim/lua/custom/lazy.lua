@@ -431,7 +431,11 @@ require("lazy").setup({
 	{ "echasnovski/mini.trailspace", version = "*", opts = {} },
 	{
 		"hedyhli/outline.nvim",
-		opts = {},
+		opts = {
+			keymaps = {
+				close = { "q" }, -- Do not want Escape to close the outline.
+			},
+		},
 	},
 	{
 		"epwalsh/obsidian.nvim",
