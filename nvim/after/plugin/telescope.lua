@@ -1,6 +1,13 @@
 local builtin = require("telescope.builtin")
 local telescope = require("telescope")
 
+local fzf_opts = {
+	fuzzy = true,
+	override_generic_sorter = true,
+	override_file_sorter = true,
+	case_mode = "smart_case",
+}
+
 telescope.setup({
 	defaults = vim.tbl_extend(
 		"force",
@@ -18,6 +25,11 @@ telescope.setup({
 				end)
 				return true
 			end,
+		},
+		lsp_dynamic_workspace_symbols = {
+			-- This picker is not using fzf automatically for some reason,
+			-- so setting it here (https://github.com/nvim-telescope/telescope.nvim/issues/2104#issuecomment-1223790155).
+			sorter = telescope.extensions.fzf.native_fzf_sorter(fzf_opts),
 		},
 	},
 })
