@@ -458,6 +458,9 @@ require("lazy").setup({
 					path = "~/obsidian-vault/",
 				},
 			},
+			note_id_func = function(title)
+				return title
+			end,
 		},
 	},
 	{ "dhruvasagar/vim-table-mode" },
