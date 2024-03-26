@@ -131,7 +131,14 @@ vim.keymap.set(
 	"n",
 	"<leader>m",
 	"<C-w>T",
-	{ desc = "[m}aximize window to tab" }
+	{ desc = "[m]aximize window to tab" }
+)
+
+vim.keymap.set(
+	"n",
+	"<leader><space>",
+	"<C-^>",
+	{ desc = "switch to last buffer" }
 )
 
 --- Custom behaviour for a carriage return.
