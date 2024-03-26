@@ -50,13 +50,13 @@ local request_content_query = vim.treesitter.query.parse(
 )
 
 local function url_encode(str, opts)
-	opts = opts or { keep_forward_slashes = false }
+	opts = opts or { keep_allowed_chars_in_path = false }
 
 	str = str:gsub("\r?\n", "\r\n")
 
 	-- We may need to keep forward slashes when encoding the url path.
-	if opts.keep_forward_slashes then
-		str = str:gsub("([^%w%-%.%_%~%/ ])", function(c)
+	if opts.keep_allowed_chars_in_path then
+		str = str:gsub("([^%w%-%.%_%~%/%?%& ])", function(c)
 			return string.format("%%%02X", c:byte())
 		end)
 	else
@@ -248,7 +248,7 @@ local function get_request_list(source, source_type)
 				local url = capture_value:sub(#method + 2) -- Url is after method string and a space.
 
 				local domain, path = split_host_and_path(url)
-				path = url_encode(path, { keep_forward_slashes = true })
+				path = url_encode(path, { keep_allowed_chars_in_path = true })
 
 				url = domain .. path
 
