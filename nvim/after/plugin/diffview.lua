@@ -1,7 +1,7 @@
 local diffview = require("diffview")
 
 vim.keymap.set("n", "<leader>gd", function()
-	vim.cmd.DiffviewOpen()
+	vim.cmd("DiffviewOpen -- ./") -- Making sure to show only the changes in the current working directory.
 end, { desc = "[g]it [d]iff" })
 
 diffview.setup({
