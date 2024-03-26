@@ -134,12 +134,7 @@ vim.keymap.set(
 	{ desc = "[m]aximize window to tab" }
 )
 
-vim.keymap.set(
-	"n",
-	"<leader><space>",
-	"<C-^>",
-	{ desc = "switch to last buffer" }
-)
+vim.keymap.set("n", "<bs>", "<C-^>", { desc = "switch to last buffer" })
 
 --- Custom behaviour for a carriage return.
 -- Splits a string in two lines in a fancy way.
