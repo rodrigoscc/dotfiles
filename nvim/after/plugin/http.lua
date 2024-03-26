@@ -49,17 +49,24 @@ local request_content_query = vim.treesitter.query.parse(
 ]]
 )
 
-local function url_encode(str)
-	if type(str) ~= "number" then
-		str = str:gsub("\r?\n", "\r\n")
+local function url_encode(str, opts)
+	opts = opts or { keep_forward_slashes = false }
+
+	str = str:gsub("\r?\n", "\r\n")
+
+	-- We may need to keep forward slashes when encoding the url path.
+	if opts.keep_forward_slashes then
+		str = str:gsub("([^%w%-%.%_%~%/ ])", function(c)
+			return string.format("%%%02X", c:byte())
+		end)
+	else
 		str = str:gsub("([^%w%-%.%_%~ ])", function(c)
 			return string.format("%%%02X", c:byte())
 		end)
-		str = str:gsub(" ", "+")
-		return str
-	else
-		return str
 	end
+
+	str = str:gsub(" ", "+")
+	return str
 end
 
 local function interp(s, tab)
@@ -197,6 +204,27 @@ local function get_source(source, source_type)
 	end
 end
 
+local function split_host_and_path(url)
+	local scheme_position = url:find("://")
+
+	local scheme_end_index = 0
+	if scheme_position ~= nil then
+		scheme_end_index = scheme_position + 3
+	end
+
+	local first_slash_index = url:find("/", scheme_end_index)
+
+	local is_path_empty = first_slash_index == nil
+	if is_path_empty then
+		return url, ""
+	end
+
+	local host = url:sub(1, first_slash_index - 1)
+	local path = url:sub(first_slash_index)
+
+	return host, path
+end
+
 local function get_request_list(source, source_type)
 	source = get_source(source, source_type)
 	local parser = get_source_parser(source, source_type)
@@ -214,7 +242,16 @@ local function get_request_list(source, source_type)
 				vim.trim(vim.treesitter.get_node_text(node, source))
 
 			if capture_name == "request" then
-				local method, url = unpack(vim.split(capture_value, " "))
+				local space_separated = vim.split(capture_value, " ")
+
+				local method = space_separated[1]
+				local url = capture_value:sub(#method + 2) -- Url is after method string and a space.
+
+				local domain, path = split_host_and_path(url)
+				path = url_encode(path, { keep_forward_slashes = true })
+
+				url = domain .. path
+
 				local domain_path, query = unpack(vim.split(url, "?"))
 
 				requests[#requests].method = method
