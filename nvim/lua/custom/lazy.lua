@@ -371,9 +371,9 @@ require("lazy").setup({
 		branch = "v0.6",
 		opts = {
 			fastwarp = {
-				map = "<C-d>",
+				map = "<C-;>",
 				rmap = "<C-r>",
-				cmap = "<C-d>",
+				cmap = "<C-;>",
 				rcmap = "<C-r>",
 			},
 		},
