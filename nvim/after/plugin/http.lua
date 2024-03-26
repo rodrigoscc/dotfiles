@@ -912,7 +912,7 @@ end
 local function get_all_http_files()
 	return vim.fs.find(function(name)
 		return vim.endswith(name, ".http")
-	end, { type = "file", limit = math.huge })
+	end, { type = "file", limit = math.huge, path = vim.g.http_dir })
 end
 
 local function get_project_requests()
