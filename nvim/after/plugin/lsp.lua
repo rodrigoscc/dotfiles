@@ -165,6 +165,10 @@ end, { desc = "[t]oggle [f]ormat on save" })
 
 lsp.setup()
 
+vim.keymap.set("n", "<leader>lr", function()
+	vim.cmd("LspRestart")
+end, { desc = "[l]sp [r]estart" })
+
 vim.diagnostic.config({
 	virtual_text = true,
 	signs = false,
