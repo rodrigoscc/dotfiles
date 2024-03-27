@@ -193,6 +193,7 @@ lsp.setup()
 
 vim.keymap.set("n", "<leader>lr", function()
 	vim.cmd("LspRestart")
+	vim.print("LSP Restarted!")
 end, { desc = "[l]sp [r]estart" })
 
 vim.diagnostic.config({
