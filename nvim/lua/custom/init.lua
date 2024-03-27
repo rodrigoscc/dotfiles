@@ -4,6 +4,7 @@ vim.g.maplocalleader = "  "
 require("custom.lazy")
 require("custom.set")
 require("custom.remap")
+require("custom.autocmds")
 
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
