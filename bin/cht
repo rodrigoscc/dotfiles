@@ -19,13 +19,13 @@ if [ -z "$query" ]; then
 fi
 
 if echo $languages | grep -qs $selected; then
-    curl_command="curl cht.sh/$selected/$(echo "$query" | tr " " "+")"
+    curl_command="curl --no-progress-meter cht.sh/$selected/$(echo "$query" | tr " " "+")"
 else
-    curl_command="curl cht.sh/$selected~$query"
+    curl_command="curl --no-progress-meter cht.sh/$selected~$query"
 fi
 
 if [ -n "$TMUX" ]; then
-    tmux display-popup -w 60% -h 50% -E bash -c "$curl_command | less -R"
+    tmux new-window -n "$selected $query" bash -c "$curl_command | less -R"
 else
     eval $curl_command
 fi
