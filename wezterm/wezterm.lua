@@ -194,6 +194,15 @@ local config = {
 				act.SendKey({ key = "," }),
 			}),
 		},
+		-- Cht.sh
+		{
+			key = "H",
+			mods = "CMD",
+			action = act.Multiple({
+				act.SendKey({ key = "b", mods = "CTRL" }),
+				act.SendKey({ key = "H" }),
+			}),
+		},
 	},
 	front_end = "WebGpu",
 }

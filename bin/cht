@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+languages=`echo "golang python javascript typescript react vue bash" | tr " " "\n"`
+core_utils=`echo "find sed awk git xargs ps dig ping" | tr " " "\n"`
+
+selected=`echo -e "$languages\n$core_utils" | fzf-tmux -w 60% -h 50%`
+if [ -z "$selected" ]; then
+    exit 0
+fi
+
+if [ -n "$TMUX" ]; then
+    query=`tmux command-prompt -p "Query:" "display-message -p '%1'"`
+else
+    read -p "Query: " query
+fi
+
+if [ -z "$query" ]; then
+    exit 0
+fi
+
+if echo $languages | grep -qs $selected; then
+    curl_command="curl cht.sh/$selected/$(echo "$query" | tr " " "+")"
+else
+    curl_command="curl cht.sh/$selected~$query"
+fi
+
+if [ -n "$TMUX" ]; then
+    tmux display-popup -w 60% -h 50% -E bash -c "$curl_command | less -R"
+else
+    eval $curl_command
+fi
