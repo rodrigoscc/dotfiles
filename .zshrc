@@ -80,3 +80,6 @@ bindkey "^[[4~" end-of-line
 # Add zsh functions to fpath (e.g. poetry completions).
 fpath+=~/.zfunc
 autoload -Uz compinit && compinit
+
+# Rose pine fzf theme
+export FZF_DEFAULT_OPTS="--layout=reverse --color=fg:#908caa,bg:#191724,hl:#ebbcba --color=fg+:#e0def4,bg+:#26233a,hl+:#ebbcba --color=border:#403d52,header:#31748f,gutter:#191724 --color=spinner:#f6c177,info:#9ccfd8,separator:#403d52 --color=pointer:#c4a7e7,marker:#eb6f92,prompt:#908caa"
