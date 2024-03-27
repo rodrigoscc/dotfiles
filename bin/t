@@ -41,7 +41,7 @@ if [ "$selected" == "$default_session_name" ]; then
     selected="~"
     session_name=$default_session_name
 else
-    session_name=`echo "$selected" | rev | cut -d "/" -f 1 | rev`
+    session_name=`basename $selected`
     session_name=`echo "$session_name" | tr -d "."`  # trim dots
 fi
 
