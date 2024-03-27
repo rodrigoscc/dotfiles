@@ -67,6 +67,8 @@ alias ga="git add"
 alias gc="git commit"
 alias gl="git log"
 
+alias ..="cd .."
+
 # bindkey '^[[A' history-substring-search-up
 # bindkey '^[[B' history-substring-search-down
 
