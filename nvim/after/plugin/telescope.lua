@@ -141,6 +141,12 @@ vim.keymap.set(
 	{ desc = "[D]iagnostics" }
 )
 
+vim.keymap.set("n", "<leader>fd", function()
+	builtin.find_files({
+		cwd = "~/.config/",
+	})
+end, { desc = "[f]ind [d]otfile" })
+
 local function open_file_at_startup(data)
 	local directory = vim.fn.isdirectory(data.file) == 1
 
