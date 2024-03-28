@@ -62,12 +62,12 @@ local function new_scratch()
 	)
 end
 
-local function open_scratch()
+local function find_scratch()
 	telescope.find_files({ cwd = vim.g.scratch_dir })
 end
 
 vim.api.nvim_create_user_command("NewScratch", new_scratch, {})
-vim.api.nvim_create_user_command("OpenScratch", open_scratch, {})
+vim.api.nvim_create_user_command("FindScratch", find_scratch, {})
 
 vim.keymap.set(
 	"n",
@@ -77,7 +77,7 @@ vim.keymap.set(
 )
 vim.keymap.set(
 	"n",
-	"<leader>os",
-	"<cmd>OpenScratch<cr>",
-	{ desc = "[o]pen [s]cratch" }
+	"<leader>fs",
+	"<cmd>FindScratch<cr>",
+	{ desc = "[f]ind [s]cratch" }
 )

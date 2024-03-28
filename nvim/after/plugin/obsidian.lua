@@ -1,24 +1,24 @@
 vim.keymap.set(
 	"n",
-	"<leader>oo",
+	"<leader>fo",
 	vim.cmd.ObsidianQuickSwitch,
-	{ desc = "[O]pen [o]bsidian file" }
+	{ desc = "[f]ind [o]bsidian file" }
 )
 vim.keymap.set(
 	"n",
 	"<leader>no",
 	vim.cmd.ObsidianNew,
-	{ desc = "[N]ew [o]bsidian" }
+	{ desc = "[n]ew [o]bsidian" }
 )
 vim.keymap.set(
 	"n",
 	"<leader>so",
 	vim.cmd.ObsidianTags,
-	{ desc = "[S]earch [O]bsidian tags" }
+	{ desc = "[s]earch [o]bsidian tags" }
 )
 vim.keymap.set(
 	"n",
 	"<leader>sO",
 	vim.cmd.ObsidianSearch,
-	{ desc = "[S]earch [O]bsidian" }
+	{ desc = "[s]earch [o]bsidian" }
 )
