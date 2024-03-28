@@ -3,6 +3,11 @@ local open = require("plenary.context_manager").open
 local with = require("plenary.context_manager").with
 local Path = require("plenary.path")
 
+local pickers = require("telescope.pickers")
+local finders = require("telescope.finders")
+local conf = require("telescope.config").values
+local actions = require("telescope.actions")
+
 local log = require("plenary.log").new({ plugin = "http", use_console = false })
 
 local ts_utils = require("nvim-treesitter.ts_utils")
@@ -937,42 +942,72 @@ end
 function GoToRequest()
 	local requests = get_project_requests()
 
-	vim.ui.select(requests, {
-		prompt = "Go to HTTP request",
-		format_item = function(item)
-			local _, request = unpack(item)
-			return request_title(request)
-		end,
-	}, function(item)
-		if item == nil then
-			return
-		end
+	pickers
+		.new({}, {
+			prompt_title = "Go to HTTP request",
+			finder = finders.new_table({
+				results = requests,
+				entry_maker = function(item)
+					local file, request = unpack(item)
 
-		local file, request = unpack(item)
+					local line, _, _ = request.node:start()
 
-		vim.cmd([[edit ]] .. file)
-		ts_utils.goto_node(request.node, false, true)
-	end)
+					return {
+						value = request_title(request),
+						ordinal = request_title(request),
+						display = request_title(request),
+						filename = file,
+						lnum = line + 1,
+					}
+				end,
+			}),
+			previewer = conf.grep_previewer({}),
+			sorter = require("telescope.config").values.generic_sorter({}),
+		})
+		:find()
 end
 
 function RunRequest()
 	local requests = get_project_requests()
 
-	vim.ui.select(requests, {
-		prompt = "Run HTTP request",
-		format_item = function(item)
-			local _, request = unpack(item)
-			return request_title(request)
-		end,
-	}, function(item)
-		if item == nil then
-			return
-		end
+	pickers
+		.new({}, {
+			prompt_title = "Run HTTP request",
+			finder = finders.new_table({
+				results = requests,
+				entry_maker = function(item)
+					local file, request = unpack(item)
 
-		local file, request = unpack(item)
+					local line, _, _ = request.node:start()
 
-		run_request(request, file, "file")
-	end)
+					return {
+						value = request_title(request),
+						ordinal = request_title(request),
+						display = request_title(request),
+						filename = file,
+						lnum = line + 1,
+						request = request,
+					}
+				end,
+			}),
+			previewer = conf.grep_previewer({}),
+			sorter = require("telescope.config").values.generic_sorter({}),
+			attach_mappings = function(prompt_bufnr, map)
+				local run_selected_request = function()
+					actions.close(prompt_bufnr)
+
+					local selection =
+						require("telescope.actions.state").get_selected_entry()
+					run_request(selection.request, selection.filename, "file")
+				end
+
+				map("i", "<CR>", run_selected_request)
+				map("n", "<CR>", run_selected_request)
+
+				return true
+			end,
+		})
+		:find()
 end
 
 -- TODO: Make sure to use last overriden context too.
