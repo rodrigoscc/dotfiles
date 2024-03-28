@@ -94,15 +94,15 @@ vim.keymap.set(
 )
 vim.keymap.set(
 	"n",
-	"<leader>gh",
+	"<leader>gl",
 	builtin.git_commits,
-	{ desc = "[g]it [h]istory" }
+	{ desc = "[g]it [l]ogs" }
 )
 vim.keymap.set(
 	"n",
-	"<leader>gH",
+	"<leader>gL",
 	builtin.git_bcommits,
-	{ desc = "[g]it buffer [H]istory" }
+	{ desc = "[g]it buffer [l]ogs" }
 )
 vim.keymap.set("n", "<leader>gg", builtin.git_status, { desc = "[g]it status" })
 
