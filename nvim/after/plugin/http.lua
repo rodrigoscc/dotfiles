@@ -247,11 +247,6 @@ local function get_request_list(source, source_type)
 				local method = space_separated[1]
 				local url = capture_value:sub(#method + 2) -- Url is after method string and a space.
 
-				local domain, path = split_host_and_path(url)
-				path = url_encode(path, { keep_allowed_chars_in_path = true })
-
-				url = domain .. path
-
 				local domain_path, query = unpack(vim.split(url, "?"))
 
 				requests[#requests].method = method
@@ -419,9 +414,17 @@ local function get_raw_request_content(request)
 		encoded_context[key] = url_encode(tostring(value))
 	end
 
+	local interp_url = interp(request.url, request.context)
+
+	-- Encode path after interpolating context in url path because,
+	-- variables need to be replaced before.
+	local domain, path = split_host_and_path(interp_url)
+	path = url_encode(path, { keep_allowed_chars_in_path = true })
+	interp_url = domain .. path
+
 	local raw_content = {
 		method = request.method,
-		url = interp(request.url, request.context),
+		url = interp_url,
 		query = request.query and interp(request.query, encoded_context),
 	}
 
