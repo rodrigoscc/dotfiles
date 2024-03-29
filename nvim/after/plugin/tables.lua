@@ -203,6 +203,11 @@ function AlignTable()
 	write_table(table_obj)
 end
 
+function AreWritingTable()
+	local current_line = vim.api.nvim_get_current_line()
+	return vim.startswith(current_line, "|")
+end
+
 local function find_next_cell(node)
 	while node ~= nil do
 		if
@@ -255,11 +260,13 @@ vim.api.nvim_create_autocmd("FileType", {
 	pattern = "markdown",
 	callback = function()
 		vim.keymap.set("i", "<tab>", function()
-			AlignTable()
+			if AreWritingTable() then
+				AlignTable()
 
-			vim.schedule(function()
-				GotoNextCell()
-			end)
+				vim.schedule(function()
+					GotoNextCell()
+				end)
+			end
 		end, { buffer = true })
 	end,
 })
