@@ -105,6 +105,12 @@ vim.g.http_dir = ".http"
 vim.g.http_hooks_file = "hooks.lua"
 vim.g.http_environments_file = "environments.json"
 
+local current_project_envs_file_path = vim.g.http_dir
+	.. "/"
+	.. vim.g.http_environments_file
+local project_current_envs_file_path = vim.fn.stdpath("data")
+	.. "/http/envs.json"
+
 local function create_file(filename, mode)
 	local dir = vim.fs.dirname(filename)
 	vim.fn.mkdir(dir, "p", "0o755")
@@ -112,59 +118,57 @@ local function create_file(filename, mode)
 	with(open(filename, "w+"), function(file)
 		file:write("{}")
 	end)
-
-	-- Reopening it with a different mode.
-	return open(filename, mode)
 end
 
-local function get_projects_envs_file(mode)
-	local data_path = vim.fn.stdpath("data")
-	local envs_file_path = data_path .. "/http/envs.json"
+local function make_sure_file_exists(filename)
+	local exists = vim.fn.findfile(filename) ~= ""
+	if not exists then
+		create_file(filename)
+	end
+end
 
-	local envs_file, err = open(envs_file_path, mode)
-	if envs_file == nil then
-		vim.print(
-			"Unable to open envs file "
-				.. envs_file_path
-				.. ": "
-				.. err
-				.. ", attempting to create it..."
-		)
-		envs_file = create_file(envs_file_path, mode)
+local function get_projects_current_env()
+	if vim.fn.findfile(project_current_envs_file_path) == "" then
+		return {}
 	end
 
-	return envs_file
-end
+	local contents = with(
+		open(project_current_envs_file_path, "r"),
+		function(reader)
+			return reader:read("*a")
+		end
+	)
 
-local function get_projects_envs()
-	local contents = with(get_projects_envs_file("r"), function(reader)
-		return reader:read("*a")
-	end)
-	return vim.json.decode(contents)
+	local project_current_envs = vim.json.decode(contents)
+	if project_current_envs == nil then
+		return {}
+	end
+	return project_current_envs
 end
 
 function GetProjectEnv()
-	local envs = get_projects_envs()
-	if envs == nil then
-		error("Unable to get project environments")
-	end
-
+	local envs = get_projects_current_env()
 	return envs[vim.fn.getcwd()]
 end
 
-local function get_envs_file(mode)
-	local project_envs_file = vim.g.http_dir
-		.. "/"
-		.. vim.g.http_environments_file
-
-	local envs_file, err = open(project_envs_file, mode)
-	if err ~= nil then
-		vim.api.nvim_err_writeln(
-			"Unable to open env file " .. project_envs_file .. ": " .. err
-		)
+local function get_current_project_envs()
+	if vim.fn.findfile(current_project_envs_file_path) == "" then
+		return {}
 	end
 
-	return envs_file
+	local envs_file_contents = with(
+		open(current_project_envs_file_path, "r"),
+		function(reader)
+			return reader:read("*a")
+		end
+	)
+
+	local envs = vim.json.decode(envs_file_contents)
+	if envs == nil then
+		return {}
+	end
+
+	return envs
 end
 
 local function get_context_from_env()
@@ -173,16 +177,14 @@ local function get_context_from_env()
 		return {}
 	end
 
-	local envs_file_contents = with(get_envs_file("r"), function(reader)
-		return reader:read("*a")
-	end)
+	local envs = get_current_project_envs()
 
-	local envs = vim.json.decode(envs_file_contents)
-	if envs == nil then
+	local context = envs[project_env]
+	if context == nil then
 		return {}
 	end
 
-	return envs[project_env]
+	return context
 end
 
 local function get_source_parser(source, source_type)
@@ -659,16 +661,14 @@ local function format_if_jq_installed(json)
 end
 
 local function update_project_env(env)
-	local contents = with(get_projects_envs_file("r"), function(reader)
-		return reader:read("*a")
-	end)
+	make_sure_file_exists(current_project_envs_file_path)
 
-	local envs = vim.json.decode(contents)
+	local projects_current_env = get_projects_current_env()
 
-	envs[vim.fn.getcwd()] = env
+	projects_current_env[vim.fn.getcwd()] = env
 
-	with(get_projects_envs_file("w+"), function(file)
-		local envs_file_updated = vim.json.encode(envs)
+	with(open(project_current_envs_file_path, "w+"), function(file)
+		local envs_file_updated = vim.json.encode(projects_current_env)
 
 		envs_file_updated = format_if_jq_installed(envs_file_updated)
 
@@ -678,46 +678,32 @@ end
 
 local function update_env(env_name)
 	return function(tbl)
-		local envs_file_contents = with(get_envs_file("r"), function(reader)
-			return reader:read("*a")
-		end)
-
-		local envs = vim.json.decode(envs_file_contents)
-
-		local env = envs[env_name]
-
-		env = vim.tbl_extend("force", env, tbl)
-
-		envs[env_name] = env
-
-		local new_envs_file_contents = vim.json.encode(envs)
-
 		vim.schedule(function()
+			local envs = get_current_project_envs()
+
+			local current_env = envs[env_name]
+
+			current_env = vim.tbl_extend("force", current_env, tbl)
+
+			envs[env_name] = current_env
+
+			local new_envs_file_contents = vim.json.encode(envs)
+
+			make_sure_file_exists(current_project_envs_file_path)
+
 			new_envs_file_contents =
 				format_if_jq_installed(new_envs_file_contents)
 
-			with(get_envs_file("w+"), function(file)
+			with(open(current_project_envs_file_path, "w+"), function(file)
 				file:write(new_envs_file_contents)
 			end)
 		end)
 	end
 end
 
-local function get_available_envs()
-	local envs_file_contents = with(get_envs_file("r"), function(reader)
-		return reader:read("*a")
-	end)
-
-	local envs = vim.json.decode(envs_file_contents)
-	if envs == nil then
-		return {}
-	end
-
-	return vim.tbl_keys(envs)
-end
-
 function ChangeEnv()
-	local available_envs = get_available_envs()
+	local envs = get_current_project_envs()
+	local available_envs = vim.tbl_keys(envs)
 
 	vim.ui.select(
 		available_envs,
@@ -742,11 +728,13 @@ end
 function NewProjectEnv()
 	vim.fn.mkdir(vim.g.http_dir, "p")
 	vim.ui.input({ prompt = "New environment" }, function(input)
-		local contents = with(get_envs_file("r"), function(reader)
-			return reader:read("*a")
-		end)
+		if input == nil then
+			return
+		end
 
-		local envs = vim.json.decode(contents)
+		make_sure_file_exists(current_project_envs_file_path)
+
+		local envs = get_current_project_envs()
 
 		envs[input] = vim.empty_dict()
 
@@ -754,7 +742,7 @@ function NewProjectEnv()
 
 		new_envs_file_contents = format_if_jq_installed(new_envs_file_contents)
 
-		with(get_envs_file("w+"), function(file)
+		with(open(current_project_envs_file_path, "w+"), function(file)
 			file:write(new_envs_file_contents)
 		end)
 
@@ -764,7 +752,8 @@ function NewProjectEnv()
 end
 
 function OpenProjectEnv()
-	local available_envs = get_available_envs()
+	local envs = get_current_project_envs()
+	local available_envs = vim.tbl_keys(envs)
 
 	vim.ui.select(available_envs, { prompt = "Open env" }, function(env)
 		if env ~= nil then
