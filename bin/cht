@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-languages=`echo "golang python javascript typescript react vue bash" | tr " " "\n"`
+languages=`echo "golang python javascript typescript react vue bash lua" | tr " " "\n"`
 core_utils=`echo "find sed awk git xargs ps dig ping" | tr " " "\n"`
 
 selected=`echo -e "$languages\n$core_utils" | fzf-tmux -w 60% -h 50%`
