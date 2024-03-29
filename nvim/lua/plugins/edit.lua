@@ -87,7 +87,6 @@ return {
 		end,
 	},
 	{ "github/copilot.vim" },
-	{ "dhruvasagar/vim-table-mode" },
 	{
 		"gaoDean/autolist.nvim",
 		ft = {
