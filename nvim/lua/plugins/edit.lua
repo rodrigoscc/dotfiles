@@ -6,7 +6,10 @@ return {
 		config = function()
 			require("nvim-surround").setup({
 				keymaps = {
+					insert = "<M-g>s",
+					insert_line = "<M-g>S",
 					visual = "gs", -- Remapping visual mode mapping to avoid conflicts with flash.nvim mappings.
+					visual_line = "gS", -- Remapping visual mode mapping to avoid conflicts with flash.nvim mappings.
 				},
 			})
 		end,
@@ -93,9 +96,9 @@ return {
 		branch = "v0.6",
 		opts = {
 			fastwarp = {
-				map = "<C-;>",
+				map = "<C-g>",
 				rmap = "<C-r>",
-				cmap = "<C-;>",
+				cmap = "<C-g>",
 				rcmap = "<C-r>",
 			},
 		},

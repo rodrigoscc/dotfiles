@@ -40,9 +40,9 @@ vim.opt.foldmethod = "indent"
 vim.opt.foldlevel = 99
 
 -- Do not show the tilde on the end of the file.
-vim.opt.fillchars.eob = " "
+vim.opt.fillchars:append({ eob = " " })
 -- Do not show the dashes when diffing files.
-vim.opt.fillchars.diff = " "
+vim.opt.fillchars:append({ diff = " " })
 
 vim.opt.listchars = { space = "⋅", eol = "↴", tab = "»⋅" }
 
