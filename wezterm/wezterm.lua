@@ -16,7 +16,7 @@ local config = {
 			},
 			width = "100%",
 			hsb = {
-				brightness = 0.05,
+				brightness = 0.02,
 			},
 		},
 	},
