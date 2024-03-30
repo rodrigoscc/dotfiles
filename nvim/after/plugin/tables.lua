@@ -521,6 +521,6 @@ vim.api.nvim_create_autocmd("FileType", {
 			if AreWritingTable() then
 				OrderByStatusAndPriority()
 			end
-		end, { buffer = true })
+		end, { buffer = true, desc = "[s]ort [t]table" })
 	end,
 })
