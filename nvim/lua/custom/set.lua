@@ -39,6 +39,11 @@ vim.opt.splitright = true
 vim.opt.foldmethod = "indent"
 vim.opt.foldlevel = 99
 
+-- Do not show the tilde on the end of the file.
+vim.opt.fillchars.eob = " "
+-- Do not show the dashes when diffing files.
+vim.opt.fillchars.diff = " "
+
 vim.opt.listchars = { space = "⋅", eol = "↴", tab = "»⋅" }
 
 -- Make sure requirements.txt are correctly highlighted.
