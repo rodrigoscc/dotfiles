@@ -186,6 +186,64 @@ local function read_surrounding_table()
 	}
 end
 
+local status_values = { "in progress", "todo", "done" }
+
+local status_order = {
+	["in progress"] = 10,
+	["todo"] = 20,
+	["done"] = 30,
+}
+
+local STATUS_VALUE = "status"
+local PRIORITY_VALUE = "priority"
+
+local priority_values = { "high", "medium", "low" }
+
+local priority_order = {
+	high = 1,
+	medium = 2,
+	low = 3,
+}
+
+local function find_value_column_index(rows, value_type)
+	-- Assuming header row is the first one.
+	local header_row = rows[1]
+
+	for i, cell in pairs(header_row.columns) do
+		if string.lower(cell) == value_type then
+			return i
+		end
+	end
+
+	return nil
+end
+
+local function row_order(row, status_column_index, priority_column_index)
+	local status = row.columns[status_column_index]
+	local priority = row.columns[priority_column_index]
+
+	return status_order[string.lower(status)]
+		+ priority_order[string.lower(priority)]
+end
+
+local function sort_rows_by_status(
+	table_obj,
+	status_column_index,
+	priority_column_index
+)
+	local rows_to_sort = vim.list_slice(table_obj.rows, 3, #table_obj.rows)
+
+	table.sort(rows_to_sort, function(row1, row2)
+		return row_order(row1, status_column_index, priority_column_index)
+			< row_order(row2, status_column_index, priority_column_index)
+	end)
+
+	local sorted_rows = vim.list_slice(table_obj.rows, 1, 2)
+	vim.list_extend(sorted_rows, rows_to_sort)
+
+	table_obj.rows = sorted_rows
+end
+
 local function write_table(surrounding_table)
 	vim.api.nvim_buf_set_lines(
 		0,
@@ -206,6 +264,185 @@ end
 function AreWritingTable()
 	local current_line = vim.api.nvim_get_current_line()
 	return vim.startswith(current_line, "|")
+end
+
+function OrderByStatusAndPriority()
+	local table_obj = read_surrounding_table()
+
+	local status_column_index =
+		find_value_column_index(table_obj.rows, STATUS_VALUE)
+	if status_column_index == nil then
+		return
+	end
+
+	local priority_column_index =
+		find_value_column_index(table_obj.rows, PRIORITY_VALUE)
+	if priority_column_index == nil then
+		return
+	end
+
+	sort_rows_by_status(table_obj, status_column_index, priority_column_index)
+	align_rows(table_obj.rows)
+	write_table(table_obj)
+end
+
+local function next_index_forward(values, current_index, step)
+	local reverse_index = (#values + step) - current_index
+	local next_reverse_index = (reverse_index % #values) + step
+
+	return (#values + step) - next_reverse_index
+end
+
+local function next_index_backward(values, current_index, step)
+	local next_index = (current_index % #values) + step
+	return next_index
+end
+
+local function get_next_index(values, current_index, direction)
+	if direction > 0 then
+		return next_index_forward(values, current_index, math.abs(direction))
+	else
+		return next_index_backward(values, current_index, math.abs(direction))
+	end
+end
+
+local function find_next_value_in(values, current_value)
+	for i, value in pairs(values) do
+		if value == current_value then
+			local next_index = get_next_index(values, i, 1)
+			return values[next_index]
+		end
+	end
+
+	return current_value
+end
+
+local function find_previous_value_in(values, current_value)
+	for i, value in pairs(values) do
+		if value == current_value then
+			local previous_index = get_next_index(values, i, -1)
+			return values[previous_index]
+		end
+	end
+
+	return current_value
+end
+
+local function get_value_type(value)
+	if vim.tbl_contains(status_values, value) then
+		return STATUS_VALUE
+	elseif vim.tbl_contains(priority_values, value) then
+		return PRIORITY_VALUE
+	else
+		return nil
+	end
+end
+
+local function get_current_ts_node_data()
+	local node = vim.treesitter.get_node()
+
+	assert(node ~= nil, "There must be a node here")
+
+	local start_row, start_column, _, end_column = node:range()
+
+	local line =
+		vim.api.nvim_buf_get_lines(0, start_row, start_row + 1, false)[1]
+
+	local text = vim.treesitter.get_node_text(node, 0)
+	text = vim.trim(string.lower(text))
+
+	return {
+		text = text,
+		node_type = node:type(),
+		line_num = start_row,
+		line = line,
+		column_range = { start_column, end_column },
+	}
+end
+
+local function validate_ts_node_for_cycling(node_data)
+	if node_data.node_type ~= "pipe_table_cell" then
+		return nil
+	end
+
+	local value_type = get_value_type(node_data.text)
+
+	if value_type == nil then
+		return nil
+	end
+
+	return {
+		type = value_type,
+		value = node_data.text,
+		line_num = node_data.line_num,
+		line = node_data.line,
+		column_range = node_data.column_range,
+	}
+end
+
+local function get_current_value_obj()
+	local ts_node_data = get_current_ts_node_data()
+	return validate_ts_node_for_cycling(ts_node_data)
+end
+
+local function update_line(value_obj, new_value)
+	local new_line = value_obj.line:sub(1, value_obj.column_range[1] - 1)
+		.. " "
+		.. string.upper(new_value)
+		.. " "
+		.. value_obj.line:sub(value_obj.column_range[2] + 1)
+
+	vim.api.nvim_buf_set_lines(
+		0,
+		value_obj.line_num,
+		value_obj.line_num + 1,
+		false,
+		{ new_line }
+	)
+end
+
+local function get_available_values(value_obj)
+	if value_obj.type == STATUS_VALUE then
+		return status_values
+	elseif value_obj.type == PRIORITY_VALUE then
+		return priority_values
+	end
+end
+
+local function find_next_value(value_obj)
+	local available_values = get_available_values(value_obj)
+	return find_next_value_in(available_values, value_obj.value)
+end
+
+local function find_previous_value(value_obj)
+	local available_values = get_available_values(value_obj)
+	return find_previous_value_in(available_values, value_obj.value)
+end
+
+function CycleValue()
+	local value_obj = get_current_value_obj()
+	if value_obj == nil then
+		return
+	end
+
+	local new_value = find_next_value(value_obj)
+
+	update_line(value_obj, new_value)
+
+	AlignTable()
+end
+
+function CycleValueReverse()
+	local value_obj = get_current_value_obj()
+	if value_obj == nil then
+		return
+	end
+
+	local new_value = find_previous_value(value_obj)
+
+	update_line(value_obj, new_value)
+
+	AlignTable()
 end
 
 local function find_next_cell(node)
@@ -266,6 +503,23 @@ vim.api.nvim_create_autocmd("FileType", {
 				vim.schedule(function()
 					GotoNextCell()
 				end)
+			end
+		end, { buffer = true })
+
+		vim.keymap.set("n", "L", function()
+			if AreWritingTable() then
+				CycleValue()
+			end
+		end, { buffer = true })
+		vim.keymap.set("n", "H", function()
+			if AreWritingTable() then
+				CycleValueReverse()
+			end
+		end, { buffer = true })
+
+		vim.keymap.set("n", "<leader>st", function()
+			if AreWritingTable() then
+				OrderByStatusAndPriority()
 			end
 		end, { buffer = true })
 	end,
