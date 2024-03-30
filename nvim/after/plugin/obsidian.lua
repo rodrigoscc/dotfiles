@@ -12,13 +12,13 @@ vim.keymap.set(
 )
 vim.keymap.set(
 	"n",
-	"<leader>so",
+	"<leader>sO",
 	vim.cmd.ObsidianTags,
 	{ desc = "[s]earch [o]bsidian tags" }
 )
 vim.keymap.set(
 	"n",
-	"<leader>sO",
+	"<leader>so",
 	vim.cmd.ObsidianSearch,
 	{ desc = "[s]earch [o]bsidian" }
 )
