@@ -149,8 +149,9 @@ end, { desc = "[f]ind [d]otfile" })
 
 local function open_file_at_startup(data)
 	local directory = vim.fn.isdirectory(data.file) == 1
+	local is_oil = string.find(data.file, "oil") ~= nil
 
-	if not directory then
+	if not directory and not is_oil then -- We want to open telescope if oil is run.
 		return
 	end
 
@@ -161,4 +162,8 @@ local function open_file_at_startup(data)
 	end
 end
 
-vim.api.nvim_create_autocmd({ "VimEnter" }, { callback = open_file_at_startup })
+vim.api.nvim_create_autocmd({ "VimEnter" }, {
+	callback = function(data)
+		open_file_at_startup(data)
+	end,
+})
