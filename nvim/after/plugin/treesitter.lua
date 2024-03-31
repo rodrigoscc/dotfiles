@@ -20,6 +20,7 @@ require("nvim-treesitter.configs").setup({
 		"css",
 		"vue",
 		"markdown",
+		"markdown_inline",
 		"yaml",
 	},
 
