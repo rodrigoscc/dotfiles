@@ -123,9 +123,9 @@ lsp.on_attach(function(client, bufnr)
 		vim.lsp.buf.code_action,
 		{ desc = "[c]ode [a]ction" }
 	)
-	vim.keymap.set({ "n", "v" }, "<leader>bf", function()
+	vim.keymap.set({ "n", "v" }, "<leader>fb", function()
 		require("conform").format({ bufnr = bufnr })
-	end, { desc = "[b]uffer [f]ormat" })
+	end, { desc = "[f]ormat [b]uffer" })
 
 	vim.keymap.set("n", "]d", function()
 		vim.g.set_jump(vim.diagnostic.goto_next, vim.diagnostic.goto_prev)
@@ -191,10 +191,10 @@ end, { desc = "[t]oggle [f]ormat on save" })
 
 lsp.setup()
 
-vim.keymap.set("n", "<leader>lr", function()
+vim.keymap.set("n", "<leader>rl", function()
 	vim.cmd("LspRestart")
 	vim.print("LSP Restarted!")
-end, { desc = "[l]sp [r]estart" })
+end, { desc = "[r]estart [l]sp" })
 
 vim.diagnostic.config({
 	virtual_text = true,

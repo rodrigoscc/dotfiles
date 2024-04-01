@@ -404,3 +404,10 @@ local function init_prettier()
 end
 
 vim.api.nvim_create_user_command("InitPrettier", init_prettier, {})
+
+vim.keymap.set(
+	"x",
+	"<leader>fj",
+	":!jq --indent 4<cr>",
+	{ desc = "[f]ormat [j]son" }
+)
