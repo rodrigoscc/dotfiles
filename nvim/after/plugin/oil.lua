@@ -1,4 +1,4 @@
 local oil = require("oil")
 vim.keymap.set("n", "-", function()
-	oil.open_float()
+	oil.open()
 end, { desc = "oil" })
