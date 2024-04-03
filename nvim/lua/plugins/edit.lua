@@ -72,6 +72,9 @@ return {
 				autoflake = {
 					prepend_args = { "--remove-all-unused-imports" },
 				},
+				sql_formatter = {
+					prepend_args = { "--config", '{"keywordCase": "upper"}' },
+				},
 			},
 		},
 	},
