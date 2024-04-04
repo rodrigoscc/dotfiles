@@ -11,6 +11,9 @@ export EDITOR=nvim
 # Make sure the history is appended to new shells.
 setopt incappendhistory
 
+# Allow comments in command line.
+setopt interactivecomments
+
 # Restore C-f and other zsh shortcuts, setting EDITOR to nvim was disabling them.
 bindkey -e
 
