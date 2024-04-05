@@ -20,7 +20,7 @@ vim.api.nvim_create_autocmd("FileType", {
 	callback = function()
 		vim.keymap.set("n", "<C-s>", function()
 			vim.cmd.write()
-			vim.cmd.close()
+			vim.cmd.quit()
 		end, { buffer = true })
 	end,
 })
