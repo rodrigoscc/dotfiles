@@ -66,7 +66,7 @@ alias lt="lsd --tree --ignore-glob='node_modules|.git'"
 alias gs="git status"
 alias ga="git add"
 alias gc="git commit"
-alias gl="git log"
+alias gl="git log --oneline"
 
 alias ..="cd .."
 
