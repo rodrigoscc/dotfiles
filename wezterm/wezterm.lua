@@ -9,17 +9,6 @@ local config = {
 	}),
 	line_height = 1.15,
 	font_size = 13.0,
-	background = {
-		{
-			source = {
-				File = os.getenv("HOME") .. "/.config/wezterm/background.png",
-			},
-			width = "100%",
-			hsb = {
-				brightness = 0.02,
-			},
-		},
-	},
 	window_frame = {
 		font = wezterm.font({ family = "JetbrainsMono Nerd Font" }),
 	},
