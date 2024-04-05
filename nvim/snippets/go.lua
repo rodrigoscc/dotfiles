@@ -4,11 +4,14 @@ function struct_receiver_name(type_name, is_pointer)
 		receiver_type = "*" .. receiver_type
 	end
 
+	-- Must be a full match
+	receiver_type = "^" .. receiver_type .. "$"
+
 	local query = vim.treesitter.query.parse(
 		"go",
-		'(parameter_list (parameter_declaration name: (identifier) @name type: (_) @type (#lua-match? @type "'
+		'(method_declaration receiver: (parameter_list (parameter_declaration name: (identifier) @name type: (_) @type (#lua-match? @type "'
 			.. receiver_type
-			.. '")))'
+			.. '"))))'
 	)
 
 	local parser = vim.treesitter.get_parser(0, "go")
