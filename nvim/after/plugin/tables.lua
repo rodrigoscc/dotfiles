@@ -1,4 +1,24 @@
 local ts_utils = require("nvim-treesitter.ts_utils")
+
+local status_values = { "in progress", "todo", "done" }
+
+local status_order = {
+	["in progress"] = 10,
+	["todo"] = 20,
+	["done"] = 30,
+}
+
+local STATUS_VALUE = "status"
+local PRIORITY_VALUE = "priority"
+
+local priority_values = { "high", "medium", "low" }
+
+local priority_order = {
+	high = 1,
+	medium = 2,
+	low = 3,
+}
+
 local function split_cells(line)
 	local between_cells = vim.split(line, "|")
 
@@ -33,66 +53,36 @@ local function add_type(row)
 	end
 end
 
+local Row = {}
+
+function Row:new(line)
+	local cells = split_cells(line)
+	cells = trim_cells(cells)
+
+	local row = add_type(cells)
+
+	setmetatable(row, self)
+	self.__index = self
+
+	return row
+end
+
+function Row:order(status_column_index, priority_column_index)
+	local status = self.columns[status_column_index]
+	local priority = self.columns[priority_column_index]
+
+	return status_order[string.lower(status)]
+		+ priority_order[string.lower(priority)]
+end
+
 local function parse_table_rows(table_lines)
 	local rows = {}
 
 	for _, row_string in pairs(table_lines) do
-		local cells = split_cells(row_string)
-		cells = trim_cells(cells)
-		table.insert(rows, add_type(cells))
+		table.insert(rows, Row:new(row_string))
 	end
 
 	return rows
-end
-
-local function get_highest_column_count(rows)
-	local highest_column_count = 0
-	for _, row in pairs(rows) do
-		if #row.columns > highest_column_count then
-			highest_column_count = #row.columns
-		end
-	end
-	return highest_column_count
-end
-
-local function add_missing_columns(row, expected_columns)
-	for _ = #row.columns + 1, expected_columns do
-		table.insert(row.columns, "")
-	end
-end
-
-local function normalize_column_count(rows)
-	local highest_column_count = get_highest_column_count(rows)
-
-	for _, row in pairs(rows) do
-		add_missing_columns(row, highest_column_count)
-	end
-end
-
-local function get_column_width(md_table, column_index)
-	local max_width = 0
-	for _, row in ipairs(md_table) do
-		if row.type ~= "divider" then
-			local cell = row.columns[column_index]
-
-			if #cell > max_width then
-				max_width = #cell
-			end
-		end
-	end
-	return max_width
-end
-
-local function get_longest_columns_width(rows)
-	local column_widths = {}
-
-	local columns_count = #rows[1].columns
-
-	for i = 1, columns_count do
-		table.insert(column_widths, get_column_width(rows, i))
-	end
-
-	return column_widths
 end
 
 local function align_cell(cell, width, row_type)
@@ -102,31 +92,6 @@ local function align_cell(cell, width, row_type)
 		local padding = width - #cell
 		return cell .. string.rep(" ", padding)
 	end
-end
-
-local function align_row(row, longest_column_widths)
-	for i, cell in pairs(row.columns) do
-		row.columns[i] = align_cell(cell, longest_column_widths[i], row.type)
-	end
-end
-
-local function align_rows(rows)
-	local longest_column_widths = get_longest_columns_width(rows)
-
-	for _, row in pairs(rows) do
-		align_row(row, longest_column_widths)
-	end
-end
-
-local function table_to_lines(rows)
-	local lines = {}
-
-	for _, row in pairs(rows) do
-		local row_string = "| " .. table.concat(row.columns, " | ") .. " |"
-		table.insert(lines, row_string)
-	end
-
-	return lines
 end
 
 local function find_table_start(current_line_number)
@@ -172,118 +137,9 @@ local function find_table_range()
 	return table_start, table_end
 end
 
-local function read_surrounding_table()
-	local table_start, table_end = find_table_range()
-
-	local table_lines =
-		vim.api.nvim_buf_get_lines(0, table_start, table_end, true)
-
-	local table_rows = parse_table_rows(table_lines)
-
-	return {
-		rows = table_rows,
-		line_range = { table_start, table_end },
-	}
-end
-
-local status_values = { "in progress", "todo", "done" }
-
-local status_order = {
-	["in progress"] = 10,
-	["todo"] = 20,
-	["done"] = 30,
-}
-
-local STATUS_VALUE = "status"
-local PRIORITY_VALUE = "priority"
-
-local priority_values = { "high", "medium", "low" }
-
-local priority_order = {
-	high = 1,
-	medium = 2,
-	low = 3,
-}
-
-local function find_value_column_index(rows, value_type)
-	-- Assuming header row is the first one.
-	local header_row = rows[1]
-
-	for i, cell in pairs(header_row.columns) do
-		if string.lower(cell) == value_type then
-			return i
-		end
-	end
-
-	return nil
-end
-
-local function row_order(row, status_column_index, priority_column_index)
-	local status = row.columns[status_column_index]
-	local priority = row.columns[priority_column_index]
-
-	return status_order[string.lower(status)]
-		+ priority_order[string.lower(priority)]
-end
-
-local function sort_rows_by_status(
-	table_obj,
-	status_column_index,
-	priority_column_index
-)
-	local rows_to_sort = vim.list_slice(table_obj.rows, 3, #table_obj.rows)
-
-	table.sort(rows_to_sort, function(row1, row2)
-		return row_order(row1, status_column_index, priority_column_index)
-			< row_order(row2, status_column_index, priority_column_index)
-	end)
-
-	local sorted_rows = vim.list_slice(table_obj.rows, 1, 2)
-	vim.list_extend(sorted_rows, rows_to_sort)
-
-	table_obj.rows = sorted_rows
-end
-
-local function write_table(surrounding_table)
-	vim.api.nvim_buf_set_lines(
-		0,
-		surrounding_table.line_range[1],
-		surrounding_table.line_range[2],
-		false,
-		table_to_lines(surrounding_table.rows)
-	)
-end
-
-function AlignTable()
-	local table_obj = read_surrounding_table()
-	normalize_column_count(table_obj.rows)
-	align_rows(table_obj.rows)
-	write_table(table_obj)
-end
-
 function AreWritingTable()
 	local current_line = vim.api.nvim_get_current_line()
 	return vim.startswith(current_line, "|")
-end
-
-function OrderByStatusAndPriority()
-	local table_obj = read_surrounding_table()
-
-	local status_column_index =
-		find_value_column_index(table_obj.rows, STATUS_VALUE)
-	if status_column_index == nil then
-		return
-	end
-
-	local priority_column_index =
-		find_value_column_index(table_obj.rows, PRIORITY_VALUE)
-	if priority_column_index == nil then
-		return
-	end
-
-	sort_rows_by_status(table_obj, status_column_index, priority_column_index)
-	align_rows(table_obj.rows)
-	write_table(table_obj)
 end
 
 local function next_index_forward(values, current_index, step)
@@ -306,28 +162,6 @@ local function get_next_index(values, current_index, direction)
 	end
 end
 
-local function find_next_value_in(values, current_value)
-	for i, value in pairs(values) do
-		if value == current_value then
-			local next_index = get_next_index(values, i, 1)
-			return values[next_index]
-		end
-	end
-
-	return current_value
-end
-
-local function find_previous_value_in(values, current_value)
-	for i, value in pairs(values) do
-		if value == current_value then
-			local previous_index = get_next_index(values, i, -1)
-			return values[previous_index]
-		end
-	end
-
-	return current_value
-end
-
 local function get_value_type(value)
 	if vim.tbl_contains(status_values, value) then
 		return STATUS_VALUE
@@ -336,6 +170,16 @@ local function get_value_type(value)
 	else
 		return nil
 	end
+end
+
+local function index_of(tbl, value)
+	for i, v in ipairs(tbl) do
+		if v == value then
+			return i
+		end
+	end
+
+	return -1
 end
 
 local function get_current_ts_node_data()
@@ -362,87 +206,264 @@ end
 
 local function validate_ts_node_for_cycling(node_data)
 	if node_data.node_type ~= "pipe_table_cell" then
-		return nil
+		return false
 	end
 
 	local value_type = get_value_type(node_data.text)
 
 	if value_type == nil then
-		return nil
+		return false
 	end
 
-	return {
-		type = value_type,
-		value = node_data.text,
-		line_num = node_data.line_num,
-		line = node_data.line,
-		column_range = node_data.column_range,
-	}
+	return true
 end
 
-local function get_current_value_obj()
-	local ts_node_data = get_current_ts_node_data()
-	return validate_ts_node_for_cycling(ts_node_data)
-end
-
-local function update_line(value_obj, new_value)
-	local new_line = value_obj.line:sub(1, value_obj.column_range[1] - 1)
-		.. " "
-		.. string.upper(new_value)
-		.. " "
-		.. value_obj.line:sub(value_obj.column_range[2] + 1)
-
-	vim.api.nvim_buf_set_lines(
-		0,
-		value_obj.line_num,
-		value_obj.line_num + 1,
-		false,
-		{ new_line }
-	)
-end
-
-local function get_available_values(value_obj)
-	if value_obj.type == STATUS_VALUE then
+local function get_available_values(value_type)
+	if value_type == STATUS_VALUE then
 		return status_values
-	elseif value_obj.type == PRIORITY_VALUE then
+	elseif value_type == PRIORITY_VALUE then
 		return priority_values
 	end
 end
 
-local function find_next_value(value_obj)
-	local available_values = get_available_values(value_obj)
-	return find_next_value_in(available_values, value_obj.value)
+local Table = {}
+
+function Table:new(table_lines)
+	local rows = parse_table_rows(table_lines)
+
+	local table = {
+		rows = rows,
+	}
+
+	setmetatable(table, self)
+	self.__index = self
+
+	return table
 end
 
-local function find_previous_value(value_obj)
-	local available_values = get_available_values(value_obj)
-	return find_previous_value_in(available_values, value_obj.value)
+function Table:get_column_width(column_index)
+	local max_width = 0
+	for _, row in ipairs(self.rows) do
+		if row.type ~= "divider" then
+			local cell = row.columns[column_index]
+
+			if #cell > max_width then
+				max_width = #cell
+			end
+		end
+	end
+	return max_width
 end
 
-function CycleValue()
-	local value_obj = get_current_value_obj()
-	if value_obj == nil then
+function Table:get_longest_columns_width()
+	local column_widths = {}
+
+	local columns_count = #self.rows[1].columns
+
+	for i = 1, columns_count do
+		table.insert(column_widths, self:get_column_width(i))
+	end
+
+	return column_widths
+end
+
+function Table:add_missing_columns(row, expected_columns)
+	for _ = #row.columns + 1, expected_columns do
+		table.insert(row.columns, "")
+	end
+end
+
+function Table:get_highest_column_count()
+	local highest_column_count = 0
+	for _, row in pairs(self.rows) do
+		if #row.columns > highest_column_count then
+			highest_column_count = #row.columns
+		end
+	end
+	return highest_column_count
+end
+
+function Table:normalize_column_count()
+	local highest_column_count = self:get_highest_column_count()
+
+	for _, row in pairs(self.rows) do
+		self:add_missing_columns(row, highest_column_count)
+	end
+end
+
+function Table:align_row(row, longest_column_widths)
+	for i, cell in pairs(row.columns) do
+		row.columns[i] = align_cell(cell, longest_column_widths[i], row.type)
+	end
+end
+
+function Table:align_rows()
+	local longest_column_widths = self:get_longest_columns_width()
+
+	for _, row in pairs(self.rows) do
+		self:align_row(row, longest_column_widths)
+	end
+end
+
+function Table:find_value_column_index(value_type)
+	-- Assuming header row is the first one.
+	local header_row = self.rows[1]
+
+	for i, cell in pairs(header_row.columns) do
+		if string.lower(cell) == value_type then
+			return i
+		end
+	end
+
+	return nil
+end
+
+function Table:sort_rows_by_status_and_priority(
+	status_column_index,
+	priority_column_index
+)
+	local rows_to_sort = vim.list_slice(self.rows, 3, #self.rows)
+
+	table.sort(rows_to_sort, function(row1, row2)
+		return row1:order(status_column_index, priority_column_index)
+			< row2:order(status_column_index, priority_column_index)
+	end)
+
+	local sorted_rows = vim.list_slice(self.rows, 1, 2)
+	vim.list_extend(sorted_rows, rows_to_sort)
+
+	self.rows = sorted_rows
+end
+
+function Table:sort()
+	local status_column_index = self:find_value_column_index(STATUS_VALUE)
+	if status_column_index == nil then
 		return
 	end
 
-	local new_value = find_next_value(value_obj)
+	local priority_column_index = self:find_value_column_index(PRIORITY_VALUE)
+	if priority_column_index == nil then
+		return
+	end
 
-	update_line(value_obj, new_value)
+	self:sort_rows_by_status_and_priority(
+		status_column_index,
+		priority_column_index
+	)
+end
+
+function Table:to_lines()
+	local lines = {}
+
+	for _, row in pairs(self.rows) do
+		local row_string = "| " .. table.concat(row.columns, " | ") .. " |"
+		table.insert(lines, row_string)
+	end
+
+	return lines
+end
+
+function Table:write_in_line_range(start_line, end_line)
+	vim.api.nvim_buf_set_lines(0, start_line, end_line, false, self:to_lines())
+end
+
+local Value = {}
+
+function Value:new(text)
+	local value_type = get_value_type(text)
+
+	local available_values = get_available_values(value_type)
+
+	local value = {
+		type = value_type,
+		value = text,
+
+		available_values = available_values,
+		index = index_of(available_values, text),
+	}
+
+	setmetatable(value, self)
+	self.__index = self
+
+	return value
+end
+
+function Value:next()
+	self.index = get_next_index(self.available_values, self.index, 1)
+	self.value = self.available_values[self.index]
+end
+
+function Value:previous()
+	self.index = get_next_index(self.available_values, self.index, -1)
+	self.value = self.available_values[self.index]
+end
+
+function Value:write_in_line_column_range(line_num, column_range)
+	local line = vim.api.nvim_buf_get_lines(0, line_num, line_num + 1, false)[1]
+
+	local new_line = line:sub(1, column_range[1] - 1)
+		.. " "
+		.. string.upper(self.value)
+		.. " "
+		.. line:sub(column_range[2] + 1)
+
+	vim.api.nvim_buf_set_lines(0, line_num, line_num + 1, false, { new_line })
+end
+
+function AlignTable()
+	local table_start, table_end = find_table_range()
+	local table_lines =
+		vim.api.nvim_buf_get_lines(0, table_start, table_end, true)
+
+	local my_table = Table:new(table_lines)
+	my_table:normalize_column_count()
+	my_table:align_rows()
+	my_table:write_in_line_range(table_start, table_end)
+end
+
+function CycleValue()
+	local ts_node_data = get_current_ts_node_data()
+
+	if not validate_ts_node_for_cycling(ts_node_data) then
+		return
+	end
+
+	local value = Value:new(ts_node_data.text)
+	value:next()
+	value:write_in_line_column_range(
+		ts_node_data.line_num,
+		ts_node_data.column_range
+	)
 
 	AlignTable()
 end
 
 function CycleValueReverse()
-	local value_obj = get_current_value_obj()
-	if value_obj == nil then
+	local ts_node_data = get_current_ts_node_data()
+
+	if not validate_ts_node_for_cycling(ts_node_data) then
 		return
 	end
 
-	local new_value = find_previous_value(value_obj)
-
-	update_line(value_obj, new_value)
+	local value = Value:new(ts_node_data.text)
+	value:previous()
+	value:write_in_line_column_range(
+		ts_node_data.line_num,
+		ts_node_data.column_range
+	)
 
 	AlignTable()
+end
+
+function OrderByStatusAndPriority()
+	local table_start, table_end = find_table_range()
+	local table_lines =
+		vim.api.nvim_buf_get_lines(0, table_start, table_end, true)
+
+	local my_table = Table:new(table_lines)
+	my_table:sort()
+	my_table:align_rows()
+	my_table:write_in_line_range(table_start, table_end)
 end
 
 local function find_next_cell(node)
