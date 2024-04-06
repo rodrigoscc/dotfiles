@@ -241,30 +241,34 @@ function Table:new(table_lines)
 	return table
 end
 
-function Table:get_column_width(column_index)
-	local max_width = 0
+function Table:get_min_column_width(column_index)
+	-- Let's use at least one character per column, so that divider cells
+	-- contain at least two dashes and empty cells are not that small
+	-- (looks off).
+	local min_width = 2
+
 	for _, row in ipairs(self.rows) do
 		if row.type ~= "divider" then
 			local cell = row.columns[column_index]
 
-			if #cell > max_width then
-				max_width = #cell
+			if #cell > min_width then
+				min_width = #cell
 			end
 		end
 	end
-	return max_width
+	return min_width
 end
 
-function Table:get_longest_columns_width()
-	local column_widths = {}
+function Table:get_min_column_widths()
+	local min_column_widths = {}
 
 	local columns_count = #self.rows[1].columns
 
 	for i = 1, columns_count do
-		table.insert(column_widths, self:get_column_width(i))
+		table.insert(min_column_widths, self:get_min_column_width(i))
 	end
 
-	return column_widths
+	return min_column_widths
 end
 
 function Table:add_missing_columns(row, expected_columns)
@@ -291,17 +295,17 @@ function Table:normalize_column_count()
 	end
 end
 
-function Table:align_row(row, longest_column_widths)
+function Table:align_row(row, min_column_widths)
 	for i, cell in pairs(row.columns) do
-		row.columns[i] = align_cell(cell, longest_column_widths[i], row.type)
+		row.columns[i] = align_cell(cell, min_column_widths[i], row.type)
 	end
 end
 
 function Table:align_rows()
-	local longest_column_widths = self:get_longest_columns_width()
+	local min_column_widths = self:get_min_column_widths()
 
 	for _, row in pairs(self.rows) do
-		self:align_row(row, longest_column_widths)
+		self:align_row(row, min_column_widths)
 	end
 end
 
