@@ -528,23 +528,33 @@ vim.api.nvim_create_autocmd("FileType", {
 				vim.schedule(function()
 					TableGoToNextCell()
 				end)
+			else
+				local key =
+					vim.api.nvim_replace_termcodes("<tab>", true, false, true)
+				vim.api.nvim_feedkeys(key, "n", true)
 			end
 		end, { buffer = true })
 
 		vim.keymap.set("n", "L", function()
 			if AreWritingTable() then
 				TableCycleValue()
+			else
+				vim.cmd("normal! L")
 			end
 		end, { buffer = true })
 		vim.keymap.set("n", "H", function()
 			if AreWritingTable() then
 				TableCycleValueReverse()
+			else
+				vim.cmd("normal! H")
 			end
 		end, { buffer = true })
 
 		vim.keymap.set("n", "<leader>st", function()
 			if AreWritingTable() then
 				TableRowsSort()
+			else
+				vim.cmd('echo "Not in a table"')
 			end
 		end, { buffer = true, desc = "[s]ort [t]table" })
 	end,
