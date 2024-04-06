@@ -414,7 +414,7 @@ function Value:write_in_line_column_range(line_num, column_range)
 	vim.api.nvim_buf_set_lines(0, line_num, line_num + 1, false, { new_line })
 end
 
-function AlignTable()
+function TableAlign()
 	local table_start, table_end = find_table_range()
 	local table_lines =
 		vim.api.nvim_buf_get_lines(0, table_start, table_end, true)
@@ -425,7 +425,7 @@ function AlignTable()
 	my_table:write_in_line_range(table_start, table_end)
 end
 
-function CycleValue()
+function TableCycleValue()
 	local ts_node_data = get_current_ts_node_data()
 
 	if not validate_ts_node_for_cycling(ts_node_data) then
@@ -439,10 +439,10 @@ function CycleValue()
 		ts_node_data.column_range
 	)
 
-	AlignTable()
+	TableAlign()
 end
 
-function CycleValueReverse()
+function TableCycleValueReverse()
 	local ts_node_data = get_current_ts_node_data()
 
 	if not validate_ts_node_for_cycling(ts_node_data) then
@@ -456,10 +456,10 @@ function CycleValueReverse()
 		ts_node_data.column_range
 	)
 
-	AlignTable()
+	TableAlign()
 end
 
-function OrderByStatusAndPriority()
+function TableRowsSort()
 	local table_start, table_end = find_table_range()
 	local table_lines =
 		vim.api.nvim_buf_get_lines(0, table_start, table_end, true)
@@ -491,9 +491,9 @@ local function find_next_cell(node)
 	return nil
 end
 
-function AppendRow()
+function TableAppendRow()
 	vim.cmd("normal! o| |")
-	AlignTable()
+	TableAlign()
 end
 
 local function find_next_cell_after_current_node()
@@ -508,11 +508,11 @@ local function find_next_cell_after_current_node()
 	return find_next_cell(node)
 end
 
-function GotoNextCell()
+function TableGoToNextCell()
 	local next_cell_node = find_next_cell_after_current_node()
 
 	if next_cell_node == nil then
-		AppendRow()
+		TableAppendRow()
 	else
 		ts_utils.goto_node(next_cell_node, false, true)
 	end
@@ -523,28 +523,28 @@ vim.api.nvim_create_autocmd("FileType", {
 	callback = function()
 		vim.keymap.set("i", "<tab>", function()
 			if AreWritingTable() then
-				AlignTable()
+				TableAlign()
 
 				vim.schedule(function()
-					GotoNextCell()
+					TableGoToNextCell()
 				end)
 			end
 		end, { buffer = true })
 
 		vim.keymap.set("n", "L", function()
 			if AreWritingTable() then
-				CycleValue()
+				TableCycleValue()
 			end
 		end, { buffer = true })
 		vim.keymap.set("n", "H", function()
 			if AreWritingTable() then
-				CycleValueReverse()
+				TableCycleValueReverse()
 			end
 		end, { buffer = true })
 
 		vim.keymap.set("n", "<leader>st", function()
 			if AreWritingTable() then
-				OrderByStatusAndPriority()
+				TableRowsSort()
 			end
 		end, { buffer = true, desc = "[s]ort [t]table" })
 	end,
