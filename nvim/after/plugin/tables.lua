@@ -243,9 +243,9 @@ end
 
 function Table:get_min_column_width(column_index)
 	-- Let's use at least one character per column, so that divider cells
-	-- contain at least two dashes and empty cells are not that small
+	-- contain at least three dashes and empty cells are not that small
 	-- (looks off).
-	local min_width = 2
+	local min_width = 3
 
 	for _, row in ipairs(self.rows) do
 		if row.type ~= "divider" then
