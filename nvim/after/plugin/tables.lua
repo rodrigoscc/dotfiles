@@ -309,12 +309,12 @@ end
 
 local Column = {}
 
-local function get_column_min_width(column_index, cells)
+local function get_column_min_width(column_index, rows)
 	local min_width = 3
 
-	local row_number = #cells
+	local row_number = #rows
 	for i = 1, row_number do
-		local cell = cells[i][column_index]
+		local cell = rows[i].cells[column_index]
 
 		local row = cell:row()
 		if row.type ~= "divider" then
@@ -329,13 +329,13 @@ local function get_column_min_width(column_index, cells)
 	return min_width
 end
 
-function Column:new(index, cells)
-	local header_cell = cells[1][index]
+function Column:new(index, rows)
+	local header_cell = rows[1].cells[index]
 
 	local column = {
 		header = header_cell.text,
 		index = index,
-		min_width = get_column_min_width(index, cells),
+		min_width = get_column_min_width(index, rows),
 	}
 
 	setmetatable(column, self)
@@ -415,12 +415,13 @@ local function parse_rows(cells, table_lines)
 	return rows
 end
 
-local function parse_columns(cells)
+local function parse_columns(rows)
 	local columns = {}
 
-	local first_row = cells[1]
-	for column_index in ipairs(first_row) do
-		table.insert(columns, Column:new(column_index, cells))
+	local first_row = rows[1]
+
+	for column_index in ipairs(first_row.cells) do
+		table.insert(columns, Column:new(column_index, rows))
 	end
 
 	return columns
@@ -433,16 +434,15 @@ function Table:new(table_lines, table_start, table_end)
 		line_start = table_start,
 		line_end = table_end,
 
-		cells = nil,
 		rows = nil,
 		columns = nil,
 	}
 
-	my_table.cells = parse_cells(my_table, table_lines)
+	local cells = parse_cells(my_table, table_lines)
 
-	my_table.rows = parse_rows(my_table.cells, table_lines)
+	my_table.rows = parse_rows(cells, table_lines)
 	-- TODO: How to make clear that columns parsing depends on rows being already parsed.
-	my_table.columns = parse_columns(my_table.cells)
+	my_table.columns = parse_columns(my_table.rows)
 
 	setmetatable(my_table, self)
 	self.__index = self
@@ -451,22 +451,22 @@ function Table:new(table_lines, table_start, table_end)
 end
 
 function Table:iterator()
-	if #self.cells == 0 or #self.cells[1] == 0 then
+	if #self.rows == 0 or #self.rows.cells == 0 then
 		return nil
 	end
 
-	return self.cells[1][1]
+	return self.rows[1].cells[1]
 end
 
 function Table:update_column_widths()
 	for _, column in ipairs(self.columns) do
-		column.min_width = get_column_min_width(column.index, self.cells)
+		column.min_width = get_column_min_width(column.index, self.rows)
 	end
 end
 
 function Table:align()
-	for row_index, row in ipairs(self.cells) do
-		for column_index, cell in ipairs(row) do
+	for row_index, row in ipairs(self.rows) do
+		for column_index, cell in ipairs(row.cells) do
 			cell:fill(self.rows[row_index], self.columns[column_index])
 		end
 	end
@@ -475,9 +475,9 @@ end
 function Table:to_lines()
 	local lines = {}
 
-	for _, row in ipairs(self.cells) do
+	for _, row in ipairs(self.rows) do
 		local texts = {}
-		for _, cell in ipairs(row) do
+		for _, cell in ipairs(row.cells) do
 			table.insert(texts, cell.text)
 		end
 
@@ -499,8 +499,8 @@ function Table:get_cell_under_cursor()
 end
 
 function Table:last_cell()
-	local last_row = self.cells[#self.cells]
-	return last_row[#last_row]
+	local last_row = self.rows[#self.rows]
+	return last_row.cells[#last_row.cells]
 end
 
 function Table:append_row()
@@ -522,7 +522,6 @@ function Table:append_row()
 
 	local new_row = Row:new(#self.rows + 1, "", new_cells)
 
-	table.insert(self.cells, new_cells)
 	table.insert(self.rows, new_row)
 
 	last_cell.next = new_cells[1]
