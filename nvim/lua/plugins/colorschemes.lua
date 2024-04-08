@@ -52,6 +52,11 @@ return {
 					fg = "muted",
 					blend = 15,
 				},
+				["@markdown.canceled"] = {
+					bg = "muted",
+					fg = "muted",
+					blend = 15,
+				},
 			},
 		},
 	},

@@ -222,8 +222,8 @@ function Cell:get_enum()
 
 	if string.lower(column.header) == "status" then
 		return Enum:new(
-			{ "todo", "in progress", "done" },
-			{ todo = 2, ["in progress"] = 3, done = 1 },
+			{ "todo", "in progress", "done", "canceled" },
+			{ todo = 2, ["in progress"] = 3, done = 1, canceled = 0 },
 			self.text,
 			2
 		)
