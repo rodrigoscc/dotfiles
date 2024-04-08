@@ -21,16 +21,16 @@ local function find_table_end(current_line_number)
 	local table_end = current_line_number
 
 	local current_line =
-		vim.api.nvim_buf_get_lines(0, table_end, table_end + 1, false)
+		vim.api.nvim_buf_get_lines(0, table_end - 1, table_end, false)
 
 	while #current_line > 0 and vim.startswith(current_line[1], "|") do
 		table_end = table_end + 1
 
 		current_line =
-			vim.api.nvim_buf_get_lines(0, table_end, table_end + 1, false)
+			vim.api.nvim_buf_get_lines(0, table_end - 1, table_end, false)
 	end
 
-	return table_end
+	return table_end - 1
 end
 
 local function find_table_range()
