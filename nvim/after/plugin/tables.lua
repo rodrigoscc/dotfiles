@@ -167,6 +167,28 @@ function Cell:next_regular_cell()
 	return nil
 end
 
+function Cell:previous_regular_cell()
+	local previous_cell = self.previous
+
+	while previous_cell ~= nil do
+		local row = previous_cell:row()
+		if row.type == "regular" or row.type == "header" then
+			log.fmt_debug(
+				"Previous regular cell: (%i, %i) -> %s",
+				previous_cell.x,
+				previous_cell.y,
+				previous_cell.text
+			)
+			return previous_cell
+		end
+
+		previous_cell = previous_cell.previous
+	end
+
+	log.fmt_debug("No previous regular cell")
+	return nil
+end
+
 function Cell:range()
 	return self:row():find_cell_range(self.y)
 end
@@ -679,6 +701,42 @@ vim.api.nvim_create_autocmd("FileType", {
 				end
 
 				next_cell:select()
+			else
+				log.fmt_debug("No cell under cursor")
+			end
+		end, { buffer = true })
+
+		vim.keymap.set({ "n", "s", "i" }, "<s-tab>", function()
+			local table_start, table_end = find_table_range()
+			local table_lines =
+				vim.api.nvim_buf_get_lines(0, table_start, table_end, true)
+
+			if #table_lines == 0 then
+				run_default_key_action("<tab>")
+				return
+			end
+
+			local my_table = Table:new(table_lines, table_start, table_end)
+
+			assert(my_table ~= nil, "Table must exist")
+
+			my_table:align()
+			my_table:write()
+
+			local cell = my_table:get_cell_under_cursor()
+
+			if cell ~= nil then
+				log.fmt_debug(
+					"Cursor cell: (%i, %i) -> %s",
+					cell.x,
+					cell.y,
+					cell.text
+				)
+				local previous_cell = cell:previous_regular_cell()
+
+				if previous_cell ~= nil then
+					previous_cell:select()
+				end
 			else
 				log.fmt_debug("No cell under cursor")
 			end
