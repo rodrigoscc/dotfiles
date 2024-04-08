@@ -634,7 +634,7 @@ function Table:write()
 	vim.api.nvim_buf_set_lines(0, self.line_start, self.line_end, true, lines)
 end
 
-local function default_action(raw_keys)
+local function run_default_key_action(raw_keys)
 	local keys = vim.api.nvim_replace_termcodes(raw_keys, true, false, true)
 	vim.api.nvim_feedkeys(keys, "n", true)
 end
@@ -648,7 +648,7 @@ vim.api.nvim_create_autocmd("FileType", {
 				vim.api.nvim_buf_get_lines(0, table_start, table_end, true)
 
 			if #table_lines == 0 then
-				default_action("<tab>")
+				run_default_key_action("<tab>")
 				return
 			end
 
@@ -690,7 +690,7 @@ vim.api.nvim_create_autocmd("FileType", {
 				vim.api.nvim_buf_get_lines(0, table_start, table_end, true)
 
 			if #table_lines == 0 then
-				default_action("L")
+				run_default_key_action("L")
 				return
 			end
 
@@ -715,7 +715,7 @@ vim.api.nvim_create_autocmd("FileType", {
 				vim.api.nvim_buf_get_lines(0, table_start, table_end, true)
 
 			if #table_lines == 0 then
-				default_action("H")
+				run_default_key_action("H")
 				return
 			end
 
