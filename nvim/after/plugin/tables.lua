@@ -46,12 +46,10 @@ end
 
 local Enum = {}
 
-function Enum:new(value_order, current_value, order_priority)
+function Enum:new(values, value_order, current_value, order_priority)
 	current_value = string.lower(vim.trim(current_value))
 
 	local index = -1
-
-	local values = vim.tbl_keys(value_order)
 
 	for i, value in ipairs(values) do
 		if string.lower(value) == current_value then
@@ -202,12 +200,18 @@ function Cell:get_enum()
 
 	if string.lower(column.header) == "status" then
 		return Enum:new(
+			{ "todo", "in progress", "done" },
 			{ todo = 2, ["in progress"] = 3, done = 1 },
 			self.text,
 			2
 		)
 	elseif string.lower(column.header) == "priority" then
-		return Enum:new({ low = 1, medium = 2, high = 3 }, self.text, 1)
+		return Enum:new(
+			{ "low", "medium", "high" },
+			{ low = 1, medium = 2, high = 3 },
+			self.text,
+			1
+		)
 	end
 
 	return nil
@@ -385,13 +389,22 @@ function Column:new(index, rows)
 	return column
 end
 
+local function close_cell_values(cell_values)
+	table.insert(cell_values, "")
+end
+
 local function parse_line(my_table, row_index, line)
 	local cell_values = vim.split(line, "|")
 
+	local at_least_contains_two_pipes = #cell_values > 2
+
+	local is_table_closed = at_least_contains_two_pipes
+		and vim.trim(cell_values[#cell_values]) == ""
+
 	if #cell_values == 1 then
 		error("Invalid table line.")
-	elseif #cell_values == 2 then
-		return { Cell:new(my_table, row_index, 1, cell_values[2]) }
+	elseif not is_table_closed then
+		close_cell_values(cell_values)
 	end
 
 	cell_values = vim.list_slice(cell_values, 2, #cell_values - 1)
@@ -439,6 +452,31 @@ local function parse_cells(my_table, table_lines)
 	return cells
 end
 
+local function normalize_cells(my_table, cells)
+	local max_columns = 0
+
+	for _, row_cells in ipairs(cells) do
+		if #row_cells > max_columns then
+			max_columns = #row_cells
+		end
+	end
+
+	for row_index, row_cells in ipairs(cells) do
+		while #row_cells < max_columns do
+			local last_cell = row_cells[#row_cells]
+
+			local new_cell = Cell:new(my_table, row_index, #row_cells + 1, "")
+			table.insert(row_cells, new_cell)
+
+			new_cell.next = last_cell.next
+			last_cell.next = new_cell
+			new_cell.previous = last_cell
+		end
+	end
+
+	return cells
+end
+
 local function parse_rows(cells, table_lines)
 	local rows = {}
 
@@ -464,6 +502,17 @@ end
 local Table = {}
 
 function Table:new(table_lines, table_start, table_end)
+	log.fmt_debug(
+		"Creating table: %i %i %s",
+		table_start,
+		table_end,
+		vim.inspect(table_lines)
+	)
+
+	if #table_lines == 0 then
+		return nil
+	end
+
 	local my_table = {
 		line_start = table_start,
 		line_end = table_end,
@@ -473,9 +522,9 @@ function Table:new(table_lines, table_start, table_end)
 	}
 
 	local cells = parse_cells(my_table, table_lines)
+	cells = normalize_cells(my_table, cells)
 
 	my_table.rows = parse_rows(cells, table_lines)
-	-- TODO: How to make clear that columns parsing depends on rows being already parsed.
 	my_table.columns = parse_columns(my_table.rows)
 
 	setmetatable(my_table, self)
@@ -585,6 +634,11 @@ function Table:write()
 	vim.api.nvim_buf_set_lines(0, self.line_start, self.line_end, true, lines)
 end
 
+local function default_action(raw_keys)
+	local keys = vim.api.nvim_replace_termcodes(raw_keys, true, false, true)
+	vim.api.nvim_feedkeys(keys, "n", true)
+end
+
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "markdown",
 	callback = function()
@@ -593,7 +647,14 @@ vim.api.nvim_create_autocmd("FileType", {
 			local table_lines =
 				vim.api.nvim_buf_get_lines(0, table_start, table_end, true)
 
+			if #table_lines == 0 then
+				default_action("<tab>")
+				return
+			end
+
 			local my_table = Table:new(table_lines, table_start, table_end)
+
+			assert(my_table ~= nil, "Table must exist")
 
 			my_table:align()
 			my_table:write()
@@ -628,7 +689,14 @@ vim.api.nvim_create_autocmd("FileType", {
 			local table_lines =
 				vim.api.nvim_buf_get_lines(0, table_start, table_end, true)
 
+			if #table_lines == 0 then
+				default_action("L")
+				return
+			end
+
 			local my_table = Table:new(table_lines, table_start, table_end)
+
+			assert(my_table ~= nil, "Table must exist")
 
 			local cell = my_table:get_cell_under_cursor()
 
@@ -646,7 +714,14 @@ vim.api.nvim_create_autocmd("FileType", {
 			local table_lines =
 				vim.api.nvim_buf_get_lines(0, table_start, table_end, true)
 
+			if #table_lines == 0 then
+				default_action("H")
+				return
+			end
+
 			local my_table = Table:new(table_lines, table_start, table_end)
+
+			assert(my_table ~= nil, "Table must exist")
 
 			local cell = my_table:get_cell_under_cursor()
 
@@ -664,7 +739,13 @@ vim.api.nvim_create_autocmd("FileType", {
 			local table_lines =
 				vim.api.nvim_buf_get_lines(0, table_start, table_end, true)
 
+			if #table_lines == 0 then
+				return
+			end
+
 			local my_table = Table:new(table_lines, table_start, table_end)
+
+			assert(my_table ~= nil, "Table must exist")
 
 			my_table:sort()
 			my_table:align()
