@@ -46,12 +46,14 @@ end
 
 local Enum = {}
 
-function Enum:new(available_values, current_value)
+function Enum:new(value_order, current_value, order_priority)
 	current_value = string.lower(vim.trim(current_value))
 
 	local index = -1
 
-	for i, value in ipairs(available_values) do
+	local values = vim.tbl_keys(value_order)
+
+	for i, value in ipairs(values) do
 		if string.lower(value) == current_value then
 			index = i
 			break
@@ -59,13 +61,21 @@ function Enum:new(available_values, current_value)
 	end
 
 	if index == -1 then
-		error("Current value not found in available values.")
+		error(
+			string.format(
+				"Current value %s not found in available values %s.",
+				current_value,
+				vim.inspect(values)
+			)
+		)
 	end
 
 	local enum = {
 		current_value = current_value,
-		available_values = available_values,
+		available_values = values,
+		value_order = value_order,
 		index = index,
+		order_priority = order_priority or 0,
 	}
 
 	setmetatable(enum, self)
@@ -92,6 +102,11 @@ function Enum:previous()
 	end
 
 	self.current_value = self.available_values[self.index]
+end
+
+function Enum:order()
+	local order_priority_scaler = 10 ^ self.order_priority
+	return self.value_order[self.current_value] * order_priority_scaler
 end
 
 local Cell = {}
@@ -186,9 +201,13 @@ function Cell:get_enum()
 	local column = self:column()
 
 	if string.lower(column.header) == "status" then
-		return Enum:new({ "todo", "in progress", "done" }, self.text)
+		return Enum:new(
+			{ todo = 2, ["in progress"] = 3, done = 1 },
+			self.text,
+			2
+		)
 	elseif string.lower(column.header) == "priority" then
-		return Enum:new({ "low", "medium", "high" }, self.text)
+		return Enum:new({ low = 1, medium = 2, high = 3 }, self.text, 1)
 	end
 
 	return nil
@@ -305,6 +324,21 @@ end
 function Row:find_cell_range(cell_index)
 	local pipes_indexes = self:get_pipe_indexes()
 	return pipes_indexes[cell_index] - 1, pipes_indexes[cell_index + 1] - 1
+end
+
+function Row:order()
+	local order_priority = 0
+
+	for _, cell in ipairs(self.cells) do
+		local enum = cell:get_enum()
+		if enum ~= nil then
+			local enum_order = enum:order()
+			log.fmt_debug("Enum order: %i %s", enum_order, enum.current_value)
+			order_priority = order_priority + enum:order()
+		end
+	end
+
+	return order_priority
 end
 
 local Column = {}
@@ -528,6 +562,19 @@ function Table:append_row()
 	new_cells[1].previous = last_cell
 end
 
+function Table:sort()
+	local content_rows = vim.list_slice(self.rows, 3, #self.rows)
+
+	table.sort(content_rows, function(a, b)
+		return a:order() > b:order()
+	end)
+
+	self.rows = vim.list_slice(self.rows, 1, 2)
+	for _, row in ipairs(content_rows) do
+		table.insert(self.rows, row)
+	end
+end
+
 function Table:write()
 	local lines = self:to_lines()
 
@@ -610,6 +657,18 @@ vim.api.nvim_create_autocmd("FileType", {
 				my_table:align()
 				my_table:write()
 			end
+		end)
+
+		vim.keymap.set({ "n" }, "<leader>st", function()
+			local table_start, table_end = find_table_range()
+			local table_lines =
+				vim.api.nvim_buf_get_lines(0, table_start, table_end, true)
+
+			local my_table = Table:new(table_lines, table_start, table_end)
+
+			my_table:sort()
+			my_table:align()
+			my_table:write()
 		end)
 	end,
 })
