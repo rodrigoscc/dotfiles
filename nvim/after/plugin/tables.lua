@@ -44,6 +44,13 @@ local function find_table_range()
 	return table_start, table_end
 end
 
+local function find_table_lines()
+	local table_start, table_end = find_table_range()
+	return table_start,
+		table_end,
+		vim.api.nvim_buf_get_lines(0, table_start, table_end, true)
+end
+
 local Enum = {}
 
 function Enum:new(values, value_order, current_value, order_priority)
@@ -215,6 +222,30 @@ function Cell:select()
 		true
 	)
 	vim.api.nvim_feedkeys(keys, "n", true)
+end
+
+function Cell:select_next_regular_cell()
+	local next_cell = self:next_regular_cell()
+
+	if next_cell == nil then
+		return
+	end
+
+	next_cell:select()
+end
+
+function Cell:select_previous_regular_cell()
+	local previous_cell = self:previous_regular_cell()
+
+	if previous_cell == nil then
+		return
+	end
+
+	previous_cell:select()
+end
+
+function Cell:is_last_cell()
+	return self.next == nil
 end
 
 function Cell:get_enum()
@@ -603,6 +634,44 @@ function Table:get_cell_under_cursor()
 	return self.rows[row_index]:find_cell_containing(cursor_y)
 end
 
+function Table:select_next_cell_after_cursor()
+	local cell_under_cursor = self:get_cell_under_cursor()
+
+	if cell_under_cursor ~= nil then
+		log.fmt_debug(
+			"Cursor cell: (%i, %i) -> %s",
+			cell_under_cursor.x,
+			cell_under_cursor.y,
+			cell_under_cursor.text
+		)
+		cell_under_cursor:select_next_regular_cell()
+	else
+		log.fmt_debug("No cell under cursor")
+	end
+end
+
+function Table:select_previous_cell_before_cursor()
+	local cell_under_cursor = self:get_cell_under_cursor()
+
+	if cell_under_cursor ~= nil then
+		log.fmt_debug(
+			"Cursor cell: (%i, %i) -> %s",
+			cell_under_cursor.x,
+			cell_under_cursor.y,
+			cell_under_cursor.text
+		)
+
+		cell_under_cursor:select_previous_regular_cell()
+	else
+		log.fmt_debug("No cell under cursor")
+	end
+end
+
+function Table:is_cursor_in_last_cell()
+	local cell_under_cursor = self:get_cell_under_cursor()
+	return cell_under_cursor:is_last_cell()
+end
+
 function Table:last_cell()
 	local last_row = self.rows[#self.rows]
 	return last_row.cells[#last_row.cells]
@@ -611,11 +680,11 @@ end
 function Table:append_row()
 	local last_cell = self:last_cell()
 
-	local new_cells = {}
+	local new_row_cells = {}
 
 	for column_index, column in ipairs(self.columns) do
 		table.insert(
-			new_cells,
+			new_row_cells,
 			Cell:new(
 				self,
 				#self.rows + 1,
@@ -625,12 +694,12 @@ function Table:append_row()
 		)
 	end
 
-	local new_row = Row:new(#self.rows + 1, "", new_cells)
+	local new_row = Row:new(#self.rows + 1, "", new_row_cells)
 
 	table.insert(self.rows, new_row)
 
-	last_cell.next = new_cells[1]
-	new_cells[1].previous = last_cell
+	last_cell.next = new_row_cells[1]
+	new_row_cells[1].previous = last_cell
 end
 
 function Table:sort()
@@ -661,153 +730,120 @@ local function run_default_key_action(raw_keys)
 	vim.api.nvim_feedkeys(keys, "n", true)
 end
 
+local function find_surrounding_table()
+	local table_start, table_end, table_lines = find_table_lines()
+
+	if #table_lines == 0 then
+		return nil
+	end
+
+	return Table:new(table_lines, table_start, table_end)
+end
+
+function TableJumpNextCell()
+	local my_table = find_surrounding_table()
+
+	if my_table == nil then
+		run_default_key_action("<tab>")
+		return
+	end
+
+	my_table:align()
+	my_table:write()
+
+	if my_table:is_cursor_in_last_cell() then
+		my_table:append_row()
+		my_table:align()
+		my_table:write()
+	end
+
+	my_table:select_next_cell_after_cursor()
+end
+
+function TableJumpPreviousCell()
+	local my_table = find_surrounding_table()
+
+	if my_table == nil then
+		run_default_key_action("<tab>")
+		return
+	end
+
+	my_table:align()
+	my_table:write()
+
+	my_table:select_previous_cell_before_cursor()
+end
+
+function TableCycleNextEnum()
+	local my_table = find_surrounding_table()
+
+	if my_table == nil then
+		run_default_key_action("L")
+		return
+	end
+
+	local cell = my_table:get_cell_under_cursor()
+
+	if cell ~= nil then
+		cell:next_enum_value()
+		my_table:update_column_widths()
+
+		my_table:align()
+		my_table:write()
+	end
+end
+
+function TableCyclePrevEnum()
+	local my_table = find_surrounding_table()
+
+	if my_table == nil then
+		run_default_key_action("H")
+		return
+	end
+
+	local cell = my_table:get_cell_under_cursor()
+
+	if cell ~= nil then
+		cell:previous_enum_value()
+		my_table:update_column_widths()
+
+		my_table:align()
+		my_table:write()
+	end
+end
+
+function TableSort()
+	local my_table = find_surrounding_table()
+
+	if my_table == nil then
+		return
+	end
+
+	my_table:sort()
+	my_table:align()
+	my_table:write()
+end
+
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "markdown",
 	callback = function()
-		vim.keymap.set({ "n", "s", "i" }, "<tab>", function()
-			local table_start, table_end = find_table_range()
-			local table_lines =
-				vim.api.nvim_buf_get_lines(0, table_start, table_end, true)
+		vim.keymap.set(
+			{ "n", "s", "i" },
+			"<tab>",
+			TableJumpNextCell,
+			{ buffer = true }
+		)
 
-			if #table_lines == 0 then
-				run_default_key_action("<tab>")
-				return
-			end
+		vim.keymap.set(
+			{ "n", "s", "i" },
+			"<s-tab>",
+			TableJumpPreviousCell,
+			{ buffer = true }
+		)
 
-			local my_table = Table:new(table_lines, table_start, table_end)
+		vim.keymap.set({ "n" }, "L", TableCycleNextEnum)
+		vim.keymap.set({ "n" }, "H", TableCyclePrevEnum)
 
-			assert(my_table ~= nil, "Table must exist")
-
-			my_table:align()
-			my_table:write()
-
-			local cell = my_table:get_cell_under_cursor()
-
-			if cell ~= nil then
-				log.fmt_debug(
-					"Cursor cell: (%i, %i) -> %s",
-					cell.x,
-					cell.y,
-					cell.text
-				)
-				local next_cell = cell:next_regular_cell()
-
-				if next_cell == nil then
-					my_table:append_row()
-					my_table:align()
-					my_table:write()
-
-					next_cell = cell:next_regular_cell()
-				end
-
-				next_cell:select()
-			else
-				log.fmt_debug("No cell under cursor")
-			end
-		end, { buffer = true })
-
-		vim.keymap.set({ "n", "s", "i" }, "<s-tab>", function()
-			local table_start, table_end = find_table_range()
-			local table_lines =
-				vim.api.nvim_buf_get_lines(0, table_start, table_end, true)
-
-			if #table_lines == 0 then
-				run_default_key_action("<tab>")
-				return
-			end
-
-			local my_table = Table:new(table_lines, table_start, table_end)
-
-			assert(my_table ~= nil, "Table must exist")
-
-			my_table:align()
-			my_table:write()
-
-			local cell = my_table:get_cell_under_cursor()
-
-			if cell ~= nil then
-				log.fmt_debug(
-					"Cursor cell: (%i, %i) -> %s",
-					cell.x,
-					cell.y,
-					cell.text
-				)
-				local previous_cell = cell:previous_regular_cell()
-
-				if previous_cell ~= nil then
-					previous_cell:select()
-				end
-			else
-				log.fmt_debug("No cell under cursor")
-			end
-		end, { buffer = true })
-
-		vim.keymap.set({ "n" }, "L", function()
-			local table_start, table_end = find_table_range()
-			local table_lines =
-				vim.api.nvim_buf_get_lines(0, table_start, table_end, true)
-
-			if #table_lines == 0 then
-				run_default_key_action("L")
-				return
-			end
-
-			local my_table = Table:new(table_lines, table_start, table_end)
-
-			assert(my_table ~= nil, "Table must exist")
-
-			local cell = my_table:get_cell_under_cursor()
-
-			if cell ~= nil then
-				cell:next_enum_value()
-				my_table:update_column_widths()
-
-				my_table:align()
-				my_table:write()
-			end
-		end)
-
-		vim.keymap.set({ "n" }, "H", function()
-			local table_start, table_end = find_table_range()
-			local table_lines =
-				vim.api.nvim_buf_get_lines(0, table_start, table_end, true)
-
-			if #table_lines == 0 then
-				run_default_key_action("H")
-				return
-			end
-
-			local my_table = Table:new(table_lines, table_start, table_end)
-
-			assert(my_table ~= nil, "Table must exist")
-
-			local cell = my_table:get_cell_under_cursor()
-
-			if cell ~= nil then
-				cell:previous_enum_value()
-				my_table:update_column_widths()
-
-				my_table:align()
-				my_table:write()
-			end
-		end)
-
-		vim.keymap.set({ "n" }, "<leader>st", function()
-			local table_start, table_end = find_table_range()
-			local table_lines =
-				vim.api.nvim_buf_get_lines(0, table_start, table_end, true)
-
-			if #table_lines == 0 then
-				return
-			end
-
-			local my_table = Table:new(table_lines, table_start, table_end)
-
-			assert(my_table ~= nil, "Table must exist")
-
-			my_table:sort()
-			my_table:align()
-			my_table:write()
-		end)
+		vim.keymap.set({ "n" }, "<leader>st", TableSort)
 	end,
 })
