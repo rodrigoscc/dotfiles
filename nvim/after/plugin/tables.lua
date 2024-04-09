@@ -724,6 +724,8 @@ function Table:delete_column(index)
 	end
 
 	table.remove(self.columns, index)
+
+	-- TODO: Update next and previous pointers.
 end
 
 function Table:move_column(from_index, to_index)
@@ -740,6 +742,24 @@ function Table:move_column(from_index, to_index)
 	local column = self.columns[from_index]
 	table.remove(self.columns, from_index)
 	table.insert(self.columns, to_index, column)
+
+	-- TODO: Update next and previous pointers.
+end
+
+function Table:insert_column(new_index)
+	for _, row in ipairs(self.rows) do
+		local new_cell = Cell:new(self, row.index, new_index, "")
+		table.insert(row.cells, new_index, new_cell)
+	end
+
+	local new_column = Column:new(new_index, self.rows)
+	table.insert(self.columns, new_index, new_column)
+
+	for i = new_index, #self.columns do
+		self.columns[i].index = i
+	end
+
+	-- TODO: Update next and previous pointers.
 end
 
 function Table:write()
@@ -902,6 +922,40 @@ function TableMoveColumnLeft()
 	my_table:write()
 end
 
+function TableInsertColumn()
+	local my_table = find_surrounding_table()
+
+	if my_table == nil then
+		return
+	end
+
+	local cursor_cell = my_table:get_cell_under_cursor()
+	if cursor_cell == nil then
+		return
+	end
+
+	my_table:insert_column(cursor_cell.y + 1)
+	my_table:align()
+	my_table:write()
+end
+
+function TableInsertColumnBefore()
+	local my_table = find_surrounding_table()
+
+	if my_table == nil then
+		return
+	end
+
+	local cursor_cell = my_table:get_cell_under_cursor()
+	if cursor_cell == nil then
+		return
+	end
+
+	my_table:insert_column(cursor_cell.y)
+	my_table:align()
+	my_table:write()
+end
+
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "markdown",
 	callback = function()
@@ -948,6 +1002,20 @@ vim.api.nvim_create_autocmd("FileType", {
 			"<leader>mh",
 			TableMoveColumnLeft,
 			{ desc = "[m]ove [c]olumn [l]eft" }
+		)
+
+		vim.keymap.set(
+			{ "n" },
+			"<leader>ic",
+			TableInsertColumn,
+			{ desc = "[i]nsert [c]olumn" }
+		)
+
+		vim.keymap.set(
+			{ "n" },
+			"<leader>iC",
+			TableInsertColumnBefore,
+			{ desc = "[i]nsert [c]olumn before" }
 		)
 	end,
 })
