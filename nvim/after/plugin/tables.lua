@@ -1,5 +1,4 @@
 local log = require("plenary.log").new({ plugin = "tables" })
-log.level = "debug"
 
 local function find_table_start(current_line_number)
 	local table_start = current_line_number
