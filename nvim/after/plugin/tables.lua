@@ -726,6 +726,22 @@ function Table:delete_column(index)
 	table.remove(self.columns, index)
 end
 
+function Table:move_column(from_index, to_index)
+	if to_index < 1 or to_index > #self.columns then
+		return
+	end
+
+	for _, row in ipairs(self.rows) do
+		local cell = row.cells[from_index]
+		table.remove(row.cells, from_index)
+		table.insert(row.cells, to_index, cell)
+	end
+
+	local column = self.columns[from_index]
+	table.remove(self.columns, from_index)
+	table.insert(self.columns, to_index, column)
+end
+
 function Table:write()
 	local lines = self:to_lines()
 
@@ -852,6 +868,40 @@ function TableDeleteColumn()
 	my_table:write()
 end
 
+function TableMoveColumnRight()
+	local my_table = find_surrounding_table()
+
+	if my_table == nil then
+		return
+	end
+
+	local cursor_cell = my_table:get_cell_under_cursor()
+	if cursor_cell == nil then
+		return
+	end
+
+	my_table:move_column(cursor_cell.y, cursor_cell.y + 1)
+	my_table:align()
+	my_table:write()
+end
+
+function TableMoveColumnLeft()
+	local my_table = find_surrounding_table()
+
+	if my_table == nil then
+		return
+	end
+
+	local cursor_cell = my_table:get_cell_under_cursor()
+	if cursor_cell == nil then
+		return
+	end
+
+	my_table:move_column(cursor_cell.y, cursor_cell.y - 1)
+	my_table:align()
+	my_table:write()
+end
+
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "markdown",
 	callback = function()
@@ -884,6 +934,20 @@ vim.api.nvim_create_autocmd("FileType", {
 			"<leader>dc",
 			TableDeleteColumn,
 			{ desc = "[d]elete [c]olumn" }
+		)
+
+		vim.keymap.set(
+			{ "n" },
+			"<leader>ml",
+			TableMoveColumnRight,
+			{ desc = "[m]ove [c]olumn [r]ight" }
+		)
+
+		vim.keymap.set(
+			{ "n" },
+			"<leader>mh",
+			TableMoveColumnLeft,
+			{ desc = "[m]ove [c]olumn [l]eft" }
 		)
 	end,
 })
