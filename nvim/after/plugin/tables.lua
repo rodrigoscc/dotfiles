@@ -726,6 +726,7 @@ function Table:delete_column(index)
 	table.remove(self.columns, index)
 
 	-- TODO: Update next and previous pointers.
+	-- TODO: Update Row.raw.
 end
 
 function Table:move_column(from_index, to_index)
@@ -744,6 +745,7 @@ function Table:move_column(from_index, to_index)
 	table.insert(self.columns, to_index, column)
 
 	-- TODO: Update next and previous pointers.
+	-- TODO: Update Row.raw.
 end
 
 function Table:insert_column(new_index)
@@ -760,6 +762,7 @@ function Table:insert_column(new_index)
 	end
 
 	-- TODO: Update next and previous pointers.
+	-- TODO: Update Row.raw.
 end
 
 function Table:write()
