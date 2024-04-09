@@ -668,6 +668,10 @@ end
 
 function Table:is_cursor_in_last_cell()
 	local cell_under_cursor = self:get_cell_under_cursor()
+	if cell_under_cursor == nil then
+		return false
+	end
+
 	return cell_under_cursor:is_last_cell()
 end
 
