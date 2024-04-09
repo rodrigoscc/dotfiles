@@ -718,6 +718,14 @@ function Table:sort()
 	end
 end
 
+function Table:delete_column(index)
+	for _, row in ipairs(self.rows) do
+		table.remove(row.cells, index)
+	end
+
+	table.remove(self.columns, index)
+end
+
 function Table:write()
 	local lines = self:to_lines()
 
@@ -827,6 +835,23 @@ function TableSort()
 	my_table:write()
 end
 
+function TableDeleteColumn()
+	local my_table = find_surrounding_table()
+
+	if my_table == nil then
+		return
+	end
+
+	local cursor_cell = my_table:get_cell_under_cursor()
+	if cursor_cell == nil then
+		return
+	end
+
+	my_table:delete_column(cursor_cell.y)
+	my_table:align()
+	my_table:write()
+end
+
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "markdown",
 	callback = function()
@@ -847,6 +872,18 @@ vim.api.nvim_create_autocmd("FileType", {
 		vim.keymap.set({ "n" }, "L", TableCycleNextEnum)
 		vim.keymap.set({ "n" }, "H", TableCyclePrevEnum)
 
-		vim.keymap.set({ "n" }, "<leader>st", TableSort)
+		vim.keymap.set(
+			{ "n" },
+			"<leader>st",
+			TableSort,
+			{ desc = "[s]ort [t]table" }
+		)
+
+		vim.keymap.set(
+			{ "n" },
+			"<leader>dc",
+			TableDeleteColumn,
+			{ desc = "[d]elete [c]olumn" }
+		)
 	end,
 })
