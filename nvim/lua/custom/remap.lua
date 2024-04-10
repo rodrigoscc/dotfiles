@@ -411,3 +411,9 @@ vim.keymap.set(
 	":!jq --indent 4<cr>",
 	{ desc = "[f]ormat [j]son" }
 )
+vim.keymap.set(
+	"n",
+	"<leader>fj",
+	":'{+1,'}-1!jq --indent 4<cr>",
+	{ desc = "[f]ormat [j]son" }
+)
