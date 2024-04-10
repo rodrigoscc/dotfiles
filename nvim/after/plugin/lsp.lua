@@ -153,11 +153,11 @@ lsp.on_attach(function(client, bufnr)
 
 	vim.keymap.set("n", "[e", function()
 		vim.g.set_jump(function()
-			vim.diagnostic.goto_prev({
+			vim.diagnostic.goto_next({
 				severity = vim.diagnostic.severity.ERROR,
 			})
 		end, function()
-			vim.diagnostic.goto_next({
+			vim.diagnostic.goto_prev({
 				severity = vim.diagnostic.severity.ERROR,
 			})
 		end)
