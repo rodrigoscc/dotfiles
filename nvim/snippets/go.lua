@@ -195,10 +195,10 @@ return {
 	{}
 }}]], {
 					t(receiver_name),
-					i(2, "functionName"),
+					i(1, "functionName"),
+					i(2),
 					i(3),
 					i(4),
-					i(5),
 				})
 			)
 		end)
