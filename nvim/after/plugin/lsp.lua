@@ -1,5 +1,6 @@
 local lsp = require("lsp-zero").preset({ name = "recommended" })
 local cmp = require("cmp")
+local lspkind = require("lspkind")
 
 lsp.ensure_installed({
 	"tsserver",
@@ -69,10 +70,16 @@ lsp.setup_nvim_cmp({
 			local kind = require("lspkind").cmp_format({
 				mode = "symbol_text",
 				maxwidth = 50,
+				menu = {
+					buffer = "[Buffer]",
+					nvim_lsp = "[LSP]",
+					luasnip = "[LuaSnip]",
+					nvim_lua = "[Lua]",
+				},
 			})(entry, vim_item)
 			local strings = vim.split(kind.kind, "%s", { trimempty = true })
 			kind.kind = " " .. (strings[1] or "") .. " "
-			kind.menu = "    (" .. (strings[2] or "") .. ")"
+			kind.menu = "    (" .. (strings[2] or "") .. ") " .. kind.menu
 
 			return kind
 		end,
