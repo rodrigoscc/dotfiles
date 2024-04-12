@@ -24,12 +24,10 @@ end, { desc = "[b]reakpoint [c]ondition" })
 
 vim.keymap.set("n", "<leader>td", dapui.toggle, { desc = "[t]oggle [d]apui" })
 
-vim.keymap.set(
-	"n",
-	"<leader>cb",
-	dap.clear_breakpoints,
-	{ desc = "[c]lear [b]reakpoints" }
-)
+vim.keymap.set("n", "<leader>cb", function()
+	dap.clear_breakpoints()
+	vim.print("Breakpoints cleared!")
+end, { desc = "[c]lear [b]reakpoints" })
 
 vim.keymap.set("n", "<leader>dd", dap.continue, { desc = "[d]ebug / continue" })
 vim.keymap.set("n", "<leader>dl", dap.run_last, { desc = "[d]ebug [l]ast" })
