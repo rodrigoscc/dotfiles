@@ -15,9 +15,6 @@ return {
 		"rose-pine/neovim",
 		name = "rose-pine",
 		opts = {
-			styles = {
-				transparency = true,
-			},
 			highlight_groups = {
 				MiniTrailspace = {
 					underline = true,

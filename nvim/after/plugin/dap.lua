@@ -26,7 +26,7 @@ vim.keymap.set("n", "<leader>td", dapui.toggle, { desc = "[t]oggle [d]apui" })
 
 vim.keymap.set("n", "<leader>cb", function()
 	dap.clear_breakpoints()
-	vim.print("Breakpoints cleared!")
+	vim.cmd("echo 'Breakpoints cleared!'")
 end, { desc = "[c]lear [b]reakpoints" })
 
 vim.keymap.set("n", "<leader>dd", dap.continue, { desc = "[d]ebug / continue" })

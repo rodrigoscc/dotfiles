@@ -22,15 +22,6 @@ return {
 	{ "williamboman/mason.nvim" },
 	{ "onsails/lspkind.nvim" },
 	{
-		"ray-x/lsp_signature.nvim",
-		event = "VeryLazy",
-		opts = {
-			hint_enable = false,
-			toggle_key = "<C-s>",
-			toogle_key_flip_floatwin_setting = true,
-		},
-	},
-	{
 		"hedyhli/outline.nvim",
 		opts = {
 			keymaps = {
