@@ -10,15 +10,17 @@ vim.keymap.set(
 	vim.cmd.ObsidianNew,
 	{ desc = "[n]ew [o]bsidian" }
 )
+
+vim.keymap.set("n", "<leader>st", function()
+	vim.cmd("ObsidianTags")
+end, { desc = "[s]earch obsidian [t]ags" })
+
+vim.keymap.set("n", "<leader>.", function()
+	vim.cmd.ObsidianTags("projects")
+end, { desc = "[s]earch obsidian projects" })
 vim.keymap.set(
 	"n",
-	"<leader>sO",
-	vim.cmd.ObsidianTags,
-	{ desc = "[s]earch [o]bsidian tags" }
-)
-vim.keymap.set(
-	"n",
-	"<leader>so",
+	"<leader>,",
 	vim.cmd.ObsidianSearch,
 	{ desc = "[s]earch [o]bsidian" }
 )

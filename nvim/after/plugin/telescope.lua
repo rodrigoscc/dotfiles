@@ -120,7 +120,7 @@ vim.keymap.set(
 	{ desc = "[T]elescope builtins" }
 )
 
-vim.keymap.set("n", "<leader>,", function()
+vim.keymap.set("n", "<leader>bb", function()
 	builtin.buffers({
 		ignore_current_buffer = true,
 		sort_lastused = true,
