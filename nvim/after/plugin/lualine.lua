@@ -182,6 +182,12 @@ local function table_mode()
 	return ""
 end
 
+ins_right({
+	require("noice").api.statusline.mode.get,
+	cond = require("noice").api.statusline.mode.has,
+	color = { fg = "#908caa" },
+})
+
 ins_right({ http_project_env, color = { fg = colors.magenta } })
 
 ins_right({ disable_autoformat })
