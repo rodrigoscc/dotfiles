@@ -98,6 +98,8 @@ return {
 		event = { "InsertEnter", "CmdlineEnter" },
 		branch = "v0.6",
 		opts = {
+			cmap = false, -- It's a pain to have this enabled in command-line mode.
+
 			fastwarp = {
 				map = "<C-g>",
 				rmap = "<C-r>",
