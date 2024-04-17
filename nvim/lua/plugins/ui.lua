@@ -98,21 +98,28 @@ return {
 					["cmp.entry.get_documentation"] = true, -- requires hrsh7th/nvim-cmp
 				},
 			},
-			messages = {
-				view = "mini",
-				view_error = "notify",
-				view_warn = "notify",
+			routes = {
+				-- Filter write messages: https://github.com/folke/noice.nvim/issues/568#issuecomment-1673907587
+				{
+					filter = {
+						event = "msg_show",
+						any = {
+							{ find = "%d+L, %d+B" },
+							{ find = "; after #%d+" },
+							{ find = "; before #%d+" },
+							{ find = "%d fewer lines" },
+							{ find = "%d more lines" },
+						},
+					},
+					opts = { skip = true },
+				},
 			},
 			presets = {
 				lsp_doc_border = true, -- add a border to hover docs and signature help
 			},
 		},
 		dependencies = {
-			-- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
 			"MunifTanjim/nui.nvim",
-			-- OPTIONAL:
-			--   `nvim-notify` is only needed, if you want to use the notification view.
-			--   If not available, we use `mini` as the fallback
 			"rcarriga/nvim-notify",
 		},
 	},
