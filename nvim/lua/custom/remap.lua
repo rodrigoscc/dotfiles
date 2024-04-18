@@ -66,6 +66,7 @@ vim.keymap.set("i", "<C-c>", "<Esc>")
 vim.keymap.set("n", "<Esc>", function()
 	vim.cmd([[nohlsearch]])
 	vim.cmd([[echon '']]) -- Clear command line
+	vim.cmd.NoiceDismiss()
 	vim.schedule(function()
 		vim.cmd([[pclose]])
 	end)

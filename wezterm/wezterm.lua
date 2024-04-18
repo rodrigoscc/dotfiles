@@ -197,7 +197,7 @@ local config = {
 		},
 		-- Cht.sh
 		{
-			key = "H",
+			key = "T",
 			mods = "CMD",
 			action = act.Multiple({
 				act.SendKey({ key = "b", mods = "CTRL" }),
