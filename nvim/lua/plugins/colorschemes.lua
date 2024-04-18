@@ -19,6 +19,10 @@ return {
 				MiniTrailspace = {
 					underline = true,
 				},
+				QuickFixLine = {
+					bg = "iris",
+					blend = 25,
+				},
 				["@markdown.high"] = {
 					bg = "love",
 					fg = "love",
