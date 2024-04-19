@@ -37,6 +37,7 @@ telescope.setup({
 telescope.load_extension("luasnip")
 telescope.load_extension("fzf")
 telescope.load_extension("harpoon")
+telescope.load_extension("emoji")
 
 vim.keymap.set("n", "<C-p>", function()
 	local cwd = vim.loop.cwd()
@@ -139,6 +140,13 @@ vim.keymap.set(
 	"<leader>D",
 	"<cmd>Telescope diagnostics<cr>",
 	{ desc = "[D]iagnostics" }
+)
+
+vim.keymap.set(
+	"n",
+	"<leader>ie",
+	"<cmd>Telescope emoji<cr>",
+	{ desc = "[i]nsert [e]moji" }
 )
 
 vim.keymap.set("n", "<leader>fd", function()

@@ -124,4 +124,5 @@ return {
 		},
 	},
 	{ "benfowler/telescope-luasnip.nvim" },
+	{ "xiyaowong/telescope-emoji.nvim" },
 }
