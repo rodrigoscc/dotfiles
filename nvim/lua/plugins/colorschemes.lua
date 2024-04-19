@@ -23,6 +23,10 @@ return {
 					bg = "iris",
 					blend = 25,
 				},
+				Folded = {
+					bg = "overlay",
+					fg = "subtle",
+				},
 				["@markdown.high"] = {
 					bg = "love",
 					fg = "love",

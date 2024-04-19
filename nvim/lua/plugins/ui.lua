@@ -123,4 +123,9 @@ return {
 			"rcarriga/nvim-notify",
 		},
 	},
+	{
+		"seblj/nvim-tabline",
+		dependencies = { "nvim-tree/nvim-web-devicons" },
+		opts = {},
+	},
 }
