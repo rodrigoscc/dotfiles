@@ -421,3 +421,10 @@ vim.keymap.set(
 	":'{+1,'}-1!jq --indent 4<cr>",
 	{ desc = "[f]ormat [j]son" }
 )
+
+vim.keymap.set(
+	"n",
+	"<C-w>]",
+	"<cmd>normal! <C-w>v<C-]>zt<cr>",
+	{ desc = "go to tag in vertical split" }
+)
