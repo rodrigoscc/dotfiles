@@ -87,6 +87,12 @@ return {
 	},
 	{ "echasnovski/mini.trailspace", version = "*", opts = {} },
 	{
+		"rcarriga/nvim-notify",
+		opts = {
+			stages = "static",
+		},
+	},
+	{
 		"folke/noice.nvim",
 		event = "VeryLazy",
 		opts = {
