@@ -1,1 +1,6 @@
 set theme midnight
+
+bind K tabnext
+bind J tabprev
+
+set editorcmd /opt/homebrew/bin/wezterm start -- /opt/homebrew/bin/nvim
