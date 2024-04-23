@@ -6,8 +6,8 @@ local cmp = require("cmp")
 
 vim.keymap.set("n", "<leader>L", lazy.show, { desc = "show [l]azy" })
 
-vim.keymap.set("x", "J", ":m '>+1<CR>gv=gv")
-vim.keymap.set("x", "K", ":m '<-2<CR>gv=gv")
+vim.keymap.set("x", "J", "<cmd>move '>+1<CR>gv=gv")
+vim.keymap.set("x", "K", "<cmd>move '<-2<CR>gv=gv")
 
 vim.keymap.set("x", "<", "<gv")
 vim.keymap.set("x", ">", ">gv")
