@@ -801,7 +801,12 @@ local function job_to_string(job)
 end
 
 local function run_request(request, source, source_type, override_context)
-	LastRun = { request = request, source = source, source_type = source_type }
+	LastRun = {
+		request = request,
+		source = source,
+		source_type = source_type,
+		override_context = override_context,
+	}
 
 	request = get_request_detail(request, source, source_type, override_context)
 
@@ -999,10 +1004,14 @@ function RunRequest()
 		:find()
 end
 
--- TODO: Make sure to use last overriden context too.
 function RunLastRequest()
 	if LastRun ~= nil then
-		run_request(LastRun.request, LastRun.source, LastRun.source_type)
+		run_request(
+			LastRun.request,
+			LastRun.source,
+			LastRun.source_type,
+			LastRun.override_context
+		)
 	else
 		vim.print("No last http request.")
 	end
