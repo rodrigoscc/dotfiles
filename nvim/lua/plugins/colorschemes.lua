@@ -15,6 +15,9 @@ return {
 		"rose-pine/neovim",
 		name = "rose-pine",
 		opts = {
+			styles = {
+				italic = false,
+			},
 			highlight_groups = {
 				MiniTrailspace = {
 					underline = true,
@@ -26,6 +29,12 @@ return {
 				Folded = {
 					bg = "overlay",
 					fg = "subtle",
+				},
+				Comment = {
+					italic = true,
+				},
+				["@markup.italic"] = {
+					italic = true,
 				},
 				["@markdown.high"] = {
 					bg = "love",
