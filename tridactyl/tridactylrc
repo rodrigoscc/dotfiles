@@ -3,4 +3,7 @@ set theme midnight
 bind K tabnext
 bind J tabprev
 
+bind j scrollline 1
+bind k scrollline -1
+
 set editorcmd /opt/homebrew/bin/wezterm start -- /opt/homebrew/bin/nvim
