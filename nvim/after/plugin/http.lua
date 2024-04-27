@@ -834,7 +834,11 @@ local function run_request(request, source, source_type, override_context)
 					request,
 					request_result,
 					update_env(project_env),
-					RunRequestWithTitle
+					function(title, override_context)
+						vim.schedule(function()
+							RunRequestWithTitle(title, override_context)
+						end)
+					end
 				)
 			end
 
