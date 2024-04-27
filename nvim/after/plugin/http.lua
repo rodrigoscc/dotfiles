@@ -822,17 +822,13 @@ local function run_request(request, source, source_type, override_context)
 			local result =
 				parse_job_results(return_value, j:result(), j:stderr_result())
 
-			if after_hook ~= nil then
-				local request_result = {
-					status_code = result.status_code,
-					body = result.body,
-					headers = result.headers,
-					is_error = result.is_error,
-				}
-
+			if after_hook == nil then
+				on_curl_exit(request, result)
+			elseif after_hook ~= nil then
 				after_hook(
 					request,
-					request_result,
+					result,
+					on_curl_exit,
 					update_env(project_env),
 					function(title, override_context)
 						vim.schedule(function()
@@ -841,8 +837,6 @@ local function run_request(request, source, source_type, override_context)
 					end
 				)
 			end
-
-			on_curl_exit(request, result)
 		end)
 
 		local title = request_title(request)
