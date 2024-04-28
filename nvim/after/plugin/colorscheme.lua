@@ -4,16 +4,6 @@ vim.g.colorscheme = "rose-pine"
 
 vim.cmd([[colorscheme ]] .. vim.g.colorscheme)
 
-if
-	not string.find(vim.g.colorscheme, "tokyonight")
-	and not string.find(vim.g.colorscheme, "gruvbox-material")
-	and not string.find(vim.g.colorscheme, "catppuccin")
-then
-	hl(0, "IlluminatedWordText", { bg = "#444444", underline = false })
-	hl(0, "IlluminatedWordRead", { bg = "#444444", underline = false })
-	hl(0, "IlluminatedWordWrite", { bg = "#444444", underline = false })
-end
-
 if vim.g.colorscheme == "vscode" then
 	local c = require("vscode.colors").get_colors()
 

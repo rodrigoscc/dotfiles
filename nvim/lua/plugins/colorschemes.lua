@@ -22,6 +22,11 @@ return {
 				MiniTrailspace = {
 					underline = true,
 				},
+				MiniCursorWord = {
+					underline = false,
+					bg = "iris",
+					blend = 23,
+				},
 				QuickFixLine = {
 					bg = "iris",
 					blend = 25,

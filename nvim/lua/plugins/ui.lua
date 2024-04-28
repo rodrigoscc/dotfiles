@@ -43,22 +43,7 @@ return {
 			},
 		},
 	},
-	{
-		"RRethy/vim-illuminate",
-		config = function()
-			require("illuminate").configure({
-				filetypes_denylist = {
-					"NvimTree",
-					"fugitive",
-					"DressingInput",
-					"TelescopePrompt",
-					"DiffviewFiles",
-					"NeogitStatus",
-					"Outline",
-				},
-			})
-		end,
-	},
+	{ "echasnovski/mini.cursorword", version = "*", opts = {} },
 	{
 		"stevearc/dressing.nvim",
 		opts = { input = { relative = "editor" } },
