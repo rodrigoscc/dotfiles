@@ -62,9 +62,6 @@ return {
 				stylua = {
 					prepend_args = { "--column-width=80" },
 				},
-				isort = {
-					prepend_args = { "--profile", "black" },
-				},
 				ruff_fix = {
 					args = {
 						"check",
@@ -89,12 +86,6 @@ return {
 						"$FILENAME",
 						"-",
 					},
-				},
-				black = {
-					prepend_args = { "--line-length", "79" },
-				},
-				autoflake = {
-					prepend_args = { "--remove-all-unused-imports" },
 				},
 				sql_formatter = {
 					prepend_args = { "--config", '{"keywordCase": "upper"}' },
