@@ -11,10 +11,7 @@ lsp.ensure_installed({
 })
 
 local mason_ensure_installed = {
-	"isort",
-	"black",
-	"autoflake",
-	"flake8",
+	"ruff",
 	"prettier",
 	"stylua",
 	"goimports",
@@ -184,6 +181,9 @@ lsp.configure("pyright", {
 		},
 	},
 })
+
+-- Do not want ruff lsp, we're using ruff as linter and formatter.
+lsp.skip_server_setup({ "ruff" })
 
 local function toggle_format_on_save()
 	if vim.g.disable_autoformat then

@@ -41,9 +41,8 @@ return {
 			formatters_by_ft = {
 				lua = { "stylua" },
 				python = {
-					"isort",
-					"autoflake",
-					"black",
+					"ruff_fix",
+					"ruff_format",
 				},
 				javascript = { "prettier" },
 				javascriptreact = { "prettier" },
@@ -66,6 +65,31 @@ return {
 				isort = {
 					prepend_args = { "--profile", "black" },
 				},
+				ruff_fix = {
+					args = {
+						"check",
+						"--fix",
+						"--force-exclude",
+						"--exit-zero",
+						"--no-cache",
+						"--extend-select",
+						"I",
+						"--stdin-filename",
+						"$FILENAME",
+						"-",
+					},
+				},
+				ruff_format = {
+					args = {
+						"format",
+						"--force-exclude",
+						"--line-length",
+						"79",
+						"--stdin-filename",
+						"$FILENAME",
+						"-",
+					},
+				},
 				black = {
 					prepend_args = { "--line-length", "79" },
 				},
@@ -82,7 +106,7 @@ return {
 		"mfussenegger/nvim-lint",
 		config = function()
 			require("lint").linters_by_ft = {
-				python = { "flake8" },
+				python = { "ruff" },
 			}
 
 			vim.api.nvim_create_autocmd({ "BufWritePost" }, {
@@ -90,6 +114,22 @@ return {
 					require("lint").try_lint()
 				end,
 			})
+
+			local ruff = require("lint").linters.ruff
+			ruff.args = {
+				"--force-exclude",
+				"--quiet",
+				"--stdin-filename",
+				function()
+					return vim.api.nvim_buf_get_name(0)
+				end,
+				"--select",
+				"ALL",
+				"--no-fix",
+				"--output-format",
+				"json",
+				"-",
+			}
 		end,
 	},
 	{ "github/copilot.vim" },
