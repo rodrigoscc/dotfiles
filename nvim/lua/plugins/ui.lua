@@ -58,6 +58,7 @@ return {
 					tsx = "rainbow-parens",
 					vue = "rainbow-parens",
 					html = "rainbow-parens",
+					svelte = "rainbow-parens",
 				},
 			}
 		end,
