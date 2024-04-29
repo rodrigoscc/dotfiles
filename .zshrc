@@ -68,6 +68,8 @@ alias ga="git add"
 alias gc="git commit"
 alias gl="git log --oneline"
 
+alias pn="pnpm"
+
 alias ..="cd .."
 
 # bindkey '^[[A' history-substring-search-up
