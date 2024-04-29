@@ -48,7 +48,21 @@ return {
 		"stevearc/dressing.nvim",
 		opts = { input = { relative = "editor" } },
 	},
-	{ "NvChad/nvim-colorizer.lua", opts = {} },
+	{
+		"NvChad/nvim-colorizer.lua",
+		opts = {
+			user_default_options = {
+				mode = "virtualtext",
+				css = true,
+				tailwind = "both",
+			},
+			filetypes = {
+				"*", -- Highlight all files, but customize some others.
+				cmp_docs = { always_update = true },
+				cmp_menu = { always_update = true },
+			},
+		},
+	},
 	{
 		"HiPhish/rainbow-delimiters.nvim",
 		config = function()
