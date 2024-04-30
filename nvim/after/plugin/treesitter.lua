@@ -115,3 +115,9 @@ parser_config.http2 = {
 }
 
 vim.treesitter.language.register("http2", "http")
+
+vim.filetype.add({
+	extension = {
+		http = "http",
+	},
+})
