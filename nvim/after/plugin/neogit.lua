@@ -15,7 +15,7 @@ local neogitGroup = vim.api.nvim_create_augroup("Neogit", { clear = true })
 
 -- Quickly save and quit gitcommit windows.
 vim.api.nvim_create_autocmd("FileType", {
-	pattern = { "NeogitCommitMessage", "gitcommit" },
+	pattern = { "NeogitCommitMessage", "gitcommit", "gitrebase" },
 	group = neogitGroup,
 	callback = function()
 		vim.keymap.set("n", "<C-s>", function()
