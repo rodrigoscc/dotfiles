@@ -11,7 +11,7 @@ vim.keymap.set(
 	{ desc = "[n]ew [o]bsidian" }
 )
 
-vim.keymap.set("n", "<leader>st", function()
+vim.keymap.set("n", "<leader>#", function()
 	vim.cmd("ObsidianTags")
 end, { desc = "[s]earch obsidian [t]ags" })
 
