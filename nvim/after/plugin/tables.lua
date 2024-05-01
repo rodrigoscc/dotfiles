@@ -666,13 +666,14 @@ function Table:select_previous_cell_before_cursor()
 	end
 end
 
-function Table:is_cursor_in_last_cell()
+function Table:is_cursor_in_last_regular_cell()
 	local cell_under_cursor = self:get_cell_under_cursor()
 	if cell_under_cursor == nil then
 		return false
 	end
 
-	return cell_under_cursor:is_last_cell()
+	local next_regular_cell = cell_under_cursor:next_regular_cell()
+	return next_regular_cell == nil
 end
 
 function Table:last_cell()
@@ -801,7 +802,7 @@ function TableJumpNextCell()
 	my_table:align()
 	my_table:write()
 
-	if my_table:is_cursor_in_last_cell() then
+	if my_table:is_cursor_in_last_regular_cell() then
 		my_table:append_row()
 		my_table:align()
 		my_table:write()
