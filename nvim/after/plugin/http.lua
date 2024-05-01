@@ -232,6 +232,34 @@ local function split_host_and_path(url)
 	return host, path
 end
 
+local function extract_method_and_url(method_url)
+	local valid_methods = {
+		"GET",
+		"POST",
+		"PUT",
+		"PATCH",
+		"DELETE",
+		"OPTIONS",
+		"HEAD",
+		"CONNECT",
+		"TRACE",
+	}
+
+	local space_separated = vim.split(method_url, " ")
+
+	local method = space_separated[1]
+	local url = method_url:sub(#method + 2) -- Url is after method string and a space.
+
+	local starts_with_method = vim.tbl_contains(valid_methods, method)
+
+	if not starts_with_method then
+		method = "GET"
+		url = method_url
+	end
+
+	return method, url
+end
+
 local function get_request_list(source, source_type)
 	source = get_source(source, source_type)
 	local parser = get_source_parser(source, source_type)
@@ -249,10 +277,7 @@ local function get_request_list(source, source_type)
 				vim.trim(vim.treesitter.get_node_text(node, source))
 
 			if capture_name == "request" then
-				local space_separated = vim.split(capture_value, " ")
-
-				local method = space_separated[1]
-				local url = capture_value:sub(#method + 2) -- Url is after method string and a space.
+				local method, url = extract_method_and_url(capture_value)
 
 				local domain_path, query = unpack(vim.split(url, "?"))
 
