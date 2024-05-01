@@ -441,25 +441,8 @@ function Column:new(index, rows)
 	return column
 end
 
-local function close_cell_values(cell_values)
-	table.insert(cell_values, "")
-end
-
 local function parse_line(my_table, row_index, line)
-	local cell_values = vim.split(line, "|")
-
-	local at_least_contains_two_pipes = #cell_values > 2
-
-	local is_table_closed = at_least_contains_two_pipes
-		and vim.trim(cell_values[#cell_values]) == ""
-
-	if #cell_values == 1 then
-		error("Invalid table line.")
-	elseif not is_table_closed then
-		close_cell_values(cell_values)
-	end
-
-	cell_values = vim.list_slice(cell_values, 2, #cell_values - 1)
+	local cell_values = vim.split(line, "|", { trimempty = true })
 
 	local cells = {}
 
