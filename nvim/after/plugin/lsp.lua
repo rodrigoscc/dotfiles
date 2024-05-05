@@ -91,6 +91,17 @@ lsp.set_preferences({
 local telescope = require("telescope.builtin")
 
 lsp.on_attach(function(client, bufnr)
+	-- Fix for svelte language server to update after ts or js files are updated
+	-- https://github.com/sveltejs/language-tools/issues/2008#issuecomment-2090014756
+	if client.name == "svelte" then
+		vim.api.nvim_create_autocmd("BufWritePost", {
+			pattern = { "*.js", "*.ts" },
+			callback = function(ctx)
+				client.notify("$/onDidChangeTsOrJsFile", { uri = ctx.match })
+			end,
+		})
+	end
+
 	local opts = { buffer = bufnr, remap = false }
 
 	vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
@@ -173,6 +184,16 @@ lsp.configure("pyright", {
 	root_dir = function()
 		return vim.fn.getcwd()
 	end,
+	capabilities = {
+		workspace = {
+			didChangeWatchedFiles = {
+				dynamicRegistration = true,
+			},
+		},
+	},
+})
+
+lsp.configure("svelte", {
 	capabilities = {
 		workspace = {
 			didChangeWatchedFiles = {
