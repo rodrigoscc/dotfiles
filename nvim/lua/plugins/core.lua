@@ -43,6 +43,9 @@ return {
 			float = {
 				max_width = 100,
 			},
+			win_options = {
+				winbar = "%{v:lua.require('oil').get_current_dir()}",
+			},
 		},
 	},
 	{
