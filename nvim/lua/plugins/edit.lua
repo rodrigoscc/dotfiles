@@ -118,7 +118,7 @@ return {
 				"--select",
 				"ALL",
 				"--extend-ignore",
-				"COM812,COM819",
+				"COM812,COM819,ANN201,D101,D102,D107,D100",
 				"--no-fix",
 				"--output-format",
 				"json",
