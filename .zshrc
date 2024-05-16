@@ -24,7 +24,17 @@ bindkey "^X^E" edit-command-line
 
 export HISTSIZE=1000000000
 export SAVEHIST=$HISTSIZE
-setopt EXTENDED_HISTORY
+
+setopt extended_history       # record timestamp of command in HISTFILE
+setopt hist_expire_dups_first # delete duplicates first when HISTFILE size exceeds HISTSIZE
+setopt hist_ignore_dups       # ignore duplicated commands history list
+setopt hist_ignore_space      # ignore commands that start with space
+setopt hist_verify            # show command with history expansion to user before running it
+setopt inc_append_history     # add commands to HISTFILE in order of execution
+setopt share_history          # share command history data
+
+# Autocomplete without case sensitivity.
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 
 export ZPLUG_HOME=/opt/homebrew/opt/zplug
 source $ZPLUG_HOME/init.zsh
@@ -72,8 +82,9 @@ alias pn="pnpm"
 
 alias ..="cd .."
 
-# bindkey '^[[A' history-substring-search-up
-# bindkey '^[[B' history-substring-search-down
+# Up and down arrow keys.
+bindkey '^[[A' history-search-backward
+bindkey '^[[B' history-search-forward
 
 # Home and end keys.
 bindkey "^[[1~" beginning-of-line
