@@ -5,7 +5,7 @@ local lspkind = require("lspkind")
 lsp.ensure_installed({
 	"tsserver",
 	"gopls",
-	"pyright",
+	"basedpyright",
 	"lua_ls",
 	"bashls",
 })
@@ -119,19 +119,12 @@ lsp.on_attach(function(client, bufnr)
 		})
 	end, opts)
 	vim.keymap.set("n", "gY", telescope.lsp_document_symbols, opts)
-	vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
 
 	vim.keymap.set(
 		"n",
 		"<leader>rn",
 		vim.lsp.buf.rename,
 		{ desc = "[r]e[n]ame" }
-	)
-	vim.keymap.set(
-		"n",
-		"<leader>od",
-		vim.diagnostic.open_float,
-		{ desc = "[o]pen [d]iagnostics float" }
 	)
 	vim.keymap.set(
 		{ "n", "v" },
@@ -184,20 +177,43 @@ lsp.configure("pyright", {
 	root_dir = function()
 		return vim.fn.getcwd()
 	end,
-	capabilities = {
-		workspace = {
-			didChangeWatchedFiles = {
-				dynamicRegistration = true,
+})
+
+lsp.configure("gopls", {
+	settings = {
+		gopls = {
+			["ui.inlayhint.hints"] = {
+				compositeLiteralFields = true,
+				constantValues = true,
+				parameterNames = true,
 			},
 		},
 	},
 })
 
-lsp.configure("svelte", {
-	capabilities = {
-		workspace = {
-			didChangeWatchedFiles = {
-				dynamicRegistration = true,
+lsp.configure("tsserver", {
+	settings = {
+		javascript = {
+			inlayHints = {
+				includeInlayEnumMemberValueHints = true,
+				includeInlayFunctionLikeReturnTypeHints = true,
+				includeInlayFunctionParameterTypeHints = true,
+				includeInlayParameterNameHints = "all", -- 'none' | 'literals' | 'all';
+				includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+				includeInlayPropertyDeclarationTypeHints = true,
+				includeInlayVariableTypeHints = true,
+			},
+		},
+
+		typescript = {
+			inlayHints = {
+				includeInlayEnumMemberValueHints = true,
+				includeInlayFunctionLikeReturnTypeHints = true,
+				includeInlayFunctionParameterTypeHints = true,
+				includeInlayParameterNameHints = "all", -- 'none' | 'literals' | 'all';
+				includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+				includeInlayPropertyDeclarationTypeHints = true,
+				includeInlayVariableTypeHints = true,
 			},
 		},
 	},

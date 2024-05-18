@@ -1,13 +1,22 @@
 return {
 	{ "nvim-tree/nvim-web-devicons" },
 	{
-		"utilyre/barbecue.nvim",
-		name = "barbecue",
-		version = "*",
-		opts = {},
+		"Bekaboo/dropbar.nvim",
+		-- optional, but required for fuzzy finder support
 		dependencies = {
-			"SmiteshP/nvim-navic",
-			"nvim-tree/nvim-web-devicons", -- optional dependency
+			"nvim-telescope/telescope-fzf-native.nvim",
+		},
+		opts = {
+			icons = {
+				enable = true,
+				kinds = {
+					use_devicons = false,
+					symbols = {
+						File = "",
+						Folder = "",
+					},
+				},
+			},
 		},
 	},
 	{
