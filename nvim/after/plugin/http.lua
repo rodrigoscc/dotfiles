@@ -679,7 +679,9 @@ end
 
 local function format_if_jq_installed(json)
 	if vim.fn.executable("jq") == 1 then
-		return vim.fn.system("jq --sort-keys '.' <<< '" .. json .. "'")
+		return vim.fn.system(
+			"jq --sort-keys --indent 4 '.' <<< '" .. json .. "'"
+		)
 	else
 		return json
 	end
