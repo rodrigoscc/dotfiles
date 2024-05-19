@@ -14,13 +14,15 @@ return {
 
 			"nvim-telescope/telescope.nvim",
 		},
-		cmd = { "Neogit commit", "Neogit kind=replace", "Neogit push" },
+		cmd = { "Neogit" },
 		opts = {
+			auto_show_console = false,
 			disable_insert_on_commit = false,
 			integrations = {
 				diffview = false,
 			},
 		},
+		config = true,
 	},
 	{
 		"sindrets/diffview.nvim",
