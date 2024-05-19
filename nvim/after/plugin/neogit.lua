@@ -1,4 +1,3 @@
-local neogit = require("neogit")
 vim.keymap.set("n", "<leader>gs", function()
 	vim.cmd("Neogit kind=replace")
 end, { desc = "[g]it [s]tatus" })

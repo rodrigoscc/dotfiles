@@ -109,7 +109,10 @@ lsp.on_attach(function(client, bufnr)
 		})
 	end
 
-	if client.supports_method("textDocument/codeLens") then
+	if
+		client.supports_method("textDocument/codeLens")
+		and client.name ~= "lua_ls"
+	then
 		vim.api.nvim_create_autocmd({ "TextChanged", "InsertLeave" }, {
 			buffer = bufnr,
 			callback = vim.lsp.codelens.refresh,

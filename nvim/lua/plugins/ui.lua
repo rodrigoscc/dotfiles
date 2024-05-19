@@ -7,6 +7,17 @@ return {
 			"nvim-telescope/telescope-fzf-native.nvim",
 		},
 		opts = {
+			general = {
+				enable = function(buf, win)
+					return vim.fn.win_gettype(win) == ""
+						and vim.wo[win].winbar == ""
+						and vim.bo[buf].bt == ""
+						and (
+							vim.bo[buf].ft == "markdown"
+							or (buf and vim.api.nvim_buf_is_valid(buf))
+						)
+				end,
+			},
 			icons = {
 				enable = true,
 				kinds = {
@@ -67,10 +78,9 @@ return {
 			vim.g.rainbow_delimiters = {
 				query = {
 					javascript = "rainbow-parens",
+					typescript = "rainbow-parens",
 					tsx = "rainbow-parens",
-					vue = "rainbow-parens",
-					html = "rainbow-parens",
-					svelte = "rainbow-parens",
+					svelte = "rainbow-custom",
 				},
 			}
 		end,
