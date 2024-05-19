@@ -14,6 +14,7 @@ return {
 			"hrsh7th/cmp-buffer",
 			"hrsh7th/cmp-path",
 			"saadparwaiz1/cmp_luasnip",
+			"gh-liu/cmp-omni", -- original hrsh7th/cmp-omni does not work
 
 			-- Snippets
 			"L3MON4D3/LuaSnip", -- Required

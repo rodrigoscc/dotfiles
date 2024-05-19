@@ -72,6 +72,8 @@ lsp.setup_nvim_cmp({
 					nvim_lsp = "[LSP]",
 					luasnip = "[LuaSnip]",
 					nvim_lua = "[Lua]",
+					omni = "[omni]",
+					["vim-dadbod-completion"] = "[dadbod]",
 				},
 			})(entry, vim_item)
 			local strings = vim.split(kind.kind, "%s", { trimempty = true })
@@ -245,4 +247,12 @@ vim.diagnostic.config({
 	virtual_text = true,
 	signs = false,
 	severity_sort = true,
+})
+
+require("cmp").setup.filetype({ "query" }, {
+	sources = cmp.config.sources({
+		{ name = "omni" },
+		{ name = "buffer" },
+		{ name = "luasnip" },
+	}),
 })
