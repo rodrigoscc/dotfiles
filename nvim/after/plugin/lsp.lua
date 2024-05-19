@@ -3,19 +3,6 @@ local cmp_action = require("lsp-zero").cmp_action()
 local cmp = require("cmp")
 local lspconfig = require("lspconfig")
 
-require("mason-lspconfig").setup({
-	ensure_installed = {
-		"tsserver",
-		"rust_analyzer",
-		"gopls",
-		"basedpyright",
-		"lua_ls",
-		"bashls",
-		"jsonls",
-		"yamlls",
-	},
-})
-
 local mason_ensure_installed = {
 	"ruff",
 	"prettier",
@@ -228,6 +215,16 @@ require("cmp").setup.filetype({ "query" }, {
 
 require("mason").setup({})
 require("mason-lspconfig").setup({
+	ensure_installed = {
+		"tsserver",
+		"rust_analyzer",
+		"gopls",
+		"basedpyright",
+		"lua_ls",
+		"bashls",
+		"jsonls",
+		"yamlls",
+	},
 	handlers = {
 		function(server_name)
 			lspconfig[server_name].setup({})
