@@ -64,6 +64,7 @@ cmp.setup({
 			col_offset = -3,
 			side_padding = 0,
 		},
+		documentation = cmp.config.window.bordered(),
 	},
 	formatting = {
 		fields = { "kind", "abbr", "menu" },
@@ -94,11 +95,6 @@ cmp.setup({
 	},
 })
 
-lsp.set_preferences({
-	suggest_lsp_servers = false,
-	set_lsp_keymaps = false, -- Do not set default keymaps
-})
-
 local telescope = require("telescope.builtin")
 
 lsp.on_attach(function(client, bufnr)
@@ -110,6 +106,13 @@ lsp.on_attach(function(client, bufnr)
 			callback = function(ctx)
 				client.notify("$/onDidChangeTsOrJsFile", { uri = ctx.match })
 			end,
+		})
+	end
+
+	if client.supports_method("textDocument/codeLens") then
+		vim.api.nvim_create_autocmd({ "TextChanged", "InsertLeave" }, {
+			buffer = bufnr,
+			callback = vim.lsp.codelens.refresh,
 		})
 	end
 
@@ -270,11 +273,26 @@ require("mason-lspconfig").setup({
 			lspconfig.gopls.setup({
 				settings = {
 					gopls = {
-						["ui.inlayhint.hints"] = {
-							compositeLiteralFields = true,
-							constantValues = true,
-							parameterNames = true,
+						codelenses = {
+							gc_details = false,
+							generate = true,
+							regenerate_cgo = true,
+							run_govulncheck = true,
+							test = true,
+							tidy = true,
+							upgrade_dependency = true,
+							vendor = true,
 						},
+						hints = {
+							assignVariableTypes = true,
+							compositeLiteralFields = true,
+							compositeLiteralTypes = true,
+							constantValues = true,
+							functionTypeParameters = true,
+							parameterNames = true,
+							rangeVariableTypes = true,
+						},
+						usePlaceholders = true,
 					},
 				},
 			})
