@@ -1,13 +1,17 @@
-local lsp = require("lsp-zero").preset({ name = "recommended" })
+local lsp = require("lsp-zero")
+local cmp_action = require("lsp-zero").cmp_action()
 local cmp = require("cmp")
-local lspkind = require("lspkind")
+local lspconfig = require("lspconfig")
 
-lsp.ensure_installed({
-	"tsserver",
-	"gopls",
-	"basedpyright",
-	"lua_ls",
-	"bashls",
+require("mason-lspconfig").setup({
+	ensure_installed = {
+		"tsserver",
+		"rust_analyzer",
+		"gopls",
+		"basedpyright",
+		"lua_ls",
+		"bashls",
+	},
 })
 
 local mason_ensure_installed = {
@@ -25,28 +29,26 @@ vim.api.nvim_create_user_command("MasonInstallAll", function()
 	vim.cmd("MasonInstall " .. table.concat(mason_ensure_installed, " "))
 end, {})
 
-local cmp_mappings = lsp.defaults.cmp_mappings()
-
-cmp_mappings["<S-Tab>"] = nil
-cmp_mappings["<C-d>"] = nil
-cmp_mappings["<C-b>"] = nil
-cmp_mappings["<C-Space>"] = cmp.mapping.complete()
-cmp_mappings["<CR>"] = cmp.mapping.confirm({
-	behavior = cmp.ConfirmBehavior.Insert,
-	select = true,
-})
-cmp_mappings["<Tab>"] = cmp.mapping.confirm({
-	behavior = cmp.ConfirmBehavior.Replace,
-	select = true,
-})
-cmp_mappings["<C-y>"] = nil
-cmp_mappings["<C-f>"] = nil
-cmp_mappings["<C-d>"] = nil
-cmp_mappings["<C-h>"] = cmp.mapping.scroll_docs(5)
-cmp_mappings["<C-y>"] = cmp.mapping.scroll_docs(-5)
-
-lsp.setup_nvim_cmp({
-	mapping = cmp_mappings,
+vim.opt.completeopt = { "menu", "menuone", "noselect" }
+cmp.setup({
+	preselect = "item",
+	completion = {
+		completeopt = "menu,menuone,noinsert",
+	},
+	mapping = cmp.mapping.preset.insert({
+		["<C-Space>"] = cmp.mapping.complete(),
+		["<C-e>"] = cmp_action.toggle_completion(),
+		["<CR>"] = cmp.mapping.confirm({
+			behavior = cmp.ConfirmBehavior.Insert,
+			select = true,
+		}),
+		["<Tab>"] = cmp.mapping.confirm({
+			behavior = cmp.ConfirmBehavior.Replace,
+			select = true,
+		}),
+		["<C-h>"] = cmp.mapping.scroll_docs(5),
+		["<C-y>"] = cmp.mapping.scroll_docs(-5),
+	}),
 	sources = {
 		{ name = "path" },
 		{ name = "nvim_lsp" },
@@ -83,6 +85,11 @@ lsp.setup_nvim_cmp({
 			return kind
 		end,
 	},
+	snippet = {
+		expand = function(args)
+			require("luasnip").lsp_expand(args.body)
+		end,
+	},
 })
 
 lsp.set_preferences({
@@ -107,8 +114,11 @@ lsp.on_attach(function(client, bufnr)
 	local opts = { buffer = bufnr, remap = false }
 
 	vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
-	vim.keymap.set("n", "gD", vim.lsp.buf.type_definition, opts)
+	vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
+	vim.keymap.set("n", "go", vim.lsp.buf.type_definition, opts)
 	vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
+	vim.keymap.set("n", "gs", vim.lsp.buf.signature_help, opts)
+	vim.keymap.set("n", "gl", vim.diagnostic.open_float, opts)
 	vim.keymap.set("n", "gr", function()
 		telescope.lsp_references({
 			show_line = false,
@@ -175,55 +185,6 @@ lsp.on_attach(function(client, bufnr)
 	end, opts)
 end)
 
-lsp.configure("pyright", {
-	root_dir = function()
-		return vim.fn.getcwd()
-	end,
-})
-
-lsp.configure("gopls", {
-	settings = {
-		gopls = {
-			["ui.inlayhint.hints"] = {
-				compositeLiteralFields = true,
-				constantValues = true,
-				parameterNames = true,
-			},
-		},
-	},
-})
-
-lsp.configure("tsserver", {
-	settings = {
-		javascript = {
-			inlayHints = {
-				includeInlayEnumMemberValueHints = true,
-				includeInlayFunctionLikeReturnTypeHints = true,
-				includeInlayFunctionParameterTypeHints = true,
-				includeInlayParameterNameHints = "all", -- 'none' | 'literals' | 'all';
-				includeInlayParameterNameHintsWhenArgumentMatchesName = true,
-				includeInlayPropertyDeclarationTypeHints = true,
-				includeInlayVariableTypeHints = true,
-			},
-		},
-
-		typescript = {
-			inlayHints = {
-				includeInlayEnumMemberValueHints = true,
-				includeInlayFunctionLikeReturnTypeHints = true,
-				includeInlayFunctionParameterTypeHints = true,
-				includeInlayParameterNameHints = "all", -- 'none' | 'literals' | 'all';
-				includeInlayParameterNameHintsWhenArgumentMatchesName = true,
-				includeInlayPropertyDeclarationTypeHints = true,
-				includeInlayVariableTypeHints = true,
-			},
-		},
-	},
-})
-
--- Do not want ruff lsp, we're using ruff as linter and formatter.
-lsp.skip_server_setup({ "ruff" })
-
 local function toggle_format_on_save()
 	if vim.g.disable_autoformat then
 		vim.g.disable_autoformat = false
@@ -255,4 +216,67 @@ require("cmp").setup.filetype({ "query" }, {
 		{ name = "buffer" },
 		{ name = "luasnip" },
 	}),
+})
+
+require("mason").setup({})
+require("mason-lspconfig").setup({
+	handlers = {
+		function(server_name)
+			lspconfig[server_name].setup({})
+		end,
+		lua_ls = function()
+			local lua_opts = lsp.nvim_lua_ls()
+			lspconfig.lua_ls.setup(lua_opts)
+		end,
+		pyright = function()
+			lspconfig.pyright.setup({
+				root_dir = function()
+					return vim.fn.getcwd()
+				end,
+			})
+		end,
+		tsserver = function()
+			lspconfig.tsserver.setup({
+				settings = {
+					javascript = {
+						inlayHints = {
+							includeInlayEnumMemberValueHints = true,
+							includeInlayFunctionLikeReturnTypeHints = true,
+							includeInlayFunctionParameterTypeHints = true,
+							includeInlayParameterNameHints = "all", -- 'none' | 'literals' | 'all';
+							includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+							includeInlayPropertyDeclarationTypeHints = true,
+							includeInlayVariableTypeHints = true,
+						},
+					},
+
+					typescript = {
+						inlayHints = {
+							includeInlayEnumMemberValueHints = true,
+							includeInlayFunctionLikeReturnTypeHints = true,
+							includeInlayFunctionParameterTypeHints = true,
+							includeInlayParameterNameHints = "all", -- 'none' | 'literals' | 'all';
+							includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+							includeInlayPropertyDeclarationTypeHints = true,
+							includeInlayVariableTypeHints = true,
+						},
+					},
+				},
+			})
+		end,
+		gopls = function()
+			lspconfig.gopls.setup({
+				settings = {
+					gopls = {
+						["ui.inlayhint.hints"] = {
+							compositeLiteralFields = true,
+							constantValues = true,
+							parameterNames = true,
+						},
+					},
+				},
+			})
+		end,
+		ruff = lsp.noop,
+	},
 })
