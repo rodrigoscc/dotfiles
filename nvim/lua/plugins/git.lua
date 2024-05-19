@@ -14,6 +14,7 @@ return {
 
 			"nvim-telescope/telescope.nvim",
 		},
+		cmd = { "Neogit commit", "Neogit kind=replace", "Neogit push" },
 		opts = {
 			disable_insert_on_commit = false,
 			integrations = {
