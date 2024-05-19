@@ -58,19 +58,8 @@ return {
 		opts = { input = { relative = "editor" } },
 	},
 	{
-		"NvChad/nvim-colorizer.lua",
-		opts = {
-			user_default_options = {
-				mode = "virtualtext",
-				css = true,
-				tailwind = "both",
-			},
-			filetypes = {
-				"*", -- Highlight all files, but customize some others.
-				cmp_docs = { always_update = true },
-				cmp_menu = { always_update = true },
-			},
-		},
+		"brenoprata10/nvim-highlight-colors",
+		opts = { render = "virtual", enable_tailwind = true },
 	},
 	{
 		"HiPhish/rainbow-delimiters.nvim",
