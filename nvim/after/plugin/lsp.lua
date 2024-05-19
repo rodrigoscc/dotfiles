@@ -52,11 +52,11 @@ cmp.setup({
 		["<C-y>"] = cmp.mapping.scroll_docs(-5),
 	}),
 	sources = {
-		{ name = "path" },
 		{ name = "nvim_lsp" },
+		{ name = "vim-dadbod-completion" },
 		{ name = "buffer", keyword_length = 3 },
 		{ name = "luasnip", keyword_length = 2 },
-		{ name = "vim-dadbod-completion" },
+		{ name = "path" },
 	},
 	window = {
 		completion = {

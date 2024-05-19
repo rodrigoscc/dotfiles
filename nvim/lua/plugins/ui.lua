@@ -115,11 +115,15 @@ return {
 							{ find = "%d more lines" },
 						},
 					},
-					opts = { skip = true },
+					view = "mini",
 				},
 			},
 			presets = {
 				lsp_doc_border = true, -- add a border to hover docs and signature help
+				bottom_search = true,
+				command_palette = true,
+				long_message_to_split = true,
+				inc_rename = true,
 			},
 		},
 		dependencies = {
