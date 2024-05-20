@@ -67,6 +67,9 @@ return {
 					path = "~/obsidian-vault/",
 				},
 			},
+			templates = {
+				folder = "templates",
+			},
 		},
 	},
 	{
