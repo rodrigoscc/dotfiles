@@ -110,7 +110,7 @@ end
 M.activate_env = function(e)
 	utils.make_sure_file_exists(settings.active_envs_file_path)
 
-	local active_envs = M.get_all_active_envs()
+	local active_envs = env.get_all_active_envs()
 
 	active_envs[vim.fn.getcwd()] = e
 
