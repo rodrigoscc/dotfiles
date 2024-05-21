@@ -15,6 +15,7 @@
 ---@class http.Response
 ---@field ok boolean
 ---@field status_code number
+---@field status_line string
 ---@field headers table
 ---@field body table
 

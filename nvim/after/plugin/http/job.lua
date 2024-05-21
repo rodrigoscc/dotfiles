@@ -1,7 +1,6 @@
 local Job = require("plenary.job")
-local project = require("after.plugin.http.project")
+local display = require("after.plugin.http.display")
 local url = require("after.plugin.http.requests").url
-local id = require("after.plugin.http.requests").id
 
 local M = {}
 
@@ -49,6 +48,11 @@ local function parse_http_headers_lines(headers_lines)
 	return parsed_headers
 end
 
+local function parse_status_line(headers_lines)
+	local status_line = headers_lines[1]
+	return status_line
+end
+
 local function parse_status_code(status_code_line)
 	local splits = vim.split(status_code_line, " ")
 
@@ -82,34 +86,15 @@ end
 ---@field content string[]
 ---@field vertical_split boolean
 
----Parse job result and get response and buffers
+---Parse job result and get http response from it
 ---@param job Job
----@param return_value number
----@return http.Response?
----@return http.ResultBuffer[]
-local function parse_job_results(job, return_value)
+---@return http.Response
+local function parse_response(job)
 	local result = job:result()
-	local stderr_result = job:stderr_result()
-
-	---@type http.ResultBuffer[]
-	local buffers = {}
-
-	if return_value ~= 0 then
-		vim.list_extend(result, stderr_result)
-
-		buffers = {
-			{
-				file_type = "text",
-				content = result,
-				vertical_split = false,
-			},
-		}
-
-		return nil, buffers
-	end
 
 	local headers_lines, body_lines = split_header_and_body(result)
 
+	local status_line = parse_status_line(headers_lines)
 	local parsed_headers = parse_http_headers_lines(headers_lines)
 
 	local parsed_body = ""
@@ -125,65 +110,16 @@ local function parse_job_results(job, return_value)
 
 	local parsed_status_code = parse_status_code(result[1])
 
-	buffers = {
-		{
-			file_type = "http",
-			content = headers_lines,
-			vertical_split = false,
-		},
-		{
-			file_type = body_file_type,
-			content = body_lines,
-			vertical_split = true,
-		},
-	}
-
 	---@type http.Response
 	local response = {
 		status_code = parsed_status_code,
+		status_line = status_line,
 		body = parsed_body,
 		headers = parsed_headers,
 		ok = true,
 	}
 
-	return response, buffers
-end
-
----Show results of curl request
----@param request http.Request
----@param response http.Response?
----@param buffers http.ResultBuffer[]
-local function on_curl_exit(request, response, buffers)
-	vim.schedule(function()
-		local request_id = id(request)
-		if response and response.ok then
-			vim.print("Running HTTP request " .. request_id .. "...Done")
-		else
-			vim.print("Running HTTP request " .. request_id .. "...ERROR")
-		end
-
-		for _, buffer in ipairs(buffers) do
-			local buf = vim.api.nvim_create_buf(true, true)
-			vim.api.nvim_buf_set_option(buf, "filetype", buffer.file_type)
-			vim.api.nvim_buf_set_lines(buf, 0, -1, false, buffer.content)
-
-			if buffer.vertical_split then
-				vim.cmd([[vsplit]])
-			else
-				vim.cmd([[15split]])
-			end
-
-			vim.api.nvim_set_current_buf(buf)
-
-			-- Avoid formatting curl error messages which are meant to be shown
-			-- on text buffers.
-			if buffer.file_type ~= "text" then
-				vim.cmd([[silent exe "normal gq%"]])
-			end
-
-			vim.keymap.set("n", "q", vim.cmd.close, { buffer = true })
-		end
-	end)
+	return response
 end
 
 local function minify_json(json_body)
@@ -193,7 +129,7 @@ end
 ---Create a plenary job to run request
 ---@param request http.Request
 ---@param content http.RequestContent
----@param on_exit any
+---@param on_exit function(job: Job, code: number, signal: number)
 ---@return Job
 M.request_to_job = function(request, content, on_exit)
 	local args = {
@@ -231,26 +167,23 @@ M.request_to_job = function(request, content, on_exit)
 	})
 end
 
-M.on_exit_func = function(
-	request,
-	after_hook,
-	project_env,
-	run_request_with_title
-)
-	return function(j, return_value)
-		local response, buffers = parse_job_results(j, return_value)
+M.on_exit_func = function(request, after_hook)
+	return function(job, code)
+		local stdout = job:result()
+		local stderr = job:stderr_result()
+
+		vim.list_extend(stdout, stderr)
+
+		local response = nil
+
+		if code == 0 then
+			response = parse_response(job)
+		end
 
 		if after_hook == nil then
-			on_curl_exit(request, response, buffers)
+			display.show(response, stdout)
 		else
-			after_hook(
-				request,
-				response,
-				buffers,
-				on_curl_exit,
-				project.update_env(project_env),
-				run_request_with_title
-			)
+			after_hook(request, response, stdout)
 		end
 	end
 end

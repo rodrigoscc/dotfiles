@@ -1,4 +1,4 @@
-local Http = require("after.plugin.http.http")
+local http = require("after.plugin.http.http")
 local project = require("after.plugin.http.project")
 local hooks = require("after.plugin.http.hooks")
 local display = require("after.plugin.http.display")
@@ -10,8 +10,6 @@ local pickers = require("telescope.pickers")
 local finders = require("telescope.finders")
 local actions = require("telescope.actions")
 local conf = require("telescope.config").values
-
-local http = Http.new()
 
 vim.api.nvim_create_user_command("HttpRunClosest", function()
 	local cursor_line = unpack(vim.api.nvim_win_get_cursor(0))

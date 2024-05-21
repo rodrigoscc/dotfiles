@@ -62,24 +62,26 @@ M.get_env_variables = function()
 	return envs[active_env] or {}
 end
 
-M.update_env = function(env_name)
-	return function(override_variables)
-		vim.schedule(function()
-			local envs = M.get_existing_envs()
-			local variables = envs[env_name]
-			variables = vim.tbl_extend("force", variables, override_variables)
-			envs[env_name] = variables
+M.update_active_env = function(override_variables)
+	local env_name = M.get_active_env()
 
-			local updated_envs = vim.json.encode(envs)
-			updated_envs = utils.format_if_jq_installed(updated_envs)
-
-			utils.make_sure_file_exists(settings.project_envs_file_path)
-
-			with(open(settings.project_envs_file_path, "w+"), function(file)
-				file:write(updated_envs)
-			end)
-		end)
+	if env_name == nil then
+		return
 	end
+
+	local envs = M.get_existing_envs()
+	local variables = envs[env_name]
+	variables = vim.tbl_extend("force", variables, override_variables)
+	envs[env_name] = variables
+
+	local updated_envs = vim.json.encode(envs)
+	updated_envs = utils.format_if_jq_installed(updated_envs)
+
+	utils.make_sure_file_exists(settings.project_envs_file_path)
+
+	with(open(settings.project_envs_file_path, "w+"), function(file)
+		file:write(updated_envs)
+	end)
 end
 
 M.new_env = function(new_env)

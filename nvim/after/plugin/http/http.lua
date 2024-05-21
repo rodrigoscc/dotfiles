@@ -1,4 +1,3 @@
-local env = require("after.plugin.http.env")
 local hooks = require("after.plugin.http.hooks")
 local job = require("after.plugin.http.job")
 local project = require("after.plugin.http.project")
@@ -100,19 +99,10 @@ function Http:run(request, override_context)
 	)
 
 	local start_request = function()
-		local project_env = project.get_active_env()
-
 		local request_job = job.request_to_job(
 			request,
 			content,
-			job.on_exit_func(
-				request,
-				after_hook,
-				project_env,
-				function(title, override_context)
-					self:run_with_title(title, override_context)
-				end
-			)
+			job.on_exit_func(request, after_hook)
 		)
 
 		request_job:start()
@@ -154,4 +144,4 @@ function Http:run_with_title(title, override_context)
 	self:run(request, override_context)
 end
 
-return Http
+return Http.new()
