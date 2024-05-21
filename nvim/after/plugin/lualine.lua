@@ -163,7 +163,7 @@ ins_left({
 })
 
 local function http_project_env()
-	local env = GetProjectEnv()
+	local env = require("after.plugin.http.project").get_active_env()
 	if env == nil then
 		return ""
 	end
