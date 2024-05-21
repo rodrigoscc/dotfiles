@@ -198,3 +198,17 @@ vim.keymap.set("n", "<leader>ne", "<cmd>HttpNewEnv<cr>")
 vim.keymap.set("n", "<leader>oe", "<cmd>HttpJumpEnv<cr>")
 
 vim.keymap.set("n", "<leader>oh", "<cmd>HttpOpenHooks<cr>")
+
+local cmp = require("cmp")
+local http_cmp_source = require("after.plugin.http.cmp_source")
+
+cmp.register_source("http", http_cmp_source)
+cmp.setup.filetype("http", {
+	sources = cmp.config.sources({
+		{ name = "http" },
+	}, {
+		{ name = "buffer" },
+		{ name = "path" },
+		{ name = "luasnip", keyword_length = 2 },
+	}),
+})
