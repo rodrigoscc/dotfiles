@@ -64,10 +64,10 @@ vim.keymap.set("i", "<C-c>", "<Esc>")
 
 -- Super Esc key.
 vim.keymap.set("n", "<Esc>", function()
-	vim.cmd([[nohlsearch]])
-	vim.cmd([[echon '']]) -- Clear command line
-	vim.cmd.NoiceDismiss()
 	vim.schedule(function()
+		vim.cmd([[nohlsearch]])
+		vim.cmd([[echon '']]) -- Clear command line
+		vim.cmd.NoiceDismiss()
 		vim.cmd([[pclose]])
 	end)
 	return "<Esc>"
