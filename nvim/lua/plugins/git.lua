@@ -16,7 +16,7 @@ return {
 		},
 		cmd = { "Neogit" },
 		opts = {
-			auto_show_console = false,
+			auto_show_console = true,
 			disable_insert_on_commit = false,
 			integrations = {
 				diffview = false,
