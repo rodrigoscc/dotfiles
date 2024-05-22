@@ -29,4 +29,32 @@ M.format_if_jq_installed = function(json)
 	end
 end
 
+M.get_content_type = function(content)
+	return content.headers["Content-Type"] or content.headers["content-type"]
+end
+
+local DEFAULT_BODY_TYPE = "text"
+
+M.get_body_file_type = function(headers)
+	local body_file_type = DEFAULT_BODY_TYPE
+
+	local content_type = headers["Content-Type"] or headers["content-type"]
+	if content_type == nil then
+		return body_file_type
+	end
+
+	if string.find(content_type, "application/json") then
+		body_file_type = "json"
+	elseif
+		string.find(content_type, "application/xml")
+		or string.find(content_type, "text/xml")
+	then
+		body_file_type = "xml"
+	elseif string.find(content_type, "text/html") then
+		body_file_type = "html"
+	end
+
+	return body_file_type
+end
+
 return M

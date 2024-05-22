@@ -1,3 +1,5 @@
+local utils = require("after.plugin.http.utils")
+
 local M = {}
 
 M.show_in_floating = function(contents)
@@ -34,31 +36,6 @@ local function headers_to_lines(status_line, headers)
 	return lines
 end
 
-local DEFAULT_BODY_TYPE = "text"
-
-local function get_body_file_type(response)
-	local body_file_type = DEFAULT_BODY_TYPE
-
-	local content_type = response.headers["Content-Type"]
-		or response.headers["content-type"]
-	if content_type == nil then
-		return body_file_type
-	end
-
-	if string.find(content_type, "application/json") then
-		body_file_type = "json"
-	elseif
-		string.find(content_type, "application/xml")
-		or string.find(content_type, "text/xml")
-	then
-		body_file_type = "xml"
-	elseif string.find(content_type, "text/html") then
-		body_file_type = "html"
-	end
-
-	return body_file_type
-end
-
 local function body_to_lines(response, file_type)
 	if file_type == "json" then
 		return vim.split(vim.fn.json_encode(response.body), "\n")
@@ -85,7 +62,7 @@ local function show_response(response)
 
 	vim.keymap.set("n", "q", vim.cmd.close, { buffer = true })
 
-	local body_file_type = get_body_file_type(response)
+	local body_file_type = utils.get_body_file_type(response.headers)
 	local body_lines = body_to_lines(response, body_file_type)
 
 	buf = vim.api.nvim_create_buf(true, true)

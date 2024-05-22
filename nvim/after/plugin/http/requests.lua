@@ -8,8 +8,7 @@
 
 ---@class http.RequestContent
 ---@field headers string[]
----@field json_body string?
----@field url_encoded_body string?
+---@field body string?
 -- TODO: Should headers be parsed before getting here?
 
 ---@class http.Response

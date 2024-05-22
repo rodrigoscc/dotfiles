@@ -1,32 +1,9 @@
 local Job = require("plenary.job")
 local display = require("after.plugin.http.display")
+local utils = require("after.plugin.http.utils")
 local url = require("after.plugin.http.requests").url
 
 local M = {}
-
-local DEFAULT_BODY_TYPE = "text"
-
-local function get_body_file_type(headers)
-	local body_file_type = DEFAULT_BODY_TYPE
-
-	local content_type = headers["Content-Type"] or headers["content-type"]
-	if content_type == nil then
-		return body_file_type
-	end
-
-	if string.find(content_type, "application/json") then
-		body_file_type = "json"
-	elseif
-		string.find(content_type, "application/xml")
-		or string.find(content_type, "text/xml")
-	then
-		body_file_type = "xml"
-	elseif string.find(content_type, "text/html") then
-		body_file_type = "html"
-	end
-
-	return body_file_type
-end
 
 local function parse_http_headers_lines(headers_lines)
 	local parsed_headers = {}
@@ -100,7 +77,7 @@ local function parse_response(job)
 	local parsed_body = ""
 	local body_joined = table.concat(body_lines, "\n")
 
-	local body_file_type = get_body_file_type(parsed_headers)
+	local body_file_type = utils.get_body_file_type(parsed_headers)
 
 	if body_file_type == "json" then
 		parsed_body = vim.json.decode(body_joined)
@@ -140,12 +117,17 @@ M.request_to_job = function(request, content, on_exit)
 		"\n%{size_header}", -- Used to split header from body when parsing
 	}
 
-	if content.json_body ~= nil then
+	if content.body ~= nil then
+		local body = content.body
+
+		local file_type = utils.get_content_type(content)
+		if file_type == "application/json" then
+			-- minifying just to minimize network load
+			body = minify_json(body)
+		end
+
 		table.insert(args, "--data")
-		table.insert(args, minify_json(content.json_body))
-	elseif content.url_encoded_body ~= nil then
-		table.insert(args, "--data")
-		table.insert(args, content.url_encoded_body)
+		table.insert(args, body)
 	end
 
 	if content.headers ~= nil then

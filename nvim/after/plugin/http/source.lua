@@ -278,12 +278,8 @@ function Source:get_request_content(request)
 				return content
 			elseif capture_name == "header" then
 				content.headers[#content.headers + 1] = capture_value
-			elseif capture_name == "json_body" and content.json_body == nil then
-				-- Checking if json_body is null to make sure we're not replacing
-				-- the body with a nested json.
-				content.json_body = capture_value
-			elseif capture_name == "url_encoded_body" then
-				content.url_encoded_body = capture_value
+			elseif capture_name == "body" then
+				content.body = capture_value
 			end
 		end
 	end

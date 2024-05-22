@@ -30,11 +30,8 @@ function Http:complete_content(content, context)
 	---@type http.RequestContent
 	local completed_content = { headers = {} }
 
-	if content.json_body ~= nil then
-		completed_content.json_body = interp(content.json_body, context)
-	elseif content.url_encoded_body ~= nil then
-		completed_content.url_encoded_body =
-			interp(content.url_encoded_body, context)
+	if content.body ~= nil then
+		completed_content.body = interp(content.body, context)
 	end
 
 	if content.headers ~= nil then

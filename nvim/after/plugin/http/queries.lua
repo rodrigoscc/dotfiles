@@ -34,8 +34,7 @@ M.request_content_query = vim.treesitter.query.parse(
 	[[
 [
  (header) @header
- (json_body) @json_body
- (url_encoded_body) @url_encoded_body
+ (body) @body
  (method_url) @next_request
 ]
 ]]
