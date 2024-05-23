@@ -24,7 +24,7 @@ return {
 				},
 				MiniCursorWord = {
 					underline = false,
-					bg = "iris",
+					bg = "rose",
 					blend = 23,
 				},
 				QuickFixLine = {
