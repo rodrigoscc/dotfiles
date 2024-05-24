@@ -25,18 +25,18 @@ cmp.setup({
 		completeopt = "menu,menuone,noinsert",
 	},
 	mapping = cmp.mapping.preset.insert({
+		["<CR>"] = nil,
+		["<Tab>"] = nil,
 		["<C-Space>"] = cmp.mapping.complete(),
 		["<C-e>"] = cmp_action.toggle_completion(),
-		["<CR>"] = cmp.mapping.confirm({
+		["<C-y>"] = cmp.mapping.confirm({
 			behavior = cmp.ConfirmBehavior.Insert,
 			select = true,
 		}),
-		["<Tab>"] = cmp.mapping.confirm({
+		["<C-r>"] = cmp.mapping.confirm({
 			behavior = cmp.ConfirmBehavior.Replace,
 			select = true,
 		}),
-		["<C-h>"] = cmp.mapping.scroll_docs(5),
-		["<C-y>"] = cmp.mapping.scroll_docs(-5),
 	}),
 	sources = {
 		{ name = "nvim_lsp" },

@@ -253,11 +253,7 @@ vim.api.nvim_create_autocmd("FileType", {
 	pattern = "python",
 	callback = function()
 		vim.keymap.set("i", "<c-m>", function()
-			if cmp.visible() then
-				cmp.confirm({ select = false })
-			else
-				my_cr()
-			end
+			my_cr()
 		end, { buffer = true })
 	end,
 })
