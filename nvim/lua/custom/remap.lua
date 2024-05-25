@@ -73,7 +73,7 @@ vim.keymap.set("n", "<Esc>", function()
 	return "<Esc>"
 end, { expr = true })
 
-vim.keymap.set("n", "Q", "<nop>")
+vim.keymap.set("n", "Q", "gq")
 
 vim.keymap.set("n", "<C-k>", "<cmd>cprev<CR>zz")
 vim.keymap.set("n", "<C-j>", "<cmd>cnext<CR>zz")
