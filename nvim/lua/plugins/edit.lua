@@ -107,6 +107,13 @@ return {
 				end,
 			})
 
+			vim.api.nvim_create_autocmd({ "InsertLeave" }, {
+				pattern = "COMMIT_EDITMSG",
+				callback = function()
+					require("lint").try_lint("commitlint")
+				end,
+			})
+
 			local ruff = require("lint").linters.ruff
 			ruff.args = {
 				"--force-exclude",
