@@ -163,7 +163,9 @@ M.on_exit_func = function(request, after_hook)
 		end
 
 		if after_hook == nil then
-			display.show(response, stdout)
+			vim.schedule(function()
+				display.show(response, stdout)
+			end)
 		else
 			after_hook(request, response, stdout)
 		end
