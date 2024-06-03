@@ -30,5 +30,15 @@ return {
 			},
 		},
 	},
-	{ "folke/neodev.nvim", opts = {} },
+	{
+		"folke/lazydev.nvim",
+		ft = "lua", -- only load on lua files
+		opts = {
+			library = {
+				"plenary.nvim/lua/plenary",
+				"luvit-meta/library",
+			},
+		},
+	},
+	{ "Bilal2453/luvit-meta", lazy = true }, -- `vim.uv` typings
 }

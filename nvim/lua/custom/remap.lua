@@ -2,12 +2,12 @@ local lazy = require("lazy")
 
 local ts_utils = require("nvim-treesitter.ts_utils")
 local autopairs = require("ultimate-autopair.core")
-local cmp = require("cmp")
 
 vim.keymap.set("n", "<leader>L", lazy.show, { desc = "show [l]azy" })
+vim.keymap.set("n", "<leader>M", "<cmd>Mason<cr>", { desc = "show [m]ason" })
 
-vim.keymap.set("x", "J", ":move '>+1<CR>gv=gv")
-vim.keymap.set("x", "K", ":move '<-2<CR>gv=gv")
+vim.keymap.set("x", "J", ":move '>+1<CR>gv=gv", { silent = true })
+vim.keymap.set("x", "K", ":move '<-2<CR>gv=gv", { silent = true })
 
 vim.keymap.set("x", "<", "<gv")
 vim.keymap.set("x", ">", ">gv")
