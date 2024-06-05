@@ -154,6 +154,20 @@ ins_left({
 	},
 })
 
+ins_left({ "searchcount", color = { fg = colors.violet } })
+
+ins_left({
+	"selectioncount",
+	fmt = function(str)
+		if str == "" then
+			return ""
+		end
+
+		return "[󰒅 " .. str .. "]"
+	end,
+	color = { fg = colors.blue },
+})
+
 -- Insert mid section. You can make any number of sections in neovim :)
 -- for lualine it's any number greater then 2
 ins_left({

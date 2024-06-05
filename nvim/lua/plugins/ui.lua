@@ -127,6 +127,13 @@ return {
 					},
 					view = "mini",
 				},
+				{
+					filter = {
+						event = "msg_show",
+						kind = "search_count",
+					},
+					opts = { skip = true },
+				},
 			},
 			presets = {
 				lsp_doc_border = true, -- add a border to hover docs and signature help
