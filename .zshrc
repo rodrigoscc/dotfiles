@@ -83,8 +83,8 @@ alias pn="pnpm"
 alias ..="cd .."
 
 # Up and down arrow keys.
-bindkey '^[[A' history-search-backward
-bindkey '^[[B' history-search-forward
+bindkey '^[[A' history-beginning-search-backward
+bindkey '^[[B' history-beginning-search-forward
 
 # Home and end keys.
 bindkey "^[[1~" beginning-of-line
