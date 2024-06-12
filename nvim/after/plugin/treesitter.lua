@@ -59,6 +59,9 @@ require("nvim-treesitter.configs").setup({
 
 				["ac"] = "@conditional.outer",
 				["ic"] = "@conditional.inner",
+
+				["aC"] = "@class.outer",
+				["iC"] = "@class.inner",
 			},
 			-- More convenient than including it most of the time.
 			include_surrounding_whitespace = false,
