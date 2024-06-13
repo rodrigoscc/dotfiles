@@ -1,5 +1,6 @@
 ; extends
 (
-    (string_content) @json
-    (#lua-match? @json "\{%s*\"")
+    (string_content) @injection.content
+    (#lua-match? @injection.content "\{%s*\"")
+    (#set! injection.language "json")
 )
