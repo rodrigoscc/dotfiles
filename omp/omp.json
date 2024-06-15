@@ -1,0 +1,151 @@
+{
+  "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
+  "version": 2,
+  "final_space": true,
+  "console_title_template": "{{ .Shell }} in {{ .Folder }}",
+  "blocks": [
+    {
+      "type": "prompt",
+      "alignment": "left",
+      "segments": [
+        {
+          "type": "path",
+          "style": "plain",
+          "foreground": "magenta",
+          "background": "transparent",
+          "template": "{{ .Path }}",
+          "properties": {
+            "style": "agnoster_full",
+            "folder_separator_template": "<magenta>/</>",
+            "edge_format": "<white>%s</>"
+          }
+        },
+        {
+          "type": "git",
+          "style": "plain",
+          "foreground": "magenta",
+          "foreground_templates": [
+            "{{ if or (.Working.Changed) (.Staging.Changed) }}yellow{{ end }}",
+            "{{ if and (gt .Ahead 0) (gt .Behind 0) }}red{{ end }}",
+            "{{ if gt .Ahead 0 }}green{{ end }}"
+          ],
+          "background": "transparent",
+          "template": " <p:grey>on</> {{ .HEAD }}{{ .LatestTag }}<p:grey>{{ if .Working.Changed }} {{ .Working.String }}{{ end }}{{ if .Staging.Changed }} | {{ .Staging.String }} {{ end }}</>",
+          "properties": {
+            "branch_max_length": 25,
+            "fetch_status": true,
+            "fetch_upstream_icon": true,
+            "branch_icon": ""
+          }
+        },
+        {
+          "type": "status",
+          "style": "plain",
+          "foreground": "red",
+          "background": "transparent",
+          "template": "  {{ .String }}",
+          "properties": {
+            "always_enabled": false
+          }
+        }
+      ]
+    },
+    {
+      "type": "rprompt",
+      "segments": [
+        {
+          "type": "node",
+          "style": "plain",
+          "foreground": "green",
+          "background": "transparent",
+          "template": " ",
+          "properties": {
+            "display_mode": "files",
+            "fetch_package_manager": false,
+            "home_enabled": false
+          }
+        },
+        {
+          "type": "go",
+          "style": "plain",
+          "foreground": "blue",
+          "background": "transparent",
+          "template": " ",
+          "properties": {
+            "fetch_version": false
+          }
+        },
+        {
+          "type": "python",
+          "style": "plain",
+          "foreground": "yellow",
+          "background": "transparent",
+          "template": " ",
+          "properties": {
+            "display_mode": "files",
+            "fetch_version": false,
+            "fetch_virtual_env": false
+          }
+        },
+        {
+          "type": "time",
+          "style": "plain",
+          "foreground": "white",
+          "background": "transparent",
+          "template": "at <cyan><b>{{ .CurrentDate | date \"15:04:05\" }}</b></>"
+        }
+      ]
+    },
+    {
+      "type": "prompt",
+      "alignment": "left",
+      "newline": true,
+      "segments": [
+        {
+          "type": "text",
+          "style": "plain",
+          "foreground": "magenta",
+          "background": "transparent",
+          "template": "❯"
+        }
+      ]
+    }
+  ],
+  "tooltips": [
+    {
+      "type": "aws",
+      "tips": [
+        "aws"
+      ],
+      "style": "plain",
+      "foreground": "white",
+      "background": "p:orange",
+      "leading_diamond": "",
+      "trailing_diamond": "",
+      "template": "  {{ .Profile }}{{ if .Region }}@{{ .Region }}{{ end }} ",
+      "properties": {
+        "display_default": true
+      }
+    }
+  ],
+  "transient_prompt": {
+    "foreground": "magenta",
+    "background": "transparent",
+    "template": "❯ "
+  },
+  "secondary_prompt": {
+    "foreground": "magenta",
+    "background": "transparent",
+    "template": "❯❯ "
+  },
+  "palette": {
+    "black": "#262B44",
+    "blue": "#4B95E9",
+    "green": "#59C9A5",
+    "orange": "#F07623",
+    "red": "#D81E5B",
+    "white": "#E0DEF4",
+    "yellow": "#F3AE35",
+    "grey": "#8a8a8a"
+  }
+}

@@ -1,10 +1,3 @@
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-    source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
 export PATH=/opt/homebrew/opt/python@3.9/libexec/bin:~/.config/bin:~/go/bin:~/.local/bin:/opt/homebrew/opt/mysql-client/bin:$PATH
 export EDITOR=nvim
 
@@ -38,8 +31,6 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 
 export ZPLUG_HOME=/opt/homebrew/opt/zplug
 source $ZPLUG_HOME/init.zsh
-
-zplug "romkatv/powerlevel10k", as:theme, depth:1
 
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
 
@@ -90,8 +81,9 @@ bindkey '^[[B' history-beginning-search-forward
 bindkey "^[[1~" beginning-of-line
 bindkey "^[[4~" end-of-line
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+if [ "$TERM_PROGRAM" != "Apple_Terminal" ]; then
+    eval "$(oh-my-posh init zsh --config ~/.config/omp/omp.json)"
+fi
 
 # Add zsh functions to fpath (e.g. poetry completions).
 fpath+=~/.zfunc
