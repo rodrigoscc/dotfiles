@@ -88,6 +88,11 @@
           }
         },
         {
+          "type": "executiontime",
+          "style": "plain",
+          "template": "took <red>{{ .FormattedMs }}</> "
+        },
+        {
           "type": "time",
           "style": "plain",
           "foreground": "white",
