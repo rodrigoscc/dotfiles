@@ -1,0 +1,6 @@
+raycast/
+.scratch/
+github-copilot/
+tmux-client-*.log
+tmux/plugins/
+iterm2/
