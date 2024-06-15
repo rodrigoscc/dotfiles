@@ -58,7 +58,7 @@
           "style": "plain",
           "foreground": "green",
           "background": "transparent",
-          "template": " ",
+          "template": "  {{ .Full }}",
           "properties": {
             "display_mode": "files",
             "fetch_package_manager": false,
@@ -70,7 +70,7 @@
           "style": "plain",
           "foreground": "blue",
           "background": "transparent",
-          "template": " ",
+          "template": "  {{ .Full }}",
           "properties": {
             "fetch_version": false
           }
@@ -80,7 +80,7 @@
           "style": "plain",
           "foreground": "yellow",
           "background": "transparent",
-          "template": " ",
+          "template": "  {{ .Full }}",
           "properties": {
             "display_mode": "files",
             "fetch_version": false,
@@ -97,7 +97,7 @@
           "style": "plain",
           "foreground": "white",
           "background": "transparent",
-          "template": "at <cyan><b>{{ .CurrentDate | date \"15:04:05\" }}</b></>"
+          "template": " at <cyan><b>{{ .CurrentDate | date \"15:04:05\" }}</b></>"
         }
       ]
     },
