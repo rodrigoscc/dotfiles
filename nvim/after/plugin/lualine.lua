@@ -124,37 +124,36 @@ ins_left({ "mode", icon = "", color = mode_color })
 ins_left({
 	"branch",
 	icon = "",
-	color = { fg = colors.violet },
+	color = "@attribute",
 })
 
 ins_left({
 	"filename",
 	file_status = true,
 	newfile_status = true,
-	color = { fg = colors.violet },
+	color = "@attribute",
 })
 
 ins_left({
 	"filesize",
 	cond = conditions.buffer_not_empty,
+	color = "@keyword.operator",
 })
 
-ins_left({ "location" })
+ins_left({ "location", color = "@keyword.operator" })
 
-ins_left({ "progress" })
+ins_left({ "progress", color = "@keyword.operator" })
 
 ins_left({
 	"diagnostics",
 	sources = { "nvim_diagnostic" },
 	symbols = { error = " ", info = " ", warn = " ", hint = " " },
-	diagnostics_color = {
-		error = { fg = colors.red },
-		warn = { fg = colors.orange },
-		info = { fg = colors.blue },
-	},
 })
 
-ins_left({ "searchcount", color = { fg = colors.violet } })
+ins_left({
+	"searchcount",
+	color = "@todo",
+})
 
 ins_left({
 	"selectioncount",
@@ -165,7 +164,7 @@ ins_left({
 
 		return "[󰒅 " .. str .. "]"
 	end,
-	color = { fg = colors.blue },
+	color = "@parameter",
 })
 
 -- Insert mid section. You can make any number of sections in neovim :)
@@ -199,10 +198,13 @@ end
 ins_right({
 	require("noice").api.statusline.mode.get,
 	cond = require("noice").api.statusline.mode.has,
-	color = { fg = "#908caa" },
+	color = "@comment",
 })
 
-ins_right({ http_project_env, color = { fg = colors.magenta } })
+ins_right({
+	http_project_env,
+	color = "@attribute",
+})
 
 ins_right({ disable_autoformat })
 
@@ -219,25 +221,20 @@ ins_right({
 	"o:encoding", -- option component same as &encoding in viml
 	fmt = string.upper, -- I'm not sure why it's upper case either ;)
 	cond = conditions.hide_in_width,
-	color = { fg = colors.green, gui = "bold" },
+	color = "@keyword.operator",
 })
 
 ins_right({
 	"fileformat",
 	fmt = string.upper,
 	icons_enabled = false, -- I think icons are cool but Eviline doesn't have them. sigh
-	color = { fg = colors.green, gui = "bold" },
+	color = "@keyword.operator",
 })
 
 ins_right({
 	"diff",
 	-- Is it me or the symbol for modified us really weird
 	symbols = { added = " ", modified = " ", removed = " " },
-	diff_color = {
-		added = { fg = colors.green },
-		modified = { fg = colors.orange },
-		removed = { fg = colors.red },
-	},
 	cond = conditions.hide_in_width,
 })
 
