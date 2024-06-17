@@ -58,34 +58,21 @@
           "style": "plain",
           "foreground": "green",
           "background": "transparent",
-          "template": "  {{ .Full }}",
-          "properties": {
-            "display_mode": "files",
-            "fetch_package_manager": false,
-            "home_enabled": false
-          }
+          "template": "  {{ .Full }}"
         },
         {
           "type": "go",
           "style": "plain",
           "foreground": "blue",
           "background": "transparent",
-          "template": "  {{ .Full }}",
-          "properties": {
-            "fetch_version": false
-          }
+          "template": "  {{ .Full }}"
         },
         {
           "type": "python",
           "style": "plain",
           "foreground": "yellow",
           "background": "transparent",
-          "template": "  {{ .Full }}",
-          "properties": {
-            "display_mode": "files",
-            "fetch_version": false,
-            "fetch_virtual_env": false
-          }
+          "template": "  {{ .Full }}"
         },
         {
           "type": "executiontime",
