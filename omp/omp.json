@@ -65,7 +65,10 @@
           "style": "plain",
           "foreground": "blue",
           "background": "transparent",
-          "template": "  {{ .Full }}"
+          "template": "  {{ .Full }}",
+          "properties": {
+            "parse_mod_file": true
+          }
         },
         {
           "type": "python",
@@ -77,7 +80,7 @@
         {
           "type": "executiontime",
           "style": "plain",
-          "template": "took <red>{{ .FormattedMs }}</> "
+          "template": " took <red>{{ .FormattedMs }}</>"
         },
         {
           "type": "time",
