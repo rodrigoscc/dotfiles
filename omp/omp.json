@@ -75,7 +75,7 @@
           "style": "plain",
           "foreground": "yellow",
           "background": "transparent",
-          "template": "  {{ .Full }}"
+          "template": "  {{ .Full }}{{ if .Venv }} ({{ .Venv }}){{end}}"
         },
         {
           "type": "executiontime",
