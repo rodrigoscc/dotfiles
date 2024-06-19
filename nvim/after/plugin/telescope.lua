@@ -47,6 +47,9 @@ vim.keymap.set("n", "<C-p>", function()
 		builtin.find_files()
 	end
 end, {})
+vim.keymap.set("n", "<leader>pf", function()
+	builtin.git_files()
+end, {})
 vim.keymap.set("n", "<C-f>", builtin.current_buffer_fuzzy_find)
 
 vim.keymap.set("n", "<leader>/", function()
