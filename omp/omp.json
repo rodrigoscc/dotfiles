@@ -30,7 +30,7 @@
             "{{ if gt .Ahead 0 }}green{{ end }}"
           ],
           "background": "transparent",
-          "template": " <p:grey>on</> {{ .HEAD }}<p:grey>{{ if .Working.Changed }} {{ .Working.String }}{{ end }}{{ if .Staging.Changed }} | {{ .Staging.String }} {{ end }}</>",
+          "template": " <p:grey>on</> {{ .HEAD }}<p:grey>{{ if .Working.Changed }} {{ .Working.String }}{{ end }}{{ if .Staging.Changed }} | {{ .Staging.String }}{{ end }}</>",
           "properties": {
             "branch_max_length": 25,
             "fetch_status": true,
@@ -46,6 +46,17 @@
           "template": "  {{ .String }}",
           "properties": {
             "always_enabled": false
+          }
+        },
+        {
+          "type": "command",
+          "style": "plain",
+          "foreground": "magenta",
+          "background": "transparent",
+          "template": " [ {{ .Output }}]",
+          "properties": {
+            "shell": "zsh",
+            "command": "git describe --tags --abbrev=0"
           }
         }
       ]
