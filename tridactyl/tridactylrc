@@ -8,10 +8,12 @@ bind k scrollline -1
 
 set editorcmd /opt/homebrew/bin/wezterm start -- /opt/homebrew/bin/nvim
 
- bind / fillcmdline find
- bind ? fillcmdline find --reverse
- bind n findnext --search-from-view
- bind N findnext --search-from-view --reverse
- bind gn findselect
- bind gN composite findnext --search-from-view --reverse; findselect
- bind <Esc> nohlsearch
+bind / fillcmdline find
+bind ? fillcmdline find --reverse
+bind n findnext --search-from-view
+bind N findnext --search-from-view --reverse
+bind gn findselect
+bind gN composite findnext --search-from-view --reverse; findselect
+bind <Esc> nohlsearch
+
+set searchurls["mdn"] https://developer.mozilla.org/en-US/search?q=
