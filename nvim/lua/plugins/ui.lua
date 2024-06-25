@@ -82,6 +82,7 @@ return {
 					tsx = "rainbow-parens",
 					svelte = "rainbow-custom",
 				},
+				blacklist = { "html" },
 			}
 		end,
 	},
