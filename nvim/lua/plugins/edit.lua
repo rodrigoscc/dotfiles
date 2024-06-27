@@ -102,18 +102,14 @@ return {
 				go = { "golangcilint" },
 			}
 
-			vim.api.nvim_create_autocmd({ "BufWritePost" }, {
-				callback = function()
-					require("lint").try_lint()
-				end,
-			})
-
-			vim.api.nvim_create_autocmd({ "InsertLeave" }, {
-				pattern = "COMMIT_EDITMSG",
-				callback = function()
-					require("lint").try_lint("commitlint")
-				end,
-			})
+			vim.api.nvim_create_autocmd(
+				{ "BufWritePost", "BufReadPost", "InsertLeave" },
+				{
+					callback = function()
+						require("lint").try_lint()
+					end,
+				}
+			)
 
 			local ruff = require("lint").linters.ruff
 			ruff.args = {
