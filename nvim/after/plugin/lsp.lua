@@ -40,9 +40,9 @@ cmp.setup({
 	}),
 	sources = {
 		{ name = "nvim_lsp" },
-		{ name = "vim-dadbod-completion" },
-		{ name = "buffer", keyword_length = 3 },
-		{ name = "luasnip", keyword_length = 2 },
+		{ name = "luasnip" },
+		{ name = "buffer", keyword_length = 2 },
+		{ name = "rg", keyword_length = 3 },
 		{ name = "path" },
 	},
 	window = {
@@ -61,11 +61,14 @@ cmp.setup({
 				maxwidth = 50,
 				menu = {
 					buffer = "[Buffer]",
+					path = "[Path]",
+					rg = "[Rg]",
 					nvim_lsp = "[LSP]",
 					luasnip = "[LuaSnip]",
 					nvim_lua = "[Lua]",
 					omni = "[omni]",
 					["vim-dadbod-completion"] = "[dadbod]",
+					["cmp-dbee"] = "[dbee]",
 				},
 			})(entry, vim_item)
 			local strings = vim.split(kind.kind, "%s", { trimempty = true })
@@ -209,6 +212,17 @@ require("cmp").setup.filetype({ "query" }, {
 	sources = cmp.config.sources({
 		{ name = "omni" },
 		{ name = "buffer" },
+		{ name = "rg", keyword_length = 3 },
+		{ name = "luasnip" },
+	}),
+})
+
+require("cmp").setup.filetype({ "sql" }, {
+	sources = cmp.config.sources({
+		{ name = "vim-dadbod-completion" },
+		{ name = "cmp-dbee" },
+		{ name = "buffer", keyword_length = 2 },
+		{ name = "rg", keyword_length = 3 },
 		{ name = "luasnip" },
 	}),
 })
