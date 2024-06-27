@@ -293,6 +293,8 @@ require("mason-lspconfig").setup({
 							rangeVariableTypes = true,
 						},
 						usePlaceholders = true,
+						symbolScope = "workspace",
+						semanticTokens = true, -- experimental feature
 					},
 				},
 			})
