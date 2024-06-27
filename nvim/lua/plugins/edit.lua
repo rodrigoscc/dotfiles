@@ -100,6 +100,7 @@ return {
 			require("lint").linters_by_ft = {
 				python = { "ruff" },
 				go = { "golangcilint" },
+				lua = { "selene" },
 			}
 
 			vim.api.nvim_create_autocmd(
