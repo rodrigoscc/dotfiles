@@ -21,8 +21,14 @@ return {
 			highlight_groups = {
 				MiniTrailspace = {
 					underline = true,
+					bg = "none",
 				},
 				MiniCursorWord = {
+					underline = false,
+					bg = "rose",
+					blend = 23,
+				},
+				MiniCursorWordCurrent = {
 					underline = false,
 					bg = "rose",
 					blend = 23,
