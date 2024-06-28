@@ -23,12 +23,12 @@ return {
 					underline = true,
 					bg = "none",
 				},
-				MiniCursorWord = {
+				MiniCursorword = {
 					underline = false,
 					bg = "rose",
 					blend = 23,
 				},
-				MiniCursorWordCurrent = {
+				MiniCursorwordCurrent = {
 					underline = false,
 					bg = "rose",
 					blend = 23,
