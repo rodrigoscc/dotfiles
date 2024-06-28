@@ -206,6 +206,9 @@ vim.diagnostic.config({
 	virtual_text = true,
 	signs = false,
 	severity_sort = true,
+	float = {
+		source = true,
+	},
 })
 
 require("cmp").setup.filetype({ "query" }, {
