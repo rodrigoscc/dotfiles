@@ -101,6 +101,8 @@ return {
 				python = { "ruff" },
 				go = { "golangcilint" },
 				lua = { "selene" },
+				gitcommit = { "commitlint" },
+				NeogitCommitMessage = { "commitlint" },
 			}
 
 			vim.api.nvim_create_autocmd(
