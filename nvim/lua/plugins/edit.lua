@@ -52,7 +52,7 @@ return {
 				svelte = { "prettier" },
 				css = { "prettier" },
 				html = { "prettier" },
-				go = { "goimports", "gofmt" },
+				go = { "golines" }, -- golines run goimports and gofmt if found.
 				json = { "fixjson" },
 				sql = { "sql_formatter" },
 				sh = { "beautysh" },
@@ -60,6 +60,9 @@ return {
 				zsh = { "beautysh" },
 			},
 			formatters = {
+				golines = {
+					prepend_args = { "-m", "80" },
+				},
 				stylua = {
 					prepend_args = { "--column-width=80" },
 				},

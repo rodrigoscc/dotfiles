@@ -82,10 +82,6 @@ return {
 					fg = "muted",
 					blend = 15,
 				},
-				["@character"] = { -- This highlight is used in printf parser
-					fg = "pine",
-					bold = true,
-				},
 			},
 		},
 	},
