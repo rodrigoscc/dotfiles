@@ -4,6 +4,7 @@ local act = wezterm.action
 local config = {
 	color_scheme = "rose-pine",
 	font = wezterm.font_with_fallback({
+		"Maple Mono NF CN",
 		"JetBrainsMono Nerd Font",
 		"JetBrains Mono",
 	}),
