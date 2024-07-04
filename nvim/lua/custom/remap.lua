@@ -131,7 +131,7 @@ vim.keymap.set("n", "mD", "<cmd>diffoff!<cr>")
 vim.keymap.set(
 	"n",
 	"<leader>m",
-	"<C-w>T",
+	"<cmd>tab split<cr>",
 	{ desc = "[m]aximize window to tab" }
 )
 
