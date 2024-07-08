@@ -82,6 +82,24 @@ return {
 					fg = "muted",
 					blend = 15,
 				},
+				RainbowDelimiterRed = {
+					fg = "love",
+				},
+				RainbowDelimiterYellow = {
+					fg = "gold",
+				},
+				RainbowDelimiterBlue = {
+					fg = "pine",
+				},
+				RainbowDelimiterOrange = {
+					fg = "rose",
+				},
+				RainbowDelimiterGreen = {
+					fg = "foam",
+				},
+				RainbowDelimiterViolet = {
+					fg = "iris",
+				},
 			},
 		},
 	},
