@@ -119,6 +119,7 @@ return {
 
 			local ruff = require("lint").linters.ruff
 			ruff.args = {
+				"check",
 				"--force-exclude",
 				"--quiet",
 				"--stdin-filename",
