@@ -92,13 +92,16 @@ return {
 					fg = "pine",
 				},
 				RainbowDelimiterOrange = {
-					fg = "rose",
+					fg = "iris",
 				},
 				RainbowDelimiterGreen = {
 					fg = "foam",
 				},
 				RainbowDelimiterViolet = {
-					fg = "iris",
+					fg = "rose",
+				},
+				RainbowDelimitercyan = {
+					fg = "pine",
 				},
 			},
 		},
