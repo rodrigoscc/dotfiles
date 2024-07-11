@@ -13,17 +13,23 @@ vim.keymap.set(
 	{ desc = "[p]review [h]unk popup" }
 )
 vim.keymap.set(
-	{ "n", "v" },
+	{ "n" },
 	"<leader>sh",
 	"<cmd>Gitsigns stage_hunk<cr>",
 	{ desc = "[s]tage [h]unk" }
 )
+vim.keymap.set({ "v" }, "<leader>sh", function()
+	gitsigns.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
+end, { desc = "[s]tage [h]unk" })
 vim.keymap.set(
 	"n",
 	"<leader>rh",
 	gitsigns.reset_hunk,
 	{ desc = "[r]eset [h]unk" }
 )
+vim.keymap.set({ "v" }, "<leader>rh", function()
+	gitsigns.reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
+end, { desc = "[r]eset [h]unk" })
 vim.keymap.set(
 	"n",
 	"<leader>bl",
