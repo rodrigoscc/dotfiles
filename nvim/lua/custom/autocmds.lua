@@ -15,7 +15,6 @@ end
 augroup("Spell", {
 	"FileType",
 	{
-
 		pattern = "markdown",
 		callback = function()
 			vim.opt_local.spell = true
