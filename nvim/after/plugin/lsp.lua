@@ -42,7 +42,7 @@ cmp.setup({
 		{ name = "nvim_lsp" },
 		{ name = "luasnip" },
 		{ name = "buffer", keyword_length = 2 },
-		{ name = "rg", keyword_length = 3 },
+		{ name = "rg", keyword_length = 3, max_item_count = 5 },
 		{ name = "path" },
 	},
 	window = {
@@ -215,7 +215,7 @@ require("cmp").setup.filetype({ "query" }, {
 	sources = cmp.config.sources({
 		{ name = "omni" },
 		{ name = "buffer" },
-		{ name = "rg", keyword_length = 3 },
+		{ name = "rg", keyword_length = 3, max_item_count = 5 },
 		{ name = "luasnip" },
 	}),
 })
@@ -225,7 +225,7 @@ require("cmp").setup.filetype({ "sql" }, {
 		{ name = "vim-dadbod-completion" },
 		{ name = "cmp-dbee" },
 		{ name = "buffer", keyword_length = 2 },
-		{ name = "rg", keyword_length = 3 },
+		{ name = "rg", keyword_length = 3, max_item_count = 5 },
 		{ name = "luasnip" },
 	}),
 })
