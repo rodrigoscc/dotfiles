@@ -15,7 +15,7 @@ ssh_session_name="ssh"
 
 windows=`tmux list-windows -t $ssh_session_name -F "#{window_index} #{window_name}"`
 
-selected=`echo -e "$windows" | fzf-tmux --header="Switch to SSH session" --header-first --no-sort -w 60% -h 50%`
+selected=`echo -e "$windows" | fzf-tmux --header="Switch to SSH session" --header-first --info=inline --no-sort -w 60% -h 50%`
 if [ -z "$selected" ]; then
     exit 0
 fi
