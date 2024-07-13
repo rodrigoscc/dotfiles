@@ -154,4 +154,14 @@ return {
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 		opts = {},
 	},
+	{
+		"lukas-reineke/headlines.nvim",
+		dependencies = "nvim-treesitter/nvim-treesitter",
+		opts = {
+			markdown = {
+				headline_highlights = { "Headline1", "Headline2", "Headline3" },
+				fat_headlines = false,
+			},
+		},
+	},
 }

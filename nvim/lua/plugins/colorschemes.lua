@@ -103,6 +103,21 @@ return {
 				RainbowDelimitercyan = {
 					fg = "pine",
 				},
+				CodeBlock = {
+					bg = "surface",
+				},
+				Headline1 = {
+					bg = "iris",
+					blend = 15,
+				},
+				Headline2 = {
+					bg = "foam",
+					blend = 15,
+				},
+				Headline3 = {
+					bg = "rose",
+					blend = 15,
+				},
 			},
 		},
 	},
