@@ -1,8 +1,8 @@
 (method) @keyword
 (url) @text.uri
 (variable_declaration) @attribute
-(variable_declaration name: (identifier) @var (#lua-match? @var "request.title")) @text.title
-(variable_declaration name: (identifier) @var (#lua-match? @var "request.flags")) @comment
+(variable_declaration name: (identifier) @var (#lua-match? @var "request.title")) @comment.info
+(variable_declaration name: (identifier) @var (#lua-match? @var "request.flags")) @comment.error
 (variable_ref) @attribute
 (header name: (_) @property)
 
