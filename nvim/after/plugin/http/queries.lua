@@ -6,9 +6,9 @@ M.requests_query = vim.treesitter.query.parse(
 	[[
 [
  (variable_declaration
-	variable_name: (identifier) @variable_name (#lua-match? @variable_name "request.*")
-	variable_value: (rest_of_line) @variable_value)
- (method_url) @request
+	name: (_) @variable_name (#lua-match? @variable_name "request.*")
+	value: (_) @variable_value)
+ (request) @request
 ]
 ]]
 )
@@ -16,7 +16,7 @@ M.requests_query = vim.treesitter.query.parse(
 M.requests_only_query = vim.treesitter.query.parse(
 	"http2",
 	[[
- (method_url) @request
+ (request) @request
 ]]
 )
 
@@ -24,19 +24,8 @@ M.variables_query = vim.treesitter.query.parse(
 	"http2",
 	[[
  (variable_declaration
-	variable_name: (identifier) @name (#not-lua-match? @name "request.*")
-	variable_value: (rest_of_line) @value)
-]]
-)
-
-M.request_content_query = vim.treesitter.query.parse(
-	"http2",
-	[[
-[
- (header) @header
- (body) @body
- (method_url) @next_request
-]
+	name: (identifier) @name (#not-lua-match? @name "request.*")
+	value: (rest_of_line) @value)
 ]]
 )
 

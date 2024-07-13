@@ -97,7 +97,12 @@ function Source:get_buffer_requests()
 				vim.trim(vim.treesitter.get_node_text(node, self.repr))
 
 			if capture_name == "request" then
-				local method, url = extract_method_and_url(capture_value)
+				local start_line_node = node:named_child(0)
+				local start_line = vim.trim(
+					vim.treesitter.get_node_text(start_line_node, self.repr)
+				)
+
+				local method, url = extract_method_and_url(start_line)
 
 				local domain_path, query = unpack(vim.split(url, "?"))
 
@@ -148,7 +153,12 @@ function Source:get_file_requests()
 				vim.trim(vim.treesitter.get_node_text(node, self.repr))
 
 			if capture_name == "request" then
-				local method, url = extract_method_and_url(capture_value)
+				local start_line_node = node:named_child(0)
+				local start_line = vim.trim(
+					vim.treesitter.get_node_text(start_line_node, self.repr)
+				)
+
+				local method, url = extract_method_and_url(start_line)
 
 				local domain_path, query = unpack(vim.split(url, "?"))
 
@@ -252,36 +262,32 @@ function Source:get_request_context(request)
 end
 
 function Source:get_request_content(request)
-	local tree = self:get_tree()
-
-	local start, _, _, _ = request.node:range()
-	local _, _, stop, _ = tree:root():range()
-
 	---@type http.RequestContent
 	local content = { headers = {} }
 
-	for _, match in
-		queries.request_content_query:iter_matches(
-			tree:root(),
-			self.repr,
-			start + 1,
-			stop + 1
-		)
-	do
-		for id, node in pairs(match) do
-			local capture_name = queries.request_content_query.captures[id]
-			local capture_value =
-				vim.trim(vim.treesitter.get_node_text(node, self.repr))
+	local header_nodes = {}
+	local request_child_count = request.node:named_child_count()
 
-			if capture_name == "next_request" then
-				-- Got to next request, no need to keep going.
-				return content
-			elseif capture_name == "header" then
-				content.headers[#content.headers + 1] = capture_value
-			elseif capture_name == "body" then
-				content.body = capture_value
-			end
+	local body_node = nil
+
+	for i = 0, request_child_count - 1 do
+		local child = request.node:named_child(i)
+
+		if child:type() == "header" then
+			table.insert(header_nodes, child)
+		elseif child:type() == "body" then
+			body_node = child
 		end
+	end
+
+	for _, node in ipairs(header_nodes) do
+		content.headers[#content.headers + 1] =
+			vim.trim(vim.treesitter.get_node_text(node, self.repr))
+	end
+
+	if body_node then
+		content.body =
+			vim.trim(vim.treesitter.get_node_text(body_node, self.repr))
 	end
 
 	return content
