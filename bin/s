@@ -13,6 +13,8 @@ switch_to_window() {
 
 ssh_session_name="ssh"
 
+tmux has-session -t $ssh_session_name 2>/dev/null || tmux new-session -d -s $ssh_session_name
+
 windows=`tmux list-windows -t $ssh_session_name -F "#{window_index} #{window_name}"`
 
 selected=`echo -e "$windows" | fzf-tmux --header="Switch to SSH session" --header-first --info=inline --no-sort -w 60% -h 50%`
