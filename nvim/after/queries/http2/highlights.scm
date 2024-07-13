@@ -2,6 +2,7 @@
 (url) @text.uri
 (variable_declaration) @attribute
 (variable_declaration name: (identifier) @var (#lua-match? @var "request.title")) @text.title
+(variable_declaration name: (identifier) @var (#lua-match? @var "request.flags")) @comment
 (variable_ref) @attribute
 (header name: (_) @property)
 
@@ -12,6 +13,7 @@
 (string) @string
 (number) @number
 (boolean) @boolean
+(null) @constant.builtin
 
 (status_code) @property
 (reason_phrase) @keyword

@@ -78,7 +78,7 @@ local function show_response(response)
 	vim.keymap.set("n", "q", vim.cmd.close, { buffer = true })
 end
 
-local function show_stderr(stderr)
+local function show_raw_output(stderr)
 	local buf = vim.api.nvim_create_buf(true, true)
 	vim.api.nvim_set_option_value("filetype", "text", { buf = buf })
 	vim.api.nvim_buf_set_lines(buf, 0, -1, false, stderr)
@@ -94,7 +94,7 @@ M.show = function(response, output)
 	if response then
 		show_response(response)
 	else
-		show_stderr(output)
+		show_raw_output(output)
 	end
 end
 

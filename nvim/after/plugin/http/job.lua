@@ -2,6 +2,7 @@ local Job = require("plenary.job")
 local display = require("after.plugin.http.display")
 local utils = require("after.plugin.http.utils")
 local url = require("after.plugin.http.requests").url
+local log = require("after.plugin.http.log")
 
 local M = {}
 
@@ -103,6 +104,28 @@ local function minify_json(json_body)
 	return vim.json.encode(vim.json.decode(json_body))
 end
 
+local function get_additional_args(request)
+	if request.local_context["request.flags"] ~= nil then
+		return vim.split(request.local_context["request.flags"], " ")
+	end
+
+	return {}
+end
+
+local function get_raw_curl_command(args)
+	local escaped_args = vim.iter(args):map(function(arg)
+		local is_flag = vim.startswith(arg, "-")
+
+		if not is_flag then
+			return vim.fn.shellescape(arg)
+		end
+
+		return arg
+	end)
+
+	return "curl " .. table.concat(escaped_args:totable(), " ")
+end
+
 ---Create a plenary job to run request
 ---@param request http.Request
 ---@param content http.RequestContent
@@ -142,11 +165,20 @@ M.request_to_job = function(request, content, on_exit)
 
 	table.insert(args, url(request))
 
+	local additional_args = get_additional_args(request)
+	vim.list_extend(args, additional_args)
+
+	log.fmt_info("Running HTTP request %s", get_raw_curl_command(args))
+
 	return Job:new({
 		command = "curl",
 		args = args,
 		on_exit = on_exit,
 	})
+end
+
+local function error_handler(err)
+	log.fmt_error("Error parsing response %s\n" .. debug.traceback(), err)
 end
 
 M.on_exit_func = function(request, after_hook)
@@ -159,7 +191,11 @@ M.on_exit_func = function(request, after_hook)
 		local response = nil
 
 		if code == 0 then
-			response = parse_response(job)
+			local status, result = xpcall(parse_response, error_handler, job)
+
+			if status then
+				response = result
+			end
 		end
 
 		if after_hook == nil then
