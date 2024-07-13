@@ -32,7 +32,7 @@ all_entries=`echo -e "$default_session_name\n$tmux_sessions\n$dirs"`
 # Remove tmux sessions duplicates (e.g. default session may be duplicate if a session already exists.)
 all_entries=`echo -e "$all_entries" | awk '!seen[$0]++'`
 
-selected=`echo -e "$all_entries" | fzf-tmux --no-sort -w 60% -h 50%`
+selected=`echo -e "$all_entries" | fzf-tmux --header="Switch to session" --header-first --no-sort -w 60% -h 50%`
 if [ -z "$selected" ]; then
     exit 0
 fi

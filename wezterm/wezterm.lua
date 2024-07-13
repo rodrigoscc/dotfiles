@@ -196,13 +196,13 @@ local config = {
 				act.SendKey({ key = "," }),
 			}),
 		},
-		-- Cht.sh
+		-- SSH session switcher
 		{
-			key = "T",
+			key = "g",
 			mods = "CMD",
 			action = act.Multiple({
 				act.SendKey({ key = "b", mods = "CTRL" }),
-				act.SendKey({ key = "H" }),
+				act.SendKey({ key = "G" }),
 			}),
 		},
 	},
