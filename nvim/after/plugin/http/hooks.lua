@@ -4,7 +4,7 @@ local with = require("plenary.context_manager").with
 local open = require("plenary.context_manager").open
 
 ---@alias http.BeforeHook function(request: http.Request, run_request: function(): nil): nil
----@alias http.AfterHook function(request: http.Request, response: http.Response, buffers: http.ResultBuffers[], on_exit: function(http.Request, http.Response, http.ResultBuffers[]), update_env: function(table), run_request: function(string, table)): nil
+---@alias http.AfterHook function(request: http.Request, response: http.Response, stdout: string): nil
 
 local M = {}
 

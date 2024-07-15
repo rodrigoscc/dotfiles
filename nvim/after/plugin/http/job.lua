@@ -59,11 +59,6 @@ local function split_header_and_body(result)
 	return result, {}
 end
 
----@class http.ResultBuffer
----@field file_type string
----@field content string[]
----@field vertical_split boolean
-
 ---Parse job result and get http response from it
 ---@param job Job
 ---@return http.Response
