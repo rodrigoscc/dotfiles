@@ -26,7 +26,7 @@ end
 function http_source:complete(params, callback)
 	local options = {}
 
-	local source = Source.new(SourceType.BUFFER, 0)
+	local source = Source.new(SourceType.BUFFER, vim.api.nvim_get_current_buf())
 
 	local cursor_line = unpack(vim.api.nvim_win_get_cursor(0))
 

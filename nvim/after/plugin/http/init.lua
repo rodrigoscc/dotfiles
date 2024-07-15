@@ -35,7 +35,8 @@ local subcommand_tbl = {
 		impl = function(args, opts)
 			local cursor_line = unpack(vim.api.nvim_win_get_cursor(0))
 
-			local source = Source.new(SourceType.BUFFER, 0)
+			local source =
+				Source.new(SourceType.BUFFER, vim.api.nvim_get_current_buf())
 			local closest_request = source:get_closest_request(cursor_line)
 
 			if closest_request then
@@ -53,7 +54,8 @@ local subcommand_tbl = {
 
 			local cursor_line = unpack(vim.api.nvim_win_get_cursor(0))
 
-			local source = Source.new(SourceType.BUFFER, 0)
+			local source =
+				Source.new(SourceType.BUFFER, vim.api.nvim_get_current_buf())
 			local closest_request = source:get_closest_request(cursor_line)
 
 			if closest_request then
