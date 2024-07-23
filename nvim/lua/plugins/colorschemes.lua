@@ -82,27 +82,6 @@ return {
 					fg = "muted",
 					blend = 15,
 				},
-				RainbowDelimiterRed = {
-					fg = "love",
-				},
-				RainbowDelimiterYellow = {
-					fg = "gold",
-				},
-				RainbowDelimiterBlue = {
-					fg = "pine",
-				},
-				RainbowDelimiterOrange = {
-					fg = "iris",
-				},
-				RainbowDelimiterGreen = {
-					fg = "foam",
-				},
-				RainbowDelimiterViolet = {
-					fg = "rose",
-				},
-				RainbowDelimitercyan = {
-					fg = "pine",
-				},
 				CodeBlock = {
 					bg = "surface",
 				},
