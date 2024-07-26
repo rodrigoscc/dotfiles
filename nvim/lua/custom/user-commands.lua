@@ -25,7 +25,7 @@ end, {})
 
 local function buf_errors_to_qflist()
 	local diagnostics =
-		vim.diagnostic.get(0, { severity = { vim.diagnostic.severity.ERROR } })
+		vim.diagnostic.get(0, { severity = vim.diagnostic.severity.ERROR })
 	local items = vim.diagnostic.toqflist(diagnostics)
 	vim.fn.setqflist(items)
 	vim.cmd.copen()
