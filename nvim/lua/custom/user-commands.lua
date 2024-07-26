@@ -23,12 +23,31 @@ vim.api.nvim_create_user_command("InitCommitlint", function()
 	}, { text = true }, npm_on_exit)
 end, {})
 
-local function buf_errors_to_qflist()
-	local diagnostics =
-		vim.diagnostic.get(0, { severity = vim.diagnostic.severity.ERROR })
+local function buf_errors_to_qflist(opts)
+	local is_visual_selection = opts.range == 2
+
+	local diagnostics = {}
+
+	if is_visual_selection then
+		for lnum = opts.line1, opts.line2 do
+			local line_diagnostics = vim.diagnostic.get(
+				0,
+				{ severity = vim.diagnostic.severity.ERROR, lnum = lnum - 1 }
+			)
+			diagnostics = vim.list_extend(diagnostics, line_diagnostics)
+		end
+	else
+		diagnostics =
+			vim.diagnostic.get(0, { severity = vim.diagnostic.severity.ERROR })
+	end
+
 	local items = vim.diagnostic.toqflist(diagnostics)
 	vim.fn.setqflist(items)
 	vim.cmd.copen()
 end
 
-vim.api.nvim_create_user_command("BufErrors", buf_errors_to_qflist, {})
+vim.api.nvim_create_user_command(
+	"BufErrors",
+	buf_errors_to_qflist,
+	{ range = true }
+)
