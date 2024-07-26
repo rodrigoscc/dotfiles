@@ -22,3 +22,13 @@ vim.api.nvim_create_user_command("InitCommitlint", function()
 		"@commitlint/config-conventional",
 	}, { text = true }, npm_on_exit)
 end, {})
+
+local function buf_errors_to_qflist()
+	local diagnostics =
+		vim.diagnostic.get(0, { severity = { vim.diagnostic.severity.ERROR } })
+	local items = vim.diagnostic.toqflist(diagnostics)
+	vim.fn.setqflist(items)
+	vim.cmd.copen()
+end
+
+vim.api.nvim_create_user_command("BufErrors", buf_errors_to_qflist, {})
