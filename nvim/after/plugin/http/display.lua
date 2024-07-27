@@ -1,4 +1,5 @@
 local utils = require("after.plugin.http.utils")
+local request_id = require("after.plugin.http.requests").id
 
 local M = {}
 
@@ -44,9 +45,22 @@ local function body_to_lines(response, file_type)
 	return vim.split(response.body, "\n")
 end
 
+local function sanitize_time_total(time_total)
+	return math.floor(time_total * 100) / 100 -- keep two decimal places
+end
+
 ---Display http response in buffers
+---@param request http.Request
 ---@param response http.Response
-local function show_response(response)
+local function show_response(request, response)
+	local winbar = request_id(request)
+	if response.total_time then
+		winbar = winbar
+			.. " (took "
+			.. sanitize_time_total(response.total_time)
+			.. "s)"
+	end
+
 	local header_lines =
 		headers_to_lines(response.status_line, response.headers)
 
@@ -62,6 +76,8 @@ local function show_response(response)
 
 	vim.keymap.set("n", "q", vim.cmd.close, { buffer = true })
 
+	vim.opt_local.winbar = winbar .. " (1/2)"
+
 	local body_file_type = utils.get_body_file_type(response.headers)
 	local body_lines = body_to_lines(response, body_file_type)
 
@@ -76,9 +92,11 @@ local function show_response(response)
 	vim.cmd([[silent exe "normal gq%"]])
 
 	vim.keymap.set("n", "q", vim.cmd.close, { buffer = true })
+
+	vim.opt_local.winbar = winbar .. " (2/2)"
 end
 
-local function show_raw_output(stderr)
+local function show_raw_output(request, stderr)
 	local buf = vim.api.nvim_create_buf(true, true)
 	vim.api.nvim_set_option_value("filetype", "text", { buf = buf })
 	vim.api.nvim_buf_set_lines(buf, 0, -1, false, stderr)
@@ -90,11 +108,11 @@ local function show_raw_output(stderr)
 	vim.keymap.set("n", "q", vim.cmd.close, { buffer = true })
 end
 
-M.show = function(response, output)
+M.show = function(request, response, output)
 	if response then
-		show_response(response)
+		show_response(request, response)
 	else
-		show_raw_output(output)
+		show_raw_output(request, output)
 	end
 end
 

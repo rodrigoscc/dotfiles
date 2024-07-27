@@ -17,6 +17,7 @@
 ---@field status_line string
 ---@field headers table
 ---@field body table
+---@field total_time number?
 
 local M = {}
 

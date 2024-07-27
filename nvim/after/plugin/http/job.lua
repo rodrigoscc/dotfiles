@@ -38,8 +38,10 @@ local function parse_status_code(status_code_line)
 end
 
 local function split_header_and_body(result)
-	local last_line = result[#result]
+	local last_line = result[#result] -- last line is the header size because of the --write-out option
 	local header_size = tonumber(last_line)
+
+	local total_time = result[#result - 1] -- total size is the line before the header size
 
 	for index, line in ipairs(result) do
 		header_size = header_size - #line - 2 -- new line characters \r\n
@@ -49,14 +51,14 @@ local function split_header_and_body(result)
 
 			local headers_lines = vim.list_slice(result, 0, separation_line - 1) -- Exclude empty line
 			local body_lines =
-				vim.list_slice(result, separation_line + 1, #result - 1) -- Exclude header size line and empty line
+				vim.list_slice(result, separation_line + 1, #result - 2) -- Exclude time total, header size line, empty line
 
-			return headers_lines, body_lines
+			return headers_lines, body_lines, total_time
 		end
 	end
 
 	-- All the output is headers
-	return result, {}
+	return vim.list_slice(result, 0, #result - 2), {}, total_time
 end
 
 ---Parse job result and get http response from it
@@ -65,7 +67,7 @@ end
 local function parse_response(job)
 	local result = job:result()
 
-	local headers_lines, body_lines = split_header_and_body(result)
+	local headers_lines, body_lines, total_time = split_header_and_body(result)
 
 	local status_line = parse_status_line(headers_lines)
 	local parsed_headers = parse_http_headers_lines(headers_lines)
@@ -90,6 +92,7 @@ local function parse_response(job)
 		body = parsed_body,
 		headers = parsed_headers,
 		ok = true,
+		total_time = tonumber(total_time),
 	}
 
 	return response
@@ -132,7 +135,7 @@ M.request_to_job = function(request, content, on_exit)
 		"--location",
 		"--no-progress-meter",
 		"--write-out",
-		"\n%{size_header}", -- Used to split header from body when parsing
+		"\n%{time_total}\n%{size_header}",
 	}
 
 	if content.body ~= nil then
@@ -195,7 +198,7 @@ M.on_exit_func = function(request, after_hook)
 
 		if after_hook == nil then
 			vim.schedule(function()
-				display.show(response, stdout)
+				display.show(request, response, stdout)
 			end)
 		else
 			after_hook(request, response, stdout)
