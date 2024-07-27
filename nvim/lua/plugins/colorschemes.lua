@@ -44,6 +44,27 @@ return {
 				Comment = {
 					italic = true,
 				},
+				["@keyword"] = {
+					italic = true,
+				},
+				["@keyword.repeat"] = {
+					italic = true,
+				},
+				["@keyword.conditional"] = {
+					italic = true,
+				},
+				["@keyword.exception"] = {
+					italic = true,
+				},
+				["@keyword.return"] = {
+					italic = true,
+				},
+				["@keyword.import"] = {
+					italic = true,
+				},
+				Keyword = {
+					italic = true,
+				},
 				["@markup.italic"] = {
 					italic = true,
 				},
