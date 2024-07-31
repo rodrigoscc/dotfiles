@@ -58,6 +58,7 @@ return {
 				sh = { "beautysh" },
 				bash = { "beautysh" },
 				zsh = { "beautysh" },
+				["*"] = { "injected" },
 			},
 			formatters = {
 				golines = {
