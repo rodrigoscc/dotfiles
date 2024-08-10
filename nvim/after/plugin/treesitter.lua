@@ -102,9 +102,6 @@ require("nvim-treesitter.configs").setup({
 			node_decremental = "<C-j>",
 		},
 	},
-	autotag = {
-		enable = true,
-	},
 })
 
 local parser_config = require("nvim-treesitter.parsers").get_parser_configs()

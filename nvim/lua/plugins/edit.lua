@@ -154,7 +154,7 @@ return {
 			},
 		},
 	},
-	{ "windwp/nvim-ts-autotag" },
+	{ "windwp/nvim-ts-autotag", opts = {} },
 	{ "Glench/Vim-Jinja2-Syntax" },
 	{
 		"danymat/neogen",
