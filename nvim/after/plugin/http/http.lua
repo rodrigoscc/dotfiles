@@ -123,22 +123,21 @@ end
 function Http:run_with_title(title, override_context)
 	local requests = project.get_requests()
 
-	local request_item = nil
+	local request_with_title = nil
 
 	for _, request in ipairs(requests) do
 		local r_title = request.local_context["request.title"]
 		if r_title == title then
-			request_item = request
+			request_with_title = request
 			break
 		end
 	end
 
-	if request_item == nil then
+	if request_with_title == nil then
 		error("request not found")
 	end
 
-	local _, request = unpack(request_item)
-	self:run(request, override_context)
+	self:run(request_with_title, override_context)
 end
 
 return Http.new()
