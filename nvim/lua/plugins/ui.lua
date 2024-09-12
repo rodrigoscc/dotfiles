@@ -70,7 +70,11 @@ return {
 	},
 	{
 		"brenoprata10/nvim-highlight-colors",
-		opts = { render = "virtual", enable_tailwind = true },
+		opts = {
+			render = "background",
+			virtual_symbol_position = "eol",
+			enable_tailwind = true,
+		},
 	},
 	{
 		"HiPhish/rainbow-delimiters.nvim",
