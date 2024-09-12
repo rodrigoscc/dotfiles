@@ -107,6 +107,11 @@ return {
 				lua = { "selene" },
 				gitcommit = { "commitlint" },
 				NeogitCommitMessage = { "commitlint" },
+				svelte = { "eslint" },
+				typescript = { "eslint" },
+				typescriptreact = { "eslint" },
+				javascript = { "eslint" },
+				javascriptreact = { "eslint" },
 			}
 
 			vim.api.nvim_create_autocmd(
