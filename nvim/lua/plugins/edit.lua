@@ -52,13 +52,12 @@ return {
 				svelte = { "prettier" },
 				css = { "prettier" },
 				html = { "prettier" },
-				go = { "golines" }, -- golines run goimports and gofmt if found.
+				go = { "golines", "injected" }, -- golines run goimports and gofmt if found.
 				json = { "fixjson" },
 				sql = { "sql_formatter" },
 				sh = { "beautysh" },
 				bash = { "beautysh" },
 				zsh = { "beautysh" },
-				["*"] = { "injected" },
 			},
 			formatters = {
 				golines = {
@@ -143,7 +142,6 @@ return {
 			}
 		end,
 	},
-	{ "github/copilot.vim" },
 	{
 		"altermo/ultimate-autopair.nvim",
 		event = { "InsertEnter", "CmdlineEnter" },
@@ -177,4 +175,16 @@ return {
 	{ "benfowler/telescope-luasnip.nvim" },
 	{ "xiyaowong/telescope-emoji.nvim" },
 	{ "b0o/schemastore.nvim" },
+	{
+		"supermaven-inc/supermaven-nvim",
+		config = function()
+			require("supermaven-nvim").setup({
+				keymaps = {
+					accept_suggestion = "<C-f>",
+					clear_suggestion = "<C-]>",
+					accept_word = "<C-b>",
+				},
+			})
+		end,
+	},
 }
