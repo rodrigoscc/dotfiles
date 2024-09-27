@@ -14,15 +14,6 @@ return {
 	{ "tpope/vim-sleuth" },
 	{
 		"max397574/better-escape.nvim",
-		opts = {
-			n = {
-				[" "] = {
-					g = {
-						c = "<cmd>Neogit commit<cr>", -- This is useful to avoid the delay after Neovim implemented the built-in comments in gc operator.
-					},
-				},
-			},
-		},
 	},
 	{
 		"stevearc/oil.nvim",
