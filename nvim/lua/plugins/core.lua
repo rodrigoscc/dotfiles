@@ -14,6 +14,7 @@ return {
 	{ "tpope/vim-sleuth" },
 	{
 		"max397574/better-escape.nvim",
+		opts = {},
 	},
 	{
 		"stevearc/oil.nvim",
