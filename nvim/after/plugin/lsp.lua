@@ -233,7 +233,7 @@ require("cmp").setup.filetype({ "sql" }, {
 require("mason").setup({})
 require("mason-lspconfig").setup({
 	ensure_installed = {
-		"tsserver",
+		"ts_ls",
 		"rust_analyzer",
 		"gopls",
 		"basedpyright",
