@@ -62,6 +62,8 @@ require("nvim-treesitter.configs").setup({
 
 				["aC"] = "@class.outer",
 				["iC"] = "@class.inner",
+
+				["ae"] = "@svelte.element",
 			},
 			-- More convenient than including it most of the time.
 			include_surrounding_whitespace = false,

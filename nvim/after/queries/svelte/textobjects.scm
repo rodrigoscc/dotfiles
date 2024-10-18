@@ -1,0 +1,2 @@
+; extends
+(element) @svelte.element
