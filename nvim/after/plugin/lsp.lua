@@ -39,11 +39,16 @@ cmp.setup({
 		}),
 	}),
 	sources = {
-		{ name = "nvim_lsp" },
-		{ name = "luasnip" },
-		{ name = "buffer", keyword_length = 2 },
-		{ name = "rg", keyword_length = 3, max_item_count = 5 },
-		{ name = "path" },
+		{ name = "nvim_lsp", group_index = 1 },
+		{ name = "buffer", keyword_length = 2, group_index = 1 },
+		{ name = "path", group_index = 1 },
+		{ name = "luasnip", group_index = 1 },
+		{
+			name = "rg",
+			keyword_length = 4,
+			max_item_count = 5,
+			group_index = 2,
+		},
 	},
 	window = {
 		completion = {
