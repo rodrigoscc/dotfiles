@@ -7,7 +7,7 @@ return {
 			"nvim-telescope/telescope-fzf-native.nvim",
 		},
 		opts = {
-			general = {
+			bar = {
 				enable = function(buf, win)
 					return vim.fn.win_gettype(win) == ""
 						and vim.wo[win].winbar == ""
@@ -21,7 +21,6 @@ return {
 			icons = {
 				enable = true,
 				kinds = {
-					use_devicons = false,
 					symbols = {
 						File = "",
 						Folder = "",

@@ -104,4 +104,50 @@ return {
 			vim.g.db_ui_use_nvim_notify = 1
 		end,
 	},
+	{
+		dir = "~/Code/http.nvim",
+		config = function()
+			local http = require("http-nvim")
+			http.setup()
+
+			vim.api.nvim_create_autocmd({ "FileType" }, {
+				pattern = "http",
+				callback = function()
+					vim.keymap.set(
+						"n",
+						"R",
+						"<cmd>Http run_closest<cr>",
+						{ buffer = true }
+					)
+					vim.keymap.set(
+						"n",
+						"K",
+						"<cmd>Http inspect<cr>",
+						{ buffer = true }
+					)
+				end,
+			})
+
+			vim.keymap.set("n", "gh", "<cmd>Http jump<cr>")
+			vim.keymap.set("n", "gH", "<cmd>Http run<cr>")
+			vim.keymap.set("n", "gL", "<cmd>Http run_last<cr>")
+
+			vim.keymap.set("n", "<leader>ee", "<cmd>Http select_env<cr>")
+			vim.keymap.set("n", "<leader>ne", "<cmd>Http create_env<cr>")
+			vim.keymap.set("n", "<leader>oe", "<cmd>Http open_env<cr>")
+
+			vim.keymap.set("n", "<leader>oh", "<cmd>Http open_hooks<cr>")
+
+			local cmp = require("cmp")
+			cmp.setup.filetype("http", {
+				sources = cmp.config.sources({
+					{ name = "http" },
+				}, {
+					{ name = "buffer" },
+					{ name = "path" },
+					{ name = "luasnip", keyword_length = 2 },
+				}),
+			})
+		end,
+	},
 }

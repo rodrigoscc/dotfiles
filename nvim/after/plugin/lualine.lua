@@ -174,15 +174,6 @@ ins_left({
 	end,
 })
 
-local function http_project_env()
-	local env = require("after.plugin.http.project").get_active_env()
-	if env == nil then
-		return ""
-	end
-
-	return "[ " .. env .. "]"
-end
-
 local function table_mode()
 	if
 		vim.b["table_mode_active"] ~= nil
@@ -201,7 +192,7 @@ ins_right({
 })
 
 ins_right({
-	http_project_env,
+	require("http-nvim").http_env_lualine_component,
 	color = "@attribute",
 })
 

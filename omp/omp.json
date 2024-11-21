@@ -1,7 +1,25 @@
 {
   "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
-  "version": 2,
-  "final_space": true,
+  "palette": {
+    "black": "#262B44",
+    "blue": "#4B95E9",
+    "green": "#59C9A5",
+    "grey": "#8a8a8a",
+    "orange": "#F07623",
+    "red": "#D81E5B",
+    "white": "#E0DEF4",
+    "yellow": "#F3AE35"
+  },
+  "secondary_prompt": {
+    "template": "❯❯ ",
+    "foreground": "magenta",
+    "background": "transparent"
+  },
+  "transient_prompt": {
+    "template": "❯ ",
+    "foreground": "magenta",
+    "background": "transparent"
+  },
   "console_title_template": "{{ .Shell }} in {{ .Folder }}",
   "blocks": [
     {
@@ -9,55 +27,59 @@
       "alignment": "left",
       "segments": [
         {
-          "type": "path",
-          "style": "plain",
+          "properties": {
+            "cache_duration": "none",
+            "edge_format": "<white>%s</>",
+            "folder_separator_template": "<magenta>/</>",
+            "style": "agnoster_full"
+          },
+          "template": "{{ .Path }}",
           "foreground": "magenta",
           "background": "transparent",
-          "template": "{{ .Path }}",
-          "properties": {
-            "style": "agnoster_full",
-            "folder_separator_template": "<magenta>/</>",
-            "edge_format": "<white>%s</>"
-          }
+          "type": "path",
+          "style": "plain"
         },
         {
+          "properties": {
+            "branch_icon": "",
+            "branch_max_length": 25,
+            "cache_duration": "none",
+            "fetch_status": true,
+            "fetch_upstream_icon": true
+          },
+          "template": " <p:grey>on</> {{ .HEAD }}<p:grey>{{ if .Working.Changed }} {{ .Working.String }}{{ end }}{{ if .Staging.Changed }} | {{ .Staging.String }}{{ end }}</>",
+          "foreground": "magenta",
+          "background": "transparent",
           "type": "git",
           "style": "plain",
-          "foreground": "magenta",
           "foreground_templates": [
             "{{ if or (.Working.Changed) (.Staging.Changed) }}yellow{{ end }}",
             "{{ if and (gt .Ahead 0) (gt .Behind 0) }}red{{ end }}",
             "{{ if gt .Ahead 0 }}green{{ end }}"
-          ],
-          "background": "transparent",
-          "template": " <p:grey>on</> {{ .HEAD }}<p:grey>{{ if .Working.Changed }} {{ .Working.String }}{{ end }}{{ if .Staging.Changed }} | {{ .Staging.String }}{{ end }}</>",
-          "properties": {
-            "branch_max_length": 25,
-            "fetch_status": true,
-            "fetch_upstream_icon": true,
-            "branch_icon": ""
-          }
+          ]
         },
         {
-          "type": "status",
-          "style": "plain",
+          "properties": {
+            "always_enabled": false,
+            "cache_duration": "none"
+          },
+          "template": " \uf00d {{ .String }}",
           "foreground": "red",
           "background": "transparent",
-          "template": "  {{ .String }}",
-          "properties": {
-            "always_enabled": false
-          }
+          "type": "status",
+          "style": "plain"
         },
         {
-          "type": "command",
-          "style": "plain",
+          "properties": {
+            "cache_duration": "none",
+            "command": "git describe --tags --abbrev=0",
+            "shell": "zsh"
+          },
+          "template": " [\uf412 {{ .Output }}]",
           "foreground": "magenta",
           "background": "transparent",
-          "template": " [ {{ .Output }}]",
-          "properties": {
-            "shell": "zsh",
-            "command": "git describe --tags --abbrev=0"
-          }
+          "type": "command",
+          "style": "plain"
         }
       ]
     },
@@ -65,93 +87,91 @@
       "type": "rprompt",
       "segments": [
         {
-          "type": "node",
-          "style": "plain",
+          "properties": {
+            "cache_duration": "none"
+          },
+          "template": " \ue718 {{ .Full }}",
           "foreground": "green",
           "background": "transparent",
-          "template": "  {{ .Full }}"
+          "type": "node",
+          "style": "plain"
         },
         {
-          "type": "go",
-          "style": "plain",
+          "properties": {
+            "cache_duration": "none",
+            "parse_mod_file": true
+          },
+          "template": " \ue626 {{ .Full }}",
           "foreground": "blue",
           "background": "transparent",
-          "template": "  {{ .Full }}",
-          "properties": {
-            "parse_mod_file": true
-          }
+          "type": "go",
+          "style": "plain"
         },
         {
-          "type": "python",
-          "style": "plain",
+          "properties": {
+            "cache_duration": "none"
+          },
+          "template": " \ue235 {{ .Full }}{{ if .Venv }} ({{ .Venv }}){{end}}",
           "foreground": "yellow",
           "background": "transparent",
-          "template": "  {{ .Full }}{{ if .Venv }} ({{ .Venv }}){{end}}"
+          "type": "python",
+          "style": "plain"
         },
         {
+          "properties": {
+            "cache_duration": "none"
+          },
+          "template": " took <red>{{ .FormattedMs }}</>",
           "type": "executiontime",
-          "style": "plain",
-          "template": " took <red>{{ .FormattedMs }}</>"
+          "style": "plain"
         },
         {
-          "type": "time",
-          "style": "plain",
+          "properties": {
+            "cache_duration": "none"
+          },
+          "template": " at <cyan><b>{{ .CurrentDate | date \"15:04:05\" }}</b></>",
           "foreground": "white",
           "background": "transparent",
-          "template": " at <cyan><b>{{ .CurrentDate | date \"15:04:05\" }}</b></>"
+          "type": "time",
+          "style": "plain"
         }
       ]
     },
     {
       "type": "prompt",
       "alignment": "left",
-      "newline": true,
       "segments": [
         {
-          "type": "text",
-          "style": "plain",
+          "properties": {
+            "cache_duration": "none"
+          },
+          "template": "❯",
           "foreground": "magenta",
           "background": "transparent",
-          "template": "❯"
+          "type": "text",
+          "style": "plain"
         }
-      ]
+      ],
+      "newline": true
     }
   ],
   "tooltips": [
     {
-      "type": "aws",
-      "tips": [
-        "aws"
-      ],
-      "style": "plain",
-      "foreground": "white",
-      "background": "p:orange",
-      "leading_diamond": "",
-      "trailing_diamond": "",
-      "template": "  {{ .Profile }}{{ if .Region }}@{{ .Region }}{{ end }} ",
       "properties": {
         "display_default": true
-      }
+      },
+      "leading_diamond": "\ue0b0",
+      "trailing_diamond": "\ue0b4",
+      "template": " \ue7ad {{ .Profile }}{{ if .Region }}@{{ .Region }}{{ end }} ",
+      "foreground": "white",
+      "background": "p:orange",
+      "type": "aws",
+      "style": "plain",
+      "tips": [
+        "aws"
+      ]
     }
   ],
-  "transient_prompt": {
-    "foreground": "magenta",
-    "background": "transparent",
-    "template": "❯ "
-  },
-  "secondary_prompt": {
-    "foreground": "magenta",
-    "background": "transparent",
-    "template": "❯❯ "
-  },
-  "palette": {
-    "black": "#262B44",
-    "blue": "#4B95E9",
-    "green": "#59C9A5",
-    "orange": "#F07623",
-    "red": "#D81E5B",
-    "white": "#E0DEF4",
-    "yellow": "#F3AE35",
-    "grey": "#8a8a8a"
-  }
+  "version": 3,
+  "final_space": true
 }
