@@ -105,7 +105,7 @@ return {
 		end,
 	},
 	{
-		dir = "~/Code/http.nvim",
+		"rstcruzo/http.nvim",
 		config = function()
 			local http = require("http-nvim")
 			http.setup()
