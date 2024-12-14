@@ -36,6 +36,7 @@ return {
 	{
 		"lukas-reineke/indent-blankline.nvim",
 		main = "ibl",
+		event = "VeryLazy",
 		opts = {
 			indent = { char = "│" },
 			scope = { enabled = false },
@@ -69,6 +70,14 @@ return {
 	},
 	{
 		"brenoprata10/nvim-highlight-colors",
+		ft = {
+			"html",
+			"css",
+			"svelte",
+			"javascriptreact",
+			"typescriptreact",
+			"vue",
+		},
 		opts = {
 			render = "background",
 			virtual_symbol_position = "eol",
@@ -77,6 +86,7 @@ return {
 	},
 	{
 		"HiPhish/rainbow-delimiters.nvim",
+		event = "VeryLazy",
 		config = function()
 			vim.g.rainbow_delimiters = {
 				query = {
@@ -98,12 +108,6 @@ return {
 		opts = {},
 	},
 	{ "echasnovski/mini.trailspace", version = "*", opts = {} },
-	{
-		"rcarriga/nvim-notify",
-		opts = {
-			stages = "static",
-		},
-	},
 	{
 		"folke/noice.nvim",
 		event = "VeryLazy",
@@ -160,6 +164,8 @@ return {
 	{
 		"lukas-reineke/headlines.nvim",
 		dependencies = "nvim-treesitter/nvim-treesitter",
+		lazy = true,
+		ft = "markdown",
 		opts = {
 			markdown = {
 				headline_highlights = { "Headline1", "Headline2", "Headline3" },

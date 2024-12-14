@@ -1,6 +1,8 @@
 return {
 	{
 		"kndndrj/nvim-dbee",
+		lazy = true,
+		cmd = { "DBUIToggle", "DBUI" },
 		dependencies = {
 			"MunifTanjim/nui.nvim",
 		},
@@ -35,21 +37,17 @@ return {
 			"L3MON4D3/LuaSnip", -- Required
 
 			"lukas-reineke/cmp-rg",
-
-			{
-				"rstcruzo/cmp-dbee", -- original cmp-dbee does not work
-				dependencies = {
-					{ "kndndrj/nvim-dbee" },
-				},
-				ft = "sql", -- optional but good to have
-				opts = {},
-			},
 		},
 	},
 	{ "williamboman/mason.nvim" },
 	{ "onsails/lspkind.nvim" },
 	{
 		"hedyhli/outline.nvim",
+		lazy = true,
+		keys = {
+			{ "<leader>ty", vim.cmd.Outline, desc = "Toggle Outline" },
+			{ "<leader>fy", vim.cmd.OutlineFocus, desc = "Focus Outline" },
+		},
 		opts = {
 			keymaps = {
 				close = { "q" }, -- Do not want Escape to close the outline.
@@ -67,4 +65,12 @@ return {
 		},
 	},
 	{ "Bilal2453/luvit-meta", lazy = true }, -- `vim.uv` typings
+	{
+		"rstcruzo/cmp-dbee", -- original cmp-dbee does not work
+		dependencies = {
+			{ "kndndrj/nvim-dbee" },
+		},
+		ft = "sql", -- optional but good to have
+		opts = {},
+	},
 }

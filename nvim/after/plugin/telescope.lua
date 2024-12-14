@@ -158,23 +158,16 @@ vim.keymap.set("n", "<leader>fd", function()
 	})
 end, { desc = "[f]ind [d]otfile" })
 
-local function open_file_at_startup(data)
-	local directory = vim.fn.isdirectory(data.file) == 1
-	local is_oil = string.find(data.file, "oil") ~= nil
+local function open_file_at_startup()
+	local cwd = vim.fn.getcwd()
 
-	if not directory and not is_oil then -- We want to open telescope if oil is run.
-		return
-	end
-
-	if string.find(data.file, ".config") then
+	if string.find(cwd, ".config") then
 		builtin.git_files()
 	else
 		builtin.find_files()
 	end
 end
 
-vim.api.nvim_create_autocmd({ "VimEnter" }, {
-	callback = function(data)
-		open_file_at_startup(data)
-	end,
-})
+vim.api.nvim_create_user_command("StartWorking", function()
+	open_file_at_startup()
+end, {})

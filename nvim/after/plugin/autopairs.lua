@@ -1,7 +1,7 @@
 local ts_utils = require("nvim-treesitter.ts_utils")
-local autopairs = require("ultimate-autopair.core")
 
 local function trigger_autopairs()
+	local autopairs = require("ultimate-autopair.core")
 	local autopairs_keys = autopairs.run_run("{")
 	vim.api.nvim_feedkeys(autopairs_keys, "n", false)
 end

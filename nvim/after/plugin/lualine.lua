@@ -192,7 +192,14 @@ ins_right({
 })
 
 ins_right({
-	require("http-nvim").http_env_lualine_component,
+	function()
+		local isHttpLoaded = package.loaded["http-nvim"]
+		if isHttpLoaded then
+			return require("http-nvim").http_env_lualine_component()
+		else
+			return ""
+		end
+	end,
 	color = "@attribute",
 })
 

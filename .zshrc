@@ -58,7 +58,7 @@ zstyle ':completion:*' menu select
 eval "$(zoxide init zsh)"
 
 alias v=nvim
-alias vv="nvim ."
+alias vv="nvim +StartWorking"
 
 alias ls=lsd
 alias ll="lsd --long"

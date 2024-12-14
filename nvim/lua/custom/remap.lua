@@ -1,7 +1,6 @@
 local lazy = require("lazy")
 
 local ts_utils = require("nvim-treesitter.ts_utils")
-local autopairs = require("ultimate-autopair.core")
 
 vim.keymap.set("n", "<leader>L", lazy.show, { desc = "show [l]azy" })
 vim.keymap.set("n", "<leader>M", "<cmd>Mason<cr>", { desc = "show [m]ason" })
@@ -171,6 +170,7 @@ local function my_cr()
 			false
 		)
 	else
+		local autopairs = require("ultimate-autopair.core")
 		vim.api.nvim_feedkeys(autopairs.run_run("\r"), "n", false)
 	end
 end

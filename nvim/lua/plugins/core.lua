@@ -9,7 +9,7 @@ return {
 	},
 	{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
 	{ "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
-	{ "nvim-treesitter/nvim-treesitter-textobjects" },
+	{ "nvim-treesitter/nvim-treesitter-textobjects", event = "VeryLazy" },
 	{ "mbbill/undotree" },
 	{ "tpope/vim-sleuth" },
 	{
@@ -18,9 +18,13 @@ return {
 	},
 	{
 		"stevearc/oil.nvim",
+		lazy = true,
+		keys = {
+			{ "-", "<cmd>Oil<cr>" },
+		},
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 		opts = {
-			default_file_explorer = true,
+			default_file_explorer = false,
 			delete_to_trash = true,
 			use_default_keymaps = false,
 			keymaps = {
@@ -106,6 +110,17 @@ return {
 	},
 	{
 		"rstcruzo/http.nvim",
+		lazy = true,
+		keys = {
+			{ "<leader>ee", "<cmd>Http select_env<cr>" },
+			{ "<leader>ne", "<cmd>Http create_env<cr>" },
+			{ "<leader>oe", "<cmd>Http open_env<cr>" },
+			{ "<leader>oh", "<cmd>Http open_hooks<cr>" },
+			{ "gh", "<cmd>Http jump<cr>" },
+			{ "gH", "<cmd>Http run<cr>" },
+			{ "gL", "<cmd>Http run_last<cr>" },
+		},
+		ft = "http",
 		config = function()
 			local http = require("http-nvim")
 			http.setup()
@@ -127,16 +142,6 @@ return {
 					)
 				end,
 			})
-
-			vim.keymap.set("n", "gh", "<cmd>Http jump<cr>")
-			vim.keymap.set("n", "gH", "<cmd>Http run<cr>")
-			vim.keymap.set("n", "gL", "<cmd>Http run_last<cr>")
-
-			vim.keymap.set("n", "<leader>ee", "<cmd>Http select_env<cr>")
-			vim.keymap.set("n", "<leader>ne", "<cmd>Http create_env<cr>")
-			vim.keymap.set("n", "<leader>oe", "<cmd>Http open_env<cr>")
-
-			vim.keymap.set("n", "<leader>oh", "<cmd>Http open_hooks<cr>")
 
 			local cmp = require("cmp")
 			cmp.setup.filetype("http", {

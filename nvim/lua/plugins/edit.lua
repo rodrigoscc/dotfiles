@@ -23,9 +23,19 @@ return {
 		"Wansmer/treesj",
 		keys = { "<space>J" },
 		dependencies = { "nvim-treesitter/nvim-treesitter" },
-		opts = {
-			use_default_keymaps = false,
-		},
+		config = function()
+			local treesj = require("treesj")
+			treesj.setup({
+				use_default_keymaps = false,
+			})
+
+			vim.keymap.set(
+				"n",
+				"<leader>J",
+				treesj.toggle,
+				{ desc = "trees[J] toggle" }
+			)
+		end,
 	},
 	{
 		"stevearc/conform.nvim",
@@ -159,10 +169,30 @@ return {
 			},
 		},
 	},
-	{ "windwp/nvim-ts-autotag", opts = {} },
+	{
+		"windwp/nvim-ts-autotag",
+		opts = {},
+		lazy = true,
+		ft = {
+			"html",
+			"xml",
+			"javascript",
+			"typescript",
+			"javascriptreact",
+			"typescriptreact",
+			"vue",
+			"svelte",
+		},
+	},
 	{ "Glench/Vim-Jinja2-Syntax" },
 	{
 		"danymat/neogen",
+		lazy = true,
+		keys = {
+			"<leader>id",
+			"<cmd>Neogen<cr>",
+			desc = "[i]nsert [d]ocumentation",
+		},
 		opts = {
 			snippet_engine = "luasnip",
 			languages = {
@@ -179,6 +209,7 @@ return {
 	{ "b0o/schemastore.nvim" },
 	{
 		"supermaven-inc/supermaven-nvim",
+		event = { "InsertEnter" },
 		config = function()
 			require("supermaven-nvim").setup({
 				keymaps = {
