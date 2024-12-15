@@ -53,6 +53,15 @@ return {
 	},
 	{ "Bilal2453/luvit-meta", lazy = true }, -- `vim.uv` typings
 	{
+		"saghen/blink.compat",
+		-- use the latest release, via version = '*', if you also use the latest release for blink.cmp
+		version = "*",
+		-- lazy.nvim will automatically load the plugin when it's required by blink.cmp
+		lazy = true,
+		-- make sure to set opts so that lazy.nvim calls blink.compat's setup
+		opts = {},
+	},
+	{
 		"saghen/blink.cmp",
 		lazy = false, -- lazy loading handled internally
 		-- use a release tag to download pre-built binaries
@@ -143,16 +152,31 @@ return {
 							additional_rg_options = {},
 						},
 					},
+					http = {
+						name = "http", -- IMPORTANT: use the same name as you would for nvim-cmp
+						module = "blink.compat.source",
+					},
 				},
 				completion = {
-					enabled_providers = {
-						"lsp",
-						"path",
-						"luasnip",
-						"buffer",
-						"ripgrep",
-						"lazydev",
-					},
+					enabled_providers = function(ctx)
+						local providers = {
+							"lsp",
+							"path",
+							"luasnip",
+							"buffer",
+							"ripgrep",
+						}
+
+						if vim.bo.filetype == "lua" then
+							table.insert(providers, "lazydev")
+						end
+
+						if vim.bo.filetype == "http" then
+							table.insert(providers, "http")
+						end
+
+						return providers
+					end,
 				},
 			},
 
