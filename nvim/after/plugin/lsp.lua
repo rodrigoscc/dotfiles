@@ -1,6 +1,4 @@
 local lsp = require("lsp-zero")
-local cmp_action = require("lsp-zero").cmp_action()
-local cmp = require("cmp")
 local lspconfig = require("lspconfig")
 
 local mason_ensure_installed = {
@@ -19,76 +17,6 @@ vim.api.nvim_create_user_command("MasonInstallAll", function()
 end, {})
 
 vim.opt.completeopt = { "menu", "menuone", "noselect" }
-cmp.setup({
-	preselect = "item",
-	completion = {
-		completeopt = "menu,menuone,noinsert",
-	},
-	mapping = cmp.mapping.preset.insert({
-		["<CR>"] = nil,
-		["<Tab>"] = nil,
-		["<C-Space>"] = cmp.mapping.complete(),
-		["<C-e>"] = cmp_action.toggle_completion(),
-		["<C-y>"] = cmp.mapping.confirm({
-			behavior = cmp.ConfirmBehavior.Insert,
-			select = true,
-		}),
-		["<C-r>"] = cmp.mapping.confirm({
-			behavior = cmp.ConfirmBehavior.Replace,
-			select = true,
-		}),
-	}),
-	sources = {
-		{ name = "nvim_lsp", group_index = 1 },
-		{ name = "buffer", keyword_length = 2, group_index = 1 },
-		{ name = "path", group_index = 1 },
-		{ name = "luasnip", group_index = 1 },
-		{
-			name = "rg",
-			keyword_length = 4,
-			max_item_count = 5,
-			group_index = 2,
-		},
-	},
-	window = {
-		completion = {
-			winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None",
-			col_offset = -3,
-			side_padding = 0,
-		},
-		documentation = cmp.config.window.bordered(),
-	},
-	formatting = {
-		fields = { "abbr", "kind", "menu" },
-		format = function(entry, vim_item)
-			local kind = require("lspkind").cmp_format({
-				mode = "symbol_text",
-				maxwidth = 50,
-				menu = {
-					buffer = "[Buffer]",
-					path = "[Path]",
-					rg = "[Rg]",
-					nvim_lsp = "[LSP]",
-					luasnip = "[LuaSnip]",
-					nvim_lua = "[Lua]",
-					omni = "[omni]",
-					["vim-dadbod-completion"] = "[dadbod]",
-					["cmp-dbee"] = "[dbee]",
-				},
-			})(entry, vim_item)
-
-			-- Add extra space
-			kind.abbr = "  " .. kind.abbr
-
-			return kind
-		end,
-	},
-	snippet = {
-		expand = function(args)
-			require("luasnip").lsp_expand(args.body)
-		end,
-	},
-})
 
 local telescope = require("telescope.builtin")
 
@@ -214,25 +142,6 @@ vim.diagnostic.config({
 	float = {
 		source = true,
 	},
-})
-
-require("cmp").setup.filetype({ "query" }, {
-	sources = cmp.config.sources({
-		{ name = "omni" },
-		{ name = "buffer" },
-		{ name = "rg", keyword_length = 3, max_item_count = 5 },
-		{ name = "luasnip" },
-	}),
-})
-
-require("cmp").setup.filetype({ "sql" }, {
-	sources = cmp.config.sources({
-		{ name = "vim-dadbod-completion" },
-		{ name = "cmp-dbee" },
-		{ name = "buffer", keyword_length = 2 },
-		{ name = "rg", keyword_length = 3, max_item_count = 5 },
-		{ name = "luasnip" },
-	}),
 })
 
 require("mason").setup({})
