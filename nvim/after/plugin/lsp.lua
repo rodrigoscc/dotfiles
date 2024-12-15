@@ -158,7 +158,11 @@ require("mason-lspconfig").setup({
 	},
 	handlers = {
 		function(server_name)
-			lspconfig[server_name].setup({})
+			local config = {}
+			config.capabilities =
+				require("blink.cmp").get_lsp_capabilities(config.capabilities)
+
+			lspconfig[server_name].setup(config)
 		end,
 		lua_ls = function()
 			local lua_opts = lsp.nvim_lua_ls()
@@ -171,8 +175,8 @@ require("mason-lspconfig").setup({
 				end,
 			})
 		end,
-		tsserver = function()
-			lspconfig.tsserver.setup({
+		ts_ls = function()
+			lspconfig.ts_ls.setup({
 				settings = {
 					javascript = {
 						inlayHints = {
