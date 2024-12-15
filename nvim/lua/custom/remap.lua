@@ -19,6 +19,9 @@ vim.keymap.set("n", "N", "Nzzzv")
 
 vim.keymap.set("n", "<C-s>", "<cmd>silent write<cr>")
 
+-- Default <C-w>t is useless to me, <C-w>T is more useful
+vim.keymap.set("n", "<C-w>t", "<C-w>T")
+
 vim.keymap.set("n", "<leader>tw", function()
 	vim.wo.wrap = not vim.wo.wrap
 end, { desc = "[t]oggle [w]rap" })
