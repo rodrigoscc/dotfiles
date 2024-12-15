@@ -26,6 +26,7 @@ vim.api.nvim_create_autocmd("FileType", {
 	pattern = { "NeogitCommitMessage", "gitcommit", "gitrebase" },
 	group = neogitGroup,
 	callback = function()
+		vim.cmd.startinsert()
 		vim.keymap.set("n", "<C-s>", function()
 			vim.cmd.write()
 			vim.cmd.quit()
