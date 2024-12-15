@@ -10,6 +10,18 @@ return {
 					vim.cmd("Git add %")
 				end,
 			},
+			{
+				"<leader>gc",
+				function()
+					vim.cmd("Git commit")
+				end,
+			},
+			{
+				"<leader>gp",
+				function()
+					vim.cmd("Git! push")
+				end,
+			},
 		},
 	},
 	{
