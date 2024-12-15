@@ -5,7 +5,6 @@ return {
 		cmd = { "Git" },
 		keys = {
 			{
-				"n",
 				"<leader>ga",
 				function()
 					vim.cmd("Git add %")
