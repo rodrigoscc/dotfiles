@@ -48,7 +48,6 @@ lsp.on_attach(function(client, bufnr)
 	vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
 	vim.keymap.set("n", "go", vim.lsp.buf.type_definition, opts)
 	vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
-	vim.keymap.set("n", "gs", vim.lsp.buf.signature_help, opts)
 	vim.keymap.set("n", "gl", vim.diagnostic.open_float, opts)
 	vim.keymap.set("n", "gr", function()
 		telescope.lsp_references({
