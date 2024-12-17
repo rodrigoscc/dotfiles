@@ -79,8 +79,9 @@ return {
 			"vue",
 		},
 		opts = {
-			render = "background",
-			virtual_symbol_position = "eol",
+			render = "virtual",
+			virtual_symbol_position = "eow",
+			virtual_symbol_suffix = "",
 			enable_tailwind = true,
 		},
 	},

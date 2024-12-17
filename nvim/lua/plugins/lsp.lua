@@ -102,7 +102,7 @@ return {
 				-- Sets the fallback highlight groups to nvim-cmp's highlight groups
 				-- Useful for when your theme doesn't support blink.cmp
 				-- will be removed in a future release
-				use_nvim_cmp_as_default = false,
+				use_nvim_cmp_as_default = true,
 				-- Set to 'mono' for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
 				-- Adjusts spacing to ensure icons are aligned
 				nerd_font_variant = "mono",
@@ -115,6 +115,7 @@ return {
 					lazydev = {
 						name = "LazyDev",
 						module = "lazydev.integrations.blink",
+						score_offset = 100, -- show at a higher priority than lsp
 					},
 					-- 👇🏻👇🏻 add the ripgrep provider config below
 					ripgrep = {
@@ -132,6 +133,18 @@ return {
 					},
 					http = {
 						name = "http", -- IMPORTANT: use the same name as you would for nvim-cmp
+						module = "blink.compat.source",
+					},
+					obsidian = {
+						name = "obsidian",
+						module = "blink.compat.source",
+					},
+					obsidian_new = {
+						name = "obsidian_new",
+						module = "blink.compat.source",
+					},
+					obsidian_tags = {
+						name = "obsidian_tags",
 						module = "blink.compat.source",
 					},
 				},
@@ -153,12 +166,24 @@ return {
 							table.insert(providers, "http")
 						end
 
+						if vim.bo.filetype == "markdown" then
+							table.insert(providers, "obsidian")
+							table.insert(providers, "obsidian_new")
+							table.insert(providers, "obsidian_tags")
+						end
+
 						return providers
 					end,
 				},
 			},
 
 			completion = {
+				accept = {
+					-- experimental auto-brackets support
+					auto_brackets = {
+						enabled = true,
+					},
+				},
 				documentation = {
 					auto_show = true,
 					auto_show_delay_ms = 200,
