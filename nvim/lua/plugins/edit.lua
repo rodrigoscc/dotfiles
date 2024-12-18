@@ -150,7 +150,7 @@ return {
 				"--select",
 				"ALL",
 				"--extend-ignore",
-				"COM812,COM819,ANN201,D101,D102,D103,D107,D100,RET505,RET506,RET507,RET508,ERA001",
+				"COM812,COM819,ANN201,D101,D102,D103,D107,D100,RET505,RET506,RET507,RET508,ERA001,UP006,FA100",
 				"--no-fix",
 				"--output-format",
 				"json",
