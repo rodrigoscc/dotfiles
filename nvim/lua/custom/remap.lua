@@ -1,7 +1,5 @@
 local lazy = require("lazy")
 
-local ts_utils = require("nvim-treesitter.ts_utils")
-
 vim.keymap.set("n", "<leader>L", lazy.show, { desc = "show [l]azy" })
 vim.keymap.set("n", "<leader>M", "<cmd>Mason<cr>", { desc = "show [m]ason" })
 
@@ -138,135 +136,6 @@ vim.keymap.set(
 )
 
 vim.keymap.set("n", "<bs>", "<C-^>", { desc = "switch to last buffer" })
-
---- Custom behaviour for a carriage return.
--- Splits a string in two lines in a fancy way.
-local function my_cr()
-	local bufnr = vim.api.nvim_get_current_buf()
-
-	local cursor_node = ts_utils.get_node_at_cursor()
-	if cursor_node == nil then
-		return
-	end
-
-	local node_type = cursor_node:type()
-
-	if node_type == "string_content" then
-		cursor_node = cursor_node:parent()
-		node_type = cursor_node:type()
-	end
-
-	local node_text = vim.treesitter.get_node_text(cursor_node, bufnr)
-	local quote = string.sub(node_text, -1)
-	local last_three_chars = string.sub(node_text, -3)
-
-	-- Ignore triple quote strings since they already support new lines.
-	if
-		node_type == "string"
-		and last_three_chars ~= '"""'
-		and last_three_chars ~= "'''"
-	then
-		local input = quote .. "<CR>" .. quote
-		vim.api.nvim_feedkeys(
-			vim.api.nvim_replace_termcodes(input, true, false, true),
-			"n",
-			false
-		)
-	else
-		local autopairs = require("ultimate-autopair.core")
-		vim.api.nvim_feedkeys(autopairs.run_run("\r"), "n", false)
-	end
-end
-
-local function find_result_node(node)
-	local parent = node:parent()
-
-	while parent ~= nil do
-		local parent_result_nodes = parent:field("result")
-		if
-			next(parent_result_nodes) ~= nil
-			and parent_result_nodes[1]:equal(node)
-		then
-			return parent_result_nodes[1]
-		end
-
-		node = parent
-		parent = node:parent()
-	end
-
-	return nil
-end
-
-local function get_left_node()
-	local current_win = vim.api.nvim_get_current_win()
-	local row, col = unpack(vim.api.nvim_win_get_cursor(current_win))
-
-	local bufnr = vim.api.nvim_get_current_buf()
-	return vim.treesitter.get_node({ bufnr = bufnr, pos = { row - 1, col - 1 } })
-end
-
-local function my_comma()
-	local current_win = vim.api.nvim_get_current_win()
-	local _, original_cursor_column =
-		unpack(vim.api.nvim_win_get_cursor(current_win))
-
-	local expression = ","
-
-	local cursor_node = ts_utils.get_node_at_cursor()
-	if cursor_node == nil then
-		return expression
-	end
-
-	local result_node = find_result_node(cursor_node)
-	if result_node == nil then
-		-- Try node to the left since cursor might be right after the result
-		-- node to insert a comma.
-		local previous_node = get_left_node()
-		result_node = find_result_node(previous_node)
-	end
-
-	if result_node ~= nil then
-		local bufnr = vim.api.nvim_get_current_buf()
-		local result_node_text =
-			vim.treesitter.get_node_text(result_node, bufnr)
-
-		local need_parentheses = result_node_text:sub(1, 1) ~= "("
-
-		if need_parentheses then
-			local _, start_column, _ = result_node:start()
-			local _, end_column, _ = result_node:end_()
-
-			-- TODO: This is not repeatable with dot command.
-			expression = expression
-				.. string.rep(
-					"<Left>",
-					original_cursor_column - start_column + 1
-				)
-				.. "("
-				.. string.rep("<Right>", end_column - start_column + 1)
-				.. ")"
-				.. string.rep("<Left>", end_column - original_cursor_column + 1)
-		end
-	end
-
-	return expression
-end
-
-vim.api.nvim_create_autocmd("FileType", {
-	pattern = "python",
-	callback = function()
-		vim.keymap.set("i", "<c-m>", function()
-			my_cr()
-		end, { buffer = true })
-	end,
-})
-
-vim.api.nvim_create_autocmd("FileType", {
-	pattern = "go",
-	callback = function()
-		vim.keymap.set("i", ",", my_comma, { buffer = true, expr = true })
-	end,
-})
 
 vim.keymap.set("n", "<leader>tc", function()
 	vim.cmd.IBLToggle()
@@ -427,3 +296,5 @@ vim.keymap.set(
 	"<cmd>normal! <C-w>v<C-]>zt<cr>",
 	{ desc = "go to tag in vertical split" }
 )
+
+return { counter = counter }
