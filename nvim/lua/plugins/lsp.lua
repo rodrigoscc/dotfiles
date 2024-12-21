@@ -111,13 +111,43 @@ return {
 			-- default list of enabled providers defined so that you can extend it
 			-- elsewhere in your config, without redefining it, via `opts_extend`
 			sources = {
+				default = {
+					"lsp",
+					"path",
+					"luasnip",
+					"buffer",
+					"ripgrep",
+				},
+				per_filetype = {
+					lua = {
+						"lazydev",
+						"lsp",
+						"path",
+						"luasnip",
+						"buffer",
+						"ripgrep",
+					},
+					http = {
+						"http",
+						"luasnip",
+						"buffer",
+						"ripgrep",
+					},
+					markdown = {
+						"luasnip",
+						"buffer",
+						"ripgrep",
+						"obsidian",
+						"obsidian_new",
+						"obsidian_tags",
+					},
+				},
 				providers = {
 					lazydev = {
 						name = "LazyDev",
 						module = "lazydev.integrations.blink",
 						score_offset = 100, -- show at a higher priority than lsp
 					},
-					-- 👇🏻👇🏻 add the ripgrep provider config below
 					ripgrep = {
 						module = "blink-ripgrep",
 						name = "Ripgrep",
@@ -148,35 +178,7 @@ return {
 						module = "blink.compat.source",
 					},
 				},
-				completion = {
-					enabled_providers = function(ctx)
-						local providers = {
-							"lsp",
-							"path",
-							"luasnip",
-							"buffer",
-							"ripgrep",
-						}
-
-						if vim.bo.filetype == "lua" then
-							table.insert(providers, "lazydev")
-						end
-
-						if vim.bo.filetype == "http" then
-							table.insert(providers, "http")
-						end
-
-						if vim.bo.filetype == "markdown" then
-							table.insert(providers, "obsidian")
-							table.insert(providers, "obsidian_new")
-							table.insert(providers, "obsidian_tags")
-						end
-
-						return providers
-					end,
-				},
 			},
-
 			completion = {
 				documentation = {
 					auto_show = true,
@@ -195,12 +197,7 @@ return {
 					},
 				},
 			},
-
-			-- experimental signature help support
-			-- signature = { enabled = true }
 		},
-		-- allows extending the providers array elsewhere in your config
-		-- without having to redefine it
-		opts_extend = { "sources.completion.enabled_providers" },
+		opts_extend = { "sources.default" },
 	},
 }
