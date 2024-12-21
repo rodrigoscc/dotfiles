@@ -1,171 +1,83 @@
-local builtin = require("telescope.builtin")
-local telescope = require("telescope")
+local fzf_lua = require("fzf-lua")
 
-local fzf_opts = {
-	fuzzy = true,
-	override_generic_sorter = true,
-	override_file_sorter = true,
-	case_mode = "smart_case",
-}
+vim.keymap.set("n", "<C-p>", fzf_lua.files)
+vim.keymap.set("n", "<leader>pf", fzf_lua.git_files)
 
-telescope.setup({
-	defaults = vim.tbl_extend(
-		"force",
-		require("telescope.themes").get_ivy(),
-		{}
-	),
-	pickers = {
-		git_status = {
-			attach_mappings = function(_, map)
-				map({ "i", "n" }, "<C-d>", function(_)
-					local action_state = require("telescope.actions.state")
-					local entry = action_state.get_selected_entry()
-					vim.cmd("edit! " .. entry.value)
-					vim.cmd.Ghdiffsplit()
-				end)
-				return true
-			end,
-		},
-		lsp_dynamic_workspace_symbols = {
-			-- This picker is not using fzf automatically for some reason,
-			-- so setting it here (https://github.com/nvim-telescope/telescope.nvim/issues/2104#issuecomment-1223790155).
-			sorter = telescope.extensions.fzf.native_fzf_sorter(fzf_opts),
-		},
-	},
-})
-
-telescope.load_extension("luasnip")
-telescope.load_extension("fzf")
-telescope.load_extension("harpoon")
-telescope.load_extension("emoji")
-
-vim.keymap.set("n", "<C-p>", function()
-	local cwd = vim.loop.cwd()
-	if cwd and string.find(cwd, ".config") then
-		builtin.git_files()
-	else
-		builtin.find_files()
-	end
-end, {})
-vim.keymap.set("n", "<leader>pf", function()
-	builtin.git_files()
-end, {})
-vim.keymap.set("n", "<C-f>", builtin.current_buffer_fuzzy_find)
-
-vim.keymap.set("n", "<leader>/", function()
-	builtin.live_grep({
-		file_ignore_patterns = { ".git", "node_modules", "raycast" },
-	})
-end)
-
-vim.keymap.set("n", "<leader>*", function()
-	builtin.grep_string({
-		shorten_path = true,
-		only_sort_text = true,
-		file_ignore_patterns = { ".git", "node_modules", "raycast" },
-		word_match = "-w",
-	})
-end)
+vim.keymap.set("n", "<C-f>", fzf_lua.grep_curbuf)
+vim.keymap.set("n", "<leader>/", fzf_lua.live_grep)
+vim.keymap.set("n", "<leader>*", fzf_lua.grep_cword)
+vim.keymap.set("x", "<leader>*", fzf_lua.grep_visual)
 
 vim.keymap.set(
 	"n",
 	"<leader>ss",
-	builtin.spell_suggest,
+	fzf_lua.spell_suggest,
 	{ desc = "[s]pell [s]uggest" }
 )
 
-vim.keymap.set("n", "<leader>ff", function()
-	builtin.find_files({ no_ignore = true, hidden = true })
-end, { desc = "[f]ind all [f]iles" })
-
-vim.keymap.set("n", "<leader>ht", builtin.help_tags, { desc = "[h]elp [t]ags" })
+vim.keymap.set("n", "<leader>ht", fzf_lua.help_tags, { desc = "[h]elp [t]ags" })
 vim.keymap.set(
 	"n",
 	"<leader>hk",
-	builtin.keymaps,
+	fzf_lua.keymaps,
 	{ desc = "[h]elp [k]eymaps" }
 )
 
-vim.keymap.set("n", "<leader>cc", builtin.commands, { desc = "[c]ommands" })
+vim.keymap.set("n", "<leader>cc", fzf_lua.commands, { desc = "[c]ommands" })
 
-vim.keymap.set("n", "<leader>rr", builtin.resume, { desc = "[r]esume" })
+vim.keymap.set("n", "<leader>rr", fzf_lua.resume, { desc = "[r]esume" })
 
 vim.keymap.set(
 	"n",
 	"<leader>gb",
-	builtin.git_branches,
+	fzf_lua.git_branches,
 	{ desc = "[g]it [b]ranches" }
 )
 vim.keymap.set(
 	"n",
 	"<leader>gl",
-	builtin.git_commits,
+	fzf_lua.git_commits,
 	{ desc = "[g]it [l]ogs" }
 )
 vim.keymap.set(
 	"n",
 	"<leader>gL",
-	builtin.git_bcommits,
+	fzf_lua.git_bcommits,
 	{ desc = "[g]it buffer [l]ogs" }
 )
-vim.keymap.set("n", "<leader>gg", builtin.git_status, { desc = "[g]it status" })
+vim.keymap.set("n", "<leader>gg", fzf_lua.git_status, { desc = "[g]it status" })
 
 vim.keymap.set(
 	"n",
 	"<leader>ir",
-	builtin.registers,
+	fzf_lua.registers,
 	{ desc = "[i]nsert [r]egisters" }
 )
 
 vim.keymap.set(
 	"n",
 	"<leader>T",
-	builtin.builtin,
+	fzf_lua.builtin,
 	{ desc = "[T]elescope builtins" }
 )
 
-vim.keymap.set("n", "<leader>bb", function()
-	builtin.buffers({
-		ignore_current_buffer = true,
-		sort_lastused = true,
-	})
-end, { desc = "buffers" })
-
-vim.keymap.set(
-	"n",
-	"<leader>is",
-	"<cmd>Telescope luasnip<cr>",
-	{ desc = "[i]nsert [s]nippet" }
-)
+vim.keymap.set("n", "<leader>bb", fzf_lua.buffers, { desc = "[b]uffers" })
 
 vim.keymap.set(
 	"n",
 	"<leader>D",
-	"<cmd>Telescope diagnostics<cr>",
+	fzf_lua.diagnostics_workspace,
 	{ desc = "[D]iagnostics" }
 )
 
-vim.keymap.set(
-	"n",
-	"<leader>ie",
-	"<cmd>Telescope emoji<cr>",
-	{ desc = "[i]nsert [e]moji" }
-)
-
 vim.keymap.set("n", "<leader>fd", function()
-	builtin.find_files({
+	fzf_lua.files({
 		cwd = "~/.config/",
 	})
 end, { desc = "[f]ind [d]otfile" })
 
 local function open_file_at_startup()
-	local cwd = vim.fn.getcwd()
-
-	if string.find(cwd, ".config") then
-		builtin.git_files()
-	else
-		builtin.find_files()
-	end
+	fzf_lua.files()
 end
 
 vim.api.nvim_create_user_command("StartWorking", function()

@@ -1,13 +1,4 @@
 return {
-	{
-		"nvim-telescope/telescope.nvim",
-		dependencies = { "nvim-lua/plenary.nvim" },
-	},
-	{
-		"nvim-telescope/telescope-fzf-native.nvim",
-		build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
-	},
-	{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
 	{ "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
 	{ "nvim-treesitter/nvim-treesitter-textobjects", event = "VeryLazy" },
 	{ "mbbill/undotree" },
@@ -153,6 +144,31 @@ return {
 			-- 		{ name = "luasnip", keyword_length = 2 },
 			-- 	}),
 			-- })
+		end,
+	},
+	{
+		"ibhagwan/fzf-lua",
+		dependencies = { "nvim-tree/nvim-web-devicons" },
+		config = function()
+			require("fzf-lua").setup({
+				defaults = {
+					keymap = {
+						fzf = {
+							["ctrl-q"] = "select-all+accept",
+						},
+					},
+				},
+				previewers = {
+					builtin = {
+						extensions = {
+							["png"] = { "chafa" },
+							["svg"] = { "chafa" },
+							["jpg"] = { "chafa" },
+							["gif"] = { "chafa" },
+						},
+					},
+				},
+			})
 		end,
 	},
 }

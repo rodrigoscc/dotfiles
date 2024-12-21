@@ -1,4 +1,4 @@
-local telescope = require("telescope.builtin")
+local fzf_lua = require("fzf-lua")
 
 vim.g.scratch_dir = ".scratch"
 
@@ -63,7 +63,7 @@ local function new_scratch()
 end
 
 local function find_scratch()
-	telescope.find_files({ cwd = vim.g.scratch_dir })
+	fzf_lua.files({ cwd = vim.g.scratch_dir })
 end
 
 vim.api.nvim_create_user_command("NewScratch", new_scratch, {})

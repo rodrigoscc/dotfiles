@@ -18,7 +18,7 @@ end, {})
 
 vim.opt.completeopt = { "menu", "menuone", "noselect" }
 
-local telescope = require("telescope.builtin")
+local fzf_lua = require("fzf-lua")
 
 lsp.on_attach(function(client, bufnr)
 	-- Fix for svelte language server to update after ts or js files are updated
@@ -50,17 +50,13 @@ lsp.on_attach(function(client, bufnr)
 	vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
 	vim.keymap.set("n", "gl", vim.diagnostic.open_float, opts)
 	vim.keymap.set("n", "gr", function()
-		telescope.lsp_references({
-			show_line = false,
-			include_declaration = false,
-		}) -- need to see the full file name
-	end, opts)
-	vim.keymap.set("n", "gy", function()
-		telescope.lsp_dynamic_workspace_symbols({
-			ignore_symbols = "variable",
+		fzf_lua.lsp_references({
+			jump_to_single_result = true,
+			ignore_current_line = true,
 		})
 	end, opts)
-	vim.keymap.set("n", "gY", telescope.lsp_document_symbols, opts)
+	vim.keymap.set("n", "gy", fzf_lua.lsp_live_workspace_symbols, opts)
+	vim.keymap.set("n", "gY", fzf_lua.lsp_document_symbols, opts)
 
 	vim.keymap.set(
 		"n",

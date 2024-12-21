@@ -201,8 +201,6 @@ return {
 			},
 		},
 	},
-	{ "benfowler/telescope-luasnip.nvim" },
-	{ "xiyaowong/telescope-emoji.nvim" },
 	{ "b0o/schemastore.nvim" },
 	{
 		"supermaven-inc/supermaven-nvim",
