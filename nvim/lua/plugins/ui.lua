@@ -71,6 +71,7 @@ return {
 			"typescriptreact",
 			"vue",
 		},
+		event = "InsertEnter",
 		opts = {
 			render = "virtual",
 			virtual_symbol_position = "eow",
