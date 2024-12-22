@@ -158,6 +158,9 @@ return {
 						},
 					},
 				},
+				winopts = {
+					backdrop = 100,
+				},
 				previewers = {
 					builtin = {
 						extensions = {
