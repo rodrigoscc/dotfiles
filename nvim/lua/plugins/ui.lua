@@ -25,10 +25,7 @@ return {
 			},
 		},
 	},
-	{
-		"nvim-lualine/lualine.nvim",
-		dependencies = { "nvim-tree/nvim-web-devicons" },
-	},
+	{ "rebelot/heirline.nvim" },
 	{
 		"lukas-reineke/indent-blankline.nvim",
 		main = "ibl",
