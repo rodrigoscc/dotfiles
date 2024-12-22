@@ -9,6 +9,8 @@ local function break_string()
 	local node_type = cursor_node:type()
 
 	if not string.find(node_type, "string") then
+		local autopairs = require("ultimate-autopair.core")
+		vim.api.nvim_feedkeys(autopairs.run_run("\r"), "n", false)
 		return
 	end
 
