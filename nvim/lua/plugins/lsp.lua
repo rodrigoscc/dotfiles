@@ -94,6 +94,9 @@ return {
 				["<C-p>"] = { "select_prev", "fallback" },
 				["<C-n>"] = { "select_next", "fallback" },
 
+				["<Up>"] = { "select_prev", "fallback" },
+				["<Down>"] = { "select_next", "fallback" },
+
 				["<C-b>"] = {},
 				["<C-f>"] = {},
 			},
