@@ -27,13 +27,9 @@ return {
 	},
 	{ "rebelot/heirline.nvim" },
 	{
-		"lukas-reineke/indent-blankline.nvim",
-		main = "ibl",
-		event = "VeryLazy",
-		opts = {
-			indent = { char = "│" },
-			scope = { enabled = false },
-		},
+		"echasnovski/mini.indentscope",
+		version = "*",
+		opts = { symbol = "│", options = { try_as_border = true } },
 	},
 	{
 		"lukas-reineke/virt-column.nvim",
