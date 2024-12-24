@@ -278,6 +278,62 @@ local MacroRec = {
 	},
 }
 
+local function shorten_path(path)
+	local splits = vim.split(path, "/")
+
+	for i, split in ipairs(splits) do
+		if i ~= #splits then
+			splits[i] = split:sub(1, 1)
+		end
+	end
+
+	return table.concat(splits, "/")
+end
+
+local function prepare_paths(paths)
+	local shortened_paths = {}
+
+	for _, path in ipairs(paths) do
+		local is_this_buffer = path == vim.fn.expand("%")
+		if not is_this_buffer then
+			table.insert(shortened_paths, shorten_path(path))
+		end
+	end
+
+	return shortened_paths
+end
+
+local HarpoonElement = {
+	static = {
+		icons = {
+			"󰲠",
+			"󰲢",
+			"󰲤",
+			"󰲦",
+			"󰲨",
+		},
+	},
+	provider = function(self)
+		local harpoon = require("harpoon")
+		local items = harpoon:list().items
+
+		local files_names = vim.tbl_map(function(item)
+			return item.value
+		end, items)
+
+		files_names = prepare_paths(files_names)
+
+		local text = ""
+
+		for i, name in ipairs(files_names) do
+			text = text .. string.format("%s %s", self.icons[i], name) .. " "
+		end
+
+		return text
+	end,
+	hl = { fg = colors.special2 },
+}
+
 local FileTypeElement = {
 	provider = function()
 		return string.format(" %s ", vim.bo.filetype)
@@ -440,6 +496,7 @@ local heirline_config = {
 	{ MacroRec },
 	{ provider = " %= " },
 	-- { MasonStatusElement },
+	{ HarpoonElement },
 	{ FileTypeElement },
 	{ LSPElement },
 	{ Diagnostics },
