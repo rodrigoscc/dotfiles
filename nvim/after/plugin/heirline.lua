@@ -200,18 +200,18 @@ local FileFlags = {
 	{
 		provider = function()
 			if vim.bo.modified then
-				return " "
+				return "[+] "
 			end
 		end,
-		hl = { fg = colors.green },
+		hl = { fg = colors.special },
 	},
 	{
 		provider = function()
 			if not vim.bo.modifiable or vim.bo.readonly then
-				return " "
+				return "[-] "
 			end
 		end,
-		hl = { fg = colors.orange },
+		hl = { fg = colors.special },
 	},
 }
 
@@ -234,8 +234,8 @@ FileBlock = utils.insert(
 	FileBlock,
 	FileIcon,
 	utils.insert(FileNameModifer, FileName), -- a new table where FileName is a child of FileNameModifier
-	FileSize,
 	unpack(FileFlags), -- A small optimisation, since their parent does nothing
+	FileSize,
 	FilePosition
 )
 
