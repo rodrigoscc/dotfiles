@@ -229,6 +229,7 @@ require("mason-lspconfig").setup({
 			})
 		end,
 		ruff = lsp.noop,
+		buf_ls = lsp.noop,
 		jsonls = function()
 			lspconfig.jsonls.setup({
 				-- lazy-load schemastore when needed

@@ -72,6 +72,7 @@ return {
 				sh = { "beautysh" },
 				bash = { "beautysh" },
 				zsh = { "beautysh" },
+				proto = { "buf" },
 			},
 			formatters = {
 				golines = {
@@ -127,6 +128,7 @@ return {
 				typescriptreact = { "eslint" },
 				javascript = { "eslint" },
 				javascriptreact = { "eslint" },
+				proto = { "buf_lint" },
 			}
 
 			vim.api.nvim_create_autocmd(
