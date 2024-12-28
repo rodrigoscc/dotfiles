@@ -134,16 +134,16 @@ return {
 				end,
 			})
 
-			-- local cmp = require("cmp")
-			-- cmp.setup.filetype("http", {
-			-- 	sources = cmp.config.sources({
-			-- 		{ name = "http" },
-			-- 	}, {
-			-- 		{ name = "buffer" },
-			-- 		{ name = "path" },
-			-- 		{ name = "luasnip", keyword_length = 2 },
-			-- 	}),
-			-- })
+			local cmp = require("cmp")
+			cmp.setup.filetype("http", {
+				sources = cmp.config.sources({
+					{ name = "http" },
+				}, {
+					{ name = "buffer" },
+					{ name = "path" },
+					{ name = "luasnip", keyword_length = 2 },
+				}),
+			})
 		end,
 	},
 	{
