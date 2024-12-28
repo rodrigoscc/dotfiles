@@ -139,6 +139,8 @@ vim.diagnostic.config({
 	},
 })
 
+local capabilities = require("blink.cmp").get_lsp_capabilities()
+
 require("mason").setup({})
 require("mason-lspconfig").setup({
 	ensure_installed = {
@@ -151,6 +153,7 @@ require("mason-lspconfig").setup({
 		"jsonls",
 		"yamlls",
 	},
+	automatic_installation = false,
 	handlers = {
 		function(server_name)
 			local config = {}
@@ -168,6 +171,7 @@ require("mason-lspconfig").setup({
 				root_dir = function()
 					return vim.fn.getcwd()
 				end,
+				capabilities = capabilities,
 			})
 		end,
 		ts_ls = function()
@@ -197,6 +201,7 @@ require("mason-lspconfig").setup({
 						},
 					},
 				},
+				capabilities = capabilities,
 			})
 		end,
 		gopls = function()
@@ -226,6 +231,7 @@ require("mason-lspconfig").setup({
 						symbolScope = "workspace",
 					},
 				},
+				capabilities = capabilities,
 			})
 		end,
 		ruff = lsp.noop,
@@ -246,19 +252,17 @@ require("mason-lspconfig").setup({
 						validate = { enable = true },
 					},
 				},
+				capabilities = capabilities,
 			})
 		end,
 		yamlls = function()
 			lspconfig.yamlls.setup({
 				-- Have to add this for yamlls to understand that we support line folding
-				capabilities = {
-					textDocument = {
-						foldingRange = {
-							dynamicRegistration = false,
-							lineFoldingOnly = true,
-						},
-					},
-				},
+				capabilities = capabilities,
+				on_attach = function(client)
+					client.server_capabilities.dynamicRegistration = false
+					client.server_capabilities.lineFoldingOnly = true
+				end,
 				-- lazy-load schemastore when needed
 				on_new_config = function(new_config)
 					new_config.settings.yaml.schemas = vim.tbl_deep_extend(
