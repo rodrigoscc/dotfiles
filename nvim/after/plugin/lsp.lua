@@ -71,6 +71,7 @@ cmp.setup({
 					nvim_lsp = "[LSP]",
 					luasnip = "[LuaSnip]",
 					nvim_lua = "[Lua]",
+					http = "[http]",
 				},
 			})(entry, vim_item)
 			-- Add extra space
