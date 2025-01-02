@@ -1,6 +1,4 @@
 local lsp = require("lsp-zero")
-local cmp_action = require("lsp-zero").cmp_action()
-local cmp = require("cmp")
 local lspconfig = require("lspconfig")
 
 local mason_ensure_installed = {
@@ -19,72 +17,6 @@ vim.api.nvim_create_user_command("MasonInstallAll", function()
 end, {})
 
 vim.opt.completeopt = { "menu", "menuone", "noselect" }
-cmp.setup({
-	preselect = "item",
-	completion = {
-		completeopt = "menu,menuone,noinsert",
-	},
-	mapping = cmp.mapping.preset.insert({
-		["<CR>"] = nil,
-		["<Tab>"] = nil,
-		["<C-Space>"] = cmp.mapping.complete(),
-		["<C-e>"] = cmp_action.toggle_completion(),
-		["<C-y>"] = cmp.mapping.confirm({
-			behavior = cmp.ConfirmBehavior.Insert,
-			select = true,
-		}),
-		["<C-r>"] = cmp.mapping.confirm({
-			behavior = cmp.ConfirmBehavior.Replace,
-			select = true,
-		}),
-	}),
-	sources = {
-		{ name = "nvim_lsp", group_index = 1 },
-		{ name = "buffer", keyword_length = 2, group_index = 1 },
-		{ name = "path", group_index = 1 },
-		{ name = "luasnip", group_index = 1 },
-		{
-			name = "rg",
-			keyword_length = 4,
-			max_item_count = 5,
-			group_index = 2,
-		},
-	},
-	window = {
-		completion = {
-			winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None",
-			col_offset = -3,
-			side_padding = 0,
-		},
-		documentation = cmp.config.window.bordered(),
-	},
-	formatting = {
-		fields = { "abbr", "kind", "menu" },
-		format = function(entry, vim_item)
-			local kind = require("lspkind").cmp_format({
-				mode = "symbol_text",
-				maxwidth = 50,
-				menu = {
-					buffer = "[Buffer]",
-					path = "[Path]",
-					rg = "[Rg]",
-					nvim_lsp = "[LSP]",
-					luasnip = "[LuaSnip]",
-					nvim_lua = "[Lua]",
-					http = "[http]",
-				},
-			})(entry, vim_item)
-			-- Add extra space
-			kind.abbr = "  " .. kind.abbr
-			return kind
-		end,
-	},
-	snippet = {
-		expand = function(args)
-			require("luasnip").lsp_expand(args.body)
-		end,
-	},
-})
 
 local fzf_lua = require("fzf-lua")
 
@@ -207,6 +139,8 @@ vim.diagnostic.config({
 	},
 })
 
+local capabilities = require("blink.cmp").get_lsp_capabilities()
+
 require("mason").setup({})
 require("mason-lspconfig").setup({
 	ensure_installed = {
@@ -221,7 +155,10 @@ require("mason-lspconfig").setup({
 	},
 	handlers = {
 		function(server_name)
-			lspconfig[server_name].setup({})
+			local config = {}
+			config.capabilities =
+				require("blink.cmp").get_lsp_capabilities(config.capabilities)
+			lspconfig[server_name].setup(config)
 		end,
 		lua_ls = function()
 			local lua_opts = lsp.nvim_lua_ls()
@@ -232,6 +169,7 @@ require("mason-lspconfig").setup({
 				root_dir = function()
 					return vim.fn.getcwd()
 				end,
+				capabilities = capabilities,
 			})
 		end,
 		ts_ls = function()
@@ -261,6 +199,7 @@ require("mason-lspconfig").setup({
 						},
 					},
 				},
+				capabilities = capabilities,
 			})
 		end,
 		gopls = function()
@@ -290,6 +229,7 @@ require("mason-lspconfig").setup({
 						symbolScope = "workspace",
 					},
 				},
+				capabilities = capabilities,
 			})
 		end,
 		ruff = lsp.noop,
@@ -310,6 +250,7 @@ require("mason-lspconfig").setup({
 						validate = { enable = true },
 					},
 				},
+				capabilities = capabilities,
 			})
 		end,
 		yamlls = function()
