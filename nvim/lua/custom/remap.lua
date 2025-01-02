@@ -116,12 +116,7 @@ vim.keymap.set("n", "<M-j>", "<cmd>NavigatorDown<cr>")
 vim.keymap.set("n", "<M-h>", "<cmd>NavigatorLeft<cr>")
 vim.keymap.set("n", "<M-l>", "<cmd>NavigatorRight<cr>")
 
-vim.keymap.set("n", "<M-L>", "<cmd>vsplit<cr><c-w>l") -- open split and go to it
-vim.keymap.set("n", "<M-J>", "<cmd>split<cr><c-w>j") -- open split and go to it
-vim.keymap.set("n", "<M-H>", "<cmd>vsplit<cr>") -- open split and don't go to it
-vim.keymap.set("n", "<M-K>", "<cmd>split<cr>") -- open split and don't go to it
-
-vim.keymap.set("n", "<M-q>", "<cmd>close<cr>")
+vim.keymap.set("n", "<C-q>", "<cmd>close<cr>")
 
 vim.keymap.set("n", "<leader>ts", "<cmd>TSJToggle<cr>")
 

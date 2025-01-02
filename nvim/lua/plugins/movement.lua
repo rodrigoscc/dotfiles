@@ -41,39 +41,27 @@ return {
 				end,
 			},
 			{
-				"<M-1>",
+				"<C-1>",
 				function()
 					require("harpoon"):list():select(1)
 				end,
 			},
 			{
-				"<M-2>",
+				"<C-2>",
 				function()
 					require("harpoon"):list():select(2)
 				end,
 			},
 			{
-				"<M-3>",
+				"<C-3>",
 				function()
 					require("harpoon"):list():select(3)
 				end,
 			},
 			{
-				"<M-4>",
+				"<C-4>",
 				function()
 					require("harpoon"):list():select(4)
-				end,
-			},
-			{
-				"<M-p>",
-				function()
-					require("harpoon"):list():prev()
-				end,
-			},
-			{
-				"<M-n>",
-				function()
-					require("harpoon"):list():next()
 				end,
 			},
 		},

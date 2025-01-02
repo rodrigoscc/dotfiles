@@ -14,36 +14,36 @@ window-padding-y = 0
 
 shell-integration = zsh
 
-keybind = cmd+t=text:\x02c
-keybind = cmd+w=text:\x02&
+keybind = alt+t=text:\x02c
+keybind = alt+w=text:\x02&
 
-keybind = cmd+shift+x=text:\x02"
-keybind = cmd+shift+v=text:\x02%
+keybind = alt+x=text:\x02"
+keybind = alt+v=text:\x02%
 
-keybind = cmd+m=text:\x02z
+keybind = alt+m=text:\x02z
 
-keybind = cmd+shift+k=text:\x02\x1b\x5b\x31\x3b\x35\x41
-keybind = cmd+shift+j=text:\x02\x1b\x5b\x31\x3b\x35\x42
-keybind = cmd+shift+h=text:\x02\x1b\x5b\x31\x3b\x35\x44
-keybind = cmd+shift+l=text:\x02\x1b\x5b\x31\x3b\x35\x43
+keybind = alt+shift+k=text:\x02\x1b\x5b\x31\x3b\x35\x41
+keybind = alt+shift+j=text:\x02\x1b\x5b\x31\x3b\x35\x42
+keybind = alt+shift+h=text:\x02\x1b\x5b\x31\x3b\x35\x44
+keybind = alt+shift+l=text:\x02\x1b\x5b\x31\x3b\x35\x43
 
-keybind = cmd+s=text:\x02S
-keybind = cmd+shift+s=text:\x02l
+keybind = alt+s=text:\x02S
+keybind = alt+shift+s=text:\x02l
 
-keybind = cmd+f=text:\x02[
+keybind = alt+f=text:\x02[
 
-keybind = cmd+a=text:\x02\x13
+keybind = alt+a=text:\x02\x13
 
-keybind = cmd+shift+r=text:\x02,
+keybind = alt+shift+r=text:\x02,
 
-keybind = cmd+g=text:\x02G
+keybind = alt+g=text:\x02G
 
-keybind = cmd+one=text:\x02\x31
-keybind = cmd+two=text:\x02\x32
-keybind = cmd+three=text:\x02\x33
-keybind = cmd+four=text:\x02\x34
-keybind = cmd+five=text:\x02\x35
-keybind = cmd+six=text:\x02\x36
-keybind = cmd+seven=text:\x02\x37
-keybind = cmd+eight=text:\x02\x38
-keybind = cmd+nine=text:\x02\x39
+keybind = alt+one=text:\x02\x31
+keybind = alt+two=text:\x02\x32
+keybind = alt+three=text:\x02\x33
+keybind = alt+four=text:\x02\x34
+keybind = alt+five=text:\x02\x35
+keybind = alt+six=text:\x02\x36
+keybind = alt+seven=text:\x02\x37
+keybind = alt+eight=text:\x02\x38
+keybind = alt+nine=text:\x02\x39
