@@ -3,6 +3,7 @@ theme = rose-pine
 font-family = Maple Mono NF CN
 font-size = 13.0
 adjust-cell-height = 15%
+cursor-invert-fg-bg = true
 
 mouse-hide-while-typing = true
 
@@ -30,9 +31,6 @@ keybind = cmd+s=text:\x02S
 keybind = cmd+shift+s=text:\x02l
 
 keybind = cmd+f=text:\x02[
-
-keybind = cmd+l=text:\x02n
-keybind = cmd+h=text:\x02p
 
 keybind = cmd+a=text:\x02\x13
 
