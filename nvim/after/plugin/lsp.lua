@@ -232,7 +232,7 @@ require("mason-lspconfig").setup({
 							parameterNames = true,
 							rangeVariableTypes = true,
 						},
-						usePlaceholders = true,
+						usePlaceholders = false,
 						symbolScope = "workspace",
 					},
 				},
