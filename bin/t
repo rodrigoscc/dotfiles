@@ -45,7 +45,7 @@ else
     session_name=`echo "$session_name" | tr -d "."`  # trim dots
 fi
 
-if ! pgrep -x "tmux" > /dev/null; then
+if ! pgrep "tmux" > /dev/null; then
     tmux new -s "$session_name" -c "$selected"
 else
     if [ $session_name == "default" ]; then

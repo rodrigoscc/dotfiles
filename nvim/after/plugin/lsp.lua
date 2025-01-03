@@ -9,6 +9,10 @@ local mason_ensure_installed = {
 	"fixjson",
 	"sql-formatter",
 	"beautysh",
+	"selene",
+	"golangci-lint",
+	"codespell",
+	"commitlint",
 }
 
 -- Ensure installed for formatters and diagnostics
@@ -152,6 +156,9 @@ require("mason-lspconfig").setup({
 		"bashls",
 		"jsonls",
 		"yamlls",
+		"bashls",
+		"svelte",
+		"tailwindcss",
 	},
 	handlers = {
 		function(server_name)

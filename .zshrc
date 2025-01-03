@@ -1,4 +1,4 @@
-export PATH=/opt/homebrew/opt/python@3.9/libexec/bin:~/.config/bin:~/go/bin:~/.local/bin:/opt/homebrew/opt/mysql-client/bin:$PATH
+export PATH=/opt/homebrew/opt/python@3.9/libexec/bin:~/.config/bin:~/go/bin:~/.local/bin:/opt/homebrew/opt/mysql-client/bin:/opt/nvim-linux64/bin:/usr/local/go/bin:$PATH
 export EDITOR=nvim
 
 # Make sure the history is appended to new shells.
@@ -15,6 +15,7 @@ autoload edit-command-line
 zle -N edit-command-line
 bindkey "^X^E" edit-command-line
 
+export HISTFILE=$HOME/.zsh_history
 export HISTSIZE=1000000000
 export SAVEHIST=$HISTSIZE
 
@@ -29,7 +30,11 @@ setopt share_history          # share command history data
 # Autocomplete without case sensitivity.
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 
-export ZPLUG_HOME=/opt/homebrew/opt/zplug
+if [ -d /opt/homebrew/opt/zplug ]; then
+    export ZPLUG_HOME=/opt/homebrew/opt/zplug
+else
+    export ZPLUG_HOME=$HOME/.zplug
+fi
 source $ZPLUG_HOME/init.zsh
 
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
@@ -94,3 +99,7 @@ export FZF_DEFAULT_OPTS="--layout=reverse --color=fg:#908caa,bg:#232136,hl:#ea9a
 
 # Disable auto update for homebrew
 export HOMEBREW_NO_AUTO_UPDATE=1
+
+if [ -d $HOME/n ]; then
+    export N_PREFIX="$HOME/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"  # Added by n-install (see http://git.io/n-install-repo).
+fi
