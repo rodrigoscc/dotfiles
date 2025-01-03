@@ -1,5 +1,4 @@
 local lsp = require("lsp-zero")
-local lspconfig = require("lspconfig")
 
 local mason_ensure_installed = {
 	"ruff",
@@ -21,8 +20,6 @@ vim.api.nvim_create_user_command("MasonInstallAll", function()
 end, {})
 
 vim.opt.completeopt = { "menu", "menuone", "noselect" }
-
-local fzf_lua = require("fzf-lua")
 
 lsp.on_attach(function(client, bufnr)
 	-- Fix for svelte language server to update after ts or js files are updated
@@ -54,13 +51,18 @@ lsp.on_attach(function(client, bufnr)
 	vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
 	vim.keymap.set("n", "gl", vim.diagnostic.open_float, opts)
 	vim.keymap.set("n", "gr", function()
-		fzf_lua.lsp_references({
+		require("fzf-lua").lsp_references({
 			jump_to_single_result = true,
 			ignore_current_line = true,
 		})
 	end, opts)
-	vim.keymap.set("n", "gy", fzf_lua.lsp_live_workspace_symbols, opts)
-	vim.keymap.set("n", "gY", fzf_lua.lsp_document_symbols, opts)
+	vim.keymap.set(
+		"n",
+		"gy",
+		require("fzf-lua").lsp_live_workspace_symbols,
+		opts
+	)
+	vim.keymap.set("n", "gY", require("fzf-lua").lsp_document_symbols, opts)
 
 	vim.keymap.set(
 		"n",
@@ -162,16 +164,21 @@ require("mason-lspconfig").setup({
 	},
 	handlers = {
 		function(server_name)
+			local lspconfig = require("lspconfig")
 			local config = {}
+
 			config.capabilities =
 				require("blink.cmp").get_lsp_capabilities(config.capabilities)
+
 			lspconfig[server_name].setup(config)
 		end,
 		lua_ls = function()
+			local lspconfig = require("lspconfig")
 			local lua_opts = lsp.nvim_lua_ls()
 			lspconfig.lua_ls.setup(lua_opts)
 		end,
 		pyright = function()
+			local lspconfig = require("lspconfig")
 			lspconfig.pyright.setup({
 				root_dir = function()
 					return vim.fn.getcwd()
@@ -180,6 +187,7 @@ require("mason-lspconfig").setup({
 			})
 		end,
 		ts_ls = function()
+			local lspconfig = require("lspconfig")
 			lspconfig.ts_ls.setup({
 				settings = {
 					javascript = {
@@ -210,6 +218,7 @@ require("mason-lspconfig").setup({
 			})
 		end,
 		gopls = function()
+			local lspconfig = require("lspconfig")
 			lspconfig.gopls.setup({
 				settings = {
 					gopls = {
@@ -242,6 +251,7 @@ require("mason-lspconfig").setup({
 		ruff = lsp.noop,
 		buf_ls = lsp.noop,
 		jsonls = function()
+			local lspconfig = require("lspconfig")
 			lspconfig.jsonls.setup({
 				-- lazy-load schemastore when needed
 				on_new_config = function(new_config)
@@ -261,6 +271,7 @@ require("mason-lspconfig").setup({
 			})
 		end,
 		yamlls = function()
+			local lspconfig = require("lspconfig")
 			lspconfig.yamlls.setup({
 				-- Have to add this for yamlls to understand that we support line folding
 				capabilities = capabilities,

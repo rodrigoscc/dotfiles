@@ -1,22 +1,5 @@
 return {
 	{
-		"kndndrj/nvim-dbee",
-		lazy = true,
-		cmd = { "DBUIToggle", "DBUI" },
-		dependencies = {
-			"MunifTanjim/nui.nvim",
-		},
-		build = function()
-			-- Install tries to automatically detect the install method.
-			-- if it fails, try calling it with one of these parameters:
-			--    "curl", "wget", "bitsadmin", "go"
-			require("dbee").install()
-		end,
-		config = function()
-			require("dbee").setup(--[[optional config]])
-		end,
-	},
-	{
 		"VonHeikemen/lsp-zero.nvim",
 		branch = "v3.x",
 		dependencies = {
@@ -27,7 +10,6 @@ return {
 		},
 	},
 	{ "williamboman/mason.nvim" },
-	{ "onsails/lspkind.nvim" },
 	{
 		"hedyhli/outline.nvim",
 		lazy = true,

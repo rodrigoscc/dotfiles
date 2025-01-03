@@ -25,6 +25,7 @@ return {
 	},
 	{
 		"Wansmer/treesj",
+		lazy = true,
 		keys = { "<space>J" },
 		dependencies = { "nvim-treesitter/nvim-treesitter" },
 		config = function()
@@ -188,9 +189,11 @@ return {
 		"danymat/neogen",
 		lazy = true,
 		keys = {
-			"<leader>id",
-			"<cmd>Neogen<cr>",
-			desc = "[i]nsert [d]ocumentation",
+			{
+				"<leader>id",
+				"<cmd>Neogen<cr>",
+				desc = "[i]nsert [d]ocumentation",
+			},
 		},
 		opts = {
 			snippet_engine = "luasnip",
@@ -203,7 +206,7 @@ return {
 			},
 		},
 	},
-	{ "b0o/schemastore.nvim" },
+	{ "b0o/schemastore.nvim", lazy = true, ft = { "json", "yaml" } },
 	{
 		"supermaven-inc/supermaven-nvim",
 		event = { "InsertEnter" },

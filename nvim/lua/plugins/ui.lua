@@ -32,13 +32,6 @@ return {
 		opts = { symbol = "│", options = { try_as_border = true } },
 	},
 	{
-		"lukas-reineke/virt-column.nvim",
-		opts = {
-			virtcolumn = "80",
-			char = "│",
-		},
-	},
-	{
 		"folke/todo-comments.nvim",
 		dependencies = { "nvim-lua/plenary.nvim" },
 		opts = {
@@ -92,10 +85,14 @@ return {
 	},
 	{
 		"folke/zen-mode.nvim",
+		lazy = true,
+		cmd = { "ZenMode" },
 		opts = {},
 	},
 	{
 		"folke/twilight.nvim",
+		lazy = true,
+		cmd = { "Twilight" },
 		opts = {},
 	},
 	{ "echasnovski/mini.trailspace", version = "*", opts = {} },
@@ -138,11 +135,6 @@ return {
 			"MunifTanjim/nui.nvim",
 			{ "rcarriga/nvim-notify", opts = { render = "compact" } },
 		},
-	},
-	{
-		"seblj/nvim-tabline",
-		dependencies = { "nvim-tree/nvim-web-devicons" },
-		opts = {},
 	},
 	{
 		"lukas-reineke/headlines.nvim",
