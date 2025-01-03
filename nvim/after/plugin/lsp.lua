@@ -1,5 +1,3 @@
-local lsp = require("lsp-zero")
-
 local mason_ensure_installed = {
 	"ruff",
 	"prettier",
@@ -21,101 +19,116 @@ end, {})
 
 vim.opt.completeopt = { "menu", "menuone", "noselect" }
 
-lsp.on_attach(function(client, bufnr)
-	-- Fix for svelte language server to update after ts or js files are updated
-	-- https://github.com/sveltejs/language-tools/issues/2008#issuecomment-2090014756
-	if client.name == "svelte" then
-		vim.api.nvim_create_autocmd("BufWritePost", {
-			pattern = { "*.js", "*.ts" },
-			callback = function(ctx)
-				client.notify("$/onDidChangeTsOrJsFile", { uri = ctx.match })
-			end,
-		})
-	end
+vim.api.nvim_create_autocmd("LspAttach", {
+	desc = "LSP Actions",
+	callback = function(event)
+		local bufnr = event.buf
+		local client = vim.lsp.get_client_by_id(event.data.client_id)
 
-	-- if
-	-- 	client.supports_method("textDocument/codeLens")
-	-- 	and client.name ~= "lua_ls"
-	-- then
-	-- 	vim.api.nvim_create_autocmd({ "TextChanged", "InsertLeave" }, {
-	-- 		buffer = bufnr,
-	-- 		callback = vim.lsp.codelens.refresh,
-	-- 	})
-	-- end
+		assert(client, "LSP client not found")
 
-	local opts = { buffer = bufnr, remap = false }
+		-- Fix for svelte language server to update after ts or js files are updated
+		-- https://github.com/sveltejs/language-tools/issues/2008#issuecomment-2090014756
+		if client.name == "svelte" then
+			vim.api.nvim_create_autocmd("BufWritePost", {
+				pattern = { "*.js", "*.ts" },
+				callback = function(ctx)
+					client.notify(
+						"$/onDidChangeTsOrJsFile",
+						{ uri = ctx.match }
+					)
+				end,
+			})
+		end
 
-	vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
-	vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
-	vim.keymap.set("n", "go", vim.lsp.buf.type_definition, opts)
-	vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
-	vim.keymap.set("n", "gl", vim.diagnostic.open_float, opts)
-	vim.keymap.set("n", "gr", function()
-		require("fzf-lua").lsp_references({
-			jump_to_single_result = true,
-			ignore_current_line = true,
-		})
-	end, opts)
-	vim.keymap.set(
-		"n",
-		"gy",
-		require("fzf-lua").lsp_live_workspace_symbols,
-		opts
-	)
-	vim.keymap.set("n", "gY", require("fzf-lua").lsp_document_symbols, opts)
+		-- if
+		-- 	client.supports_method("textDocument/codeLens")
+		-- 	and client.name ~= "lua_ls"
+		-- then
+		-- 	vim.api.nvim_create_autocmd({ "TextChanged", "InsertLeave" }, {
+		-- 		buffer = bufnr,
+		-- 		callback = vim.lsp.codelens.refresh,
+		-- 	})
+		-- end
 
-	vim.keymap.set(
-		"n",
-		"<leader>rn",
-		vim.lsp.buf.rename,
-		{ desc = "[r]e[n]ame" }
-	)
-	vim.keymap.set(
-		{ "n", "v" },
-		"<leader>ca",
-		vim.lsp.buf.code_action,
-		{ desc = "[c]ode [a]ction" }
-	)
-	vim.keymap.set({ "n", "v" }, "<leader>fb", function()
-		require("conform").format({ bufnr = bufnr })
-	end, { desc = "[f]ormat [b]uffer" })
+		local opts = { buffer = bufnr, remap = false }
 
-	vim.keymap.set("n", "]d", function()
-		vim.g.set_jump(vim.diagnostic.goto_next, vim.diagnostic.goto_prev)
-		vim.diagnostic.goto_next()
-	end, opts)
+		vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+		vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
+		vim.keymap.set("n", "go", vim.lsp.buf.type_definition, opts)
+		vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
+		vim.keymap.set("n", "gl", vim.diagnostic.open_float, opts)
+		vim.keymap.set("n", "gr", function()
+			require("fzf-lua").lsp_references({
+				jump_to_single_result = true,
+				ignore_current_line = true,
+			})
+		end, opts)
+		vim.keymap.set(
+			"n",
+			"gy",
+			require("fzf-lua").lsp_live_workspace_symbols,
+			opts
+		)
+		vim.keymap.set("n", "gY", require("fzf-lua").lsp_document_symbols, opts)
 
-	vim.keymap.set("n", "[d", function()
-		vim.g.set_jump(vim.diagnostic.goto_next, vim.diagnostic.goto_prev)
-		vim.diagnostic.goto_prev()
-	end, opts)
+		vim.keymap.set(
+			"n",
+			"<leader>rn",
+			vim.lsp.buf.rename,
+			{ desc = "[r]e[n]ame" }
+		)
+		vim.keymap.set(
+			{ "n", "v" },
+			"<leader>ca",
+			vim.lsp.buf.code_action,
+			{ desc = "[c]ode [a]ction" }
+		)
+		vim.keymap.set({ "n", "v" }, "<leader>fb", function()
+			require("conform").format({ bufnr = bufnr })
+		end, { desc = "[f]ormat [b]uffer" })
 
-	vim.keymap.set("n", "]e", function()
-		vim.g.set_jump(function()
+		vim.keymap.set("n", "]d", function()
+			vim.g.set_jump(vim.diagnostic.goto_next, vim.diagnostic.goto_prev)
+			vim.diagnostic.goto_next()
+		end, opts)
+
+		vim.keymap.set("n", "[d", function()
+			vim.g.set_jump(vim.diagnostic.goto_next, vim.diagnostic.goto_prev)
+			vim.diagnostic.goto_prev()
+		end, opts)
+
+		vim.keymap.set("n", "]e", function()
+			vim.g.set_jump(function()
+				vim.diagnostic.goto_next({
+					severity = vim.diagnostic.severity.ERROR,
+				})
+			end, function()
+				vim.diagnostic.goto_prev({
+					severity = vim.diagnostic.severity.ERROR,
+				})
+			end)
 			vim.diagnostic.goto_next({
 				severity = vim.diagnostic.severity.ERROR,
 			})
-		end, function()
-			vim.diagnostic.goto_prev({
-				severity = vim.diagnostic.severity.ERROR,
-			})
-		end)
-		vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR })
-	end, opts)
+		end, opts)
 
-	vim.keymap.set("n", "[e", function()
-		vim.g.set_jump(function()
-			vim.diagnostic.goto_next({
-				severity = vim.diagnostic.severity.ERROR,
-			})
-		end, function()
+		vim.keymap.set("n", "[e", function()
+			vim.g.set_jump(function()
+				vim.diagnostic.goto_next({
+					severity = vim.diagnostic.severity.ERROR,
+				})
+			end, function()
+				vim.diagnostic.goto_prev({
+					severity = vim.diagnostic.severity.ERROR,
+				})
+			end)
 			vim.diagnostic.goto_prev({
 				severity = vim.diagnostic.severity.ERROR,
 			})
-		end)
-		vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.ERROR })
-	end, opts)
-end)
+		end, opts)
+	end,
+})
 
 local function toggle_format_on_save()
 	if vim.g.disable_autoformat then
@@ -128,8 +141,6 @@ end
 vim.keymap.set("n", "<leader>tf", function()
 	toggle_format_on_save()
 end, { desc = "[t]oggle [f]ormat on save" })
-
-lsp.setup()
 
 vim.keymap.set("n", "<leader>rl", function()
 	vim.cmd("LspRestart")
@@ -174,8 +185,27 @@ require("mason-lspconfig").setup({
 		end,
 		lua_ls = function()
 			local lspconfig = require("lspconfig")
-			local lua_opts = lsp.nvim_lua_ls()
-			lspconfig.lua_ls.setup(lua_opts)
+
+			local config = {
+				capabilities = capabilities,
+				settings = {
+					Lua = {
+						runtime = {
+							version = "LuaJIT",
+						},
+						diagnostics = {
+							globals = { "vim" },
+						},
+						workspace = {
+							library = {
+								vim.env.VIMRUNTIME,
+							},
+						},
+					},
+				},
+			}
+
+			lspconfig.lua_ls.setup(config)
 		end,
 		pyright = function()
 			local lspconfig = require("lspconfig")
@@ -248,8 +278,8 @@ require("mason-lspconfig").setup({
 				capabilities = capabilities,
 			})
 		end,
-		ruff = lsp.noop,
-		buf_ls = lsp.noop,
+		ruff = function() end,
+		buf_ls = function() end,
 		jsonls = function()
 			local lspconfig = require("lspconfig")
 			lspconfig.jsonls.setup({
