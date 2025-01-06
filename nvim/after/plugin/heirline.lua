@@ -487,7 +487,7 @@ local Ruler = {
 	},
 }
 
-local heirline_config = {
+local statusline = {
 	hl = { bg = colors.background },
 	{ ViMode },
 	{ FileBlock },
@@ -504,9 +504,24 @@ local heirline_config = {
 	{ Ruler },
 }
 
+local tabline = utils.make_tablist({
+	provider = function(self)
+		return (self and self.tabnr)
+				and "%" .. self.tabnr .. "T " .. self.tabnr .. " %T"
+			or ""
+	end,
+	hl = function(self)
+		if self.is_active then
+			return "TabLineSel"
+		else
+			return "TabLine"
+		end
+	end,
+})
+
 -- Set global statusline
 vim.o.laststatus = 3
 -- Hide command line
 vim.o.cmdheight = 0
 
-require("heirline").setup({ statusline = heirline_config })
+require("heirline").setup({ statusline = statusline, tabline = tabline })
