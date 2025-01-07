@@ -13,12 +13,12 @@ return {
 				},
 				MiniCursorword = {
 					underline = false,
-					bg = "rose",
+					bg = "iris",
 					blend = 23,
 				},
 				MiniCursorwordCurrent = {
 					underline = false,
-					bg = "rose",
+					bg = "iris",
 					blend = 23,
 				},
 				QuickFixLine = {
