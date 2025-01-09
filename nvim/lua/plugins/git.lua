@@ -52,7 +52,7 @@ return {
 					view = {
 						{
 							"n",
-							"q",
+							"<C-q>",
 							vim.cmd.tabclose,
 							{ desc = "Close Diffview" },
 						},
@@ -84,7 +84,7 @@ return {
 					file_panel = {
 						{
 							"n",
-							"q",
+							"<C-q>",
 							vim.cmd.tabclose,
 							{ desc = "Close Diffview" },
 						},
