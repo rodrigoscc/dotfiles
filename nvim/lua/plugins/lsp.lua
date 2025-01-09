@@ -119,13 +119,14 @@ return {
 				-- Adjusts spacing to ensure icons are aligned
 				nerd_font_variant = "mono",
 			},
+			snippets = { preset = "luasnip" },
 			-- default list of enabled providers defined so that you can extend it
 			-- elsewhere in your config, without redefining it, via `opts_extend`
 			sources = {
 				default = {
 					"lsp",
 					"path",
-					"luasnip",
+					"snippets",
 					"buffer",
 					"ripgrep",
 				},
@@ -134,18 +135,18 @@ return {
 						"lazydev",
 						"lsp",
 						"path",
-						"luasnip",
+						"snippets",
 						"buffer",
 						"ripgrep",
 					},
 					http = {
 						"http",
-						"luasnip",
+						"snippets",
 						"buffer",
 						"ripgrep",
 					},
 					markdown = {
-						"luasnip",
+						"snippets",
 						"buffer",
 						"ripgrep",
 						"obsidian",
@@ -154,6 +155,11 @@ return {
 					},
 				},
 				providers = {
+					lsp = {
+						name = "LSP",
+						module = "blink.cmp.sources.lsp",
+						async = true,
+					},
 					lazydev = {
 						name = "LazyDev",
 						module = "lazydev.integrations.blink",
@@ -191,6 +197,12 @@ return {
 				},
 			},
 			completion = {
+				list = {
+					selection = {
+						preselect = true,
+						auto_insert = false,
+					},
+				},
 				documentation = {
 					auto_show = true,
 					auto_show_delay_ms = 200,

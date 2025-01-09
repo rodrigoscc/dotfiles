@@ -7,19 +7,14 @@ return {
 				italic = false,
 			},
 			highlight_groups = {
+				BlinkCmpMenuSelection = {
+					fg = "none",
+					bg = "iris",
+					blend = 23,
+				},
 				MiniTrailspace = {
 					underline = true,
 					bg = "none",
-				},
-				MiniCursorword = {
-					underline = false,
-					bg = "iris",
-					blend = 23,
-				},
-				MiniCursorwordCurrent = {
-					underline = false,
-					bg = "iris",
-					blend = 23,
 				},
 				QuickFixLine = {
 					bg = "iris",

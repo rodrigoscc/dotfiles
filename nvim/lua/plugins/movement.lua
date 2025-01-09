@@ -41,25 +41,25 @@ return {
 				end,
 			},
 			{
-				"<C-1>",
+				"<leader>1",
 				function()
 					require("harpoon"):list():select(1)
 				end,
 			},
 			{
-				"<C-2>",
+				"<leader>2",
 				function()
 					require("harpoon"):list():select(2)
 				end,
 			},
 			{
-				"<C-3>",
+				"<leader>3",
 				function()
 					require("harpoon"):list():select(3)
 				end,
 			},
 			{
-				"<C-4>",
+				"<leader>4",
 				function()
 					require("harpoon"):list():select(4)
 				end,
