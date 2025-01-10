@@ -90,7 +90,7 @@ return {
 		"saghen/blink.cmp",
 		version = "*",
 		dependencies = {
-			"mikavilpas/blink-ripgrep.nvim",
+			"rstcruzo/blink-ripgrep.nvim",
 		},
 		---@module 'blink.cmp'
 		---@type blink.cmp.Config
@@ -176,6 +176,7 @@ return {
 							prefix_min_len = 5,
 							context_size = 5,
 							max_filesize = "1M",
+							ignore_paths = { "/Users/rsantacruz" },
 						},
 					},
 					http = {
