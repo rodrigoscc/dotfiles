@@ -95,7 +95,7 @@ fpath+=~/.zfunc
 autoload -Uz compinit && compinit
 
 # Rose pine fzf theme
-export FZF_DEFAULT_OPTS="--layout=reverse --color=fg:#908caa,bg:#232136,hl:#ea9a97 --color=fg+:#e0def4,bg+:#393552,hl+:#ea9a97 --color=border:#44415a,header:#3e8fb0,gutter:#232136 --color=spinner:#f6c177,info:#9ccfd8,separator:#44415a --color=pointer:#c4a7e7,marker:#eb6f92,prompt:#908caa"
+export FZF_DEFAULT_OPTS="--layout=reverse --cycle --color=fg:#908caa,bg:#232136,hl:#ea9a97 --color=fg+:#e0def4,bg+:#393552,hl+:#ea9a97 --color=border:#44415a,header:#3e8fb0,gutter:#232136 --color=spinner:#f6c177,info:#9ccfd8,separator:#44415a --color=pointer:#c4a7e7,marker:#eb6f92,prompt:#908caa"
 
 # Disable auto update for homebrew
 export HOMEBREW_NO_AUTO_UPDATE=1
