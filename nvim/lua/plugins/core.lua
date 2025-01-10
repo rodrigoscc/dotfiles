@@ -146,7 +146,7 @@ return {
 					},
 				},
 				winopts = {
-					backdrop = 100,
+					split = "botright new",
 				},
 				previewers = {
 					builtin = {
