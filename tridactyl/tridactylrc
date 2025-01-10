@@ -1,4 +1,4 @@
-set theme midnight
+set theme dark
 
 bind K tabnext
 bind J tabprev
@@ -6,7 +6,10 @@ bind J tabprev
 bind j scrollline 1
 bind k scrollline -1
 
-set editorcmd /opt/homebrew/bin/wezterm start -- /opt/homebrew/bin/nvim
+set editorcmd /opt/homebrew/bin/wezterm start -- nvim
+
+set hintfiltermode vimperator
+set hintchars 5432167890
 
 bind / fillcmdline find
 bind ? fillcmdline find --reverse
