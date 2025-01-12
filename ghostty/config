@@ -3,7 +3,8 @@ theme = rose-pine
 font-family = Maple Mono NF CN
 font-size = 13.0
 adjust-cell-height = 15%
-cursor-invert-fg-bg = true
+
+cursor-color = #f6c177
 
 mouse-hide-while-typing = true
 
