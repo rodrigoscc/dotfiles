@@ -90,7 +90,7 @@ return {
 		"saghen/blink.cmp",
 		version = "*",
 		dependencies = {
-			"rstcruzo/blink-ripgrep.nvim",
+			"mikavilpas/blink-ripgrep.nvim",
 		},
 		---@module 'blink.cmp'
 		---@type blink.cmp.Config
@@ -158,7 +158,6 @@ return {
 					lsp = {
 						name = "LSP",
 						module = "blink.cmp.sources.lsp",
-						async = true,
 					},
 					lazydev = {
 						name = "LazyDev",

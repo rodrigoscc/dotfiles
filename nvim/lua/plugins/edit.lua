@@ -207,17 +207,4 @@ return {
 		},
 	},
 	{ "b0o/schemastore.nvim", lazy = true, ft = { "json", "yaml" } },
-	{
-		"supermaven-inc/supermaven-nvim",
-		event = { "InsertEnter" },
-		config = function()
-			require("supermaven-nvim").setup({
-				keymaps = {
-					accept_suggestion = "<C-f>",
-					clear_suggestion = "<C-]>",
-					accept_word = "<C-b>",
-				},
-			})
-		end,
-	},
 }
