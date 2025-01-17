@@ -312,6 +312,12 @@ local TogglesElement = {
 				end,
 				icon = "󰖶 ",
 			},
+			{
+				is_enabled = function()
+					return vim.g.disable_autoformat
+				end,
+				icon = "󰉥 ",
+			},
 		},
 	},
 	condition = function(self)
