@@ -303,6 +303,46 @@ local function prepare_paths(paths)
 	return shortened_paths
 end
 
+local TogglesElement = {
+	static = {
+		toggles = {
+			{
+				is_enabled = function()
+					return vim.wo.wrap
+				end,
+				icon = "󰖶 ",
+			},
+		},
+	},
+	condition = function(self)
+		for _, value in ipairs(self.toggles) do
+			if value.is_enabled() then
+				return true
+			end
+		end
+
+		return false
+	end,
+	provider = function()
+		return "󰨙 "
+	end,
+	hl = { fg = colors.special3, bold = true },
+	utils.surround({ "[", "] " }, nil, {
+		provider = function(self)
+			local toggles = ""
+
+			for _, value in ipairs(self.toggles) do
+				if value.is_enabled() then
+					toggles = toggles .. " " .. value.icon
+				end
+			end
+
+			return toggles
+		end,
+		hl = { fg = colors.special2, bold = true },
+	}),
+}
+
 local HarpoonElement = {
 	static = {
 		icons = {
@@ -494,8 +534,8 @@ local statusline = {
 	{ FileEncoding },
 	{ SearchCount },
 	{ MacroRec },
+	{ TogglesElement },
 	{ provider = " %= " },
-	-- { MasonStatusElement },
 	{ HarpoonElement },
 	{ FileTypeElement },
 	{ LSPElement },
