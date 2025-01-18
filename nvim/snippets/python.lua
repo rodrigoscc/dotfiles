@@ -118,4 +118,22 @@ def {}():
 			}
 		)
 	),
+	s(
+		"smodel",
+		fmt(
+			[[class {}(db.Model):
+    __bind_key__ = "{}"
+    uuid = db.Column(
+        postgresql.UUID(as_uuid=True),
+        primary_key=True,
+        nullable=False,
+        server_default=text("uuid_generate_v4()"),
+    )
+			]],
+			{
+				i(1, "ModelName"),
+				c(2, { t("core"), t("azotel"), t("freeradius") }),
+			}
+		)
+	),
 }
