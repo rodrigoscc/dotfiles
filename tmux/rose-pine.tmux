@@ -416,7 +416,8 @@ main() {
     fi
 
     if [ -f ~/monitor-redis.sh ]; then
-        right_column=$(~/monitor-redis.sh)$right_column
+        readonly monitoring="#(~/monitor-redis.sh)"
+        right_column=$monitoring$right_column
     fi
 
     # We set the sections
