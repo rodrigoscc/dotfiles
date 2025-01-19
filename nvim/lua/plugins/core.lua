@@ -138,11 +138,14 @@ return {
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 		config = function()
 			require("fzf-lua").setup({
-				"ivy",
+				{ "ivy", "hide" },
 				defaults = {
 					keymap = {
 						fzf = {
 							["ctrl-q"] = "select-all+accept",
+						},
+						builtin = {
+							["<C-c>"] = "hide",
 						},
 					},
 				},
