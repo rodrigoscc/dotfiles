@@ -194,6 +194,25 @@ return {
 						},
 					},
 				},
+				lsp = {
+					symbols = {
+						regex_filter = function(item)
+							if
+								vim.tbl_contains({
+									"Variable",
+									"String",
+									"Number",
+									"Text",
+									"Boolean",
+								}, item.kind)
+							then
+								return false
+							else
+								return true
+							end
+						end,
+					},
+				},
 			})
 		end,
 	},
