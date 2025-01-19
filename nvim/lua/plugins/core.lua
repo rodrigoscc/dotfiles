@@ -138,6 +138,7 @@ return {
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 		config = function()
 			require("fzf-lua").setup({
+				"ivy",
 				defaults = {
 					keymap = {
 						fzf = {
@@ -179,9 +180,9 @@ return {
 					},
 				},
 				winopts = {
-					fullscreen = true,
+					backdrop = false,
 					preview = {
-						layout = "vertical",
+						horizontal = "right:50%", -- right|left:size
 					},
 				},
 				previewers = {
