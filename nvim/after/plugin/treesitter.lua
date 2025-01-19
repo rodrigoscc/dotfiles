@@ -93,6 +93,20 @@ require("nvim-treesitter.configs").setup({
 				["<leader>sp"] = "@parameter.inner",
 			},
 		},
+		lsp_interop = {
+			enable = true,
+			border = "rounded",
+			peek_definition_code = {
+				["gp"] = {
+					query = "@function.outer",
+					desc = "🌲peek function definition",
+				},
+				["gcp"] = {
+					query = "@class.outer",
+					desc = "🌲peek class definition",
+				},
+			},
+		},
 	},
 	-- Disabled for now because of bug with treesitter.
 	incremental_selection = {

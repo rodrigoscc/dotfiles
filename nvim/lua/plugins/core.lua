@@ -142,12 +142,39 @@ return {
 					keymap = {
 						fzf = {
 							["ctrl-q"] = "select-all+accept",
-							["ctrl-d"] = "preview-page-down",
-							["ctrl-u"] = "preview-page-up",
 						},
-						builtin = {
-							["<C-d>"] = "preview-page-down",
-							["<C-u>"] = "preview-page-up",
+					},
+				},
+				files = {
+					actions = {
+						["ctrl-d"] = {
+							fn = function(...)
+								require("fzf-lua").actions.file_vsplit(...)
+								vim.cmd("windo diffthis")
+								local switch = vim.api.nvim_replace_termcodes(
+									"<C-w>h",
+									true,
+									false,
+									true
+								)
+								vim.api.nvim_feedkeys(switch, "t", false)
+							end,
+							desc = "diff-file",
+						},
+					},
+				},
+				git = {
+					branches = {
+						actions = {
+							["ctrl-d"] = {
+								fn = function(selected)
+									-- TODO: if diffview is not loaded, this fails. Double check lazy loading
+									vim.cmd.DiffviewOpen({
+										args = { selected[1] },
+									})
+								end,
+								desc = "diffview-git-branch",
+							},
 						},
 					},
 				},
