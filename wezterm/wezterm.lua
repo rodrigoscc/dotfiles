@@ -2,6 +2,7 @@ local wezterm = require("wezterm")
 local act = wezterm.action
 
 local config = {
+	max_fps = 120,
 	color_scheme = "rose-pine",
 	font = wezterm.font_with_fallback({
 		"Maple Mono NF CN",
