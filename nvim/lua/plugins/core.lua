@@ -142,11 +142,20 @@ return {
 					keymap = {
 						fzf = {
 							["ctrl-q"] = "select-all+accept",
+							["ctrl-d"] = "preview-page-down",
+							["ctrl-u"] = "preview-page-up",
+						},
+						builtin = {
+							["<C-d>"] = "preview-page-down",
+							["<C-u>"] = "preview-page-up",
 						},
 					},
 				},
 				winopts = {
-					split = "botright new",
+					fullscreen = true,
+					preview = {
+						layout = "vertical",
+					},
 				},
 				previewers = {
 					builtin = {

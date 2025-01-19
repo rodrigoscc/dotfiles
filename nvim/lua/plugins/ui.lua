@@ -124,7 +124,7 @@ return {
 				},
 			},
 			presets = {
-				lsp_doc_border = true, -- add a border to hover docs and signature help
+				lsp_doc_border = false, -- add a border to hover docs and signature help
 				bottom_search = true,
 				command_palette = true,
 				long_message_to_split = true,
@@ -133,7 +133,6 @@ return {
 		},
 		dependencies = {
 			"MunifTanjim/nui.nvim",
-			{ "rcarriga/nvim-notify", opts = { render = "compact" } },
 		},
 	},
 	{
