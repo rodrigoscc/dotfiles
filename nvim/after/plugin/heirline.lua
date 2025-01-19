@@ -2,7 +2,7 @@
 local utils = require("heirline.utils")
 local conditions = require("heirline.conditions")
 
-local special2, special, special3 = "#a9a1e1", "#c678dd", "#ecbe7b"
+local special2, special, special3 = "#c4a7e7", "#c678dd", "#f6c177"
 
 local safe_get_highlight = function(...)
 	for _, hlname in ipairs({ ... }) do
@@ -193,7 +193,7 @@ local FileName = {
 		filename = vim.fn.pathshorten(filename)
 		return filename .. " "
 	end,
-	hl = { fg = colors.special },
+	hl = { fg = colors.special2 },
 }
 
 local FileFlags = {
