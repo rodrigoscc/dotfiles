@@ -533,6 +533,22 @@ local Ruler = {
 	},
 }
 
+local Http = {
+	{
+		provider = function()
+			local project = require("http-nvim.project")
+			local env = project.get_active_env()
+
+			if env ~= nil then
+				return "[ " .. env .. "] "
+			end
+
+			return ""
+		end,
+		hl = { fg = colors.special3 },
+	},
+}
+
 local statusline = {
 	hl = { bg = colors.background },
 	{ ViMode },
@@ -542,6 +558,7 @@ local statusline = {
 	{ MacroRec },
 	{ TogglesElement },
 	{ provider = " %= " },
+	{ Http },
 	{ HarpoonElement },
 	{ FileTypeElement },
 	{ LSPElement },
