@@ -19,6 +19,10 @@ bind gn findselect
 bind gN composite findnext --search-from-view --reverse; findselect
 bind <Esc> nohlsearch
 
+bind --mode=ex <C-w> text.backward_kill_word
+bind --mode=insert <C-w> text.backward_kill_word
+bind --mode=input <C-w> text.backward_kill_word
+
 set searchurls.mdn https://developer.mozilla.org/en-US/search?q=
 set searchurls.ml https://listado.mercadolibre.com.pe/%s
 set searchurls.yt https://www.youtube.com/results?search_query=
