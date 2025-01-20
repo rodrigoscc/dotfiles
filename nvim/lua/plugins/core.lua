@@ -151,6 +151,9 @@ return {
 				},
 				files = {
 					actions = {
+						["alt-f"] = false,
+						["alt-h"] = false,
+						["alt-i"] = false,
 						["ctrl-d"] = {
 							fn = function(...)
 								require("fzf-lua").actions.file_vsplit(...)
@@ -187,6 +190,7 @@ return {
 					preview = {
 						horizontal = "right:50%", -- right|left:size
 					},
+					title_flags = false,
 				},
 				previewers = {
 					builtin = {
