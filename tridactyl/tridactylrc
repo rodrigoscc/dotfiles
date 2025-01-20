@@ -28,3 +28,6 @@ set searchurls.ml https://listado.mercadolibre.com.pe/%s
 set searchurls.yt https://www.youtube.com/results?search_query=
 set searchurls.az https://www.amazon.com/s/ref=nb_sb_noss?url=search-alias%3Daps&field-keywords=
 set searchurls.gh https://github.com/search?utf8=✓&q=
+
+bindurl www.google.com ;g hint -Jc #search div a
+bindurl www.google.com ;G hint -Jbc #search div a
