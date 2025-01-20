@@ -1,7 +1,7 @@
 :root {
   --tridactyl-font-family: "San Francisco", sans-serif;
-  --tridactyl-bg: #1f1d2e; /* Dark background */
-  --tridactyl-fg: #e3e3e3; /* Light foreground */
+  --tridactyl-bg: #191724; /* Dark background */
+  --tridactyl-fg: #e0def4; /* Light foreground */
 
   --tridactyl-status-font-size: 12px;
   --tridactyl-status-font-family: "Fira Code", "San Francisco";
@@ -15,10 +15,10 @@
   --tridactyl-of-bg: #c4a7e7; /* Main soft purple */
 
   --tridactyl-hintspan-fg: #e0def4; /* Light foreground */
-  --tridactyl-hintspan-bg: #26233a; /* Dark hint background */
+  --tridactyl-hintspan-bg: #31748f; /* Dark hint background */
 
   --tridactyl-hint-active-fg: #e0def4; /* Light foreground */
-  --tridactyl-hint-active-bg: #26233a; /* Dark purple for active hints */
+  --tridactyl-hint-active-bg: #eb6f92; /* Dark purple for active hints */
   --tridactyl-hint-active-outline: 1px solid #c4a7e7; /* Main soft purple outline */
 
   --tridactyl-hint-bg: rgba(
