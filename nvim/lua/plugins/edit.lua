@@ -90,7 +90,7 @@ return {
 						"--exit-zero",
 						"--no-cache",
 						"--select",
-						"F401,F541,I001,I002,EM101",
+						"F401,F541,I001,I002,EM101,RUF010",
 						"--extend-unfixable",
 						"RET505,RET506,RET507,RET508",
 						"--stdin-filename",
