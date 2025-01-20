@@ -293,10 +293,10 @@ end
 local function prepare_paths(paths)
 	local shortened_paths = {}
 
-	for _, path in ipairs(paths) do
+	for i, path in ipairs(paths) do
 		local is_this_buffer = path == vim.fn.expand("%")
 		if not is_this_buffer then
-			table.insert(shortened_paths, shorten_path(path))
+			table.insert(shortened_paths, { i, shorten_path(path) })
 		end
 	end
 
@@ -361,18 +361,22 @@ local HarpoonElement = {
 	},
 	provider = function(self)
 		local harpoon = require("harpoon")
-		local items = harpoon:list().items
+		local harpoon_items = harpoon:list().items
 
 		local files_names = vim.tbl_map(function(item)
 			return item.value
-		end, items)
+		end, harpoon_items)
 
-		files_names = prepare_paths(files_names)
+		local items = prepare_paths(files_names)
 
 		local text = ""
 
-		for i, name in ipairs(files_names) do
-			text = text .. string.format("%s %s", self.icons[i], name) .. " "
+		for _, item in ipairs(items) do
+			local position, filename = unpack(item)
+
+			text = text
+				.. string.format("%s %s", self.icons[position], filename)
+				.. " "
 		end
 
 		return text
