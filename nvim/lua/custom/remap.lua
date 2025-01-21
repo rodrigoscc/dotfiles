@@ -116,8 +116,6 @@ vim.keymap.set("n", "<M-j>", "<cmd>NavigatorDown<cr>")
 vim.keymap.set("n", "<M-h>", "<cmd>NavigatorLeft<cr>")
 vim.keymap.set("n", "<M-l>", "<cmd>NavigatorRight<cr>")
 
-vim.keymap.set("n", "<C-q>", "<cmd>close<cr>")
-
 vim.keymap.set("n", "<leader>ts", "<cmd>TSJToggle<cr>")
 
 vim.keymap.set("n", "md", "<cmd>diffthis<cr>")

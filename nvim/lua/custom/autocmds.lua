@@ -21,3 +21,48 @@ augroup("Spell", {
 		end,
 	},
 })
+
+autocmd("FileType", {
+	pattern = {
+		"help",
+		"lspinfo",
+		"man",
+		"notify",
+		"qf",
+		"query",
+		"startuptime",
+		"tsplayground",
+		"checkhealth",
+	},
+	callback = function(event)
+		vim.bo[event.buf].buflisted = false
+		vim.keymap.set(
+			"n",
+			"q",
+			"<cmd>close<cr>",
+			{ buffer = event.buf, silent = true }
+		)
+	end,
+})
+
+augroup("BigFiles", {
+	"BufReadPost",
+	{
+		pattern = "*",
+		callback = function(args)
+			local file_size = vim.fn.getfsize(args.file)
+
+			local file_too_big = file_size > 1024 * 1024
+
+			if file_too_big then
+				vim.notify("File is too big!")
+
+				vim.cmd("syntax off")
+				vim.cmd("syntax clear")
+				require("rainbow-delimiters").disable(0)
+				vim.cmd("NoMatchParen")
+				vim.cmd("TSBufDisable highlight")
+			end
+		end,
+	},
+})
