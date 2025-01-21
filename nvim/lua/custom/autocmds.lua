@@ -44,25 +44,3 @@ autocmd("FileType", {
 		)
 	end,
 })
-
-augroup("BigFiles", {
-	"BufReadPost",
-	{
-		pattern = "*",
-		callback = function(args)
-			local file_size = vim.fn.getfsize(args.file)
-
-			local file_too_big = file_size > 1024 * 1024
-
-			if file_too_big then
-				vim.notify("File is too big!")
-
-				vim.cmd("syntax off")
-				vim.cmd("syntax clear")
-				require("rainbow-delimiters").disable(0)
-				vim.cmd("NoMatchParen")
-				vim.cmd("TSBufDisable highlight")
-			end
-		end,
-	},
-})
