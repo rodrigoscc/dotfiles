@@ -2,7 +2,7 @@ local api = require("dropbar.api")
 
 vim.keymap.set(
 	{ "n" },
-	"<leader>tt",
+	"<leader>dp",
 	api.pick,
 	{ noremap = true, silent = true }
 )

@@ -24,3 +24,10 @@ vim.keymap.set(
 	vim.cmd.ObsidianSearch,
 	{ desc = "[s]earch [o]bsidian" }
 )
+
+vim.keymap.set(
+	"n",
+	"<leader>tt",
+	vim.cmd.ObsidianToday,
+	{ desc = "[o]bsidian today" }
+)

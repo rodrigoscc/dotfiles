@@ -70,6 +70,7 @@ return {
 			"ObsidianTags",
 			"ObsidianSearch",
 			"ObsidianNew",
+			"ObsidianToday",
 		},
 		dependencies = {
 			"nvim-lua/plenary.nvim",
