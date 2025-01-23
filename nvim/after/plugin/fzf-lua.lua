@@ -83,3 +83,12 @@ end
 vim.api.nvim_create_user_command("StartWorking", function()
 	open_file_at_startup()
 end, {})
+
+vim.keymap.set("n", "<leader>?", function()
+	local current_buffer_dir = vim.fn.expand("%:p:h")
+
+	fzf_lua.live_grep({
+		cwd = current_buffer_dir,
+		rg_opts = [[--no-ignore --column --line-number --no-heading --color=always --smart-case --max-columns=4096 -e]],
+	})
+end)
