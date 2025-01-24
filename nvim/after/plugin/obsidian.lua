@@ -29,5 +29,11 @@ vim.keymap.set(
 	"n",
 	"<leader>tt",
 	vim.cmd.ObsidianToday,
-	{ desc = "[o]bsidian today" }
+	{ desc = "obsidian today" }
+)
+vim.keymap.set(
+	"n",
+	"<leader>tT",
+	vim.cmd.ObsidianYesterday,
+	{ desc = "obsidian yesterday" }
 )
