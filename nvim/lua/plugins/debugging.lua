@@ -220,20 +220,4 @@ return {
 		lazy = true,
 		dependencies = { "mfussenegger/nvim-dap" },
 	},
-	{
-		"leoluz/nvim-dap-go",
-		opts = {},
-		lazy = true,
-		dependencies = { "mfussenegger/nvim-dap" },
-	},
-	{
-		"mfussenegger/nvim-dap-python",
-		lazy = true,
-		dependencies = { "mfussenegger/nvim-dap" },
-		config = function()
-			require("dap-python").setup("~/.venvs/debugpy/bin/python", {
-				console = "externalTerminal",
-			})
-		end,
-	},
 }
