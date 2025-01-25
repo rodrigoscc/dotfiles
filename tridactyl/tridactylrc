@@ -11,6 +11,9 @@ set editorcmd /opt/homebrew/bin/wezterm start -- nvim
 set hintfiltermode vimperator
 set hintchars 5432167890
 
+set hintstyles.fg active
+set hintstyles.bg active
+
 bind / fillcmdline find
 bind ? fillcmdline find --reverse
 bind n findnext --search-from-view
