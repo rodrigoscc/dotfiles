@@ -100,6 +100,11 @@ return {
 		"folke/noice.nvim",
 		event = "VeryLazy",
 		opts = {
+			lsp = {
+				signature = {
+					enabled = false,
+				},
+			},
 			routes = {
 				-- Filter write messages: https://github.com/folke/noice.nvim/issues/568#issuecomment-1673907587
 				{

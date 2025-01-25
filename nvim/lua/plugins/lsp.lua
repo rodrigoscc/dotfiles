@@ -220,6 +220,13 @@ return {
 					},
 				},
 			},
+			signature = {
+				enabled = true,
+				window = {
+					treesitter_highlighting = true,
+					show_documentation = true,
+				},
+			},
 		},
 		opts_extend = { "sources.default" },
 	},
