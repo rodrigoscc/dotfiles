@@ -101,6 +101,10 @@ return {
 					"show_documentation",
 					"hide_documentation",
 				},
+				["<C-s>"] = {
+					"show_signature",
+					"hide_signature",
+				},
 				["<C-y>"] = { "select_and_accept" },
 				["<C-e>"] = { "cancel", "fallback" },
 				["<C-p>"] = { "select_prev", "fallback" },
@@ -109,6 +113,7 @@ return {
 				["<Down>"] = { "select_next", "fallback" },
 				["<C-b>"] = {},
 				["<C-f>"] = {},
+				["<C-k>"] = {}, -- Obscures expand luasnip
 			},
 			appearance = {
 				-- Sets the fallback highlight groups to nvim-cmp's highlight groups
