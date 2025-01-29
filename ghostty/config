@@ -4,6 +4,8 @@ font-family = Maple Mono NF CN
 font-size = 13.0
 adjust-cell-height = 15%
 
+window-padding-balance = true
+
 cursor-color = #f6c177
 
 mouse-hide-while-typing = true
