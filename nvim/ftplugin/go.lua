@@ -1,4 +1,3 @@
-local make_repeatable = require("custom.repeat").make_repeatable
 local move_cursor = require("custom.cursor").move_cursor
 
 local function find_result_node(node)
@@ -25,22 +24,14 @@ local function get_left_node()
 	local row, col = unpack(vim.api.nvim_win_get_cursor(current_win))
 
 	local bufnr = vim.api.nvim_get_current_buf()
-	return vim.treesitter.get_node({ bufnr = bufnr, pos = { row - 1, col - 1 } })
+	return vim.treesitter.get_node({
+		bufnr = bufnr,
+		pos = { math.max(row - 1, 0), math.max(col - 1, 0) },
+	})
 end
 
 local function regular_comma()
-	local current_win = vim.api.nvim_get_current_win()
-	local _, original_cursor_column =
-		unpack(vim.api.nvim_win_get_cursor(current_win))
-
-	local line = vim.api.nvim_get_current_line()
-	local before = line:sub(1, original_cursor_column)
-	local after = line:sub(original_cursor_column + 1)
-
-	line = before .. "," .. after
-	vim.api.nvim_set_current_line(line)
-
-	move_cursor(1)
+	vim.api.nvim_put({ "," }, "c", false, true)
 end
 
 function my_comma()
@@ -101,4 +92,4 @@ function my_comma()
 	end
 end
 
-vim.keymap.set("i", ",", make_repeatable(my_comma), { buffer = true })
+vim.keymap.set("i", ",", my_comma, { buffer = true })
