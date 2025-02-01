@@ -68,6 +68,11 @@ end
 
 vim.on_key(function(key, typed)
 	if vim.fn.mode() == "i" and vim.bo.filetype == "go" and key == "," then
+		-- HACK: When dot repeating this, seems like the file is not reparsed, so my_comma may
+		-- miss a newly inserted result node. Calling vim.treesitter.start() seems to force a
+		-- reparse.
+		vim.treesitter.start(0)
+
 		my_comma()
 	end
 end)
