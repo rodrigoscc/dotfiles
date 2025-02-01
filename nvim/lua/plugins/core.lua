@@ -89,9 +89,12 @@ return {
 	},
 	{
 		"rstcruzo/http.nvim",
-		build = { ":TSUpdate http", ":Http update_grammar_queries" },
+		build = { ":TSUpdate http2", ":Http update_grammar_queries" },
 		lazy = true,
-		dependencies = { "nvim-treesitter/nvim-treesitter" },
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			"nvim-treesitter/nvim-treesitter",
+		},
 		keys = {
 			{ "<leader>ee", "<cmd>Http select_env<cr>" },
 			{ "<leader>ne", "<cmd>Http create_env<cr>" },

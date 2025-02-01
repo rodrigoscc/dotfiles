@@ -250,12 +250,13 @@ local SearchCount = {
 		end
 	end,
 	provider = function(self)
-		local search = self.search
-		return string.format(
-			"[%d/%d]",
-			search.current,
-			math.min(search.total, search.maxcount)
-		)
+		if self.search then
+			return string.format(
+				"[%d/%d]",
+				self.search.current,
+				math.min(self.search.total, self.search.maxcount)
+			)
+		end
 	end,
 	hl = { fg = colors.special2 },
 }
