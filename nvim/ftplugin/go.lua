@@ -1,19 +1,15 @@
 local move_cursor = require("custom.cursor").move_cursor
 
 local function find_result_node(node)
-	local parent = node:parent()
+	while node ~= nil and node:type() ~= "function_declaration" do
+		node = node:parent()
+	end
 
-	while parent ~= nil do
-		local parent_result_nodes = parent:field("result")
-		if
-			next(parent_result_nodes) ~= nil
-			and parent_result_nodes[1]:equal(node)
-		then
-			return parent_result_nodes[1]
+	if node ~= nil then
+		local result_nodes = node:field("result")
+		if next(result_nodes) ~= nil then
+			return result_nodes[1]
 		end
-
-		node = parent
-		parent = node:parent()
 	end
 
 	return nil
@@ -30,14 +26,9 @@ local function get_left_node()
 	})
 end
 
-local function regular_comma()
-	vim.api.nvim_put({ "," }, "c", false, true)
-end
-
 function my_comma()
 	local cursor_node = vim.treesitter.get_node()
 	if cursor_node == nil then
-		regular_comma()
 		return
 	end
 
@@ -66,30 +57,17 @@ function my_comma()
 			local after = line:sub(end_column + 1)
 			local between = line:sub(start_column + 1, end_column)
 
-			local current_win = vim.api.nvim_get_current_win()
-			local _, original_cursor_column =
-				unpack(vim.api.nvim_win_get_cursor(current_win))
-
-			local comma_position = original_cursor_column
-
-			if comma_position > start_column - 1 then
-				comma_position = comma_position + 1
-			elseif comma_position >= end_column + 1 then
-				comma_position = comma_position + 2
-			end
-
 			line = before .. "(" .. between .. ")" .. after
-			line = line:sub(1, comma_position)
-				.. ","
-				.. line:sub(comma_position + 1)
 
 			vim.api.nvim_set_current_line(line)
 
-			move_cursor(2)
+			move_cursor(1)
 		end
-	else
-		regular_comma()
 	end
 end
 
-vim.keymap.set("i", ",", my_comma, { buffer = true })
+vim.on_key(function(key, typed)
+	if vim.fn.mode() == "i" and vim.bo.filetype == "go" and key == "," then
+		my_comma()
+	end
+end)
