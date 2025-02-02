@@ -184,7 +184,7 @@ return {
 						},
 					},
 					http = {
-						name = "http", -- IMPORTANT: use the same name as you would for nvim-cmp
+						name = "http",
 						module = "blink.compat.source",
 					},
 					obsidian = {
