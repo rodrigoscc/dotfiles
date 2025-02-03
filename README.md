@@ -1,4 +1,4 @@
 # Package Managers
-- Packer (neovim)
+- lazy.nvim (neovim)
 - zplug (zsh)
 - tpm (tmux)
