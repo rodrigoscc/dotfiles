@@ -88,7 +88,7 @@ return {
 		},
 	},
 	{
-		"rstcruzo/http.nvim",
+		"rodrigoscc/http.nvim",
 		build = { ":TSUpdate http2", ":Http update_grammar_queries" },
 		lazy = true,
 		dependencies = {
