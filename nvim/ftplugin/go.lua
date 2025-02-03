@@ -1,7 +1,11 @@
 local move_cursor = require("custom.cursor").move_cursor
 
 local function find_result_node(node)
-	while node ~= nil and node:type() ~= "function_declaration" do
+	while
+		node ~= nil
+		and node:type() ~= "function_declaration"
+		and node:type() ~= "method_declaration"
+	do
 		node = node:parent()
 	end
 
