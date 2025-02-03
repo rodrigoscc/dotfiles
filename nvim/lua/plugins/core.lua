@@ -107,7 +107,7 @@ return {
 		ft = "http",
 		config = function()
 			local http = require("http-nvim")
-			http.setup()
+			http.setup({ win_config = { split = "right" } })
 
 			vim.api.nvim_create_autocmd({ "FileType" }, {
 				pattern = "http",
