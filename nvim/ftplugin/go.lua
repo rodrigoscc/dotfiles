@@ -5,11 +5,17 @@ local function find_result_node(node)
 		node ~= nil
 		and node:type() ~= "function_declaration"
 		and node:type() ~= "method_declaration"
+		and node:type() ~= "block"
 	do
 		node = node:parent()
 	end
 
 	if node ~= nil then
+		if node:type() == "block" then
+			-- Inside body
+			return nil
+		end
+
 		local result_nodes = node:field("result")
 		if next(result_nodes) ~= nil then
 			return result_nodes[1]
