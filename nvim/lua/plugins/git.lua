@@ -66,7 +66,7 @@ return {
 						{
 							"n",
 							"q",
-							vim.cmd.tabclose,
+							vim.cmd.DiffviewClose,
 							{ desc = "Close Diffview" },
 						},
 						{
