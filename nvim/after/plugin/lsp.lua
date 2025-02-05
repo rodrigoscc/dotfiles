@@ -10,6 +10,7 @@ local mason_ensure_installed = {
 	"golangci-lint",
 	"codespell",
 	"commitlint",
+	"buf",
 }
 
 -- Ensure installed for formatters and diagnostics
