@@ -43,6 +43,7 @@ return {
 				{ desc = "[g]it [d]iff" },
 			},
 		},
+		cmd = { "DiffviewOpen", "DiffviewFileHistory", "DiffviewLog" },
 		config = function()
 			local diffview = require("diffview")
 
