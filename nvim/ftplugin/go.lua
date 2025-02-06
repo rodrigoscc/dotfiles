@@ -1,23 +1,19 @@
 local move_cursor = require("custom.cursor").move_cursor
 
 local function find_result_node(node)
+	local parent = node:parent()
+
 	while
-		node ~= nil
-		and node:type() ~= "function_declaration"
-		and node:type() ~= "method_declaration"
-		and node:type() ~= "block"
+		parent ~= nil
+		and parent:type() ~= "function_declaration"
+		and parent:type() ~= "method_declaration"
 	do
-		node = node:parent()
+		parent = parent:parent()
 	end
 
-	if node ~= nil then
-		if node:type() == "block" then
-			-- Inside body
-			return nil
-		end
-
-		local result_nodes = node:field("result")
-		if next(result_nodes) ~= nil then
+	if parent ~= nil then
+		local result_nodes = parent:field("result")
+		if next(result_nodes) ~= nil and result_nodes[1]:equal(node) then
 			return result_nodes[1]
 		end
 	end
