@@ -99,7 +99,15 @@ return {
 						{
 							"n",
 							"q",
-							vim.cmd.tabclose,
+							vim.cmd.DiffviewClose,
+							{ desc = "Close Diffview" },
+						},
+					},
+					file_history_panel = {
+						{
+							"n",
+							"q",
+							vim.cmd.DiffviewClose,
 							{ desc = "Close Diffview" },
 						},
 					},
