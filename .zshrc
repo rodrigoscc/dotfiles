@@ -3,7 +3,7 @@ export EDITOR=nvim
 
 # Luarocks needs this to work properly
 if [ -x "$(command -v luarocks)" ]; then
-    eval $(luarocks path)
+    eval $(luarocks --lua-version=5.1 path)
 fi
 
 # Make sure the history is appended to new shells.
