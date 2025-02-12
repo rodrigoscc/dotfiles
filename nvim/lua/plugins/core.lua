@@ -162,6 +162,11 @@ return {
 						["alt-f"] = false,
 						["alt-h"] = false,
 						["alt-i"] = false,
+						["ctrl-i"] = {
+							fn = require("fzf-lua").actions.toggle_ignore,
+							reuse = true,
+							header = "Disable .gitignore",
+						},
 						["ctrl-d"] = {
 							fn = function(...)
 								require("fzf-lua").actions.file_vsplit(...)
