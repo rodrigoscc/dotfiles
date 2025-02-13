@@ -42,6 +42,13 @@ return {
 				end,
 				{ desc = "[g]it [d]iff" },
 			},
+			{
+				"<leader>gf",
+				function()
+					vim.cmd("DiffviewFileHistory %")
+				end,
+				{ desc = "[g]it [f]ile history" },
+			},
 		},
 		cmd = { "DiffviewOpen", "DiffviewFileHistory", "DiffviewLog" },
 		config = function()
