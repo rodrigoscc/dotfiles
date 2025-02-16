@@ -229,7 +229,7 @@ return {
 				enabled = true,
 				window = {
 					treesitter_highlighting = true,
-					show_documentation = true,
+					show_documentation = false,
 				},
 			},
 		},
