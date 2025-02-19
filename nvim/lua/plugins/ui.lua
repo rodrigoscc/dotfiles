@@ -27,11 +27,6 @@ return {
 	},
 	{ "rebelot/heirline.nvim" },
 	{
-		"echasnovski/mini.indentscope",
-		version = "*",
-		opts = { symbol = "│", options = { try_as_border = true } },
-	},
-	{
 		"folke/todo-comments.nvim",
 		dependencies = { "nvim-lua/plenary.nvim" },
 		opts = {
@@ -44,11 +39,6 @@ return {
 				fg = "BOLD",
 			},
 		},
-	},
-	{ "echasnovski/mini.cursorword", version = "*", opts = {} },
-	{
-		"stevearc/dressing.nvim",
-		opts = { input = { relative = "editor" } },
 	},
 	{
 		"catgoose/nvim-colorizer.lua",

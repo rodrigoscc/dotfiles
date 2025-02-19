@@ -94,6 +94,7 @@ return {
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 			"nvim-treesitter/nvim-treesitter",
+			"folke/snacks.nvim",
 		},
 		keys = {
 			{ "<leader>ee", "<cmd>Http select_env<cr>" },
@@ -140,101 +141,31 @@ return {
 		end,
 	},
 	{
-		"ibhagwan/fzf-lua",
-		dependencies = { "nvim-tree/nvim-web-devicons" },
-		config = function()
-			require("fzf-lua").setup({
-				{ "ivy", "hide" },
-				defaults = {
-					keymap = {
-						fzf = {
-							["ctrl-q"] = "select-all+accept",
-						},
-						builtin = {
-							["<C-c>"] = "hide",
-						},
-					},
+		"folke/snacks.nvim",
+		priority = 1000,
+		lazy = false,
+		---@type snacks.Config
+		opts = {
+			bigfile = { enabled = true },
+			dashboard = { enabled = false },
+			explorer = { enabled = true },
+			indent = { enabled = true },
+			input = { enabled = true },
+			notifier = {
+				enabled = true,
+				timeout = 3000,
+			},
+			picker = { enabled = true, layout = { preset = "ivy" } },
+			quickfile = { enabled = true },
+			scope = { enabled = true },
+			scroll = { enabled = false },
+			statuscolumn = { enabled = true },
+			words = { enabled = true },
+			styles = {
+				notification = {
+					-- wo = { wrap = true } -- Wrap notifications
 				},
-				files = {
-					rg_opts = [[--color=never --files --hidden --follow -g "!.git"]],
-					fd_opts = [[--color=never --type f --type l --hidden --follow --exclude .git]],
-					actions = {
-						["alt-f"] = false,
-						["alt-h"] = false,
-						["alt-i"] = false,
-						["ctrl-i"] = {
-							fn = require("fzf-lua").actions.toggle_ignore,
-							reuse = true,
-							header = "Disable .gitignore",
-						},
-						["ctrl-d"] = {
-							fn = function(...)
-								require("fzf-lua").actions.file_vsplit(...)
-								vim.cmd("windo diffthis")
-								local switch = vim.api.nvim_replace_termcodes(
-									"<C-w>h",
-									true,
-									false,
-									true
-								)
-								vim.api.nvim_feedkeys(switch, "t", false)
-							end,
-							desc = "diff-file",
-						},
-					},
-				},
-				git = {
-					branches = {
-						actions = {
-							["ctrl-d"] = {
-								fn = function(selected)
-									-- TODO: if diffview is not loaded, this fails. Double check lazy loading
-									vim.cmd.DiffviewOpen({
-										args = { selected[1] },
-									})
-								end,
-								desc = "diffview-git-branch",
-							},
-						},
-					},
-				},
-				winopts = {
-					backdrop = false,
-					preview = {
-						horizontal = "right:50%", -- right|left:size
-					},
-					title_flags = false,
-				},
-				previewers = {
-					builtin = {
-						extensions = {
-							["png"] = { "chafa" },
-							["svg"] = { "chafa" },
-							["jpg"] = { "chafa" },
-							["gif"] = { "chafa" },
-						},
-					},
-				},
-				lsp = {
-					symbols = {
-						regex_filter = function(item)
-							if
-								vim.tbl_contains({
-									"Variable",
-									"String",
-									"Number",
-									"Text",
-									"Boolean",
-								}, item.kind)
-							then
-								return false
-							else
-								return true
-							end
-						end,
-					},
-				},
-			})
-		end,
+			},
+		},
 	},
 }

@@ -60,18 +60,10 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
 		vim.keymap.set("n", "gl", vim.diagnostic.open_float, opts)
 		vim.keymap.set("n", "gr", function()
-			require("fzf-lua").lsp_references({
-				jump_to_single_result = true,
-				ignore_current_line = true,
-			})
+			Snacks.picker.lsp_references()
 		end, opts)
-		vim.keymap.set(
-			"n",
-			"gy",
-			require("fzf-lua").lsp_live_workspace_symbols,
-			opts
-		)
-		vim.keymap.set("n", "gY", require("fzf-lua").lsp_document_symbols, opts)
+		vim.keymap.set("n", "gy", Snacks.picker.lsp_workspace_symbols, opts)
+		vim.keymap.set("n", "gY", Snacks.picker.lsp_symbols, opts)
 
 		vim.keymap.set(
 			"n",

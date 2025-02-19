@@ -1,5 +1,3 @@
-local fzf_lua = require("fzf-lua")
-
 vim.g.scratch_dir = ".scratch"
 
 local filetype_extension = {
@@ -63,7 +61,7 @@ local function new_scratch()
 end
 
 local function find_scratch()
-	fzf_lua.files({ cwd = vim.g.scratch_dir })
+	Snacks.picker.files({ cwd = vim.g.scratch_dir })
 end
 
 vim.api.nvim_create_user_command("NewScratch", new_scratch, {})
