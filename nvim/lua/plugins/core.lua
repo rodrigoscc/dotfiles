@@ -147,9 +147,7 @@ return {
 		---@type snacks.Config
 		opts = {
 			bigfile = { enabled = true },
-			dashboard = { enabled = false },
-			explorer = { enabled = true },
-			indent = { enabled = true },
+			indent = { scope = { enabled = false } },
 			input = { enabled = true },
 			notifier = {
 				enabled = true,
@@ -158,8 +156,7 @@ return {
 			picker = { enabled = true, layout = { preset = "ivy" } },
 			quickfile = { enabled = true },
 			scope = { enabled = true },
-			scroll = { enabled = false },
-			statuscolumn = { enabled = true },
+			statuscolumn = { left = { "sign" } },
 			words = { enabled = true },
 			styles = {
 				notification = {
