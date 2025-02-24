@@ -162,12 +162,9 @@ return {
 		end,
 	},
 	{
-		"altermo/ultimate-autopair.nvim",
-		event = { "InsertEnter", "CmdlineEnter" },
-		branch = "v0.6",
-		opts = {
-			cmap = false, -- It's a pain to have this enabled in command-line mode.
-		},
+		"windwp/nvim-autopairs",
+		event = "InsertEnter",
+		config = true,
 	},
 	{
 		"windwp/nvim-ts-autotag",

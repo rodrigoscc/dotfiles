@@ -9,8 +9,6 @@ local function break_string()
 	local node_type = cursor_node:type()
 
 	if not string.find(node_type, "string") then
-		local autopairs = require("ultimate-autopair.core")
-		vim.api.nvim_feedkeys(autopairs.run_run("\r"), "n", false)
 		return
 	end
 
@@ -39,9 +37,6 @@ local function break_string()
 			"n",
 			false
 		)
-	else
-		local autopairs = require("ultimate-autopair.core")
-		vim.api.nvim_feedkeys(autopairs.run_run("\r"), "n", false)
 	end
 end
 
@@ -93,15 +88,8 @@ local function prepend_f_to_f_string()
 	end
 end
 
-local function trigger_autopairs_op_brace()
-	local autopairs = require("ultimate-autopair.core")
-	local autopairs_keys = autopairs.run_run("{")
-	vim.api.nvim_feedkeys(autopairs_keys, "n", false)
-end
-
 vim.keymap.set("i", "<c-m>", break_string, { buffer = true })
 
 vim.keymap.set("i", "{", function()
-	trigger_autopairs_op_brace()
 	prepend_f_to_f_string()
 end, { buffer = true, remap = true })
