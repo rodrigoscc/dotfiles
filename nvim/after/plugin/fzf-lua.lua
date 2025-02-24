@@ -7,6 +7,13 @@ vim.keymap.set("n", "<leader>/", Snacks.picker.grep)
 vim.keymap.set("n", "<leader>*", Snacks.picker.grep_word)
 vim.keymap.set("x", "<leader>*", Snacks.picker.grep_word)
 
+vim.keymap.set("n", "]w", function()
+	Snacks.words.jump(1, true)
+end)
+vim.keymap.set("n", "[w", function()
+	Snacks.words.jump(-1, true)
+end)
+
 vim.keymap.set(
 	"n",
 	"<leader>ss",
