@@ -98,7 +98,7 @@ vim.keymap.set("n", "<leader>fd", function()
 end, { desc = "[f]ind [d]otfile" })
 
 local function open_file_at_startup()
-	Snacks.picker.files()
+	Snacks.picker.smart()
 end
 
 vim.api.nvim_create_user_command("StartWorking", function()
