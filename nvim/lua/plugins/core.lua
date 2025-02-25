@@ -144,6 +144,7 @@ return {
 		"folke/snacks.nvim",
 		priority = 1000,
 		lazy = false,
+		commit = "5eac729fa290248acfe10916d92a5ed5e5c0f9ed",
 		---@type snacks.Config
 		opts = {
 			bigfile = { enabled = true },
