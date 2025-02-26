@@ -1,3 +1,16 @@
+local npairs = require("nvim-autopairs")
+
+local function trigger_autopairs_op_brace()
+	local bufnr = vim.api.nvim_get_current_buf()
+	local autopairs_keys = npairs.autopairs_map(bufnr, "{")
+	vim.api.nvim_feedkeys(autopairs_keys, "n", false)
+end
+
+local function trigger_autopairs_cr()
+	local input = npairs.autopairs_cr()
+	vim.api.nvim_feedkeys(input, "n", false)
+end
+
 local function break_string()
 	local bufnr = vim.api.nvim_get_current_buf()
 
@@ -9,6 +22,7 @@ local function break_string()
 	local node_type = cursor_node:type()
 
 	if not string.find(node_type, "string") then
+		trigger_autopairs_cr()
 		return
 	end
 
@@ -37,6 +51,8 @@ local function break_string()
 			"n",
 			false
 		)
+	else
+		trigger_autopairs_cr()
 	end
 end
 
@@ -91,5 +107,6 @@ end
 vim.keymap.set("i", "<c-m>", break_string, { buffer = true })
 
 vim.keymap.set("i", "{", function()
+	trigger_autopairs_op_brace()
 	prepend_f_to_f_string()
 end, { buffer = true, remap = true })
