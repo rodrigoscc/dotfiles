@@ -156,6 +156,7 @@ return {
 			picker = { enabled = true, layout = { preset = "ivy" } },
 			quickfile = { enabled = true },
 			scope = { enabled = true },
+			statuscolumn = { left = { "sign" } },
 			words = { enabled = true },
 			styles = {
 				notification = {
