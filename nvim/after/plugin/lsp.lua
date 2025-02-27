@@ -149,8 +149,6 @@ vim.diagnostic.config({
 	},
 })
 
-local capabilities = require("blink.cmp").get_lsp_capabilities()
-
 require("mason").setup({})
 require("mason-lspconfig").setup({
 	ensure_installed = {
@@ -180,7 +178,7 @@ require("mason-lspconfig").setup({
 			local lspconfig = require("lspconfig")
 
 			local config = {
-				capabilities = capabilities,
+				capabilities = require("blink.cmp").get_lsp_capabilities(),
 				settings = {
 					Lua = {
 						runtime = {
@@ -206,7 +204,7 @@ require("mason-lspconfig").setup({
 				root_dir = function()
 					return vim.fn.getcwd()
 				end,
-				capabilities = capabilities,
+				capabilities = require("blink.cmp").get_lsp_capabilities(),
 			})
 		end,
 		ts_ls = function()
@@ -237,7 +235,7 @@ require("mason-lspconfig").setup({
 						},
 					},
 				},
-				capabilities = capabilities,
+				capabilities = require("blink.cmp").get_lsp_capabilities(),
 			})
 		end,
 		gopls = function()
@@ -268,7 +266,7 @@ require("mason-lspconfig").setup({
 						symbolScope = "workspace",
 					},
 				},
-				capabilities = capabilities,
+				capabilities = require("blink.cmp").get_lsp_capabilities(),
 			})
 		end,
 		ruff = function() end,
@@ -290,14 +288,14 @@ require("mason-lspconfig").setup({
 						validate = { enable = true },
 					},
 				},
-				capabilities = capabilities,
+				capabilities = require("blink.cmp").get_lsp_capabilities(),
 			})
 		end,
 		yamlls = function()
 			local lspconfig = require("lspconfig")
 			lspconfig.yamlls.setup({
 				-- Have to add this for yamlls to understand that we support line folding
-				capabilities = capabilities,
+				capabilities = require("blink.cmp").get_lsp_capabilities(),
 				on_attach = function(client)
 					client.server_capabilities.dynamicRegistration = false
 					client.server_capabilities.lineFoldingOnly = true
