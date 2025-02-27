@@ -101,7 +101,7 @@ require("nvim-treesitter.configs").setup({
 					query = "@function.outer",
 					desc = "🌲peek function definition",
 				},
-				["gcp"] = {
+				["gP"] = {
 					query = "@class.outer",
 					desc = "🌲peek class definition",
 				},
