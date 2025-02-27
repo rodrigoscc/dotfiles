@@ -19,7 +19,7 @@ return {
 			{
 				"<leader>gp",
 				function()
-					vim.cmd("Git! push")
+					vim.cmd("Git! -c push.autoSetupRemote=true push")
 				end,
 			},
 		},
