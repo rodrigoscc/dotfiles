@@ -10,10 +10,6 @@ vim.keymap.set("x", "<", "<gv")
 vim.keymap.set("x", ">", ">gv")
 
 vim.keymap.set("n", "J", "mzJ`z")
-vim.keymap.set("n", "<C-d>", "<cmd>normal! <C-d>zz<CR>")
-vim.keymap.set("n", "<C-u>", "<cmd>normal! <C-u>zz<CR>")
-vim.keymap.set("n", "n", "nzzzv")
-vim.keymap.set("n", "N", "Nzzzv")
 
 vim.keymap.set("n", "<C-s>", "<cmd>silent update<cr>")
 
