@@ -153,7 +153,21 @@ return {
 				enabled = true,
 				timeout = 3000,
 			},
-			picker = { enabled = true, layout = { preset = "ivy" } },
+			picker = {
+				enabled = true,
+				layout = { preset = "ivy" },
+				actions = {
+					diff_branch = function(picker)
+						picker:close()
+
+						local current = picker:current()
+
+						if current and current.commit then
+							vim.cmd.DiffviewOpen(current.commit .. "...HEAD")
+						end
+					end,
+				},
+			},
 			quickfile = { enabled = true },
 			scope = { enabled = true },
 			statuscolumn = { left = { "sign" } },

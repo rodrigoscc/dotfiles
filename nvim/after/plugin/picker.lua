@@ -43,12 +43,20 @@ vim.keymap.set(
 
 vim.keymap.set("n", "<leader>rr", Snacks.picker.resume, { desc = "[r]esume" })
 
-vim.keymap.set(
-	"n",
-	"<leader>gb",
-	Snacks.picker.git_branches,
-	{ desc = "[g]it [b]ranches" }
-)
+vim.keymap.set("n", "<leader>gb", function()
+	Snacks.picker.git_branches({
+		win = {
+			input = {
+				keys = {
+					["<C-d>"] = {
+						"diff_branch",
+						mode = { "i", "n" },
+					},
+				},
+			},
+		},
+	})
+end, { desc = "[g]it [b]ranches" })
 vim.keymap.set(
 	"n",
 	"<leader>gl",
