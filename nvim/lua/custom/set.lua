@@ -68,13 +68,6 @@ vim.api.nvim_create_autocmd("FileType", {
 	end,
 })
 
-vim.api.nvim_create_autocmd("FileType", {
-	pattern = "markdown",
-	callback = function()
-		vim.opt.conceallevel = 2
-	end,
-})
-
 -- From vim defaults.vim
 -- ---
 -- When editing a file, always jump to the last known cursor position.
