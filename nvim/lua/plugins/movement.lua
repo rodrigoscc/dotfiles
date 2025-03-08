@@ -1,6 +1,5 @@
 return {
 	{ "numToStr/Navigator.nvim", opts = {} },
-	{ "chaoren/vim-wordmotion" },
 	{
 		"folke/flash.nvim",
 		event = "VeryLazy",
