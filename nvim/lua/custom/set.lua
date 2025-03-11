@@ -32,7 +32,6 @@ vim.opt.showmode = false
 
 vim.opt.splitbelow = true
 vim.opt.splitright = true
-vim.opt.switchbuf = { "useopen", "uselast" }
 
 -- Not setting this since virt-column handles this.
 -- vim.opt.colorcolumn = "80"

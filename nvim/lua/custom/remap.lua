@@ -11,7 +11,7 @@ vim.keymap.set("x", ">", ">gv")
 
 vim.keymap.set("n", "J", "mzJ`z")
 
-vim.keymap.set("n", "<C-s>", "<cmd>silent update<cr>")
+vim.keymap.set("n", "<C-s>", "<cmd>silent write<cr>")
 
 -- Default <C-w>t is useless to me, <C-w>T is more useful
 vim.keymap.set("n", "<C-w>t", "<C-w>T")
