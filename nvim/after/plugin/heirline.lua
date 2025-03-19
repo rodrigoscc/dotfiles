@@ -467,9 +467,6 @@ local Diagnostics = {
 	},
 }
 
---[[
-  --  GIT BLOCK
-  --]]
 local GitBlock = {
 	condition = function()
 		local is_git_repo = conditions.is_git_repo()
@@ -479,22 +476,6 @@ local GitBlock = {
 	init = function(self)
 		self.status_dict = vim.b.gitsigns_status_dict
 	end,
-
-	{
-		{
-			hl = { fg = colors.special2 },
-			provider = function()
-				return " "
-			end,
-		},
-		{
-			hl = { fg = colors.special2 },
-			provider = function(self)
-				return self.status_dict.head
-			end,
-		},
-	},
-
 	{
 		{
 			hl = { fg = colors.git.add },
@@ -517,6 +498,30 @@ local GitBlock = {
 			provider = function(self)
 				local count = self.status_dict.removed or 0
 				return count > 0 and ("  " .. count .. " ")
+			end,
+		},
+	},
+	{ provider = " " },
+}
+
+local GitBranchBlock = {
+	condition = function()
+		return conditions.is_git_repo()
+	end,
+	init = function(self)
+		self.status_dict = vim.b.gitsigns_status_dict
+	end,
+	{
+		{
+			hl = { fg = colors.special2 },
+			provider = function()
+				return " "
+			end,
+		},
+		{
+			hl = { fg = colors.special2 },
+			provider = function(self)
+				return self.status_dict.head
 			end,
 		},
 	},
@@ -559,6 +564,7 @@ local statusline = {
 	{ ViMode },
 	{ FileBlock },
 	{ FileEncoding },
+	{ GitBranchBlock },
 	{ SearchCount },
 	{ MacroRec },
 	{ TogglesElement },
