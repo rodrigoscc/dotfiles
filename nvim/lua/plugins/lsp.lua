@@ -98,6 +98,7 @@ return {
 		---@type blink.cmp.Config
 		opts = {
 			keymap = {
+				preset = "none",
 				["<C-space>"] = {
 					"show",
 					"show_documentation",
