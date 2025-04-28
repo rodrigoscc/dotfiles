@@ -22,13 +22,16 @@ function struct_receiver_name(type_name, is_pointer)
 	local _, first_match = query:iter_matches(tree:root(), 0)()
 
 	if first_match ~= nil then
-		for id, node in pairs(first_match) do
+		for id, nodes in pairs(first_match) do
 			local capture_name = query.captures[id]
-			local capture_value = vim.treesitter.get_node_text(node, 0)
 
-			if capture_name == "name" then
-				receiver_name = capture_value
-				break
+			for _, node in ipairs(nodes) do
+				local capture_value = vim.treesitter.get_node_text(node, 0)
+
+				if capture_name == "name" then
+					receiver_name = capture_value
+					break
+				end
 			end
 		end
 	end
