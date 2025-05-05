@@ -90,9 +90,6 @@ vim.keymap.set(
 )
 vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
 
-vim.keymap.set("n", "]<space>", "mzo<esc>`z")
-vim.keymap.set("n", "[<space>", "mzO<esc>`z")
-
 vim.keymap.set("n", "<leader>sf", function()
 	vim.cmd("so")
 
