@@ -149,7 +149,123 @@ vim.diagnostic.config({
 	},
 })
 
-require("mason").setup({})
+-- This seems to take no effect though, ruff lsp is still started. Check later
+vim.lsp.enable("ruff", false)
+vim.lsp.enable("buf_ls", false)
+
+vim.lsp.config("*", {
+	capabilities = require("blink.cmp").get_lsp_capabilities(),
+})
+
+vim.lsp.config("lua_ls", {
+	capabilities = require("blink.cmp").get_lsp_capabilities(),
+	settings = {
+		Lua = {
+			runtime = {
+				version = "LuaJIT",
+			},
+			diagnostics = {
+				globals = { "vim" },
+			},
+			workspace = {
+				library = {
+					vim.env.VIMRUNTIME,
+				},
+			},
+		},
+	},
+})
+
+vim.lsp.config("jsonls", {
+	settings = {
+		json = {
+			validate = { enable = true },
+			schemas = require("schemastore").json.schemas(),
+		},
+	},
+	capabilities = require("blink.cmp").get_lsp_capabilities(),
+})
+
+vim.lsp.config("ts_ls", {
+	settings = {
+		javascript = {
+			inlayHints = {
+				includeInlayEnumMemberValueHints = true,
+				includeInlayFunctionLikeReturnTypeHints = true,
+				includeInlayFunctionParameterTypeHints = true,
+				includeInlayParameterNameHints = "all", -- 'none' | 'literals' | 'all';
+				includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+				includeInlayPropertyDeclarationTypeHints = true,
+				includeInlayVariableTypeHints = true,
+			},
+		},
+
+		typescript = {
+			inlayHints = {
+				includeInlayEnumMemberValueHints = true,
+				includeInlayFunctionLikeReturnTypeHints = true,
+				includeInlayFunctionParameterTypeHints = true,
+				includeInlayParameterNameHints = "all", -- 'none' | 'literals' | 'all';
+				includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+				includeInlayPropertyDeclarationTypeHints = true,
+				includeInlayVariableTypeHints = true,
+			},
+		},
+	},
+	capabilities = require("blink.cmp").get_lsp_capabilities(),
+})
+
+vim.lsp.config("gopls", {
+	settings = {
+		gopls = {
+			codelenses = {
+				gc_details = false,
+				generate = true,
+				regenerate_cgo = true,
+				run_govulncheck = true,
+				test = true,
+				tidy = true,
+				upgrade_dependency = true,
+				vendor = true,
+			},
+			hints = {
+				assignVariableTypes = true,
+				compositeLiteralFields = true,
+				compositeLiteralTypes = true,
+				constantValues = true,
+				functionTypeParameters = true,
+				parameterNames = true,
+				rangeVariableTypes = true,
+			},
+			usePlaceholders = false,
+			symbolScope = "workspace",
+		},
+	},
+	capabilities = require("blink.cmp").get_lsp_capabilities(),
+})
+
+vim.lsp.config("yamlls", {
+	capabilities = require("blink.cmp").get_lsp_capabilities(),
+	-- Have to add this for yamlls to understand that we support line folding
+	on_attach = function(client)
+		client.server_capabilities.dynamicRegistration = false
+		client.server_capabilities.lineFoldingOnly = true
+	end,
+	settings = {
+		yaml = {
+			schemaStore = {
+				-- You must disable built-in schemaStore support if you want to use
+				-- this plugin and its advanced options like `ignore`.
+				enable = false,
+				-- Avoid TypeError: Cannot read properties of undefined (reading 'length')
+				url = "",
+			},
+			schemas = require("schemastore").yaml.schemas(),
+		},
+	},
+})
+
+require("mason").setup()
 require("mason-lspconfig").setup({
 	ensure_installed = {
 		"ts_ls",
@@ -163,163 +279,5 @@ require("mason-lspconfig").setup({
 		"bashls",
 		"svelte",
 		"tailwindcss",
-	},
-	handlers = {
-		function(server_name)
-			local lspconfig = require("lspconfig")
-			local config = {}
-
-			config.capabilities =
-				require("blink.cmp").get_lsp_capabilities(config.capabilities)
-
-			lspconfig[server_name].setup(config)
-		end,
-		lua_ls = function()
-			local lspconfig = require("lspconfig")
-
-			local config = {
-				capabilities = require("blink.cmp").get_lsp_capabilities(),
-				settings = {
-					Lua = {
-						runtime = {
-							version = "LuaJIT",
-						},
-						diagnostics = {
-							globals = { "vim" },
-						},
-						workspace = {
-							library = {
-								vim.env.VIMRUNTIME,
-							},
-						},
-					},
-				},
-			}
-
-			lspconfig.lua_ls.setup(config)
-		end,
-		pyright = function()
-			local lspconfig = require("lspconfig")
-			lspconfig.pyright.setup({
-				root_dir = function()
-					return vim.fn.getcwd()
-				end,
-				capabilities = require("blink.cmp").get_lsp_capabilities(),
-			})
-		end,
-		ts_ls = function()
-			local lspconfig = require("lspconfig")
-			lspconfig.ts_ls.setup({
-				settings = {
-					javascript = {
-						inlayHints = {
-							includeInlayEnumMemberValueHints = true,
-							includeInlayFunctionLikeReturnTypeHints = true,
-							includeInlayFunctionParameterTypeHints = true,
-							includeInlayParameterNameHints = "all", -- 'none' | 'literals' | 'all';
-							includeInlayParameterNameHintsWhenArgumentMatchesName = true,
-							includeInlayPropertyDeclarationTypeHints = true,
-							includeInlayVariableTypeHints = true,
-						},
-					},
-
-					typescript = {
-						inlayHints = {
-							includeInlayEnumMemberValueHints = true,
-							includeInlayFunctionLikeReturnTypeHints = true,
-							includeInlayFunctionParameterTypeHints = true,
-							includeInlayParameterNameHints = "all", -- 'none' | 'literals' | 'all';
-							includeInlayParameterNameHintsWhenArgumentMatchesName = true,
-							includeInlayPropertyDeclarationTypeHints = true,
-							includeInlayVariableTypeHints = true,
-						},
-					},
-				},
-				capabilities = require("blink.cmp").get_lsp_capabilities(),
-			})
-		end,
-		gopls = function()
-			local lspconfig = require("lspconfig")
-			lspconfig.gopls.setup({
-				settings = {
-					gopls = {
-						codelenses = {
-							gc_details = false,
-							generate = true,
-							regenerate_cgo = true,
-							run_govulncheck = true,
-							test = true,
-							tidy = true,
-							upgrade_dependency = true,
-							vendor = true,
-						},
-						hints = {
-							assignVariableTypes = true,
-							compositeLiteralFields = true,
-							compositeLiteralTypes = true,
-							constantValues = true,
-							functionTypeParameters = true,
-							parameterNames = true,
-							rangeVariableTypes = true,
-						},
-						usePlaceholders = false,
-						symbolScope = "workspace",
-					},
-				},
-				capabilities = require("blink.cmp").get_lsp_capabilities(),
-			})
-		end,
-		ruff = function() end,
-		buf_ls = function() end,
-		jsonls = function()
-			local lspconfig = require("lspconfig")
-			lspconfig.jsonls.setup({
-				-- lazy-load schemastore when needed
-				on_new_config = function(new_config)
-					new_config.settings.json.schemas = new_config.settings.json.schemas
-						or {}
-					vim.list_extend(
-						new_config.settings.json.schemas,
-						require("schemastore").json.schemas()
-					)
-				end,
-				settings = {
-					json = {
-						validate = { enable = true },
-					},
-				},
-				capabilities = require("blink.cmp").get_lsp_capabilities(),
-			})
-		end,
-		yamlls = function()
-			local lspconfig = require("lspconfig")
-			lspconfig.yamlls.setup({
-				-- Have to add this for yamlls to understand that we support line folding
-				capabilities = require("blink.cmp").get_lsp_capabilities(),
-				on_attach = function(client)
-					client.server_capabilities.dynamicRegistration = false
-					client.server_capabilities.lineFoldingOnly = true
-				end,
-				-- lazy-load schemastore when needed
-				on_new_config = function(new_config)
-					new_config.settings.yaml.schemas = vim.tbl_deep_extend(
-						"force",
-						new_config.settings.yaml.schemas or {},
-						require("schemastore").yaml.schemas()
-					)
-				end,
-				settings = {
-					yaml = {
-						schemaStore = {
-							-- You must disable built-in schemaStore support if you want to use
-							-- this plugin and its advanced options like `ignore`.
-							enable = false,
-							-- Avoid TypeError: Cannot read properties of undefined (reading 'length')
-							url = "",
-						},
-					},
-				},
-			})
-		end,
 	},
 })
