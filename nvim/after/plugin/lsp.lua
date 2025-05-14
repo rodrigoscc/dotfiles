@@ -149,12 +149,21 @@ vim.diagnostic.config({
 	},
 })
 
--- This seems to take no effect though, ruff lsp is still started. Check later
-vim.lsp.enable("ruff", false)
-vim.lsp.enable("buf_ls", false)
-
 vim.lsp.config("*", {
 	capabilities = require("blink.cmp").get_lsp_capabilities(),
+})
+
+vim.lsp.enable({
+	"ts_ls",
+	"rust_analyzer",
+	"gopls",
+	"basedpyright",
+	"lua_ls",
+	"bashls",
+	"jsonls",
+	"yamlls",
+	"svelte",
+	"tailwindcss",
 })
 
 vim.lsp.config("lua_ls", {
@@ -276,8 +285,8 @@ require("mason-lspconfig").setup({
 		"bashls",
 		"jsonls",
 		"yamlls",
-		"bashls",
 		"svelte",
 		"tailwindcss",
 	},
+	automatic_enable = false, -- otherwise LSPs like ruff and buf_ls are enabled too
 })
