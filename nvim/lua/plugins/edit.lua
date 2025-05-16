@@ -74,6 +74,7 @@ return {
 				bash = { "beautysh" },
 				zsh = { "beautysh" },
 				proto = { "buf" },
+				rust = { "rustfmt" },
 			},
 			formatters = {
 				golines = {
