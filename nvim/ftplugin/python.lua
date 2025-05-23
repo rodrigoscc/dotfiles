@@ -106,7 +106,10 @@ end
 
 vim.keymap.set("i", "<c-m>", break_string, { buffer = true })
 
-vim.keymap.set("i", "{", function()
-	trigger_autopairs_op_brace()
-	prepend_f_to_f_string()
-end, { buffer = true, remap = true })
+vim.on_key(function(key, typed)
+	if vim.fn.mode() == "i" and vim.bo.filetype == "python" then
+		if key == "{" then
+			prepend_f_to_f_string()
+		end
+	end
+end)
