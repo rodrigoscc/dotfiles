@@ -1,5 +1,8 @@
 vim.keymap.set("n", "<C-p>", function()
-	Snacks.picker.smart({ layout = { preview = false } })
+	Snacks.picker.smart({
+		layout = { preview = false },
+		multi = { "git_status", "marks", "buffers", "files" },
+	})
 end)
 vim.keymap.set("n", "<leader>pf", Snacks.picker.git_files)
 vim.keymap.set("n", "<leader>ff", Snacks.picker.files)
@@ -118,7 +121,10 @@ vim.keymap.set("n", "<leader>fd", function()
 end, { desc = "[f]ind [d]otfile" })
 
 local function open_file_at_startup()
-	Snacks.picker.files({ layout = { preview = false } })
+	Snacks.picker.smart({
+		layout = { preview = false },
+		multi = { "git_status", "marks", "buffers", "files" },
+	})
 end
 
 vim.api.nvim_create_user_command("StartWorking", function()
