@@ -232,12 +232,20 @@ return {
 						},
 					},
 				},
+				ghost_text = { enabled = true },
 			},
 			signature = {
 				enabled = true,
 				window = {
 					treesitter_highlighting = true,
 					show_documentation = false,
+				},
+			},
+			fuzzy = {
+				sorts = {
+					"exact",
+					"score",
+					"sort_text",
 				},
 			},
 		},
