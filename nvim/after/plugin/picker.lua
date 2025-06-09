@@ -2,6 +2,11 @@ vim.keymap.set("n", "<C-p>", function()
 	Snacks.picker.smart({
 		layout = { preview = false },
 		multi = { "git_status", "marks", "buffers", "files" },
+		formatters = {
+			file = {
+				truncate = 256,
+			},
+		},
 	})
 end)
 vim.keymap.set("n", "<leader>pf", Snacks.picker.git_files)
@@ -126,6 +131,11 @@ local function open_file_at_startup()
 	Snacks.picker.smart({
 		layout = { preview = false },
 		multi = { "git_status", "marks", "buffers", "files" },
+		formatters = {
+			file = {
+				truncate = 256,
+			},
+		},
 	})
 end
 
