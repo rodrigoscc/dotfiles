@@ -8,7 +8,9 @@ vim.keymap.set("n", "<leader>pf", Snacks.picker.git_files)
 vim.keymap.set("n", "<leader>ff", Snacks.picker.files)
 
 vim.keymap.set("n", "<C-f>", Snacks.picker.lines)
-vim.keymap.set("n", "<leader>/", Snacks.picker.grep)
+vim.keymap.set("n", "<leader>/", function()
+	Snacks.picker.grep({ regex = false }) -- easier to include dots and braces without regex
+end)
 vim.keymap.set("n", "<leader>*", Snacks.picker.grep_word)
 vim.keymap.set("x", "<leader>*", Snacks.picker.grep_word)
 
