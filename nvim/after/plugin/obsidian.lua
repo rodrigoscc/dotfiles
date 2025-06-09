@@ -1,12 +1,12 @@
 vim.keymap.set(
 	"n",
-	"<leader>fo",
+	"<leader>of",
 	":ObsidianQuickSwitch ", -- Purposely not pressing <CR> to allow entering an argument.
 	{ desc = "[f]ind [o]bsidian file" }
 )
 vim.keymap.set(
 	"n",
-	"<leader>no",
+	"<leader>on",
 	vim.cmd.ObsidianNew,
 	{ desc = "[n]ew [o]bsidian" }
 )
