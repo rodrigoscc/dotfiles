@@ -160,7 +160,7 @@ return {
 			},
 			quickfile = { enabled = true },
 			scope = { enabled = true },
-			statuscolumn = { enabled = false }, -- disabling because gitsigns has issues rendering (slow updates)
+			statuscolumn = { enabled = true },
 			words = { enabled = true },
 			styles = {
 				notification = {
