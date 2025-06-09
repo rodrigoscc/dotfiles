@@ -62,7 +62,7 @@ return {
 	},
 	{
 		"obsidian-nvim/obsidian.nvim",
-		version = "*", -- recommended, use latest release instead of latest commit
+		version = "v3.11.0", -- recommended, use latest release instead of latest commit
 		ft = "markdown",
 		lazy = true,
 		cmd = {
