@@ -1,0 +1,64 @@
+#!/usr/bin/env bash
+
+set -e
+
+TMUX_SESSION="ssh"
+
+if ! tmux has-session -t "$TMUX_SESSION" 2>/dev/null; then
+    tmux_panes=""
+else
+    tmux_panes=$(tmux list-panes -a -F "#{session_name}:#{window_id}:#{window_name}:#{pane_id}:#{pane_title}" | grep --extended-regexp "^${TMUX_SESSION}:")
+    tmux_panes="$tmux_panes\n"
+fi
+
+ssh_hosts=$(grep --extended-regexp '^Host ' ~/.ssh/config 2> /dev/null | \
+        grep -vE '(\*|\?)' | \
+        sed 's/^Host //' | \
+        sort -u | \
+    sed 's/^/new:/')
+
+fzf_input=$(echo -e "$tmux_panes$ssh_hosts")
+
+selection=$(echo "$fzf_input" | fzf-tmux --header "SSH manager" --header-first --info=inline --no-sort -w 70 -h 20 || true)
+
+# Exit if nothing selected
+if [[ -z "$selection" ]]; then
+    exit 0
+fi
+
+IFS=':' read -r type window_id window_title pane_id pane_title <<< "$selection"
+# Ensure pane_title is set to empty string if missing
+pane_title=${pane_title:-""}
+
+if [[ "$type" == $TMUX_SESSION ]]; then
+    if [[ -n "${TMUX:-}" ]]; then
+        tmux switch-client -t "$TMUX_SESSION"
+    else
+        tmux attach-session -t "$TMUX_SESSION"
+    fi
+
+    tmux select-pane -t "$pane_id"
+    tmux select-window -t "$window_id"
+
+    current_command=$(tmux list-panes -t $TMUX_SESSION -f "#{==:#{pane_id},$pane_id}" -F "#{pane_current_command}")
+
+    if ! echo $current_command | grep -E  '^ssh'; then
+        tmux send-keys -t "$TMUX_SESSION:$window_id" "ssh $window_title" C-m
+    fi
+elif [[ "$type" == "new" ]]; then
+    if ! tmux has-session -t "$TMUX_SESSION" 2>/dev/null; then
+        tmux new-session -d -s "$TMUX_SESSION" -n "$window_id" "ssh $window_id"
+    else
+        tmux new-window -t $TMUX_SESSION -n "$window_id" "ssh $window_id"
+    fi
+
+    if [[ -n "${TMUX:-}" ]]; then
+        tmux switch-client -t "$TMUX_SESSION"
+    else
+        tmux attach-session -t "$TMUX_SESSION"
+    fi
+else
+    echo "Unrecognized selection."
+    exit 1
+fi
+
