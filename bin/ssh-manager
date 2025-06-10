@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-set -e
-
 TMUX_SESSION="ssh"
 
 if ! tmux has-session -t "$TMUX_SESSION" 2>/dev/null; then
@@ -17,14 +15,14 @@ ssh_hosts=$(grep --extended-regexp '^Host ' ~/.ssh/config 2> /dev/null | \
         sort -u | \
     sed 's/^/new-window:/')
 
-split_ssh_hosts=$(echo $ssh_hosts | sed 's/new-window:/new-pane:/')
-if [ -n "$ssh_hosts" ]; then
+split_ssh_hosts=$(printf "%s" "$ssh_hosts" | sed 's/new-window:/new-pane:/g')
+if [[ -n "$ssh_hosts" ]]; then
     ssh_hosts="$ssh_hosts\n$split_ssh_hosts"
 fi
 
-fzf_input=$(echo -e "$tmux_panes$ssh_hosts")
+fzf_input="$tmux_panes$ssh_hosts"
 
-selection=$(echo "$fzf_input" | fzf-tmux --header "SSH manager" --header-first --info=inline --no-sort -w 70 -h 20 || true)
+selection=$(echo -e "$fzf_input" | fzf-tmux --header "SSH manager" --header-first --info=inline --no-sort -w 70 -h 20 || true)
 
 # Exit if nothing selected
 if [[ -z "$selection" ]]; then
