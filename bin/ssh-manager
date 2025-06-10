@@ -47,7 +47,7 @@ if [[ "$type" == $TMUX_SESSION ]]; then
 
     current_command=$(tmux list-panes -t $TMUX_SESSION -f "#{==:#{pane_id},$pane_id}" -F "#{pane_current_command}")
 
-    if ! echo $current_command | grep -E  '^ssh'; then
+    if ! echo $current_command | grep -E  '^ssh' >> /dev/null 2>&1; then
         tmux send-keys -t "$TMUX_SESSION:$window_id" "ssh $window_title" C-m
     fi
 elif [[ "$type" == "new-window" ]]; then
