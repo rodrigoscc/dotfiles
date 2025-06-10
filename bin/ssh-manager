@@ -15,7 +15,12 @@ ssh_hosts=$(grep --extended-regexp '^Host ' ~/.ssh/config 2> /dev/null | \
         grep -vE '(\*|\?)' | \
         sed 's/^Host //' | \
         sort -u | \
-    sed 's/^/new:/')
+    sed 's/^/new-window:/')
+
+split_ssh_hosts=$(echo $ssh_hosts | sed 's/new-window:/new-pane:/')
+if [ -n "$ssh_hosts" ]; then
+    ssh_hosts="$ssh_hosts\n$split_ssh_hosts"
+fi
 
 fzf_input=$(echo -e "$tmux_panes$ssh_hosts")
 
@@ -45,7 +50,7 @@ if [[ "$type" == $TMUX_SESSION ]]; then
     if ! echo $current_command | grep -E  '^ssh'; then
         tmux send-keys -t "$TMUX_SESSION:$window_id" "ssh $window_title" C-m
     fi
-elif [[ "$type" == "new" ]]; then
+elif [[ "$type" == "new-window" ]]; then
     if ! tmux has-session -t "$TMUX_SESSION" 2>/dev/null; then
         tmux new-session -d -s "$TMUX_SESSION" -n "$window_id" "ssh $window_id"
     else
@@ -57,6 +62,8 @@ elif [[ "$type" == "new" ]]; then
     else
         tmux attach-session -t "$TMUX_SESSION"
     fi
+elif [[ "$type" == "new-pane" ]]; then
+    tmux split-window "ssh $window_id"
 else
     echo "Unrecognized selection."
     exit 1
