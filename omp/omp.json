@@ -63,7 +63,7 @@
             "always_enabled": false,
             "cache_duration": "none"
           },
-          "template": " \uf00d {{ .String }}",
+          "template": "  {{ .String }}",
           "foreground": "red",
           "background": "transparent",
           "type": "status",
@@ -75,7 +75,7 @@
             "command": "git describe --tags --abbrev=0",
             "shell": "zsh"
           },
-          "template": " [\uf412 {{ .Output }}]",
+          "template": " [ {{ .Output }}]",
           "foreground": "magenta",
           "background": "transparent",
           "type": "command",
@@ -90,7 +90,7 @@
           "properties": {
             "cache_duration": "none"
           },
-          "template": " \ue718 {{ .Full }}",
+          "template": "  {{ .Full }}",
           "foreground": "green",
           "background": "transparent",
           "type": "node",
@@ -101,7 +101,7 @@
             "cache_duration": "none",
             "parse_mod_file": true
           },
-          "template": " \ue626 {{ .Full }}",
+          "template": "  {{ .Full }}",
           "foreground": "blue",
           "background": "transparent",
           "type": "go",
@@ -111,7 +111,7 @@
           "properties": {
             "cache_duration": "none"
           },
-          "template": " \ue235 {{ .Full }}{{ if .Venv }} ({{ .Venv }}){{end}}",
+          "template": "  {{ .Full }}{{ if .Venv }} ({{ .Venv }}){{end}}",
           "foreground": "yellow",
           "background": "transparent",
           "type": "python",
@@ -142,6 +142,12 @@
       "alignment": "left",
       "segments": [
         {
+          "type": "session",
+          "style": "plain",
+          "foreground": "#ffffff",
+          "template": "{{ if .SSHSession }} {{.HostName}} {{ end }} "
+        },
+        {
           "properties": {
             "cache_duration": "none"
           },
@@ -160,9 +166,9 @@
       "properties": {
         "display_default": true
       },
-      "leading_diamond": "\ue0b0",
-      "trailing_diamond": "\ue0b4",
-      "template": " \ue7ad {{ .Profile }}{{ if .Region }}@{{ .Region }}{{ end }} ",
+      "leading_diamond": "",
+      "trailing_diamond": "",
+      "template": "  {{ .Profile }}{{ if .Region }}@{{ .Region }}{{ end }} ",
       "foreground": "white",
       "background": "p:orange",
       "type": "aws",
