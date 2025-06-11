@@ -116,3 +116,7 @@ export HOMEBREW_NO_AUTO_UPDATE=1
 if [ -d $HOME/n ]; then
     export N_PREFIX="$HOME/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"  # Added by n-install (see http://git.io/n-install-repo).
 fi
+
+if [ -x "$(command -v fnm)" ]; then
+    eval "`fnm env`"
+fi
