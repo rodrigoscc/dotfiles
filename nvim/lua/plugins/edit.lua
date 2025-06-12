@@ -15,6 +15,18 @@ return {
 					visual = "gs", -- Remapping visual mode mapping to avoid conflicts with flash.nvim mappings.
 					visual_line = "gS", -- Remapping visual mode mapping to avoid conflicts with flash.nvim mappings.
 				},
+				surrounds = {
+					-- Do not add enclosing whitespace on either character
+					["("] = {
+						add = { "(", ")" },
+					},
+					["{"] = {
+						add = { "{", "}" },
+					},
+					["["] = {
+						add = { "[", "]" },
+					},
+				},
 			})
 		end,
 	},
