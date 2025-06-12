@@ -165,9 +165,9 @@ main() {
     window_directory="$(get_tmux_option "@rose_pine_show_pane_directory" "")"
     readonly window_directory
 
-    local window_separator 
+    local window_separator
     window_separator="$(get_tmux_option "@rose_pine_window_separator" "")"
-    readonly window_separator 
+    readonly window_separator
 
     local default_window_behavior
     default_window_behavior="$(get_tmux_option "@rose_pine_default_window_behavior" "")"
@@ -364,14 +364,14 @@ main() {
         window_status_current_format=$show_window_in_window_status_current
         setw window-status-format "$window_status_format"
         setw window-status-current-format "$window_status_current_format"
-    # See line 268
+        # See line 268
     elif [[ "$window_directory" ]]; then
         local window_status_format=$show_directory_in_window_status
         local window_status_current_format=$show_directory_in_window_status_current
         setw window-status-format "$window_status_format"
         setw window-status-current-format "$window_status_current_format"
         #
-    # Base behaviour, but whit cool colors
+        # Base behaviour, but whit cool colors
     elif [[ "$default_window_behavior" == "on" || "$default_window_behavior" == "" ]]; then
         unset_option window-status-format
         unset_option window-status-current-format
@@ -414,6 +414,9 @@ main() {
     if [[ "$status_right_append_section" != "" ]]; then
         right_column=$right_column$status_right_append_section
     fi
+
+    # Add pane title if customized
+    right_column="#[fg=$thm_muted] #{?#{==:#{pane_title},$(hostname)},, #{pane_title}} "$right_column
 
     if [ -f ~/monitor-redis.sh ]; then
         readonly monitoring="#(~/monitor-redis.sh)"
