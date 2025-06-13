@@ -31,7 +31,7 @@ local colors = {
 	insert = safe_get_highlight("Insert", "String", "MoreMsg").foreground,
 	replace = safe_get_highlight("Replace", "Number", "Type").foreground,
 	visual = safe_get_highlight("Visual", "Special", "Boolean", "Constant").foreground,
-	command = safe_get_highlight("Command", "Identifier", "Normal").foreground,
+	command = safe_get_highlight("Function", "Identifier", "Normal").foreground,
 
 	background = safe_get_highlight("StatusLine").background,
 	base = safe_get_highlight("StatusLine").foreground,
