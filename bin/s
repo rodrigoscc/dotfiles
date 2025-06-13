@@ -56,10 +56,11 @@ while IFS= read -r line; do
             tmux new-window -t $TMUX_SESSION -n "session" "ssh $window_id"
         fi
 
-        tmux select-pane -T "$window_id"
-
         if [[ -n "${TMUX:-}" ]]; then
             tmux switch-client -t "$TMUX_SESSION"
+            tmux select-pane -T "$window_id"
+        else
+            tmux select-pane -T "$window_id"
         fi
     elif [[ "$type" == "new-pane" ]]; then
         tmux split-window "ssh $window_id"
