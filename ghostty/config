@@ -13,7 +13,9 @@ mouse-hide-while-typing = true
 
 macos-option-as-alt = true
 
-macos-titlebar-style = transparent
+# transparent has issues with 000000 background
+macos-titlebar-style = tabs
+
 window-padding-y = 0
 
 shell-integration = zsh
