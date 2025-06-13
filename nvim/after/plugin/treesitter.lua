@@ -33,6 +33,8 @@ require("nvim-treesitter.configs").setup({
 	-- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
 	auto_install = true,
 
+	ignore_install = { "tmux" }, -- tmux grammar is broken
+
 	indent = {
 		enable = true,
 		-- disable = { "python" },
