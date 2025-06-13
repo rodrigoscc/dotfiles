@@ -1,7 +1,5 @@
 theme = rose-pine
 background = 000000
-background-opacity = 0.85
-background-blur = true
 
 font-family = Maple Mono NF CN
 font-size = 13.0
