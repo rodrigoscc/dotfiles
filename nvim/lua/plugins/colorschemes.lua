@@ -5,8 +5,15 @@ return {
 		opts = {
 			styles = {
 				italic = false,
+				transparency = true,
 			},
 			highlight_groups = {
+				WinBar = {
+					bg = "none",
+				},
+				WinBarNC = {
+					bg = "none",
+				},
 				MiniTrailspace = {
 					underline = true,
 					bg = "none",
