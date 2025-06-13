@@ -15,11 +15,6 @@
     "foreground": "magenta",
     "background": "transparent"
   },
-  "transient_prompt": {
-    "template": "❯ ",
-    "foreground": "magenta",
-    "background": "transparent"
-  },
   "blocks": [
     {
       "type": "prompt",
@@ -147,17 +142,13 @@
           "template": "{{ if .SSHSession }} {{.HostName}} {{ end }} "
         },
         {
-          "properties": {
-            "cache_duration": "none"
-          },
-          "template": "❯",
+          "template": " ❯",
           "foreground": "magenta",
           "background": "transparent",
           "type": "text",
           "style": "plain"
         }
-      ],
-      "newline": true
+      ]
     }
   ],
   "tooltips": [
