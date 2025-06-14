@@ -41,7 +41,7 @@
             "fetch_status": true,
             "fetch_upstream_icon": false
           },
-          "template": " <p:grey>on</> {{ .HEAD }}<p:grey>{{if .BranchStatus }} {{ .BranchStatus }}{{ end }}</>",
+          "template": " <p:grey>on</> {{ .HEAD }}<p:grey>{{if .BranchStatus }} {{ .BranchStatus }}{{ end }}</><magenta>{{ if .LatestTag }} {{ .LatestTag }}{{ end }}</>",
           "foreground": "magenta",
           "background": "transparent",
           "type": "git",
@@ -61,18 +61,6 @@
           "foreground": "red",
           "background": "transparent",
           "type": "status",
-          "style": "plain"
-        },
-        {
-          "properties": {
-            "cache_duration": "none",
-            "command": "git describe --tags --abbrev=0",
-            "shell": "zsh"
-          },
-          "template": " [ {{ .Output }}]",
-          "foreground": "magenta",
-          "background": "transparent",
-          "type": "command",
           "style": "plain"
         }
       ]
