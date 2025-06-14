@@ -41,7 +41,7 @@
             "fetch_status": true,
             "fetch_upstream_icon": false
           },
-          "template": " <p:grey>on</> {{ .HEAD }}<p:grey>{{if .BranchStatus }} {{ .BranchStatus }}{{ end }}</><magenta>{{ if .LatestTag }} {{ .LatestTag }}{{ end }}</>",
+          "template": " <p:grey>on</> {{ .HEAD }}{{if .BranchStatus }} {{ .BranchStatus }}{{ end }}</><magenta>{{ if .LatestTag }} <p:grey>ltag</> {{ .LatestTag }}{{ end }}</>",
           "foreground": "magenta",
           "background": "transparent",
           "type": "git",
