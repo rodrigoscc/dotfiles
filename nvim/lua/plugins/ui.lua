@@ -132,14 +132,29 @@ return {
 		},
 	},
 	{
-		"lukas-reineke/headlines.nvim",
-		dependencies = "nvim-treesitter/nvim-treesitter",
-		lazy = true,
-		ft = "markdown",
+		"bngarren/checkmate.nvim",
+		ft = "markdown", -- Lazy loads for Markdown files matching patterns in 'files'
 		opts = {
-			markdown = {
-				headline_highlights = { "Headline1", "Headline2", "Headline3" },
-				fat_headlines = false,
+			files = { "*.md" },
+			keys = {
+				["<CR>"] = "toggle",
+				[",a"] = "archive",
+				[",c"] = "create",
+				[",r"] = "remove_all_metadata",
+			},
+			metadata = {
+				-- Example: A @priority tag that has dynamic color based on the priority value
+				priority = {
+					key = ",p",
+				},
+				-- Example: A @started tag that uses a default date/time string when added
+				started = {
+					key = ",s",
+				},
+				-- Example: A @done tag that also sets the todo item state when it is added and removed
+				done = {
+					key = ",d",
+				},
 			},
 		},
 	},
