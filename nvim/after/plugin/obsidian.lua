@@ -1,40 +1,46 @@
 vim.keymap.set(
 	"n",
 	"<leader>of",
-	":ObsidianQuickSwitch ", -- Purposely not pressing <CR> to allow entering an argument.
+	":Obsidian quick_switch ", -- Purposely not pressing <CR> to allow entering an argument.
 	{ desc = "[f]ind [o]bsidian file" }
 )
 vim.keymap.set(
 	"n",
 	"<leader>on",
-	vim.cmd.ObsidianNew,
+	"<cmd>Obsidian new<cr>",
 	{ desc = "[n]ew [o]bsidian" }
-)
-
-vim.keymap.set("n", "<leader>o#", function()
-	vim.cmd("ObsidianTags")
-end, { desc = "[o]bsidian [t]ags" })
-
-vim.keymap.set("n", "<leader>.", function()
-	vim.cmd.ObsidianTags("projects")
-end, { desc = "[s]earch obsidian projects" })
-
-vim.keymap.set(
-	"n",
-	"<leader>os",
-	vim.cmd.ObsidianSearch,
-	{ desc = "[o]bsidian [s]earch" }
 )
 
 vim.keymap.set(
 	"n",
 	"<leader>ot",
-	vim.cmd.ObsidianToday,
+	"<cmd>Obsidian tags<cr>",
+	{ desc = "[o]bsidian [t]ags" }
+)
+
+vim.keymap.set(
+	"n",
+	"<leader>.",
+	"<cmd>Obsidian tags projects<cr>",
+	{ desc = "[s]earch obsidian projects" }
+)
+
+vim.keymap.set(
+	"n",
+	"<leader>os",
+	"<cmd>Obsidian search<cr>",
+	{ desc = "[o]bsidian [s]earch" }
+)
+
+vim.keymap.set(
+	"n",
+	"<leader>oo",
+	"<cmd>Obsidian today<cr>",
 	{ desc = "[o]bsidian [t]oday" }
 )
 vim.keymap.set(
 	"n",
 	"<leader>oy",
-	vim.cmd.ObsidianYesterday,
+	"<cmd>Obsidian yesterday<cr>",
 	{ desc = "[o]bsidian [y]esterday" }
 )
