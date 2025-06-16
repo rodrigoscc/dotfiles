@@ -232,7 +232,6 @@ return {
 						},
 					},
 				},
-				ghost_text = { enabled = true },
 			},
 			signature = {
 				enabled = true,
