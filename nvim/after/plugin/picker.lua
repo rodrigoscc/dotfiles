@@ -79,18 +79,12 @@ vim.keymap.set("n", "<leader>gb", function()
 		},
 	})
 end, { desc = "[g]it [b]ranches" })
-vim.keymap.set(
-	"n",
-	"<leader>gl",
-	Snacks.picker.git_log,
-	{ desc = "[g]it [l]ogs" }
-)
-vim.keymap.set(
-	"n",
-	"<leader>gL",
-	Snacks.picker.git_log_file,
-	{ desc = "[g]it buffer [l]ogs" }
-)
+vim.keymap.set("n", "<leader>gl", function()
+	Snacks.picker.git_log({ layout = "ivy_split" })
+end, { desc = "[g]it [l]ogs" })
+vim.keymap.set("n", "<leader>gL", function()
+	Snacks.picker.git_log_file({ layout = "ivy_split" })
+end, { desc = "[g]it buffer [l]ogs" })
 vim.keymap.set(
 	"n",
 	"<leader>gg",
