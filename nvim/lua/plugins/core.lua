@@ -66,12 +66,7 @@ return {
 		ft = "markdown",
 		lazy = true,
 		cmd = {
-			"ObsidianQuickSwitch",
-			"ObsidianTags",
-			"ObsidianSearch",
-			"ObsidianNew",
-			"ObsidianToday",
-			"ObsidianYesterday",
+			"Obsidian",
 		},
 		dependencies = {
 			"nvim-lua/plenary.nvim",
