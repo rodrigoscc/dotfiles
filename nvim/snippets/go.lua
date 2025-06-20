@@ -76,6 +76,8 @@ local function error_return_values()
 	for _, result_node in ipairs(results_nodes) do
 		if result_node:type() == "pointer_type" then
 			table.insert(values, "nil")
+		elseif result_node:type() == "slice_type" then
+			table.insert(values, "nil")
 		else
 			local text = vim.treesitter.get_node_text(result_node, 0)
 
