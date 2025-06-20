@@ -42,7 +42,13 @@ end
 local function error_return_values()
 	local node = vim.treesitter.get_node()
 
-	while node ~= nil and node:type() ~= "function_declaration" do
+	while
+		node ~= nil
+		and not vim.tbl_contains(
+			{ "function_declaration", "method_declaration" },
+			node:type()
+		)
+	do
 		node = node:parent()
 	end
 
