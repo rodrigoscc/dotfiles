@@ -36,7 +36,7 @@ vim.keymap.set(
 	"n",
 	"<leader>oo",
 	"<cmd>Obsidian today<cr>",
-	{ desc = "[o]bsidian [t]oday" }
+	{ desc = "[o]bsidian today" }
 )
 vim.keymap.set(
 	"n",
