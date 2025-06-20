@@ -1,5 +1,9 @@
-export PATH=/opt/homebrew/opt/python@3.9/libexec/bin:~/.config/bin:~/go/bin:~/.local/bin:/opt/homebrew/opt/mysql-client/bin:/opt/nvim-linux64/bin:/usr/local/go/bin:~/.luarocks/bin:$PATH
+export PATH=~/.config/bin:~/go/bin:~/.local/bin:/opt/nvim-linux64/bin:/usr/local/go/bin:~/.luarocks/bin:$PATH
 export EDITOR=nvim
+
+if [ -x "$(command -v brew)" ]; then
+    export PATH=/opt/homebrew/bin:$(brew --prefix python)/libexec/bin:$(brew --prefix mysql-client)/bin:$PATH
+fi
 
 # Luarocks needs this to work properly
 if [ -x "$(command -v luarocks)" ]; then
@@ -97,6 +101,7 @@ fi
 
 # Add zsh functions to fpath (e.g. poetry completions).
 fpath+=~/.zfunc
+fpath+=~/.docker/completions
 autoload -Uz compinit && compinit
 
 # Rose pine fzf theme
@@ -141,7 +146,3 @@ rfv() (
 )
 
 source ~/.config/fzf-git.sh
-
-if command -v docker &> /dev/null; then
-  source <(docker completion zsh)
-fi
