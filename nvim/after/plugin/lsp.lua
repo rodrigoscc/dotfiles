@@ -66,12 +66,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		vim.keymap.set("n", "gY", Snacks.picker.lsp_symbols, opts)
 
 		vim.keymap.set(
-			"n",
-			"<leader>rn",
-			vim.lsp.buf.rename,
-			{ desc = "[r]e[n]ame" }
-		)
-		vim.keymap.set(
 			{ "n", "v" },
 			"<leader>ca",
 			vim.lsp.buf.code_action,
