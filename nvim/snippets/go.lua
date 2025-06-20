@@ -39,6 +39,92 @@ function struct_receiver_name(type_name, is_pointer)
 	return receiver_name
 end
 
+local function error_return_values()
+	local node = vim.treesitter.get_node()
+
+	while node ~= nil and node:type() ~= "function_declaration" do
+		node = node:parent()
+	end
+
+	if node == nil then
+		return nil
+	end
+
+	local parent_result_node = node:field("result")[1]
+
+	local results_nodes = {}
+
+	if parent_result_node then
+		if parent_result_node:type() ~= "parameter_list" then
+			results_nodes = { parent_result_node }
+		else
+			for _, child in ipairs(parent_result_node:named_children()) do
+				local parameter_node = child:field("type")[1]
+				table.insert(results_nodes, parameter_node)
+			end
+		end
+	end
+
+	local values = {}
+
+	for _, result_node in ipairs(results_nodes) do
+		if result_node:type() == "pointer_type" then
+			table.insert(values, "nil")
+		else
+			local text = vim.treesitter.get_node_text(result_node, 0)
+
+			if text == "error" then
+				table.insert(values, "err")
+			else
+				if
+					vim.tbl_contains({
+						"int",
+						"int32",
+						"int64",
+						"float32",
+						"float64",
+					}, text)
+				then
+					table.insert(values, "0")
+				elseif text == "string" then
+					table.insert(values, '""')
+				elseif text == "bool" then
+					table.insert(values, "false")
+				else -- struct
+					table.insert(values, text .. "{}")
+				end
+			end
+		end
+	end
+
+	return values
+end
+
+local function error_return_values_to_snippet_nodes(results)
+	if results == nil then
+		return { i(1) }
+	end
+
+	local insert_nodes = vim.iter(results)
+		:enumerate()
+		:map(function(idx, v)
+			return i(idx, v)
+		end)
+		:totable()
+
+	local all_nodes = {}
+	for index, value in ipairs(insert_nodes) do
+		if index < #insert_nodes then
+			table.insert(all_nodes, value)
+			table.insert(all_nodes, t(", "))
+		else
+			table.insert(all_nodes, value)
+		end
+	end
+
+	return all_nodes
+end
+
 return {
 	s(
 		"enn",
@@ -47,7 +133,12 @@ return {
 	return {}
 }}]],
 			{
-				i(1, "err"),
+				d(1, function()
+					local results = error_return_values()
+					local all_nodes =
+						error_return_values_to_snippet_nodes(results)
+					return sn(nil, all_nodes)
+				end),
 			}
 		)
 	),
@@ -90,7 +181,12 @@ return {
 					t("="),
 				}),
 				i(2, "function"),
-				i(3, "err"),
+				d(3, function()
+					local results = error_return_values()
+					local all_nodes =
+						error_return_values_to_snippet_nodes(results)
+					return sn(nil, all_nodes)
+				end),
 			}
 		)
 	),
@@ -217,7 +313,12 @@ return {
 				fmt([[if err := ]] .. match .. [[; err != nil {{
 	return {}
 }}]], {
-					i(1, "err"),
+					d(1, function()
+						local results = error_return_values()
+						local all_nodes =
+							error_return_values_to_snippet_nodes(results)
+						return sn(nil, all_nodes)
+					end),
 				})
 			)
 		end)
