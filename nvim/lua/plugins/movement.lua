@@ -40,27 +40,33 @@ return {
 				end,
 			},
 			{
-				"<leader>1",
+				"<M-y>",
 				function()
 					require("harpoon"):list():select(1)
 				end,
 			},
 			{
-				"<leader>2",
+				"<M-u>",
 				function()
 					require("harpoon"):list():select(2)
 				end,
 			},
 			{
-				"<leader>3",
+				"<M-i>",
 				function()
 					require("harpoon"):list():select(3)
 				end,
 			},
 			{
-				"<leader>4",
+				"<M-o>",
 				function()
 					require("harpoon"):list():select(4)
+				end,
+			},
+			{
+				"<M-p>",
+				function()
+					require("harpoon"):list():select(5)
 				end,
 			},
 		},
