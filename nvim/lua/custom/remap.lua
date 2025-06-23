@@ -78,6 +78,10 @@ vim.keymap.set("n", "<C-h>", "<cmd>cpfile<CR>")
 vim.keymap.set("n", "<leader>k", "<cmd>lprev<CR>zz")
 vim.keymap.set("n", "<leader>j", "<cmd>lnext<CR>zz")
 
+-- Yup, these are actually useful
+vim.keymap.set("n", "j", "gj")
+vim.keymap.set("n", "k", "gk")
+
 vim.keymap.set(
 	"n",
 	"<leader>w",
