@@ -1,8 +1,12 @@
 export PATH=~/.config/bin:~/go/bin:~/.local/bin:/opt/nvim-linux64/bin:/usr/local/go/bin:~/.luarocks/bin:$PATH
 export EDITOR=nvim
 
-if [ -x "$(command -v brew)" ]; then
-    export PATH=/opt/homebrew/bin:$(brew --prefix python)/libexec/bin:$(brew --prefix mysql-client)/bin:$PATH
+if [[ $OSTYPE == darwin* ]]; then
+    export PATH=/opt/homebrew/bin:$PATH
+
+    if [ -x "$(command -v brew)" ]; then
+        export PATH=$(brew --prefix python)/libexec/bin:$(brew --prefix mysql-client)/bin:$PATH
+    fi
 fi
 
 # Luarocks needs this to work properly
