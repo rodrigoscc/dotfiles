@@ -59,22 +59,6 @@ return {
 		},
 	},
 	{
-		"HiPhish/rainbow-delimiters.nvim",
-		submodules = false,
-		event = "VeryLazy",
-		config = function()
-			vim.g.rainbow_delimiters = {
-				query = {
-					javascript = "rainbow-parens",
-					typescript = "rainbow-parens",
-					tsx = "rainbow-parens",
-					svelte = "rainbow-custom",
-				},
-				blacklist = { "html" },
-			}
-		end,
-	},
-	{
 		"folke/zen-mode.nvim",
 		lazy = true,
 		cmd = { "ZenMode" },

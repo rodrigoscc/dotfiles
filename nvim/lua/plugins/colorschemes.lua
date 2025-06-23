@@ -103,6 +103,18 @@ return {
 					bg = "rose",
 					blend = 15,
 				},
+				BlinkPairsOrange = {
+					fg = "rose",
+				},
+				BlinkPairsPurple = {
+					fg = "iris",
+				},
+				BlinkPairsBlue = {
+					fg = "pine",
+				},
+				BlinkPairsRed = {
+					fg = "love",
+				},
 			},
 		},
 	},

@@ -1,14 +1,17 @@
-local npairs = require("nvim-autopairs")
-
-local function trigger_autopairs_op_brace()
-	local bufnr = vim.api.nvim_get_current_buf()
-	local autopairs_keys = npairs.autopairs_map(bufnr, "{")
-	vim.api.nvim_feedkeys(autopairs_keys, "n", false)
-end
-
 local function trigger_autopairs_cr()
-	local input = npairs.autopairs_cr()
-	vim.api.nvim_feedkeys(input, "n", false)
+	local pairs = require("blink.pairs.mappings")
+	local config = require("blink.pairs.config")
+	local rule_lib = require("blink.pairs.rule")
+
+	local rules_by_key = rule_lib.parse(config.mappings.pairs)
+	local all_rules = rule_lib.get_all(rules_by_key)
+
+	local keys = pairs.enter(all_rules)()
+	vim.api.nvim_feedkeys(
+		vim.api.nvim_replace_termcodes(keys, true, false, true),
+		"n",
+		false
+	)
 end
 
 local function break_string()
