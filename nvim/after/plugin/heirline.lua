@@ -295,7 +295,10 @@ local function prepare_paths(paths)
 	local shortened_paths = {}
 
 	for i, path in ipairs(paths) do
-		local is_this_buffer = path == vim.fn.expand("%")
+		local buffer_name = vim.fn.expand("%")
+		local relative_buffer_name = vim.fs.relpath(vim.uv.cwd(), buffer_name)
+
+		local is_this_buffer = path == relative_buffer_name
 		if not is_this_buffer then
 			table.insert(shortened_paths, { i, shorten_path(path) })
 		end
