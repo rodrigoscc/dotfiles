@@ -1,24 +1,4 @@
 return {
-	{ "numToStr/Navigator.nvim", opts = {} },
-	{
-		"folke/flash.nvim",
-		event = "VeryLazy",
-		---@type Flash.Config
-		opts = {
-			modes = {
-				search = {
-					enabled = false,
-				},
-				char = {
-					config = nil,
-					highlight = { backdrop = false },
-				},
-			},
-			label = {
-				uppercase = false,
-			},
-		},
-	},
 	{
 		"ThePrimeagen/harpoon",
 		branch = "harpoon2",
