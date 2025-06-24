@@ -222,7 +222,7 @@ main() {
     readonly current_window_icon
 
     local current_session_icon
-    current_session_icon="$(get_tmux_option "@rose_pine_session_icon" "")"
+    current_session_icon="$(get_tmux_option "@rose_pine_session_icon" "")"
     readonly current_session_icon
 
     local username_icon
