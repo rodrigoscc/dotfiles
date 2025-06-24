@@ -13,7 +13,7 @@ return {
 		version = "*",
 		dependencies = {
 			"mikavilpas/blink-ripgrep.nvim",
-			"rodrigoscc/blink-cmp-words",
+			"archie-judd/blink-cmp-words",
 		},
 		---@module 'blink.cmp'
 		---@type blink.cmp.Config
