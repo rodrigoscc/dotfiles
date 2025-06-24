@@ -121,10 +121,26 @@ return {
 		opts = {
 			files = { "*.md" },
 			keys = {
-				["<CR>"] = "toggle",
-				[",a"] = "archive",
-				[",c"] = "create",
-				[",r"] = "remove_all_metadata",
+				["<CR>"] = {
+					rhs = "<cmd>Checkmate toggle<CR>",
+					desc = "Toggle todo item",
+					modes = { "n", "v" },
+				},
+				[",a"] = {
+					rhs = "<cmd>Checkmate archive<CR>",
+					desc = "Archive checked/completed todo items (move to bottom section)",
+					modes = { "n" },
+				},
+				[",c"] = {
+					rhs = "<cmd>Checkmate create<CR>",
+					desc = "Create todo item",
+					modes = { "n", "v" },
+				},
+				[",r"] = {
+					rhs = "<cmd>Checkmate remove_all_metadata<CR>",
+					desc = "Remove all metadata from a todo item",
+					modes = { "n", "v" },
+				},
 			},
 			metadata = {
 				-- Example: A @priority tag that has dynamic color based on the priority value
