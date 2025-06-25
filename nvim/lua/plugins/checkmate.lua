@@ -25,19 +25,20 @@ return {
 					desc = "Remove all metadata from a todo item",
 					modes = { "n", "v" },
 				},
-			},
-			metadata = {
-				-- Example: A @priority tag that has dynamic color based on the priority value
-				priority = {
-					key = ",p",
+				[",p"] = {
+					rhs = "<cmd>Checkmate metadata add priority<CR>",
+					desc = "Remove all metadata from a todo item",
+					modes = { "n", "v" },
 				},
-				-- Example: A @started tag that uses a default date/time string when added
-				started = {
-					key = ",s",
+				[",s"] = {
+					rhs = "<cmd>Checkmate metadata add started<CR>",
+					desc = "Remove all metadata from a todo item",
+					modes = { "n", "v" },
 				},
-				-- Example: A @done tag that also sets the todo item state when it is added and removed
-				done = {
-					key = ",d",
+				[",d"] = {
+					rhs = "<cmd>Checkmate metadata add done<CR>",
+					desc = "Remove all metadata from a todo item",
+					modes = { "n", "v" },
 				},
 			},
 		},
