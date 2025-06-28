@@ -20,33 +20,27 @@ return {
 				end,
 			},
 			{
-				"<M-y>",
+				"<F1>",
 				function()
 					require("harpoon"):list():select(1)
 				end,
 			},
 			{
-				"<M-u>",
+				"<F2>",
 				function()
 					require("harpoon"):list():select(2)
 				end,
 			},
 			{
-				"<M-i>",
+				"<F3>",
 				function()
 					require("harpoon"):list():select(3)
 				end,
 			},
 			{
-				"<M-o>",
+				"<F4>",
 				function()
 					require("harpoon"):list():select(4)
-				end,
-			},
-			{
-				"<M-p>",
-				function()
-					require("harpoon"):list():select(5)
 				end,
 			},
 		},
