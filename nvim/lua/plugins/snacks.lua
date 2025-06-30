@@ -26,6 +26,37 @@ return {
 						end
 					end,
 				},
+				win = {
+					-- Some tweaks to avoid conflicting with tmux bindings
+					input = {
+						keys = {
+							["<a-m>"] = nil,
+							["<a-o>"] = {
+								"toggle_maximize",
+								mode = { "i", "n" },
+							},
+							["<c-b>"] = nil,
+							["<C-y>"] = {
+								"preview_scroll_up",
+								mode = { "i", "n" },
+							},
+						},
+					},
+					list = {
+						keys = {
+							["<a-m>"] = nil,
+							["<a-o>"] = {
+								"toggle_maximize",
+								mode = { "i", "n" },
+							},
+							["<c-b>"] = nil,
+							["<C-y>"] = {
+								"preview_scroll_up",
+								mode = { "i", "n" },
+							},
+						},
+					},
+				},
 			},
 			quickfile = { enabled = true },
 			scope = { enabled = true },
