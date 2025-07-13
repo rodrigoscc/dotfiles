@@ -21,18 +21,18 @@ create_session() {
     fi
 }
 
-dirs=`zoxide query --list | grep "Code\|.config"`
+dirs=$(zoxide query --list | grep "Code\|.config\|dotfiles")
 
 default_session_name="default"
 
-tmux_sessions=`tmux list-sessions -F "#S"`
+tmux_sessions=$(tmux list-sessions -F "#S")
 
-all_entries=`echo -e "$default_session_name\n$tmux_sessions\n$dirs"`
+all_entries=$(echo -e "$default_session_name\n$tmux_sessions\n$dirs")
 
 # Remove tmux sessions duplicates (e.g. default session may be duplicate if a session already exists.)
-all_entries=`echo -e "$all_entries" | awk '!seen[$0]++'`
+all_entries=$(echo -e "$all_entries" | awk '!seen[$0]++')
 
-selected=`echo -e "$all_entries" | fzf-tmux --header="Switch to session" --header-first --info=inline --no-sort -w 70 -h 20`
+selected=$(echo -e "$all_entries" | fzf-tmux --header="Switch to session" --header-first --info=inline --no-sort -w 70 -h 20)
 if [ -z "$selected" ]; then
     exit 0
 fi
@@ -41,11 +41,11 @@ if [ "$selected" == "$default_session_name" ]; then
     selected="~"
     session_name=$default_session_name
 else
-    session_name=`basename $selected`
-    session_name=`echo "$session_name" | tr -d "."`  # trim dots
+    session_name=$(basename $selected)
+    session_name=$(echo "$session_name" | tr -d ".") # trim dots
 fi
 
-if ! pgrep "tmux" > /dev/null; then
+if ! pgrep "tmux" >/dev/null; then
     tmux new -s "$session_name" -c "$selected"
 else
     if [ $session_name == "default" ]; then
