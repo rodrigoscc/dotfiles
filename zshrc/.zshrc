@@ -1,4 +1,4 @@
-export PATH=~/.config/bin:~/go/bin:~/.local/bin:/opt/nvim-linux64/bin:/usr/local/go/bin:~/.luarocks/bin:$PATH
+export PATH=~/.config/bin:~/go/bin:~/.local/bin:/opt/nvim-linux64/bin:/usr/local/go/bin:~/.luarocks/bin:~/.local/share/fnm/:$PATH
 export EDITOR=nvim
 
 if [[ $OSTYPE == darwin* ]]; then
