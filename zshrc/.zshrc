@@ -14,6 +14,11 @@ if [ -x "$(command -v luarocks)" ]; then
     eval $(luarocks --lua-version=5.1 path)
 fi
 
+if [ -x "$(command -v fzf)" ]; then
+    # Set up fzf key bindings and fuzzy completion
+    source <(fzf --zsh)
+fi
+
 # Make sure the history is appended to new shells.
 setopt incappendhistory
 
@@ -45,16 +50,14 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 
 if [ -d /opt/homebrew/opt/zplug ]; then
     export ZPLUG_HOME=/opt/homebrew/opt/zplug
+    source $ZPLUG_HOME/init.zsh
 else
-    export ZPLUG_HOME=$HOME/.zplug
+    source /usr/share/zsh/scripts/zplug/init.zsh
 fi
-source $ZPLUG_HOME/init.zsh
 
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
 
 zplug "zsh-users/zsh-autosuggestions"
-
-zplug "unixorn/fzf-zsh-plugin"
 
 zplug "hlissner/zsh-autopair"
 
@@ -149,4 +152,4 @@ rfv() (
       --query "$*"
 )
 
-source ~/.config/fzf-git.sh
+source ~/fzf-git.sh
