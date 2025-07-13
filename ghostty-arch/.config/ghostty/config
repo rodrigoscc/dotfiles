@@ -1,0 +1,87 @@
+font-family = CaskaydiaMono Nerd Font
+font-size = 10.0
+adjust-cell-height = 15%
+
+window-padding-balance = true
+
+cursor-color = #f6c177
+
+mouse-hide-while-typing = true
+
+macos-option-as-alt = true
+
+# transparent has issues with 000000 background
+macos-titlebar-style = tabs
+
+window-padding-y = 0
+
+shell-integration = zsh
+
+keybind = alt+t=text:\x02c
+keybind = alt+w=text:\x02&
+
+keybind = alt+x=text:\x02"
+keybind = alt+v=text:\x02%
+
+keybind = alt+m=text:\x02z
+
+keybind = alt+shift+k=text:\x02\x1b\x5b\x31\x3b\x35\x41
+keybind = alt+shift+j=text:\x02\x1b\x5b\x31\x3b\x35\x42
+keybind = alt+shift+h=text:\x02\x1b\x5b\x31\x3b\x35\x44
+keybind = alt+shift+l=text:\x02\x1b\x5b\x31\x3b\x35\x43
+
+keybind = alt+s=text:\x02S
+keybind = alt+shift+s=text:\x02l
+
+keybind = alt+f=text:\x02[
+
+keybind = alt+a=text:\x02\x13
+
+keybind = alt+shift+r=text:\x02,
+
+keybind = alt+g=text:\x02G
+
+keybind = alt+one=text:\x02\x31
+keybind = alt+two=text:\x02\x32
+keybind = alt+three=text:\x02\x33
+keybind = alt+four=text:\x02\x34
+keybind = alt+five=text:\x02\x35
+keybind = alt+six=text:\x02\x36
+keybind = alt+seven=text:\x02\x37
+keybind = alt+eight=text:\x02\x38
+keybind = alt+nine=text:\x02\x39
+
+keybind = global:super+p=toggle_quick_terminal
+
+# Window settings
+window-padding-x = 14
+window-padding-y = 14
+window-decoration = false
+background-opacity = 0.98
+
+# Color scheme from omarchy theme
+background = 1a1b26
+foreground = a9b1d6
+
+# Normal colors
+palette = 0=#32344a
+palette = 1=#f7768e
+palette = 2=#9ece6a
+palette = 3=#e0af68
+palette = 4=#7aa2f7
+palette = 5=#ad8ee6
+palette = 6=#449dab
+palette = 7=#787c99
+
+# Bright colors
+palette = 8=#444b6a
+palette = 9=#ff7a93
+palette = 10=#b9f27c
+palette = 11=#ff9e64
+palette = 12=#7da6ff
+palette = 13=#bb9af7
+palette = 14=#0db9d7
+palette = 15=#acb0d0
+
+# Selection color
+selection-background = 7aa2f7
