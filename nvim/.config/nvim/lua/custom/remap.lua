@@ -11,6 +11,19 @@ vim.keymap.set("x", ">", ">gv")
 
 vim.keymap.set("n", "J", "mzJ`z")
 
+vim.keymap.set("n", "<space><space>y", [[mzgg"+yG`z]], { desc = "copy buffer" })
+vim.keymap.set("n", "<space><space>c", [[ggVGc]], { desc = "change buffer" })
+
+local function send_buffer_to_tmux(pane)
+	local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
+	local text = vim.fn.join(lines, "\n")
+	vim.system({ "tmux", "send-keys", "-t", pane, "-l", text .. "\n" })
+end
+
+vim.keymap.set("n", "<space><space>r", function()
+	send_buffer_to_tmux(":.+")
+end, { desc = "send buffer to tmux" })
+
 vim.keymap.set("n", "<C-s>", "<cmd>silent write<cr>")
 
 -- Default <C-w>t is useless to me, <C-w>T is more useful
