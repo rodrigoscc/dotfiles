@@ -130,7 +130,7 @@ if [ -d $HOME/n ]; then
 fi
 
 if [ -x "$(command -v fnm)" ]; then
-    eval "`fnm env`"
+    eval "$(fnm env --use-on-cd --shell zsh)"
 fi
 
 # ripgrep->fzf->vim [QUERY]
