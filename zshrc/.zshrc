@@ -83,7 +83,9 @@ alias vv="nvim +StartWorking"
 
 alias ls=eza
 alias ll="eza --long"
+alias la="eza --long --all"
 alias lt="eza --tree --ignore-glob='node_modules|.git'"
+alias lta="eza --tree --all --ignore-glob='node_modules|.git'"
 
 alias gs="git status"
 alias ga="git add"
