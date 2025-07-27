@@ -81,9 +81,9 @@ eval "$(zoxide init zsh)"
 alias v=nvim
 alias vv="nvim +StartWorking"
 
-alias ls=lsd
-alias ll="lsd --long"
-alias lt="lsd --tree --ignore-glob='node_modules|.git'"
+alias ls=eza
+alias ll="eza --long"
+alias lt="eza --tree --ignore-glob='node_modules|.git'"
 
 alias gs="git status"
 alias ga="git add"
