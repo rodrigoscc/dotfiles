@@ -82,7 +82,6 @@ return {
 						"obsidian_new",
 						"obsidian_tags",
 						"thesaurus",
-						"dictionary",
 					},
 				},
 				providers = {
