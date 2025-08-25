@@ -135,11 +135,14 @@ vim.keymap.set("n", "<leader>rl", function()
 end, { desc = "[r]estart [l]sp" })
 
 vim.diagnostic.config({
-	virtual_text = true,
+	virtual_text = {
+		prefix = "●",
+	},
 	signs = false,
 	severity_sort = true,
 	float = {
 		source = true,
+		border = "rounded",
 	},
 })
 
