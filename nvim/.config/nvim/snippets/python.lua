@@ -136,4 +136,12 @@ def {}():
 			}
 		)
 	),
+	postfix(
+		".opt",
+		d(1, function(_, parent)
+			return sn(nil, {
+				t("Optional[" .. parent.snippet.env.POSTFIX_MATCH .. "]"),
+			})
+		end)
+	),
 }
