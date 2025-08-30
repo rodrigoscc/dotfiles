@@ -144,4 +144,13 @@ def {}():
 			})
 		end)
 	),
+	postfix(
+		".gen",
+		d(1, function(_, parent)
+			return sn(
+				nil,
+				fmt("{}[" .. parent.snippet.env.POSTFIX_MATCH .. "]", { i(1) })
+			)
+		end)
+	),
 }
