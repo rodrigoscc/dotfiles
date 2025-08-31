@@ -147,8 +147,7 @@
       "leading_diamond": "",
       "trailing_diamond": "",
       "template": "  {{ .Profile }}{{ if .Region }}@{{ .Region }}{{ end }} ",
-      "foreground": "white",
-      "background": "p:orange",
+      "foreground": "p:orange",
       "type": "aws",
       "style": "plain",
       "tips": [
