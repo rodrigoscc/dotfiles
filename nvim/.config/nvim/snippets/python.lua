@@ -137,7 +137,7 @@ def {}():
 		)
 	),
 	postfix(
-		".opt",
+		{ trig = ".opt", match_pattern = "[%w%.%_%-%[%]]+$" },
 		d(1, function(_, parent)
 			return sn(nil, {
 				t("Optional[" .. parent.snippet.env.POSTFIX_MATCH .. "]"),
@@ -145,7 +145,7 @@ def {}():
 		end)
 	),
 	postfix(
-		".gen",
+		{ trig = ".gen", match_pattern = "[%w%.%_%-%[%]]+$" },
 		d(1, function(_, parent)
 			return sn(
 				nil,
