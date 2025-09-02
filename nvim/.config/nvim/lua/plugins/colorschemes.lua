@@ -115,6 +115,9 @@ return {
 				BlinkPairsRed = {
 					fg = "love",
 				},
+				BlinkCmpSignatureHelpBorder = {
+					link = "FloatBorder",
+				},
 			},
 		},
 	},

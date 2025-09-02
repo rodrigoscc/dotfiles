@@ -191,6 +191,7 @@ return {
 			signature = {
 				enabled = true,
 				window = {
+					border = "rounded",
 					treesitter_highlighting = true,
 					show_documentation = false,
 				},
