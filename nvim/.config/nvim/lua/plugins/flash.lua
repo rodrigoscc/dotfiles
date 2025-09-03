@@ -9,7 +9,6 @@ return {
 					enabled = false,
 				},
 				char = {
-					config = nil,
 					highlight = { backdrop = false },
 				},
 			},
