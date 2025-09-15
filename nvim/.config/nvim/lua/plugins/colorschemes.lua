@@ -12,7 +12,8 @@ return {
 					bg = "none",
 				},
 				WinBarNC = {
-					bg = "none",
+					fg = "muted",
+					inherit = false,
 				},
 				MiniTrailspace = {
 					underline = true,
