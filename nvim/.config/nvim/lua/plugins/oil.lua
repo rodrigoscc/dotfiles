@@ -1,3 +1,5 @@
+local file_detail = false
+
 return {
 	{
 		"stevearc/oil.nvim",
@@ -27,6 +29,22 @@ return {
 				["gx"] = "actions.open_external",
 				["g."] = "actions.toggle_hidden",
 				["g\\"] = "actions.toggle_trash",
+				["gd"] = {
+					desc = "Toggle file detail view",
+					callback = function()
+						file_detail = not file_detail
+						if file_detail then
+							require("oil").set_columns({
+								"icon",
+								"permissions",
+								"size",
+								"mtime",
+							})
+						else
+							require("oil").set_columns({ "icon" })
+						end
+					end,
+				},
 			},
 			float = {
 				max_width = 100,
