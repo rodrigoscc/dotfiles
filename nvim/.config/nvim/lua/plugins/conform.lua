@@ -1,6 +1,8 @@
 return {
 	{
 		"stevearc/conform.nvim",
+		event = { "BufWritePre" },
+		cmd = { "ConformInfo" },
 		opts = {
 			notify_on_error = false, -- It's annoying to save and having to press Enter.
 			format_on_save = function(bufnr)
