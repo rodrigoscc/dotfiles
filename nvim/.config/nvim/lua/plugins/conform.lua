@@ -32,6 +32,7 @@ return {
 				zsh = { "beautysh" },
 				proto = { "buf" },
 				rust = { "rustfmt" },
+				markdown = { "injected" },
 			},
 			formatters = {
 				golines = {
