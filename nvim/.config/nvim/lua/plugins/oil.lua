@@ -7,7 +7,7 @@ return {
 		keys = {
 			{ "-", "<cmd>Oil<cr>" },
 		},
-		dependencies = { "nvim-tree/nvim-web-devicons" },
+		dependencies = { { "nvim-mini/mini.icons", opts = {} } },
 		opts = {
 			default_file_explorer = false,
 			delete_to_trash = true,
