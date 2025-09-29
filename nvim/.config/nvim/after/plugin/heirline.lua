@@ -163,7 +163,7 @@ local FileSize = {
 local FileIcon = {
 	init = function(self)
 		self.icon, self.icon_hl =
-			require("mini.icons").get("file", self.filename)
+			require("mini.icons").get("filetype", vim.bo.filetype)
 	end,
 	provider = function(self)
 		return self.icon and (self.icon .. " ")
