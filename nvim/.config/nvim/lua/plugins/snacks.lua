@@ -16,13 +16,24 @@ return {
 				enabled = true,
 				layout = { preset = "ivy" },
 				actions = {
-					diff_branch = function(picker)
+					diff_head = function(picker)
 						picker:close()
 
 						local current = picker:current()
 
 						if current and current.commit then
 							vim.cmd.DiffviewOpen(current.commit .. "...HEAD")
+						end
+					end,
+					diff_parent = function(picker)
+						picker:close()
+
+						local current = picker:current()
+
+						if current and current.commit then
+							vim.cmd.DiffviewOpen(
+								current.commit .. ".." .. current.commit .. "~"
+							)
 						end
 					end,
 				},

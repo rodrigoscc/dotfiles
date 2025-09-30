@@ -72,8 +72,8 @@ vim.keymap.set("n", "<leader>gb", function()
 		win = {
 			input = {
 				keys = {
-					["<C-d>"] = {
-						"diff_branch",
+					["<c-e>h"] = {
+						"diff_head",
 						mode = { "i", "n" },
 					},
 				},
@@ -82,7 +82,23 @@ vim.keymap.set("n", "<leader>gb", function()
 	})
 end, { desc = "[g]it [b]ranches" })
 vim.keymap.set("n", "<leader>gl", function()
-	Snacks.picker.git_log({ layout = "ivy_split" })
+	Snacks.picker.git_log({
+		layout = "ivy_split",
+		win = {
+			input = {
+				keys = {
+					["<c-e>h"] = {
+						"diff_head",
+						mode = { "i", "n" },
+					},
+					["<c-e>p"] = {
+						"diff_parent",
+						mode = { "i", "n" },
+					},
+				},
+			},
+		},
+	})
 end, { desc = "[g]it [l]ogs" })
 vim.keymap.set("n", "<leader>gL", function()
 	Snacks.picker.git_log_file({ layout = "ivy_split" })
