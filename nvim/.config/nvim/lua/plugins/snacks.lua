@@ -81,6 +81,7 @@ return {
 					-- wo = { wrap = true } -- Wrap notifications
 				},
 			},
+			dim = { scope = { min_size = 1, siblings = false } },
 		},
 	},
 }
