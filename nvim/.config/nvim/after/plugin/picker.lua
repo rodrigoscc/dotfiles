@@ -1,3 +1,5 @@
+local files_from_qf = require("custom.quickfix").files_from_qf
+
 vim.keymap.set("n", "<C-p>", function()
 	Snacks.picker.smart({
 		layout = { preview = false },
@@ -136,3 +138,11 @@ end
 vim.api.nvim_create_user_command("StartWorking", function()
 	open_file_at_startup()
 end, {})
+
+vim.keymap.set("n", "<leader>q", function()
+	local files = files_from_qf()
+
+	Snacks.picker.grep({
+		dirs = files,
+	})
+end, { desc = "grep [q]uickfix" })

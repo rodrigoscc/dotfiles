@@ -1,4 +1,4 @@
-function move_cursor(count)
+local function move_cursor(count)
 	local current_win = vim.api.nvim_get_current_win()
 	local original_cursor_line, original_cursor_column =
 		unpack(vim.api.nvim_win_get_cursor(current_win))
