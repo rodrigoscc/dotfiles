@@ -1,6 +1,9 @@
 local files_from_qf = require("custom.quickfix").files_from_qf
 
-vim.keymap.set("n", "<C-p>", function()
+local function smart_picker()
+	local cwd = vim.fn.getcwd()
+	local cwd_contains_dotfiles = string.find(cwd, "dotfiles") ~= nil
+
 	Snacks.picker.smart({
 		layout = { preview = false },
 		multi = { "git_status", "marks", "buffers", "files" },
@@ -9,8 +12,11 @@ vim.keymap.set("n", "<C-p>", function()
 				truncate = 256,
 			},
 		},
+		hidden = cwd_contains_dotfiles,
 	})
-end)
+end
+
+vim.keymap.set("n", "<C-p>", smart_picker)
 vim.keymap.set("n", "<leader>pf", Snacks.picker.git_files)
 vim.keymap.set("n", "<leader>ff", Snacks.picker.files)
 
@@ -139,20 +145,8 @@ vim.keymap.set("n", "<leader>fd", function()
 	})
 end, { desc = "[f]ind [d]otfile" })
 
-local function open_file_at_startup()
-	Snacks.picker.smart({
-		layout = { preview = false },
-		multi = { "git_status", "marks", "buffers", "files" },
-		formatters = {
-			file = {
-				truncate = 256,
-			},
-		},
-	})
-end
-
 vim.api.nvim_create_user_command("StartWorking", function()
-	open_file_at_startup()
+	smart_picker()
 end, {})
 
 vim.keymap.set("n", "<leader>q", function()
