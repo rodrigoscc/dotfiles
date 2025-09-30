@@ -27,16 +27,17 @@ return {
 					end,
 				},
 				win = {
-					-- Some tweaks to avoid conflicting with tmux bindings
 					input = {
 						keys = {
+							["<c-l>"] = { "loclist", mode = { "i", "n" } },
+							-- Some tweaks to avoid conflicting with tmux bindings
 							["<a-m>"] = nil,
 							["<a-o>"] = {
 								"toggle_maximize",
 								mode = { "i", "n" },
 							},
 							["<c-b>"] = nil,
-							["<C-y>"] = {
+							["<c-y>"] = {
 								"preview_scroll_up",
 								mode = { "i", "n" },
 							},
@@ -44,13 +45,15 @@ return {
 					},
 					list = {
 						keys = {
+							["<c-l>"] = { "loclist", mode = { "i", "n" } },
+							-- Some tweaks to avoid conflicting with tmux bindings
 							["<a-m>"] = nil,
 							["<a-o>"] = {
 								"toggle_maximize",
 								mode = { "i", "n" },
 							},
 							["<c-b>"] = nil,
-							["<C-y>"] = {
+							["<c-y>"] = {
 								"preview_scroll_up",
 								mode = { "i", "n" },
 							},
