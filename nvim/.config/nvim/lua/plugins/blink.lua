@@ -13,7 +13,6 @@ return {
 		version = "*",
 		dependencies = {
 			"mikavilpas/blink-ripgrep.nvim",
-			"archie-judd/blink-cmp-words",
 		},
 		---@module 'blink.cmp'
 		---@type blink.cmp.Config
@@ -81,13 +80,14 @@ return {
 						"obsidian",
 						"obsidian_new",
 						"obsidian_tags",
-						"thesaurus",
 					},
 				},
 				providers = {
 					lsp = {
 						name = "LSP",
 						module = "blink.cmp.sources.lsp",
+						fallbacks = {},
+						async = true,
 					},
 					lazydev = {
 						name = "LazyDev",
@@ -127,35 +127,6 @@ return {
 					obsidian_tags = {
 						name = "obsidian_tags",
 						module = "blink.compat.source",
-					},
-					thesaurus = {
-						name = "thesaurus",
-						module = "blink-cmp-words.thesaurus",
-						opts = {
-							-- A score offset applied to returned items.
-							-- By default the highest score is 0 (item 1 has a score of -1, item 2 of -2 etc..).
-							score_offset = 0,
-
-							-- Default pointers define the lexical relations listed under each definition,
-							-- see Pointer Symbols below.
-							-- Default is as below ("antonyms", "similar to" and "also see").
-							definition_pointers = { "!", "&", "^" },
-						},
-					},
-					dictionary = {
-						name = "dictionary",
-						module = "blink-cmp-words.dictionary",
-						opts = {
-							-- The number of characters required to trigger completion.
-							-- Set this higher if completion is slow, 3 is default.
-							dictionary_search_threshold = 4,
-
-							-- See above
-							score_offset = 0,
-
-							-- See above
-							definition_pointers = { "!", "&", "^" },
-						},
 					},
 				},
 			},
