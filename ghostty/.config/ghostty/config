@@ -3,7 +3,6 @@ background = 000000
 
 font-family = Maple Mono NF CN
 font-size = 13.0
-adjust-cell-height = 15%
 
 window-padding-balance = true
 
