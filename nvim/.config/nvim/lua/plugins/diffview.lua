@@ -23,19 +23,6 @@ return {
 			local diffview = require("diffview")
 
 			diffview.setup({
-				file_panel = {
-					win_config = {
-						position = "bottom",
-						height = 10,
-					},
-				},
-				file_history_panel = {
-					win_config = {
-						type = "split",
-						position = "bottom",
-						height = 10,
-					},
-				},
 				keymaps = {
 					disable_defaults = false,
 					view = {
