@@ -21,6 +21,9 @@ return {
 						Folder = "",
 					},
 				},
+				ui = {
+					bar = { separator = "  " },
+				},
 			},
 		},
 	},
