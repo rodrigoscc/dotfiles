@@ -53,4 +53,4 @@ keybind = alt+seven=text:\x02\x37
 keybind = alt+eight=text:\x02\x38
 keybind = alt+nine=text:\x02\x39
 
- keybind = global:super+p=toggle_quick_terminal
+keybind = global:super+p=toggle_quick_terminal
