@@ -73,5 +73,9 @@ vim.keymap.set("n", "<leader>ot", function()
 
 			return ret
 		end,
+		layout = {
+			preset = "vertical",
+			layout = { width = 0.8 },
+		},
 	})
 end, { desc = "[o]bsidian [t]odos" })
