@@ -299,4 +299,21 @@ vim.keymap.set(
 	{ desc = "go to tag in vertical split" }
 )
 
-return { counter = counter }
+vim.keymap.set("n", "]b", function()
+	vim.g.set_jump(function()
+		vim.cmd.bnext()
+	end, function()
+		vim.cmd.bprevious()
+	end)
+
+	vim.cmd.bnext()
+end)
+vim.keymap.set("n", "[b", function()
+	vim.g.set_jump(function()
+		vim.cmd.bnext()
+	end, function()
+		vim.cmd.bprevious()
+	end)
+
+	vim.cmd.bprevious()
+end)
