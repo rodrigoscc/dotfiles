@@ -13,7 +13,7 @@ vim.keymap.set(
 
 vim.keymap.set(
 	"n",
-	"<leader>ot",
+	"<leader>o#",
 	"<cmd>Obsidian tags<cr>",
 	{ desc = "[o]bsidian [t]ags" }
 )
@@ -44,3 +44,12 @@ vim.keymap.set(
 	"<cmd>Obsidian yesterday<cr>",
 	{ desc = "[o]bsidian [y]esterday" }
 )
+
+vim.keymap.set("n", "<leader>ot", function()
+	Snacks.picker.grep({
+		cwd = "~/obsidian-vault/",
+		live = false,
+		search = "- \\[ \\]",
+		title = "Obsidian TODOs",
+	})
+end, { desc = "[o]bsidian [t]odos" })
