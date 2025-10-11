@@ -8,6 +8,7 @@
   "blink.compat": { "branch": "main", "commit": "2ed6d9a28b07fa6f3bface818470605f8896408c" },
   "blink.download": { "branch": "main", "commit": "86361b98f3c8317904a08e3bd12cf3cdcbe3e925" },
   "blink.pairs": { "branch": "main", "commit": "d8bf802cca951f0a3b72ddeed21bc5a1d5353f65" },
+  "buffer-sticks.nvim": { "branch": "main", "commit": "ef019e06aa2e312a82113b9a0545b06b240417aa" },
   "checkmate.nvim": { "branch": "main", "commit": "8d975b5e26adeb8156a7207d77dac10da4add303" },
   "conform.nvim": { "branch": "master", "commit": "fbcb4fa7f34bfea9be702ffff481a8e336ebf6ed" },
   "diffview.nvim": { "branch": "main", "commit": "4516612fe98ff56ae0415a259ff6361a89419b0a" },
