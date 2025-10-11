@@ -1,4 +1,3 @@
--- vim: tabstop=4
 local utils = require("heirline.utils")
 local conditions = require("heirline.conditions")
 
