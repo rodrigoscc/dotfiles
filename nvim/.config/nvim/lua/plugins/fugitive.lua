@@ -20,6 +20,12 @@ return {
 				"<leader>gp",
 				function()
 					vim.cmd("Git! -c push.autoSetupRemote=true push")
+					vim.api.nvim_create_autocmd({ "CursorMoved" }, {
+						once = true,
+						callback = function()
+							vim.cmd.pclose()
+						end,
+					})
 				end,
 			},
 		},
