@@ -107,7 +107,23 @@ vim.keymap.set("n", "<leader>gl", function()
 	})
 end, { desc = "[g]it [l]ogs" })
 vim.keymap.set("n", "<leader>gL", function()
-	Snacks.picker.git_log_file({ layout = "ivy_split" })
+	Snacks.picker.git_log_file({
+		layout = "ivy_split",
+		win = {
+			input = {
+				keys = {
+					["<c-e>h"] = {
+						"diff_head",
+						mode = { "i", "n" },
+					},
+					["<c-e>p"] = {
+						"diff_parent",
+						mode = { "i", "n" },
+					},
+				},
+			},
+		},
+	})
 end, { desc = "[g]it buffer [l]ogs" })
 vim.keymap.set(
 	"n",

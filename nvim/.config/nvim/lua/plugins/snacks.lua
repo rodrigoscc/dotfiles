@@ -32,7 +32,7 @@ return {
 
 						if current and current.commit then
 							vim.cmd.DiffviewOpen(
-								current.commit .. ".." .. current.commit .. "~"
+								current.commit .. "~" .. ".." .. current.commit
 							)
 						end
 					end,
