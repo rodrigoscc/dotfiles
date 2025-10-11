@@ -54,5 +54,24 @@ vim.keymap.set("n", "<leader>ot", function()
 		matcher = { fuzzy = false },
 		sort = { fields = { "file:desc" } },
 		args = { "--sortr", "path" },
+		format = function(item, picker)
+			local format = require("snacks.picker.format")
+
+			---@type snacks.picker.Highlight[]
+			local ret = {}
+
+			vim.list_extend(ret, format.filename(item, picker))
+
+			table.insert(ret, { "TODO", "SnacksPickerComment" })
+			table.insert(ret, { " " })
+
+			if item.line then
+				local clean_line = vim.trim(item.line:gsub("%- %[ %]", ""))
+				Snacks.picker.highlight.format(item, clean_line, ret)
+				table.insert(ret, { " " })
+			end
+
+			return ret
+		end,
 	})
 end, { desc = "[o]bsidian [t]odos" })
