@@ -51,5 +51,8 @@ vim.keymap.set("n", "<leader>ot", function()
 		live = false,
 		search = "- \\[ \\]",
 		title = "Obsidian TODOs",
+		matcher = { fuzzy = false },
+		sort = { fields = { "file:desc" } },
+		args = { "--sortr", "path" },
 	})
 end, { desc = "[o]bsidian [t]odos" })
