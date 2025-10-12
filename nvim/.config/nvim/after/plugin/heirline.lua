@@ -603,3 +603,5 @@ vim.o.laststatus = 3
 vim.o.cmdheight = 0
 
 require("heirline").setup({ statusline = statusline, tabline = tabline })
+
+-- this is a test comment
