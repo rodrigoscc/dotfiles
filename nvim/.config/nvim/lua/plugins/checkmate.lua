@@ -2,6 +2,7 @@ return {
 	{
 		"bngarren/checkmate.nvim",
 		ft = "markdown", -- Lazy loads for Markdown files matching patterns in 'files'
+		cmd = { "Checkmate" },
 		opts = {
 			files = { "*.md" },
 			keys = {
