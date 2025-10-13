@@ -317,3 +317,16 @@ vim.keymap.set("n", "[b", function()
 
 	vim.cmd.bprevious()
 end)
+
+vim.keymap.set(
+	"n",
+	"[p",
+	'<Cmd>exe "put! " . v:register<CR>',
+	{ desc = "Paste Above" }
+)
+vim.keymap.set(
+	"n",
+	"]p",
+	'<Cmd>exe "put "  . v:register<CR>',
+	{ desc = "Paste Below" }
+)
