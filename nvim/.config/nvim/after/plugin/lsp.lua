@@ -1,3 +1,5 @@
+local util = require("lspconfig.util")
+
 local mason_ensure_installed = {
 	"ruff",
 	"prettier",
@@ -180,6 +182,35 @@ vim.lsp.config("lua_ls", {
 			},
 		},
 	},
+})
+
+local root_files = {
+	"pyproject.toml",
+	"setup.py",
+	"setup.cfg",
+	"requirements.txt",
+	"Pipfile",
+	"pyrightconfig.json",
+	".git",
+}
+
+vim.lsp.config("basedpyright", {
+	-- setting root_markers use vim.fs.root to calculate the root directory,
+	-- which returns an invalid root directory ('.') for diffview:// buffers.
+	-- This was causing a second basedpyright server to start with an empty workspace,
+	-- and therefore, scanning the whole disk for python files.
+	-- LSP in diffview:// buffers doesn't work well either so, let's just disable LSP in them.
+	-- In the future, use something like https://github.com/lervag/dotnvim/blob/28a0e8fafdd829321977ffa0e891b8bcb28484af/plugin/lsp.lua#L205.
+	root_dir = function(bufnr, on_dir)
+		local fname = vim.api.nvim_buf_get_name(bufnr)
+
+		if string.find(fname, "diffview://") ~= nil then
+			return nil
+		end
+
+		local dir = util.root_pattern(unpack(root_files))(fname)
+		on_dir(dir)
+	end,
 })
 
 vim.lsp.config("jsonls", {
