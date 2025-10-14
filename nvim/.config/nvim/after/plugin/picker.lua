@@ -172,3 +172,21 @@ vim.keymap.set("n", "<leader>q", function()
 		dirs = files,
 	})
 end, { desc = "grep [q]uickfix" })
+
+vim.keymap.set("n", "<leader>bd", function()
+	Snacks.bufdelete()
+end, { desc = "[b]uffer [d]elete" })
+
+vim.keymap.set(
+	"n",
+	"<leader>bo",
+	Snacks.bufdelete.other,
+	{ desc = "[b]uffer [o]nly" }
+)
+
+vim.keymap.set(
+	"n",
+	"<leader>bD",
+	Snacks.bufdelete.all,
+	{ desc = "[b]uffer [D]elete all" }
+)
