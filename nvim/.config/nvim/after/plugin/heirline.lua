@@ -585,7 +585,7 @@ local statusline = {
 local tabline = utils.make_tablist({
 	provider = function(self)
 		return (self and self.tabnr)
-				and "%" .. self.tabnr .. "T " .. self.tabnr .. " %T"
+				and "%" .. self.tabnr .. "T  " .. self.tabnr .. " %T"
 			or ""
 	end,
 	hl = function(self)
