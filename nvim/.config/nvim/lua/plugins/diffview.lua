@@ -61,7 +61,7 @@ return {
 						{
 							"n",
 							"q",
-							vim.cmd.DiffviewClose,
+							"<cmd>DiffviewClose<cr>",
 							{ desc = "Close Diffview" },
 						},
 					},
