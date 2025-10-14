@@ -1,5 +1,24 @@
 return {
-	{ "williamboman/mason.nvim" },
-	{ "williamboman/mason-lspconfig.nvim" },
-	{ "williamboman/mason.nvim" },
+	{
+		"mason-org/mason-lspconfig.nvim",
+		opts = {
+			ensure_installed = {
+				"ts_ls",
+				"rust_analyzer",
+				"gopls",
+				"basedpyright",
+				"lua_ls",
+				"bashls",
+				"jsonls",
+				"yamlls",
+				"svelte",
+				"tailwindcss",
+			},
+			automatic_enable = false, -- otherwise LSPs like ruff and buf_ls are enabled too
+		},
+		dependencies = {
+			{ "mason-org/mason.nvim", opts = {} },
+			"neovim/nvim-lspconfig",
+		},
+	},
 }

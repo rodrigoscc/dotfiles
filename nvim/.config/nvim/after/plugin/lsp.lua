@@ -270,20 +270,3 @@ vim.lsp.config("yamlls", {
 		},
 	},
 })
-
-require("mason").setup()
-require("mason-lspconfig").setup({
-	ensure_installed = {
-		"ts_ls",
-		"rust_analyzer",
-		"gopls",
-		"basedpyright",
-		"lua_ls",
-		"bashls",
-		"jsonls",
-		"yamlls",
-		"svelte",
-		"tailwindcss",
-	},
-	automatic_enable = false, -- otherwise LSPs like ruff and buf_ls are enabled too
-})
