@@ -79,3 +79,18 @@ vim.keymap.set("n", "<leader>ot", function()
 		},
 	})
 end, { desc = "[o]bsidian [t]odos" })
+
+vim.api.nvim_create_autocmd("User", {
+	pattern = "ObsidianNoteEnter",
+	callback = function(ev)
+		-- Replace default <CR> obsidian keymap with checkmate binding.
+		-- There's no way to disable obsidian.nvim default keymaps.
+		-- See: https://github.com/obsidian-nvim/obsidian.nvim/blob/6b2a22a74d1c883e797764c28f75aa6b532a1ae4/lua/obsidian/autocmds.lua#L48
+		vim.keymap.set("n", "<CR>", "<cmd>Checkmate toggle<cr>", {
+			buffer = ev.buf,
+			desc = "Toggle checkbox",
+		})
+
+		vim.wo[0][0].fillchars = "eob:~"
+	end,
+})

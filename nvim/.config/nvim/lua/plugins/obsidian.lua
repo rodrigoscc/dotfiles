@@ -1,7 +1,7 @@
 return {
 	{
 		"obsidian-nvim/obsidian.nvim",
-		version = "v3.11.0", -- recommended, use latest release instead of latest commit
+		version = "v3.14.2", -- recommended, use latest release instead of latest commit
 		ft = "markdown",
 		lazy = true,
 		cmd = {
@@ -11,6 +11,7 @@ return {
 			"nvim-lua/plenary.nvim",
 		},
 		opts = {
+			legacy_commands = false,
 			workspaces = {
 				{
 					name = "work",
@@ -21,18 +22,9 @@ return {
 				folder = "templates",
 			},
 			ui = {
-				checkboxes = {},
 				bullets = {},
 			},
-			mappings = {
-				-- Overrides the 'gf' mapping to work on markdown/wiki links within your vault.
-				["gf"] = {
-					action = function()
-						return require("obsidian").util.gf_passthrough()
-					end,
-					opts = { noremap = false, expr = true, buffer = true },
-				},
-			},
+			footer = { enabled = false },
 		},
 	},
 }
