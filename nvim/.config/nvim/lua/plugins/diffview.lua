@@ -46,14 +46,14 @@ return {
 						},
 						{
 							"n",
-							"<C-h>",
-							"do",
+							"<localleader>o",
+							"do]c",
 							{ desc = "Diff get" },
 						},
 						{
 							"n",
-							"<C-l>",
-							"dp",
+							"<localleader>p",
+							"dp]c",
 							{ desc = "Diff put" },
 						},
 					},
