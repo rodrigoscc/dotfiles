@@ -7,11 +7,6 @@ local function smart_picker()
 	Snacks.picker.smart({
 		layout = { preview = false },
 		multi = { "git_status", "marks", "buffers", "files" },
-		formatters = {
-			file = {
-				truncate = 256,
-			},
-		},
 		hidden = cwd_contains_dotfiles,
 	})
 end
