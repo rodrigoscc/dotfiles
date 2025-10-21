@@ -185,3 +185,5 @@ vim.keymap.set(
 	Snacks.bufdelete.all,
 	{ desc = "[b]uffer [D]elete all" }
 )
+
+vim.keymap.set("n", "gK", Snacks.image.hover, { desc = "show image" })

@@ -86,6 +86,10 @@ return {
 				},
 			},
 			dim = { scope = { min_size = 1, siblings = false } },
+			image = {
+				doc = { enabled = false },
+				math = { latex = { font_size = "large" } },
+			},
 		},
 	},
 }
