@@ -43,6 +43,8 @@ return {
 							["<c-l>"] = { "loclist", mode = { "i", "n" } },
 							-- Some tweaks to avoid conflicting with tmux bindings
 							["<a-m>"] = nil,
+							["<a-w>"] = nil,
+							["<a-c>"] = "cycle_win",
 							["<a-o>"] = {
 								"toggle_maximize",
 								mode = { "i", "n" },
@@ -59,6 +61,8 @@ return {
 							["<c-l>"] = { "loclist", mode = { "i", "n" } },
 							-- Some tweaks to avoid conflicting with tmux bindings
 							["<a-m>"] = nil,
+							["<a-w>"] = nil,
+							["<a-c>"] = "cycle_win",
 							["<a-o>"] = {
 								"toggle_maximize",
 								mode = { "i", "n" },
