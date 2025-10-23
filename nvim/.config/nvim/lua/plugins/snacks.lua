@@ -78,6 +78,12 @@ return {
 							},
 						},
 					},
+					preview = {
+						keys = {
+							["<a-w>"] = nil,
+							["<a-c>"] = "cycle_win",
+						},
+					},
 				},
 			},
 			quickfile = { enabled = true },
