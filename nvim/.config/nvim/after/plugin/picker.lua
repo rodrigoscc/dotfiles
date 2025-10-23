@@ -11,16 +11,32 @@ local function smart_picker()
 	})
 end
 
+local function smart_grep()
+	local cwd = vim.fn.getcwd()
+	local cwd_contains_dotfiles = string.find(cwd, "dotfiles") ~= nil
+
+	Snacks.picker.grep({
+		hidden = cwd_contains_dotfiles,
+		regex = false,
+	})
+end
+
+local function smart_grep_word()
+	local cwd = vim.fn.getcwd()
+	local cwd_contains_dotfiles = string.find(cwd, "dotfiles") ~= nil
+
+	Snacks.picker.grep_word({
+		hidden = cwd_contains_dotfiles,
+	})
+end
+
 vim.keymap.set("n", "<C-p>", smart_picker)
 vim.keymap.set("n", "<leader>pf", Snacks.picker.git_files)
 vim.keymap.set("n", "<leader>ff", Snacks.picker.files)
 
 vim.keymap.set("n", "<C-f>", Snacks.picker.lines)
-vim.keymap.set("n", "<leader>/", function()
-	Snacks.picker.grep({ regex = false }) -- easier to include dots and braces without regex
-end)
-vim.keymap.set("n", "<leader>*", Snacks.picker.grep_word)
-vim.keymap.set("x", "<leader>*", Snacks.picker.grep_word)
+vim.keymap.set("n", "<leader>/", smart_grep)
+vim.keymap.set({ "n", "x" }, "<leader>*", smart_grep_word)
 
 vim.keymap.set("n", "]w", function()
 	vim.g.set_jump(function()
