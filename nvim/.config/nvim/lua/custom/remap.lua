@@ -11,8 +11,8 @@ vim.keymap.set("x", ">", ">gv")
 
 vim.keymap.set("n", "J", "mzJ`z")
 
-vim.keymap.set("n", "<space><space>y", [[mzgg"+yG`z]], { desc = "copy buffer" })
-vim.keymap.set("n", "<space><space>c", [[ggVGc]], { desc = "change buffer" })
+vim.keymap.set("n", "<localleader>y", [[mzgg"+yG`z]], { desc = "copy buffer" })
+vim.keymap.set("n", "<localleader>c", [[ggVGc]], { desc = "change buffer" })
 
 local function send_buffer_to_tmux(pane)
 	local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
@@ -20,7 +20,7 @@ local function send_buffer_to_tmux(pane)
 	vim.system({ "tmux", "send-keys", "-t", pane, "-l", text .. "\n" })
 end
 
-vim.keymap.set("n", "<space><space>r", function()
+vim.keymap.set("n", "<localleader>r", function()
 	send_buffer_to_tmux(":.+")
 end, { desc = "send buffer to tmux" })
 
