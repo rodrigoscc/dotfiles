@@ -34,7 +34,16 @@ vim.keymap.set("n", "<C-p>", smart_picker)
 vim.keymap.set("n", "<leader>pf", Snacks.picker.git_files)
 vim.keymap.set("n", "<leader>ff", Snacks.picker.files)
 
-vim.keymap.set("n", "<C-f>", Snacks.picker.lines)
+vim.keymap.set("n", "<C-f>", function()
+	Snacks.picker.lines({
+		win = {
+			preview = {
+				minimal = true,
+				wo = { signcolumn = "yes:2" },
+			},
+		},
+	})
+end)
 vim.keymap.set("n", "<leader>/", smart_grep)
 vim.keymap.set({ "n", "x" }, "<leader>*", smart_grep_word)
 
