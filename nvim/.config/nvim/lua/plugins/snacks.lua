@@ -97,7 +97,11 @@ return {
 			},
 			dim = { scope = { min_size = 1, siblings = false } },
 			image = {
-				doc = { enabled = false },
+				doc = {
+					enabled = true, -- Must be enabled for terminal to be detected automatically
+					inline = false, -- Do not want to replace the images inline
+					float = false, -- Do not want a floating window to be automatically open, gK to open it
+				},
 				math = { latex = { font_size = "large" } },
 			},
 		},
