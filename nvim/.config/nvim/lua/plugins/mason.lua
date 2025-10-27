@@ -17,7 +17,12 @@ return {
 			automatic_enable = false, -- otherwise LSPs like ruff and buf_ls are enabled too
 		},
 		dependencies = {
-			{ "mason-org/mason.nvim", opts = {} },
+			{
+				"mason-org/mason.nvim",
+				opts = {
+					ui = { border = "rounded" },
+				},
+			},
 			"neovim/nvim-lspconfig",
 		},
 	},
