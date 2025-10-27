@@ -211,4 +211,17 @@ vim.keymap.set(
 	{ desc = "[b]uffer [D]elete all" }
 )
 
-vim.keymap.set("n", "gK", Snacks.image.hover, { desc = "show image" })
+vim.keymap.set("n", "gK", function()
+	Snacks.image.hover()
+
+	vim.api.nvim_create_autocmd(
+		{ "BufWritePost", "CursorMoved", "ModeChanged", "BufLeave" },
+		{
+			callback = function(args)
+				require("snacks.image.doc").hover_close()
+				vim.api.nvim_del_autocmd(args.id)
+				return true
+			end,
+		}
+	)
+end, { desc = "show image" })
