@@ -211,15 +211,19 @@ vim.keymap.set(
 	{ desc = "[b]uffer [D]elete all" }
 )
 
+local images_group =
+	vim.api.nvim_create_augroup("custom.snacks.image", { clear = true })
+
 vim.keymap.set("n", "gK", function()
 	Snacks.image.hover()
 
 	vim.api.nvim_create_autocmd(
 		{ "BufWritePost", "CursorMoved", "ModeChanged", "BufLeave" },
 		{
-			callback = function(args)
+			group = images_group,
+			callback = function()
 				require("snacks.image.doc").hover_close()
-				vim.api.nvim_del_autocmd(args.id)
+				vim.api.nvim_clear_autocmds({ group = images_group })
 				return true
 			end,
 		}
