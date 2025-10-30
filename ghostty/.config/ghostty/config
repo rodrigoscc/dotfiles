@@ -7,6 +7,8 @@ font-size = 13.0
 window-padding-balance = true
 
 cursor-color = #f6c177
+custom-shader = shaders/sonic_boom_cursor.glsl
+custom-shader = shaders/cursor_warp.glsl
 
 mouse-hide-while-typing = true
 
