@@ -15,10 +15,6 @@ return {
 			picker = {
 				enabled = true,
 				layout = { preset = "ivy" },
-				previewers = {
-					diff = { builtin = false },
-					git = { builtin = false },
-				},
 				actions = {
 					diff_head = function(picker)
 						picker:close()
