@@ -23,22 +23,26 @@ return {
 				},
 				[",r"] = {
 					rhs = "<cmd>Checkmate remove_all_metadata<CR>",
-					desc = "Remove all metadata from a todo item",
 					modes = { "n", "v" },
 				},
-				[",p"] = {
-					rhs = "<cmd>Checkmate metadata add priority<CR>",
-					desc = "Remove all metadata from a todo item",
+				[",h"] = {
+					rhs = "<cmd>Checkmate metadata toggle priority high<CR>",
+					modes = { "n", "v" },
+				},
+				[",m"] = {
+					rhs = "<cmd>Checkmate metadata toggle priority medium<CR>",
+					modes = { "n", "v" },
+				},
+				[",l"] = {
+					rhs = "<cmd>Checkmate metadata toggle priority low<CR>",
 					modes = { "n", "v" },
 				},
 				[",s"] = {
 					rhs = "<cmd>Checkmate metadata add started<CR>",
-					desc = "Remove all metadata from a todo item",
 					modes = { "n", "v" },
 				},
 				[",d"] = {
 					rhs = "<cmd>Checkmate metadata add done<CR>",
-					desc = "Remove all metadata from a todo item",
 					modes = { "n", "v" },
 				},
 			},
