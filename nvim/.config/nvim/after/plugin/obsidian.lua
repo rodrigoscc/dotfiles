@@ -67,7 +67,35 @@ vim.keymap.set("n", "<leader>ot", function()
 
 			if item.line then
 				local clean_line = vim.trim(item.line:gsub("%- %[ %]", ""))
-				Snacks.picker.highlight.format(item, clean_line, ret)
+
+				local is_high_priority = string.find(
+					clean_line,
+					"%@priority%(high%)"
+				) ~= nil
+				local is_medium_priority = string.find(
+					clean_line,
+					"%@priority%(medium%)"
+				) ~= nil
+				local is_low_priority = string.find(
+					clean_line,
+					"%@priority%(low%)"
+				) ~= nil
+
+				local hl_group = nil
+				if is_high_priority then
+					hl_group = "SnacksPickerGitBreaking"
+				elseif is_medium_priority then
+					hl_group = "SnacksPickerMatch"
+				elseif is_low_priority then
+					hl_group = "SnacksPickerComment"
+				end
+
+				Snacks.picker.highlight.format(
+					item,
+					clean_line,
+					ret,
+					{ hl_group = hl_group }
+				)
 				table.insert(ret, { " " })
 			end
 
