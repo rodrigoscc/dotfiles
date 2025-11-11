@@ -119,6 +119,18 @@ return {
 				BlinkCmpSignatureHelpBorder = {
 					link = "FloatBorder",
 				},
+				SnacksDiffContext = {
+					bg = "none",
+					link = "none",
+				},
+				SnacksDiffContextNr = {
+					bg = "none",
+					link = "none",
+				},
+				SnacksDiffContextLineNr = {
+					bg = "none",
+					fg = "muted",
+				},
 			},
 		},
 	},
