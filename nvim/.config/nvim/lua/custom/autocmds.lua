@@ -44,3 +44,12 @@ autocmd("FileType", {
 		)
 	end,
 })
+
+augroup("rodrigosc/win", {
+	"WinResized",
+	{
+		callback = function()
+			vim.cmd.wincmd("=")
+		end,
+	},
+})
