@@ -11,6 +11,13 @@ return {
 				{ desc = "[g]it [d]iff" },
 			},
 			{
+				"<leader>gD",
+				function()
+					vim.cmd("DiffviewOpen origin/HEAD...HEAD") -- Diff current branch to master/main branch in origin
+				end,
+				{ desc = "[g]it [D]iff with origin HEAD" },
+			},
+			{
 				"<leader>gf",
 				function()
 					vim.cmd("DiffviewFileHistory %")
