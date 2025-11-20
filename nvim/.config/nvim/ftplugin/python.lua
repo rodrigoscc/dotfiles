@@ -1,14 +1,6 @@
-local function trigger_autopairs_cr()
-	local pairs = require("blink.pairs.mappings")
-	local config = require("blink.pairs.config")
-	local rule_lib = require("blink.pairs.rule")
-
-	local rules_by_key = rule_lib.parse(config.mappings.pairs)
-	local all_rules = rule_lib.get_all(rules_by_key)
-
-	local keys = pairs.enter(all_rules)()
+local function trigger_cr()
 	vim.api.nvim_feedkeys(
-		vim.api.nvim_replace_termcodes(keys, true, false, true),
+		vim.api.nvim_replace_termcodes("<CR>", true, false, true),
 		"n",
 		false
 	)
@@ -25,7 +17,7 @@ local function break_string()
 	local node_type = cursor_node:type()
 
 	if not string.find(node_type, "string") then
-		trigger_autopairs_cr()
+		trigger_cr()
 		return
 	end
 
@@ -55,7 +47,7 @@ local function break_string()
 			false
 		)
 	else
-		trigger_autopairs_cr()
+		trigger_cr()
 	end
 end
 
