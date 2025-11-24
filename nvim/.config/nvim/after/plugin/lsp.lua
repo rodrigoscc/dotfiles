@@ -120,10 +120,10 @@ vim.api.nvim_create_autocmd("LspAttach", {
 })
 
 local function toggle_format_on_save()
-	if vim.g.disable_autoformat then
-		vim.g.disable_autoformat = false
+	if vim.b[0].disable_autoformat then
+		vim.b[0].disable_autoformat = false
 	else
-		vim.g.disable_autoformat = true
+		vim.b[0].disable_autoformat = true
 	end
 end
 
