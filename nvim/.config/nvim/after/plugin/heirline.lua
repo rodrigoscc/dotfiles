@@ -555,26 +555,10 @@ local Ruler = {
 	},
 }
 
-local Http = {
-	{
-		provider = function()
-			local project = require("http-nvim.project")
-			local env = project.get_active_env()
-
-			if env ~= nil then
-				return "[ " .. env .. "] "
-			end
-
-			return ""
-		end,
-		hl = { fg = colors.special1 },
-	},
-}
-
 local Nurl = {
 	{
 		provider = function()
-			local has_nurl, nurl = pcall(require, "nurl.nurl")
+			local has_nurl, nurl = pcall(require, "nurl")
 			if not has_nurl then
 				return ""
 			end
@@ -602,7 +586,6 @@ local statusline = {
 	{ TogglesElement },
 	{ provider = " %= " },
 	{ Nurl },
-	{ Http },
 	{ HarpoonElement },
 	{ FileSecondaryBlock },
 	{ FileEncoding },
