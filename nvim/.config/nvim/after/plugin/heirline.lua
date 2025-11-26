@@ -46,6 +46,7 @@ local colors = {
 		info = safe_get_highlight("DiagnosticInfo").foreground,
 	},
 	git = {
+		branch = safe_get_highlight("@macro").foreground,
 		del = safe_get_highlight(
 			"diffRemoved",
 			"DiffRemoved",
@@ -140,6 +141,13 @@ local FileBlock = {
 	end,
 }
 
+local FileSecondaryBlock = {
+	init = function(self)
+		self.filename = vim.fn.expand("%:t")
+		self.filepath = vim.fn.expand("%:p")
+	end,
+}
+
 local FileSize = {
 	provider = function(self)
 		-- Return early if no file size
@@ -226,7 +234,7 @@ local FileNameModifer = {
 }
 
 local FilePosition = {
-	provider = " %3l:%-2c ",
+	provider = " %3l:%-2c",
 	hl = { fg = colors.dim },
 }
 
@@ -235,10 +243,10 @@ FileBlock = utils.insert(
 	FileBlock,
 	FileIcon,
 	utils.insert(FileNameModifer, FileName), -- a new table where FileName is a child of FileNameModifier
-	unpack(FileFlags), -- A small optimisation, since their parent does nothing
-	FileSize,
-	FilePosition
+	unpack(FileFlags) -- A small optimisation, since their parent does nothing
 )
+
+FileSecondaryBlock = utils.insert(FileSecondaryBlock, FilePosition, FileSize)
 
 local SearchCount = {
 	condition = function()
@@ -517,13 +525,13 @@ local GitBranchBlock = {
 	end,
 	{
 		{
-			hl = { fg = colors.special2 },
+			hl = { fg = colors.git.branch },
 			provider = function()
 				return " "
 			end,
 		},
 		{
-			hl = { fg = colors.special2 },
+			hl = { fg = colors.git.branch },
 			provider = function(self)
 				return self.status_dict.head
 			end,
@@ -559,6 +567,26 @@ local Http = {
 
 			return ""
 		end,
+		hl = { fg = colors.special1 },
+	},
+}
+
+local Nurl = {
+	{
+		provider = function()
+			local has_nurl, nurl = pcall(require, "nurl.nurl")
+			if not has_nurl then
+				return ""
+			end
+
+			local env = nurl.get_active_env()
+
+			if env ~= nil then
+				return "[ " .. env .. "] "
+			end
+
+			return ""
+		end,
 		hl = { fg = colors.special3 },
 	},
 }
@@ -567,14 +595,17 @@ local statusline = {
 	hl = { bg = colors.background },
 	{ ViMode },
 	{ FileBlock },
-	{ FileEncoding },
 	{ GitBranchBlock },
+	{ provider = "%<" },
 	{ SearchCount },
 	{ MacroRec },
 	{ TogglesElement },
 	{ provider = " %= " },
+	{ Nurl },
 	{ Http },
 	{ HarpoonElement },
+	{ FileSecondaryBlock },
+	{ FileEncoding },
 	{ FileTypeElement },
 	{ LSPElement },
 	{ Diagnostics },
