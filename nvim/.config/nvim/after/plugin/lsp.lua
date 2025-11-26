@@ -129,6 +129,7 @@ end
 
 vim.keymap.set("n", "<leader>tf", function()
 	toggle_format_on_save()
+	vim.cmd.redrawstatus()
 end, { desc = "[t]oggle [f]ormat on save" })
 
 vim.keymap.set("n", "<leader>rl", function()

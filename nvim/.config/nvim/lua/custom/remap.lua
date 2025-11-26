@@ -31,6 +31,7 @@ vim.keymap.set("n", "<C-w>t", "<C-w>T")
 
 vim.keymap.set("n", "<leader>tw", function()
 	vim.wo.wrap = not vim.wo.wrap
+	vim.cmd.redrawstatus()
 end, { desc = "[t]oggle [w]rap" })
 
 -- Paste preserving previous copy
