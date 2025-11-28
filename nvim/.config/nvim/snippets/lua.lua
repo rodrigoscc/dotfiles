@@ -34,4 +34,10 @@ return {
 			),
 		})
 	),
+	s(
+		"ins",
+		fmt([[print(vim.inspect({}))]], {
+			i(1),
+		})
+	),
 }
