@@ -563,8 +563,7 @@ local Nurl = {
 				return ""
 			end
 
-			local env = nurl.get_active_env()
-
+			local env = nurl.env.project_active_env
 			if env ~= nil then
 				return "[ " .. env .. "] "
 			end
