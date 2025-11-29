@@ -14,17 +14,14 @@ fi
 ssh_hosts=$(grep --extended-regexp '^Host ' ~/.ssh/config 2> /dev/null | \
         grep -vE '(\*|\?)' | \
         sed 's/^Host //' | \
-        sort -u | \
-    sed 's/^/new-window:/')
-
-split_ssh_hosts=$(printf "%s" "$ssh_hosts" | sed 's/new-window:/new-pane:/g')
-if [[ -n "$ssh_hosts" ]]; then
-    ssh_hosts="$ssh_hosts\n$split_ssh_hosts"
-fi
+    sort -u)
 
 fzf_input="$tmux_panes$ssh_hosts"
 
-selection=$(echo -e "$fzf_input" | fzf-tmux --header "SSH manager" --header-first --info=inline --no-sort -w 70 -h 20 --multi --bind="tab:toggle,ctrl-a:toggle-all" || true)
+result=$(echo -e "$fzf_input" | fzf-tmux --header "SSH: Enter=window, C-v=vsplit, C-s=hsplit" --header-first --info=inline --no-sort -w 70 -h 20 --multi --bind="tab:toggle,ctrl-a:toggle-all" --expect="enter,ctrl-v,ctrl-s" || true)
+
+key=$(echo "$result" | head -1)
+selection=$(echo "$result" | tail -n +2)
 
 # Exit if nothing selected
 if [[ -z "$selection" ]]; then
@@ -32,44 +29,40 @@ if [[ -z "$selection" ]]; then
 fi
 
 while IFS= read -r line; do
-    IFS=':' read -r type window_id window_title pane_id ssh_host <<< "$line"
-    if [[ "$type" == $TMUX_SESSION ]]; then
-        if [[ -n "${TMUX:-}" ]]; then
-            tmux switch-client -t "$TMUX_SESSION"
-        fi
+    [[ -z "$line" ]] && continue
 
+    if [[ "$line" == *:*:*:* ]]; then
+        IFS=':' read -r _ window_id _ pane_id _ <<< "$line"
+        [[ -n "${TMUX:-}" ]] && tmux switch-client -t "$TMUX_SESSION"
         tmux select-pane -t "$pane_id"
         tmux select-window -t "$window_id"
 
-        current_command=$(tmux list-panes -t $TMUX_SESSION -f "#{==:#{pane_id},$pane_id}" -F "#{pane_current_command}")
-
-        if ! echo $current_command | grep -E  '^ssh' >> /dev/null 2>&1; then
-            ssh_host=$(tmux show-option -pv @ssh_host)
-            tmux send-keys -t "$TMUX_SESSION:$window_id" "ssh $ssh_host" C-m
+        current_command=$(tmux list-panes -t "$TMUX_SESSION" -f "#{==:#{pane_id},$pane_id}" -F "#{pane_current_command}")
+        if ! echo "$current_command" | grep -qE '^ssh'; then
+            ssh_host=$(tmux show-option -pqv @ssh_host || true)
+            [[ -n "$ssh_host" ]] && tmux send-keys -t "$TMUX_SESSION:$window_id" "ssh $ssh_host" C-m
         fi
-    elif [[ "$type" == "new-window" ]]; then
-        if ! tmux has-session -t "$TMUX_SESSION" 2>/dev/null; then
-            tmux new-session -d -s "$TMUX_SESSION" -n "session" "ssh $window_id"
-        else
-            tmux new-window -t $TMUX_SESSION -n "session" "ssh $window_id"
-        fi
-
-        if [[ -n "${TMUX:-}" ]]; then
-            tmux switch-client -t "$TMUX_SESSION"
-            # tmux select-pane -T "$window_id"
-            tmux set-option -p @ssh_host "$window_id"
-        else
-            # tmux select-pane -T "$window_id"
-            tmux set-option -p @ssh_host "$window_id"
-        fi
-    elif [[ "$type" == "new-pane" ]]; then
-        tmux split-window "ssh $window_id"
-        # tmux select-pane -T "$window_id"
-        tmux set-option -p @ssh_host "$window_id"
-    else
-        echo "Unrecognized line."
-        exit 1
+        continue
     fi
+
+    host="$line"
+    case "$key" in
+        ctrl-v)
+            tmux split-window -h "ssh $host"
+            ;;
+        ctrl-s)
+            tmux split-window -v "ssh $host"
+            ;;
+        *)
+            if tmux has-session -t "$TMUX_SESSION" 2>/dev/null; then
+                tmux new-window -t "$TMUX_SESSION" -n "session" "ssh $host"
+            else
+                tmux new-session -d -s "$TMUX_SESSION" -n "session" "ssh $host"
+            fi
+            [[ -n "${TMUX:-}" ]] && tmux switch-client -t "$TMUX_SESSION"
+            ;;
+    esac
+    tmux set-option -p @ssh_host "$host"
 done <<< "$selection"
 
 if [[ -z "${TMUX:-}" ]]; then
