@@ -46,7 +46,7 @@ local colors = {
 		info = safe_get_highlight("DiagnosticInfo").foreground,
 	},
 	git = {
-		branch = safe_get_highlight("@macro").foreground,
+		branch = safe_get_highlight("@operator").foreground,
 		del = safe_get_highlight(
 			"diffRemoved",
 			"DiffRemoved",
