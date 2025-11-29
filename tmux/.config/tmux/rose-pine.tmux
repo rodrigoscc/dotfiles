@@ -417,7 +417,7 @@ main() {
     fi
 
     # Add pane title if customized
-    right_column="#[fg=$thm_gold] #{?#{==:#{pane_title},$(hostname)},,#{pane_title}#[fg=$thm_subtle]${right_separator} } "$right_column
+    right_column="#[fg=$thm_gold] #{?@ssh_host,#{@ssh_host}#[fg=$thm_subtle]${right_separator}󰢹 ,} "$right_column
 
     if [ -f ~/monitor-redis.sh ]; then
         readonly monitoring="#(~/monitor-redis.sh)"

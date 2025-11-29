@@ -7,7 +7,7 @@ TMUX_SESSION="ssh"
 if ! tmux has-session -t "$TMUX_SESSION" 2>/dev/null; then
     tmux_panes=""
 else
-    tmux_panes=$(tmux list-panes -a -F "#{session_name}:#{window_id}:#{window_name}:#{pane_id}:#{pane_title}" | grep --extended-regexp "^${TMUX_SESSION}:")
+    tmux_panes=$(tmux list-panes -a -F "#{session_name}:#{window_id}:#{window_name}:#{pane_id}:#{@ssh_host}" | grep --extended-regexp "^${TMUX_SESSION}:")
     tmux_panes="$tmux_panes\n"
 fi
 
@@ -32,10 +32,7 @@ if [[ -z "$selection" ]]; then
 fi
 
 while IFS= read -r line; do
-    IFS=':' read -r type window_id window_title pane_id pane_title <<< "$line"
-    # Ensure pane_title is set to empty string if missing
-    pane_title=${pane_title:-""}
-
+    IFS=':' read -r type window_id window_title pane_id ssh_host <<< "$line"
     if [[ "$type" == $TMUX_SESSION ]]; then
         if [[ -n "${TMUX:-}" ]]; then
             tmux switch-client -t "$TMUX_SESSION"
@@ -47,7 +44,8 @@ while IFS= read -r line; do
         current_command=$(tmux list-panes -t $TMUX_SESSION -f "#{==:#{pane_id},$pane_id}" -F "#{pane_current_command}")
 
         if ! echo $current_command | grep -E  '^ssh' >> /dev/null 2>&1; then
-            tmux send-keys -t "$TMUX_SESSION:$window_id" "ssh $window_title" C-m
+            ssh_host=$(tmux show-option -pv @ssh_host)
+            tmux send-keys -t "$TMUX_SESSION:$window_id" "ssh $ssh_host" C-m
         fi
     elif [[ "$type" == "new-window" ]]; then
         if ! tmux has-session -t "$TMUX_SESSION" 2>/dev/null; then
@@ -58,13 +56,16 @@ while IFS= read -r line; do
 
         if [[ -n "${TMUX:-}" ]]; then
             tmux switch-client -t "$TMUX_SESSION"
-            tmux select-pane -T "$window_id"
+            # tmux select-pane -T "$window_id"
+            tmux set-option -p @ssh_host "$window_id"
         else
-            tmux select-pane -T "$window_id"
+            # tmux select-pane -T "$window_id"
+            tmux set-option -p @ssh_host "$window_id"
         fi
     elif [[ "$type" == "new-pane" ]]; then
         tmux split-window "ssh $window_id"
-        tmux select-pane -T "$window_id"
+        # tmux select-pane -T "$window_id"
+        tmux set-option -p @ssh_host "$window_id"
     else
         echo "Unrecognized line."
         exit 1
