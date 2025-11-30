@@ -53,3 +53,26 @@ augroup("rodrigosc/win", {
 		end,
 	},
 })
+
+local disable_autoformat_patterns = {
+	"lazy%-lock.json",
+	"node_modules/",
+	".venv/",
+}
+
+augroup("rodrigosc/disable_autoformat", {
+	"BufEnter",
+	{
+		callback = function(args)
+			local buf_name = vim.api.nvim_buf_get_name(args.buf)
+
+			for _, pattern in ipairs(disable_autoformat_patterns) do
+				if string.match(buf_name, pattern) then
+					vim.b[args.buf].disable_autoformat = true
+					vim.notify("Auto-disabled autoformatting")
+					return
+				end
+			end
+		end,
+	},
+})
