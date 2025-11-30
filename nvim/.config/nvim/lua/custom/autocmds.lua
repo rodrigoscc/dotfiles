@@ -57,7 +57,7 @@ augroup("rodrigosc/win", {
 local disable_autoformat_patterns = {
 	"lazy%-lock.json",
 	"node_modules/",
-	".venv/",
+	"%.venv/",
 }
 
 augroup("rodrigosc/disable_autoformat", {
