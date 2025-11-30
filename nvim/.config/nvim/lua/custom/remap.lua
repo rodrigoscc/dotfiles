@@ -319,15 +319,37 @@ vim.keymap.set("n", "[b", function()
 	vim.cmd.bprevious()
 end)
 
+local function put_indent_after_linewise(register, count)
+	register = register or vim.v.register
+	count = count or vim.v.count1
+
+	local body = vim.fn.getreg(register)
+	local regtype = vim.fn.getregtype(register)
+	vim.fn.setreg(register, body, "l")
+	vim.cmd(string.format('normal! %d"%s]p', count, register))
+	vim.fn.setreg(register, body, regtype)
+end
+
+local function put_indent_before_linewise(register, count)
+	register = register or vim.v.register
+	count = count or vim.v.count1
+
+	local body = vim.fn.getreg(register)
+	local regtype = vim.fn.getregtype(register)
+	vim.fn.setreg(register, body, "l")
+	vim.cmd(string.format('normal! %d"%s[p', count, register))
+	vim.fn.setreg(register, body, regtype)
+end
+
 vim.keymap.set(
 	"n",
 	"[p",
-	'<Cmd>exe "put! " . v:register<CR>',
-	{ desc = "Paste Above" }
+	put_indent_before_linewise,
+	{ desc = "Paste Above Line" }
 )
 vim.keymap.set(
 	"n",
 	"]p",
-	'<Cmd>exe "put "  . v:register<CR>',
-	{ desc = "Paste Below" }
+	put_indent_after_linewise,
+	{ desc = "Paste Below Line" }
 )
