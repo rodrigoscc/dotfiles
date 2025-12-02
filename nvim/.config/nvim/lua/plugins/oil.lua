@@ -5,6 +5,7 @@ return {
 		"stevearc/oil.nvim",
 		lazy = true,
 		dependencies = { { "nvim-mini/mini.icons", opts = {} } },
+		cmd = { "Oil" },
 		opts = {
 			default_file_explorer = false,
 			delete_to_trash = true,
