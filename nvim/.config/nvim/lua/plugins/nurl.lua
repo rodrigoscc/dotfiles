@@ -7,8 +7,8 @@ return {
 			{ "<leader>ee", "<cmd>Nurl env<cr>" },
 			{ "<leader>oe", "<cmd>Nurl env_file<cr>" },
 			{ "gh", "<cmd>Nurl jump<cr>" },
-			{ "gH", "<cmd>Nurl send<cr>" },
-			{ "gL", "<cmd>Nurl resend<cr>" },
+			{ "gH", "<cmd>Nurl<cr>" },
+			{ "gL", "<cmd>Nurl resend -1<cr>" },
 			{ "g;", "<cmd>Nurl resend -2<cr>" },
 			{ "gG", "<cmd>Nurl history<cr>" },
 		},
@@ -22,7 +22,7 @@ return {
 					vim.keymap.set(
 						"n",
 						"R",
-						"<cmd>Nurl send_at_cursor<cr>",
+						"<cmd>Nurl .<cr>",
 						{ buffer = true }
 					)
 				end,
