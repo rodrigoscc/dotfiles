@@ -69,7 +69,6 @@ augroup("rodrigosc/disable_autoformat", {
 			for _, pattern in ipairs(disable_autoformat_patterns) do
 				if string.match(buf_name, pattern) then
 					vim.b[args.buf].disable_autoformat = true
-					vim.notify("Auto-disabled autoformatting")
 					return
 				end
 			end
