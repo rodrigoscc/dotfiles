@@ -1,1 +1,1 @@
-vim.o.conceallevel = 1
+vim.wo[0][0].conceallevel = 1
