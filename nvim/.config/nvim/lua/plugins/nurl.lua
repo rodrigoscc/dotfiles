@@ -14,7 +14,13 @@ return {
 		},
 		config = function()
 			local nurl = require("nurl")
-			nurl.setup()
+			nurl.setup({
+				formatters = {
+					lua = {
+						cmd = { "stylua", "--column-width=80", "-" },
+					},
+				},
+			})
 
 			vim.api.nvim_create_autocmd({ "FileType" }, {
 				pattern = "lua",
