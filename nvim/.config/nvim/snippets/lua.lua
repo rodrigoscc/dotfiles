@@ -59,16 +59,26 @@ return {
 }}]],
 			{
 				c(1, {
-					fmt([["{}"]], i(1)),
-					fmt([[url = {{ {} }}]], i(1)),
+					fmt([["{}",{}]], { i(1), i(2) }),
+					fmt([[url = {{ {} }},{}]], { i(1), i(2) }),
 					fmt(
 						[[url = function()
         {}
-end,]],
-						i(1)
+end,{}]],
+						{ i(1), i(2) }
 					),
 				}),
 			}
 		)
 	),
+	s(
+		"h",
+		fmt(
+			[[headers = {{
+    {}
+}},]],
+			{ i(1) }
+		)
+	),
+	s("json", { t([[["Content-Type"] = "application/json",]]) }),
 }
