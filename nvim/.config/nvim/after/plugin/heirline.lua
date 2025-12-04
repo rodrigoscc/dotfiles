@@ -1,7 +1,19 @@
 local utils = require("heirline.utils")
 local conditions = require("heirline.conditions")
 
-local special2, special, special3 = "#c4a7e7", "#c678dd", "#f6c177"
+local text = "#e0def4"
+local subtle = "#908caa"
+local muted = "#6e6a86"
+local overlay = "#26233a"
+local surface = "#1f1d2e"
+local base = "#191724"
+local iris = "#c4a7e7"
+local purple = "#c678dd"
+local gold = "#f6c177"
+local pine = "#31748f"
+local love = "#eb6f92"
+local rose = "#ebbcba"
+local foam = "#9ccfd8"
 
 local safe_get_highlight = function(...)
 	for _, hlname in ipairs({ ... }) do
@@ -33,11 +45,21 @@ local colors = {
 	command = safe_get_highlight("Error", "Identifier", "Normal").foreground,
 
 	background = safe_get_highlight("StatusLine").background,
-	base = safe_get_highlight("StatusLine").foreground,
+
 	dim = safe_get_highlight("StatusLineNC", "Comment").foreground,
-	special = special,
-	special2 = special2,
-	special3 = special3,
+	purple = purple,
+	iris = iris,
+	gold = gold,
+	love = love,
+	pine = pine,
+	rose = rose,
+	foam = foam,
+	text = text,
+	subtle = subtle,
+	muted = muted,
+	overlay = overlay,
+	surface = surface,
+	base = base,
 
 	diag = {
 		warn = safe_get_highlight("DiagnosticWarn").foreground,
@@ -46,7 +68,6 @@ local colors = {
 		info = safe_get_highlight("DiagnosticInfo").foreground,
 	},
 	git = {
-		branch = safe_get_highlight("@operator").foreground,
 		del = safe_get_highlight(
 			"diffRemoved",
 			"DiffRemoved",
@@ -202,7 +223,7 @@ local FileName = {
 		filename = vim.fn.pathshorten(filename)
 		return filename .. " "
 	end,
-	hl = { fg = colors.special2 },
+	hl = { fg = colors.iris },
 }
 
 local FileFlags = {
@@ -212,7 +233,7 @@ local FileFlags = {
 				return "[+] "
 			end
 		end,
-		hl = { fg = colors.special },
+		hl = { fg = colors.love },
 	},
 	{
 		provider = function()
@@ -220,7 +241,7 @@ local FileFlags = {
 				return "[-] "
 			end
 		end,
-		hl = { fg = colors.special },
+		hl = { fg = colors.purple },
 	},
 }
 
@@ -267,7 +288,7 @@ local SearchCount = {
 			)
 		end
 	end,
-	hl = { fg = colors.special2 },
+	hl = { fg = colors.iris },
 }
 
 local MacroRec = {
@@ -275,12 +296,12 @@ local MacroRec = {
 		return vim.fn.reg_recording() ~= "" and vim.o.cmdheight == 0
 	end,
 	provider = " ",
-	hl = { fg = colors.special3, bold = true },
+	hl = { fg = colors.gold, bold = true },
 	utils.surround({ "[", "]" }, nil, {
 		provider = function()
 			return vim.fn.reg_recording()
 		end,
-		hl = { fg = colors.special2, bold = true },
+		hl = { fg = colors.iris, bold = true },
 	}),
 	update = {
 		"RecordingEnter",
@@ -345,7 +366,7 @@ local TogglesElement = {
 	provider = function()
 		return "󰨙 "
 	end,
-	hl = { fg = colors.special3, bold = true },
+	hl = { fg = colors.gold, bold = true },
 	utils.surround({ "[", "] " }, nil, {
 		provider = function(self)
 			local toggles = ""
@@ -358,7 +379,7 @@ local TogglesElement = {
 
 			return toggles
 		end,
-		hl = { fg = colors.special2, bold = true },
+		hl = { fg = colors.iris, bold = true },
 	}),
 }
 
@@ -394,7 +415,7 @@ local HarpoonElement = {
 
 		return text
 	end,
-	hl = { fg = colors.special2 },
+	hl = { fg = colors.iris },
 }
 
 local FileTypeElement = {
@@ -525,13 +546,13 @@ local GitBranchBlock = {
 	end,
 	{
 		{
-			hl = { fg = colors.git.branch },
+			hl = { fg = colors.gold },
 			provider = function()
 				return " "
 			end,
 		},
 		{
-			hl = { fg = colors.git.branch },
+			hl = { fg = colors.foam },
 			provider = function(self)
 				return self.status_dict.head
 			end,
@@ -570,7 +591,7 @@ local Nurl = {
 
 			return ""
 		end,
-		hl = { fg = colors.special3 },
+		hl = { fg = colors.gold },
 	},
 }
 
