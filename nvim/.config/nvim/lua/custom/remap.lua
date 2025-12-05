@@ -353,3 +353,24 @@ vim.keymap.set(
 	put_indent_after_linewise,
 	{ desc = "Paste Below Line" }
 )
+
+local function super_gx()
+	local cursor_url = vim.fn.expand("<cfile>")
+	if not vim.b.nurl_data then
+		vim.ui.open(cursor_url)
+		return
+	end
+
+	local nurl_data = vim.b.nurl_data
+	local win = vim.api.nvim_get_current_win()
+
+	local orig_headers = nurl_data.request.headers
+
+	if vim.v.count == 0 then
+		Nurl.send({ cursor_url, headers = orig_headers }, { win = win })
+	else
+		Nurl.send({ cursor_url, headers = orig_headers })
+	end
+end
+
+vim.keymap.set("n", "gx", super_gx, { desc = "Super gx" })
