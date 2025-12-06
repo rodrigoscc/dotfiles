@@ -112,8 +112,8 @@ local ViMode = {
 			["\19"] = colors.purple,
 			R = colors.replace,
 			r = colors.replace,
-			["!"] = colors.red,
-			t = colors.red,
+			["!"] = colors.love,
+			t = colors.love,
 		},
 		mode_names = {
 			n = "NORMAL",
