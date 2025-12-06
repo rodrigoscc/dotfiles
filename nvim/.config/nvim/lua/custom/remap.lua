@@ -79,6 +79,7 @@ vim.keymap.set("n", "<Esc>", function()
 		vim.cmd([[echon '']]) -- Clear command line
 		vim.cmd.NoiceDismiss()
 		vim.cmd([[pclose]])
+		vim.cmd([[redrawstatus]])
 	end)
 	return "<Esc>"
 end, { expr = true })
