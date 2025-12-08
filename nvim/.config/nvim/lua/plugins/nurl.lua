@@ -31,6 +31,12 @@ return {
 						"<cmd>Nurl .<cr>",
 						{ buffer = true }
 					)
+					vim.keymap.set(
+						"n",
+						"gR",
+						":Nurl . url[2]=",
+						{ buffer = true }
+					)
 				end,
 			})
 		end,
