@@ -6,6 +6,9 @@ return {
 		lazy = true,
 		dependencies = { { "nvim-mini/mini.icons", opts = {} } },
 		cmd = { "Oil" },
+		keys = {
+			{ "-", "<cmd>Oil<cr>" },
+		},
 		opts = {
 			default_file_explorer = false,
 			delete_to_trash = true,
