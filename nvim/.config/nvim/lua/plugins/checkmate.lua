@@ -5,6 +5,7 @@ return {
 		cmd = { "Checkmate" },
 		opts = {
 			files = { "*.md" },
+			use_metadata_keymaps = false,
 			keys = {
 				["<CR>"] = {
 					rhs = "<cmd>Checkmate toggle<CR>",
