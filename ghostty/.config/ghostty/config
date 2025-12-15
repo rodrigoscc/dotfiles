@@ -1,7 +1,7 @@
 theme = Rose Pine
 background = 000000
 
-font-family = Maple Mono NF CN
+font-family = Berkeley Mono Variable
 font-size = 13.0
 
 window-padding-balance = true
