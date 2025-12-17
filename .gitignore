@@ -2,6 +2,6 @@ raycast/
 .scratch/
 github-copilot/
 tmux-client-*.log
-tmux/plugins/
+**/tmux/plugins/
 iterm2/
 .nurl/
