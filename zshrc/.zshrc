@@ -123,11 +123,11 @@ zle -N down-line-or-beginning-search
 # Finally, make sure the terminal is in application mode, when zle is
 # active. Only then are the values from $terminfo valid.
 if (( ${+terminfo[smkx]} && ${+terminfo[rmkx]} )); then
-	autoload -Uz add-zle-hook-widget
-	function zle_application_mode_start { echoti smkx }
-	function zle_application_mode_stop { echoti rmkx }
-	add-zle-hook-widget -Uz zle-line-init zle_application_mode_start
-	add-zle-hook-widget -Uz zle-line-finish zle_application_mode_stop
+    autoload -Uz add-zle-hook-widget
+    function zle_application_mode_start { echoti smkx }
+    function zle_application_mode_stop { echoti rmkx }
+    add-zle-hook-widget -Uz zle-line-init zle_application_mode_start
+    add-zle-hook-widget -Uz zle-line-finish zle_application_mode_stop
 fi
 
 if [ "$TERM_PROGRAM" != "Apple_Terminal" ]; then
@@ -163,21 +163,23 @@ fi
 
 # ripgrep->fzf->vim [QUERY]
 rfv() (
-  RELOAD='reload:rg --column --color=always --smart-case {q} || :'
-  OPENER='if [[ $FZF_SELECT_COUNT -eq 0 ]]; then
+    RELOAD='reload:rg --column --color=always --smart-case {q} || :'
+    OPENER='if [[ $FZF_SELECT_COUNT -eq 0 ]]; then
             $EDITOR {1} +{2}     # No selection. Open the current line in Vim.
           else
             $EDITOR +cw -q {+f}  # Build quickfix list for the selected items.
           fi'
-  fzf --disabled --ansi --multi \
-      --bind "start:$RELOAD" --bind "change:$RELOAD" \
-      --bind "enter:become:$OPENER" \
-      --bind "ctrl-o:execute:$OPENER" \
-      --bind 'ctrl-a:toggle-all,ctrl-/:toggle-preview' \
-      --delimiter : \
-      --preview 'bat --style=full --color=always --highlight-line {2} {1}' \
-      --preview-window '~4,+{2}+4/3,<80(up)' \
-      --query "$*"
+    fzf --disabled --ansi --multi \
+        --bind "start:$RELOAD" --bind "change:$RELOAD" \
+        --bind "enter:become:$OPENER" \
+        --bind "ctrl-o:execute:$OPENER" \
+        --bind 'ctrl-a:toggle-all,ctrl-/:toggle-preview' \
+        --delimiter : \
+        --preview 'bat --style=full --color=always --highlight-line {2} {1}' \
+        --preview-window '~4,+{2}+4/3,<80(up)' \
+        --query "$*"
 )
 
 source ~/fzf-git.sh
+
+export PATH=/Users/rodrigo/.opencode/bin:$PATH
