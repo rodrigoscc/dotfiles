@@ -182,4 +182,4 @@ rfv() (
 
 source ~/fzf-git.sh
 
-export PATH=/Users/rodrigo/.opencode/bin:$PATH
+export PATH=~/.opencode/bin:$PATH
