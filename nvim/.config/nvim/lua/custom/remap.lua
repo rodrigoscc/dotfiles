@@ -355,6 +355,19 @@ vim.keymap.set(
 	{ desc = "Paste Below Line" }
 )
 
+---@param next_url string
+---@param orig_url string
+local function complete_url(next_url, orig_url)
+	local base_url = orig_url:match("(%w+://[^/]+)")
+	local is_complete = next_url:match("%w+://")
+	if not is_complete then
+		next_url = next_url:gsub("^/", "", 1)
+		return base_url .. "/" .. next_url
+	end
+
+	return next_url
+end
+
 local function super_gx()
 	local cursor_url = vim.fn.expand("<cfile>")
 	if not vim.b.nurl_data then
@@ -366,6 +379,9 @@ local function super_gx()
 	local win = vim.api.nvim_get_current_win()
 
 	local orig_headers = nurl_data.request.headers
+	local orig_url = nurl_data.request.url
+
+	cursor_url = complete_url(cursor_url, orig_url)
 
 	if vim.v.count == 0 then
 		Nurl.send({ cursor_url, headers = orig_headers }, { win = win })
