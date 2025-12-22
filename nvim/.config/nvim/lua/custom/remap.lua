@@ -391,3 +391,5 @@ local function super_gx()
 end
 
 vim.keymap.set("n", "gx", super_gx, { desc = "Super gx" })
+
+vim.keymap.set("n", "<leader>z", "1z=", { desc = "Quick spell fix" })
