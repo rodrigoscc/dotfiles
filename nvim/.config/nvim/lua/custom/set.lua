@@ -84,3 +84,6 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 		end
 	end,
 })
+
+vim.opt.isfname:append("?")
+vim.opt.isfname:append("&")
