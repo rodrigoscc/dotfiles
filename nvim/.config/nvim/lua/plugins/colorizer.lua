@@ -16,5 +16,12 @@ return {
 				"vue",
 			},
 		},
+		keys = {
+			{
+				"<leader>tc",
+				"<cmd>ColorizerToggle<cr>",
+				desc = "[t]oggle [c]olorizer",
+			},
+		},
 	},
 }

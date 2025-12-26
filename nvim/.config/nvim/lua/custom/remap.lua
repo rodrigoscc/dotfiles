@@ -142,7 +142,7 @@ vim.keymap.set(
 
 vim.keymap.set("n", "<bs>", "<C-^>", { desc = "switch to last buffer" })
 
-vim.keymap.set("n", "<leader>tc", function()
+vim.keymap.set("n", "<leader>tC", function()
 	vim.o.list = not vim.o.list
 end, { desc = "[t]oggle list [c]hars" })
 
