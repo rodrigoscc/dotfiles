@@ -6,7 +6,7 @@ return {
 				"ts_ls",
 				"rust_analyzer",
 				"gopls",
-				"basedpyright",
+				"ty",
 				"lua_ls",
 				"bashls",
 				"jsonls",

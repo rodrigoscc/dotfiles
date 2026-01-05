@@ -157,7 +157,7 @@ vim.lsp.enable({
 	"ts_ls",
 	"rust_analyzer",
 	"gopls",
-	"basedpyright",
+	"ty",
 	"lua_ls",
 	"bashls",
 	"jsonls",
@@ -195,7 +195,7 @@ local root_files = {
 	".git",
 }
 
-vim.lsp.config("basedpyright", {
+vim.lsp.config("ty", {
 	-- setting root_markers use vim.fs.root to calculate the root directory,
 	-- which returns an invalid root directory ('.') for diffview:// buffers.
 	-- This was causing a second basedpyright server to start with an empty workspace,
