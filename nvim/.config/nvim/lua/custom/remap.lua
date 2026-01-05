@@ -375,11 +375,13 @@ local function super_gx()
 		return
 	end
 
+	local util = require("nurl.util")
+
 	local nurl_data = vim.b.nurl_data
 	local win = vim.api.nvim_get_current_win()
 
 	local orig_headers = nurl_data.request.headers
-	local orig_url = nurl_data.request.url
+	local orig_url = util.url(nurl_data.request.url)
 
 	cursor_url = complete_url(cursor_url, orig_url)
 
