@@ -123,10 +123,10 @@ end, { desc = "[s]ource [f]ile" })
 
 vim.keymap.set("t", "<esc>", "<c-\\><c-n>")
 
-vim.keymap.set("n", "<M-k>", "<cmd>NavigatorUp<cr>")
-vim.keymap.set("n", "<M-j>", "<cmd>NavigatorDown<cr>")
-vim.keymap.set("n", "<M-h>", "<cmd>NavigatorLeft<cr>")
-vim.keymap.set("n", "<M-l>", "<cmd>NavigatorRight<cr>")
+vim.keymap.set({ "n", "t" }, "<M-k>", "<cmd>NavigatorUp<cr>")
+vim.keymap.set({ "n", "t" }, "<M-j>", "<cmd>NavigatorDown<cr>")
+vim.keymap.set({ "n", "t" }, "<M-h>", "<cmd>NavigatorLeft<cr>")
+vim.keymap.set({ "n", "t" }, "<M-l>", "<cmd>NavigatorRight<cr>")
 
 vim.keymap.set("n", "<leader>ts", "<cmd>TSJToggle<cr>")
 
