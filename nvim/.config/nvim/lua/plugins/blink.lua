@@ -88,6 +88,7 @@ return {
 						module = "blink.cmp.sources.lsp",
 						fallbacks = {},
 						async = true,
+						score_offset = 50, -- always want lsp over buffer
 					},
 					lazydev = {
 						name = "LazyDev",
@@ -153,13 +154,6 @@ return {
 					border = "rounded",
 					treesitter_highlighting = true,
 					show_documentation = false,
-				},
-			},
-			fuzzy = {
-				sorts = {
-					"exact",
-					"score",
-					"sort_text",
 				},
 			},
 		},
