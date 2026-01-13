@@ -386,9 +386,12 @@ local function super_gx()
 	cursor_url = complete_url(cursor_url, orig_url)
 
 	if vim.v.count == 0 then
-		Nurl.send({ cursor_url, headers = orig_headers }, { win = win })
+		Nurl.send(
+			{ cursor_url, headers = orig_headers },
+			{ display = { win = win } }
+		)
 	else
-		Nurl.send({ cursor_url, headers = orig_headers })
+		Nurl.send({ cursor_url, headers = orig_headers }, { display = true })
 	end
 end
 
