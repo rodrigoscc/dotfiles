@@ -4,6 +4,7 @@ return {
 		opts = {
 			click = true,
 			highlight = true,
+			separator = " ",
 			icons = {
 				File = " ",
 				Module = " ",
