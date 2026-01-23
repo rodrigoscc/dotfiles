@@ -157,14 +157,14 @@ local ViMode = {
   --]]
 local FileBlock = {
 	init = function(self)
-		self.filename = vim.fn.expand("%:t")
+		self.filename = vim.api.nvim_buf_get_name(0)
 		self.filepath = vim.fn.expand("%:p")
 	end,
 }
 
 local FileSecondaryBlock = {
 	init = function(self)
-		self.filename = vim.fn.expand("%:t")
+		self.filename = vim.api.nvim_buf_get_name(0)
 		self.filepath = vim.fn.expand("%:p")
 	end,
 }
@@ -220,7 +220,10 @@ local FileName = {
 		-- now, if the filename would occupy more than 1/4th of the available
 		-- space, we trim the file path to its initials
 		-- See Flexible Components section below for dynamic truncation
-		filename = vim.fn.pathshorten(filename)
+		if not conditions.width_percent_below(#filename, 0.25) then
+			filename = vim.fn.pathshorten(filename)
+		end
+
 		return filename .. " "
 	end,
 	hl = { fg = colors.iris },

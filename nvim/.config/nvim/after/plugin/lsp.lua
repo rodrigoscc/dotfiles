@@ -1,4 +1,5 @@
 local util = require("lspconfig.util")
+local navic = require("nvim-navic")
 
 local mason_ensure_installed = {
 	"ruff",
@@ -29,6 +30,10 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		local client = vim.lsp.get_client_by_id(event.data.client_id)
 
 		assert(client, "LSP client not found")
+
+		if client.server_capabilities.documentSymbolProvider then
+			navic.attach(client, event.buf)
+		end
 
 		-- Fix for svelte language server to update after ts or js files are updated
 		-- https://github.com/sveltejs/language-tools/issues/2008#issuecomment-2090014756
