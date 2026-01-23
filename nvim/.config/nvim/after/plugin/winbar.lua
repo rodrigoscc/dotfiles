@@ -7,9 +7,9 @@ function _G.Winbar()
 	if navic.is_available() then
 		return ("%%#%s#"):format(icon_hl)
 			.. file_icon
-			.. "%* %t > %{%v:lua.require'nvim-navic'.get_location()%}"
+			.. "%* %#WinBar#%t >%* %{%v:lua.require'nvim-navic'.get_location()%}"
 	else
-		return ("%%#%s#"):format(icon_hl) .. file_icon .. "%* %t"
+		return ("%%#%s#"):format(icon_hl) .. file_icon .. "%* %#WinBar#%t%*"
 	end
 end
 
