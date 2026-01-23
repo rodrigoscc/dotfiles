@@ -61,7 +61,10 @@ local function new_scratch()
 end
 
 local function find_scratch()
-	Snacks.picker.files({ cwd = vim.g.scratch_dir })
+	Snacks.picker.files({
+		cwd = vim.g.scratch_dir,
+		sort = { fields = { "file:desc" } },
+	})
 end
 
 vim.api.nvim_create_user_command("NewScratch", new_scratch, {})
