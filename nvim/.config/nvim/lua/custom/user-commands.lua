@@ -51,3 +51,15 @@ vim.api.nvim_create_user_command(
 	buf_errors_to_qflist,
 	{ range = true }
 )
+
+vim.api.nvim_create_user_command("ToggleInlayHints", function()
+	vim.g.inlay_hints = not vim.g.inlay_hints
+	vim.lsp.inlay_hint.enable(vim.g.inlay_hints)
+end, { desc = "Toggle inlay hints", nargs = 0 })
+
+vim.keymap.set(
+	"n",
+	"<leader>ti",
+	"<cmd>ToggleInlayHints<cr>",
+	{ desc = "[t]oggle [i]nlay hints" }
+)
