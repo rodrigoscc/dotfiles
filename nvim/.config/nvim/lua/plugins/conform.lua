@@ -73,6 +73,8 @@ return {
 				sql_formatter = {
 					prepend_args = { "--config", '{"keywordCase": "upper"}' },
 				},
+				-- Require a Prettier configuration file to format.
+				prettier = { require_cwd = true },
 			},
 		},
 	},
