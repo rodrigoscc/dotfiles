@@ -54,7 +54,11 @@ local function new_scratch()
 				vim.cmd("split " .. fullname)
 
 				local buf = vim.api.nvim_get_current_buf()
-				vim.api.nvim_buf_set_option(buf, "filetype", filetype)
+				vim.api.nvim_set_option_value(
+					"filetype",
+					filetype,
+					{ buf = buf }
+				)
 			end)
 		end
 	)
