@@ -63,7 +63,23 @@ end
 local function find_scratch()
 	Snacks.picker.files({
 		cwd = vim.g.scratch_dir,
+		args = {
+			"--strip-cwd-prefix", -- stat includes a ./ as prefix to file names
+			"--exec-batch",
+			"stat",
+			"-f",
+			"%SB > %N",
+		},
 		sort = { fields = { "file:desc" } },
+		transform = function(ctx)
+			local time, file = unpack(vim.split(ctx.file, " > "))
+			ctx.label = time
+			ctx.file = file
+			return true
+		end,
+		matcher = {
+			sort_empty = true, -- important for the initial list to be sorted with file:desc
+		},
 	})
 end
 
