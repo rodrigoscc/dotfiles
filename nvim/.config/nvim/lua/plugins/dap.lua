@@ -97,28 +97,28 @@ return {
 				{ desc = "[s]tep o[u]t" },
 			},
 			{
-				"<F8>",
+				"<F5>",
 				function()
 					require("dap").continue()
 				end,
 				{ desc = "debug / continue" },
 			},
 			{
-				"<F9>",
+				"<F10>",
 				function()
 					require("dap").step_over()
 				end,
 				{ desc = "step over" },
 			},
 			{
-				"<F10>",
+				"<F11>",
 				function()
 					require("dap").step_into()
 				end,
 				{ desc = "step into" },
 			},
 			{
-				"<F11>",
+				"<F12>",
 				function()
 					require("dap").step_out()
 				end,
@@ -210,5 +210,12 @@ return {
 		---@module 'dap-view'
 		---@type dapview.Config
 		opts = {},
+		keys = {
+			{
+				"<leader>tD",
+				"<cmd>DapViewToggle<cr>",
+				{ desc = "[t]oggle [D]ap view" },
+			},
+		},
 	},
 }
