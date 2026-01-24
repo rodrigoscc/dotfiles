@@ -83,41 +83,55 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		end, { desc = "[f]ormat [b]uffer" })
 
 		vim.keymap.set("n", "]d", function()
-			vim.g.set_jump(vim.diagnostic.goto_next, vim.diagnostic.goto_prev)
-			vim.diagnostic.goto_next()
+			vim.g.set_jump(function()
+				vim.diagnostic.jump({ count = 1 })
+			end, function()
+				vim.diagnostic.jump({ count = -1 })
+			end)
+			vim.diagnostic.jump({ count = 1 })
 		end, opts)
 
 		vim.keymap.set("n", "[d", function()
-			vim.g.set_jump(vim.diagnostic.goto_next, vim.diagnostic.goto_prev)
-			vim.diagnostic.goto_prev()
+			vim.g.set_jump(function()
+				vim.diagnostic.jump({ count = 1 })
+			end, function()
+				vim.diagnostic.jump({ count = -1 })
+			end)
+			vim.diagnostic.jump({ count = -1 })
 		end, opts)
 
 		vim.keymap.set("n", "]e", function()
 			vim.g.set_jump(function()
-				vim.diagnostic.goto_next({
+				vim.diagnostic.jump({
+					count = 1,
 					severity = vim.diagnostic.severity.ERROR,
 				})
 			end, function()
-				vim.diagnostic.goto_prev({
+				vim.diagnostic.jump({
+					count = -1,
 					severity = vim.diagnostic.severity.ERROR,
 				})
 			end)
-			vim.diagnostic.goto_next({
+			vim.diagnostic.jump({
+				count = 1,
 				severity = vim.diagnostic.severity.ERROR,
 			})
 		end, opts)
 
 		vim.keymap.set("n", "[e", function()
 			vim.g.set_jump(function()
-				vim.diagnostic.goto_next({
+				vim.diagnostic.jump({
+					count = 1,
 					severity = vim.diagnostic.severity.ERROR,
 				})
 			end, function()
-				vim.diagnostic.goto_prev({
+				vim.diagnostic.jump({
+					count = -1,
 					severity = vim.diagnostic.severity.ERROR,
 				})
 			end)
-			vim.diagnostic.goto_prev({
+			vim.diagnostic.jump({
+				count = -1,
 				severity = vim.diagnostic.severity.ERROR,
 			})
 		end, opts)
@@ -125,11 +139,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 })
 
 local function toggle_format_on_save()
-	if vim.b[0].disable_autoformat then
-		vim.b[0].disable_autoformat = false
-	else
-		vim.b[0].disable_autoformat = true
-	end
+	vim.b.disable_autoformat = not vim.b.disable_autoformat
 end
 
 vim.keymap.set("n", "<leader>tf", function()
