@@ -14,11 +14,6 @@ if [ -x "$(command -v luarocks)" ]; then
     eval $(luarocks --lua-version=5.1 path)
 fi
 
-if [ -x "$(command -v fzf)" ]; then
-    # Set up fzf key bindings and fuzzy completion
-    source <(fzf --zsh)
-fi
-
 # Make sure the history is appended to new shells.
 setopt incappendhistory
 
@@ -179,6 +174,12 @@ rfv() (
         --preview-window '~4,+{2}+4/3,<80(up)' \
         --query "$*"
 )
+
+# Has to be here after all zsh setup
+if [ -x "$(command -v fzf)" ]; then
+    # Set up fzf key bindings and fuzzy completion
+    source <(fzf --zsh)
+fi
 
 source ~/fzf-git.sh
 
