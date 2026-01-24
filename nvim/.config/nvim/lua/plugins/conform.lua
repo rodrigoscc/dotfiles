@@ -34,7 +34,8 @@ return {
 				zsh = { "beautysh" },
 				proto = { "buf" },
 				rust = { "rustfmt" },
-				markdown = { "injected" },
+				markdown = { "injected", "trim_whitespace" },
+				["_"] = { "trim_whitespace" }, -- for filetypes that don't have other formatters configured.
 			},
 			formatters = {
 				golines = {
