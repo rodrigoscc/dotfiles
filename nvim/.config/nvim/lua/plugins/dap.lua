@@ -201,15 +201,26 @@ return {
 	},
 	{
 		"theHamsta/nvim-dap-virtual-text",
-		opts = {},
-		lazy = true,
+		opts = { virt_text_pos = "eol" },
 		dependencies = { "mfussenegger/nvim-dap" },
 	},
 	{
 		"igorlfs/nvim-dap-view",
 		---@module 'dap-view'
 		---@type dapview.Config
-		opts = {},
+		opts = {
+			winbar = {
+				sections = {
+					"scopes",
+					"breakpoints",
+					"threads",
+					"exceptions",
+					"repl",
+					"console",
+				},
+				default_section = "scopes",
+			},
+		},
 		keys = {
 			{
 				"<leader>tD",
