@@ -128,41 +128,26 @@ return {
 		dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" },
 		config = function()
 			local dap, dapui = require("dap"), require("dapui")
+
 			dap.defaults.fallback.external_terminal = {
 				command = "tmux",
 				args = { "split-window", "-p", "20" },
 			}
 
-			dapui.setup({
-				layouts = {
-					{
-						elements = {
-							{ id = "scopes", size = 0.8 },
-							{ id = "watches", size = 0.2 },
-						},
-						position = "left",
-						size = 40,
-					},
-					{
-						elements = {
-							{ id = "console", size = 0.5 },
-							{ id = "repl", size = 0.5 },
-						},
-						position = "bottom",
-						size = 10,
-					},
-				},
-			})
+			-- Force debugee to be launched in a terminal
+			dap.defaults.fallback.force_external_terminal = true
 
-			dap.listeners.after.event_initialized["dapui_config"] = function()
-				dapui.open()
-			end
-			dap.listeners.before.event_terminated["dapui_config"] = function()
-				dapui.close()
-			end
-			dap.listeners.before.event_exited["dapui_config"] = function()
-				dapui.close()
-			end
+			dapui.setup()
+
+			-- dap.listeners.after.event_initialized["dapui_config"] = function()
+			-- 	dapui.open()
+			-- end
+			-- dap.listeners.before.event_terminated["dapui_config"] = function()
+			-- 	dapui.close()
+			-- end
+			-- dap.listeners.before.event_exited["dapui_config"] = function()
+			-- 	dapui.close()
+			-- end
 
 			require("dap.ext.vscode").load_launchjs()
 
@@ -219,5 +204,11 @@ return {
 		opts = {},
 		lazy = true,
 		dependencies = { "mfussenegger/nvim-dap" },
+	},
+	{
+		"igorlfs/nvim-dap-view",
+		---@module 'dap-view'
+		---@type dapview.Config
+		opts = {},
 	},
 }
