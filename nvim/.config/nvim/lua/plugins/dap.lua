@@ -173,12 +173,12 @@ return {
 			)
 
 			vim.fn.sign_define("DapBreakpoint", {
-				text = "",
+				text = "",
 				texthl = "DapBreakpoint",
 				numhl = "DapBreakpoint",
 			})
 			vim.fn.sign_define("DapBreakpointCondition", {
-				text = "ﳁ",
+				text = "",
 				texthl = "DapBreakpoint",
 				numhl = "DapBreakpoint",
 			})
@@ -192,7 +192,7 @@ return {
 				{ text = "", texthl = "DapLogPoint", numhl = "DapLogPoint" }
 			)
 			vim.fn.sign_define("DapStopped", {
-				text = "",
+				text = "",
 				texthl = "DapStopped",
 				linehl = "DapStoppedLine",
 				numhl = "DapStopped",
