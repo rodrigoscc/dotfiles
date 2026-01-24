@@ -69,10 +69,13 @@ local function find_scratch()
 			"stat",
 			"-f",
 			"%SB > %N",
+			"-t",
+			"%Y-%m-%d %H:%M",
 		},
-		sort = { fields = { "file:desc" } },
+		sort = { fields = { "full_item:desc" } },
 		transform = function(ctx)
 			local time, file = unpack(vim.split(ctx.file, " > "))
+			ctx.full_item = ctx.file
 			ctx.label = time
 			ctx.file = file
 			return true
