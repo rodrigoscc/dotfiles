@@ -28,7 +28,7 @@
         },
         {
           "properties": {
-            "cache_duration": "none",
+            "cache_duration": "5m",
             "edge_format": "<white>%s</>",
             "folder_separator_template": "<magenta>/</>",
             "style": "agnoster_full"
@@ -76,7 +76,7 @@
       "segments": [
         {
           "properties": {
-            "cache_duration": "none"
+            "cache_duration": "30m"
           },
           "template": "  {{ .Full }}",
           "foreground": "green",
@@ -86,7 +86,7 @@
         },
         {
           "properties": {
-            "cache_duration": "none",
+            "cache_duration": "30m",
             "parse_mod_file": true
           },
           "template": "  {{ .Full }}",
@@ -97,7 +97,7 @@
         },
         {
           "properties": {
-            "cache_duration": "none"
+            "cache_duration": "30m"
           },
           "template": "  {{ .Full }}{{ if .Venv }} ({{ .Venv }}){{end}}",
           "foreground": "yellow",
