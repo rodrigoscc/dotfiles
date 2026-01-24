@@ -62,6 +62,7 @@ end
 
 local function find_scratch()
 	Snacks.picker.files({
+		title = "Scratch files",
 		cwd = vim.g.scratch_dir,
 		args = {
 			"--strip-cwd-prefix", -- stat includes a ./ as prefix to file names
