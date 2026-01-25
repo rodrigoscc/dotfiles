@@ -41,7 +41,7 @@ local colors = {
 	normal = safe_get_highlight("Normal").foreground,
 	insert = safe_get_highlight("Insert", "String", "MoreMsg").foreground,
 	replace = safe_get_highlight("Replace", "Number", "Type").foreground,
-	visual = safe_get_highlight("Visual", "Special", "Boolean", "Constant").foreground,
+	visual = safe_get_highlight("Visual", "Boolean", "Constant").foreground,
 	command = safe_get_highlight("Error", "Identifier", "Normal").foreground,
 
 	background = safe_get_highlight("StatusLine").background,
@@ -303,14 +303,14 @@ local VisualRange = {
 		local end_pos = vim.fn.line(".")
 
 		return string.format(
-			"<%d:%d/%d>",
+			" %d:%d %dℓ",
 			start_pos,
 			end_pos,
 			math.abs(end_pos - start_pos) + 1 -- selected lines
 		)
 	end,
 	update = "CursorMoved",
-	hl = { fg = colors.rose },
+	hl = { fg = colors.visual },
 }
 
 local MacroRec = {
@@ -622,9 +622,9 @@ local statusline = {
 	{ ViMode },
 	{ FileBlock },
 	{ GitBranchBlock },
-	{ provider = "%<" },
 	{ SearchCount },
 	{ VisualRange },
+	{ provider = "%<" },
 	{ MacroRec },
 	{ TogglesElement },
 	{ provider = " %= " },
