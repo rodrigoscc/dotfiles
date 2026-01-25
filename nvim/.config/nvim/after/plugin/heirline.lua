@@ -294,6 +294,25 @@ local SearchCount = {
 	hl = { fg = colors.iris },
 }
 
+local VisualRange = {
+	condition = function(self)
+		return vim.fn.mode() == "v" or vim.fn.mode() == "V"
+	end,
+	provider = function()
+		local start_pos = vim.fn.line("v")
+		local end_pos = vim.fn.line(".")
+
+		return string.format(
+			"<%d:%d/%d>",
+			start_pos,
+			end_pos,
+			math.abs(end_pos - start_pos) + 1 -- selected lines
+		)
+	end,
+	update = "CursorMoved",
+	hl = { fg = colors.rose },
+}
+
 local MacroRec = {
 	condition = function()
 		return vim.fn.reg_recording() ~= "" and vim.o.cmdheight == 0
@@ -605,6 +624,7 @@ local statusline = {
 	{ GitBranchBlock },
 	{ provider = "%<" },
 	{ SearchCount },
+	{ VisualRange },
 	{ MacroRec },
 	{ TogglesElement },
 	{ provider = " %= " },
