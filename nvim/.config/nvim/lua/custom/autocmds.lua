@@ -33,6 +33,7 @@ autocmd("FileType", {
 		"startuptime",
 		"tsplayground",
 		"checkhealth",
+		"dap-view",
 	},
 	callback = function(event)
 		vim.bo[event.buf].buflisted = false
