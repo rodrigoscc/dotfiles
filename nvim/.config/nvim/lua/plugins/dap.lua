@@ -151,6 +151,13 @@ return {
 
 			require("dap.ext.vscode").load_launchjs()
 
+			dap.listeners.before.attach.dapui_config = function()
+				vim.cmd("DapViewOpen")
+			end
+			dap.listeners.before.launch.dapui_config = function()
+				vim.cmd("DapViewOpen")
+			end
+
 			vim.api.nvim_set_hl(
 				0,
 				"DapBreakpoint",
@@ -222,6 +229,7 @@ return {
 				default_section = "scopes",
 			},
 		},
+		cmd = { "DapViewOpen" },
 		keys = {
 			{
 				"<leader>tD",
