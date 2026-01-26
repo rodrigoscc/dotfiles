@@ -212,11 +212,12 @@ return {
 			winbar = {
 				sections = {
 					"scopes",
+					"watches",
+					"exceptions",
 					"breakpoints",
 					"threads",
-					"exceptions",
-					"repl",
 					"console",
+					"repl",
 				},
 				default_section = "scopes",
 			},

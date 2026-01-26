@@ -44,5 +44,6 @@ dap.configurations.go = {
 		name = "Debug",
 		request = "launch",
 		program = "${file}",
+		outputMode = "remote", -- send output to REPL view
 	},
 }
