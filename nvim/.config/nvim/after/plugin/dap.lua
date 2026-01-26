@@ -25,3 +25,24 @@ dap.configurations.python = {
 		pythonPath = find_python_path,
 	},
 }
+
+dap.adapters.go = function(callback, config)
+	callback({
+		type = "server",
+		host = "127.0.0.1",
+		port = "${port}",
+		executable = {
+			command = "dlv",
+			args = { "dap", "--listen", "127.0.0.1:${port}" },
+		},
+	})
+end
+
+dap.configurations.go = {
+	{
+		type = "go",
+		name = "Debug",
+		request = "launch",
+		program = "${file}",
+	},
+}
