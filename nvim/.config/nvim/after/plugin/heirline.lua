@@ -244,7 +244,7 @@ local FileFlags = {
 				return "[-] "
 			end
 		end,
-		hl = { fg = colors.rose },
+		hl = { fg = colors.purple },
 	},
 }
 
