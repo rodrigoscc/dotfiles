@@ -34,6 +34,7 @@ autocmd("FileType", {
 		"tsplayground",
 		"checkhealth",
 		"dap-view",
+		"dap-repl",
 	},
 	callback = function(event)
 		vim.bo[event.buf].buflisted = false
