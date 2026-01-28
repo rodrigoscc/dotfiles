@@ -294,6 +294,62 @@ local SearchCount = {
 	hl = { fg = colors.iris },
 }
 
+local DapElement = {
+	condition = function()
+		local ok, dap = pcall(require, "dap")
+		if not ok then
+			return false
+		end
+
+		return dap.session() ~= nil
+	end,
+	init = function(self)
+		local dap = require("dap")
+		self.session = dap.session()
+
+		local name = ""
+		if self.session and self.session.config then
+			name = self.session.config.name or self.session.config.type or ""
+		end
+
+		self.name = name
+		self.lang = (self.session and self.session.filetype) or ""
+	end,
+	update = {
+		"User",
+		pattern = {
+			"DapSessionAttached",
+			"DapSessionLaunched",
+			"DapSessionTerminated",
+			"DapSessionExited",
+			"DapStopped",
+			"DapContinued",
+		},
+	},
+	{
+		provider = " ",
+		hl = { fg = colors.love, bold = true },
+	},
+	utils.surround({ "[", "]" }, nil, {
+		{
+			provider = function(self)
+				if self.lang == "" then
+					return "DAP"
+				end
+
+				return self.lang
+			end,
+			hl = { fg = colors.iris, bold = true },
+		},
+	}),
+	{
+		provider = function(self)
+			return self.name ~= "" and (" " .. self.name) or ""
+		end,
+		hl = { fg = colors.visual },
+	},
+}
+
 local VisualRange = {
 	condition = function(self)
 		return vim.fn.mode() == "v" or vim.fn.mode() == "V"
@@ -624,6 +680,7 @@ local statusline = {
 	{ GitBranchBlock },
 	{ SearchCount },
 	{ VisualRange },
+	{ DapElement },
 	{ provider = "%<" },
 	{ MacroRec },
 	{ TogglesElement },

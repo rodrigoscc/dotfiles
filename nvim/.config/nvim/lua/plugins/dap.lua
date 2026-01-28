@@ -153,9 +153,30 @@ return {
 
 			dap.listeners.before.attach.dapui_config = function()
 				vim.cmd("DapViewOpen")
+				vim.api.nvim_exec_autocmds(
+					"User",
+					{ pattern = "DapSessionAttached" }
+				)
 			end
 			dap.listeners.before.launch.dapui_config = function()
 				vim.cmd("DapViewOpen")
+				vim.api.nvim_exec_autocmds(
+					"User",
+					{ pattern = "DapSessionLaunched" }
+				)
+			end
+
+			dap.listeners.before.event_terminated["statusline"] = function()
+				vim.api.nvim_exec_autocmds(
+					"User",
+					{ pattern = "DapSessionTerminated" }
+				)
+			end
+			dap.listeners.before.event_exited["statusline"] = function()
+				vim.api.nvim_exec_autocmds(
+					"User",
+					{ pattern = "DapSessionExited" }
+				)
 			end
 
 			vim.api.nvim_set_hl(
