@@ -674,7 +674,16 @@ local Nurl = {
 }
 
 local statusline = {
-	hl = { bg = colors.background },
+	hl = function()
+		local dap = require("dap")
+		local session = dap.session()
+
+		if session == nil then
+			return { bg = colors.background }
+		end
+
+		return { bg = colors.overlay }
+	end,
 	{ ViMode },
 	{ FileBlock },
 	{ GitBranchBlock },
