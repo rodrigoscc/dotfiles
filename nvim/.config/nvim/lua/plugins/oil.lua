@@ -56,9 +56,6 @@ return {
 					return name == ".." or name == ".git"
 				end,
 			},
-			win_options = {
-				winbar = "%{v:lua.require('oil').get_current_dir()}",
-			},
 		},
 	},
 }
