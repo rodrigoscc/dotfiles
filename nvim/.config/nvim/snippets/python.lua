@@ -37,6 +37,30 @@ def {}():
 		)
 	),
 	s(
+		"adef",
+		fmt(
+			[[async def {}({}):
+    {}]],
+			{
+				i(1, "func_name"),
+				i(2),
+				i(3, "pass"),
+			}
+		)
+	),
+	s(
+		"adefs",
+		fmt(
+			[[async def {}(self{}):
+    {}]],
+			{
+				i(1, "func_name"),
+				i(2),
+				i(3, "pass"),
+			}
+		)
+	),
+	s(
 		"forin",
 		fmt(
 			[[for {} in {}:
