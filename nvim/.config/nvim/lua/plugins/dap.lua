@@ -219,8 +219,8 @@ return {
 			})
 			vim.fn.sign_define("DapBreakpointRejected", {
 				text = "",
-				texthl = "DapBreakpoint",
-				numhl = "DapBreakpoint",
+				texthl = "DiagnosticError",
+				numhl = "DiagnosticError",
 			})
 			vim.fn.sign_define(
 				"DapLogPoint",
