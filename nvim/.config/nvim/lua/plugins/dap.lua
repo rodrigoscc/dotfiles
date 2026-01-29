@@ -124,6 +124,13 @@ return {
 				end,
 				{ desc = "step out" },
 			},
+			{
+				"<leader>df",
+				function()
+					require("dap").focus_frame()
+				end,
+				{ desc = "[d]ap [f]ocus frame" },
+			},
 		},
 		dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" },
 		config = function()
