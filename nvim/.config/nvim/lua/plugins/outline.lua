@@ -3,7 +3,11 @@ return {
 		"hedyhli/outline.nvim",
 		lazy = true,
 		keys = {
-			{ "<leader>ty", vim.cmd.Outline, desc = "Toggle Outline" },
+			{
+				"<leader>ty",
+				"<cmd> belowright Outline<CR>",
+				desc = "Toggle Outline",
+			},
 			{ "<leader>fy", vim.cmd.OutlineFocus, desc = "Focus Outline" },
 		},
 		opts = {
