@@ -3,6 +3,15 @@ return {
 		"stevearc/conform.nvim",
 		event = { "BufWritePre" },
 		cmd = { "ConformInfo" },
+		keys = {
+			{
+				"<leader>fb",
+				function()
+					require("conform").format({ bufnr = 0 })
+				end,
+				desc = "[f]ormat [b]uffer",
+			},
+		},
 		opts = {
 			notify_on_error = false, -- It's annoying to save and having to press Enter.
 			format_on_save = function(bufnr)

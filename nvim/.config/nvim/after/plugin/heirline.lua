@@ -506,16 +506,15 @@ local FileTypeElement = {
 local LSPElement = {
 	condition = conditions.lsp_attached,
 	provider = function()
-		local servers = vim.lsp.get_clients()
-		return (" %s "):format(#servers)
-	end,
+		local names = {}
 
-	on_click = {
-		callback = function()
-			vim.cmd("LspInfo")
-		end,
-		name = "lspconfig",
-	},
+		local servers = vim.lsp.get_clients()
+		for _, server in ipairs(servers) do
+			table.insert(names, server.name)
+		end
+
+		return (" [%s] "):format(table.concat(names, " "))
+	end,
 	hl = { fg = colors.dim },
 }
 
