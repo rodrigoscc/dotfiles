@@ -516,7 +516,7 @@ local LSPElement = {
 
 		return (" [%s] "):format(table.concat(names, " "))
 	end,
-	hl = { fg = colors.dim },
+	hl = { fg = colors.foam },
 }
 
 local FileEncoding = {
