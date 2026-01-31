@@ -13,6 +13,7 @@ local mason_ensure_installed = {
 	"codespell",
 	"commitlint",
 	"buf",
+	"taplo",
 }
 
 -- Ensure installed for formatters and diagnostics

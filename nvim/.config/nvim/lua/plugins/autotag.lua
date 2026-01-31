@@ -2,7 +2,6 @@ return {
 	{
 		"windwp/nvim-ts-autotag",
 		opts = {},
-		lazy = true,
 		ft = {
 			"html",
 			"xml",
