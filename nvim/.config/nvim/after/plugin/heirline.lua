@@ -509,7 +509,7 @@ local LSPElement = {
 	provider = function()
 		local names = {}
 
-		local servers = vim.lsp.get_clients()
+		local servers = vim.lsp.get_clients({ bufnr = 0 })
 		for _, server in ipairs(servers) do
 			table.insert(names, server.name)
 		end
