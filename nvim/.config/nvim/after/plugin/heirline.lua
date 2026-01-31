@@ -270,7 +270,8 @@ FileBlock = utils.insert(
 	unpack(FileFlags) -- A small optimisation, since their parent does nothing
 )
 
-FileSecondaryBlock = utils.insert(FileSecondaryBlock, FilePosition, FileSize)
+FilePosition = utils.insert(FileSecondaryBlock, FilePosition)
+FileSize = utils.insert(FileSecondaryBlock, FileSize)
 
 local SearchCount = {
 	condition = function()
@@ -635,7 +636,6 @@ local GitBranchBlock = {
 			end,
 		},
 	},
-	{ provider = " " },
 }
 
 local Ruler = {
@@ -686,6 +686,7 @@ local statusline = {
 	{ ViMode },
 	{ FileBlock },
 	{ GitBranchBlock },
+	{ FilePosition },
 	{ SearchCount },
 	{ VisualRange },
 	{ DapElement },
@@ -695,7 +696,7 @@ local statusline = {
 	{ provider = " %= " },
 	{ Nurl },
 	{ HarpoonElement },
-	{ FileSecondaryBlock },
+	{ FileSize },
 	{ FileEncoding },
 	{ FileTypeElement },
 	{ LSPElement },
