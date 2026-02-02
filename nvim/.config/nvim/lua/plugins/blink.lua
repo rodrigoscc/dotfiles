@@ -1,3 +1,34 @@
+local symbols = {
+	Text = "󰉿",
+	Method = "󰆧",
+	Function = "󰊕",
+	Constructor = "",
+	Field = "󰜢",
+	Variable = "󰀫",
+	Class = "󰠱",
+	Interface = "",
+	Module = "",
+	Property = "󰜢",
+	Unit = "",
+	Value = "󰎠",
+	Enum = "",
+	Keyword = "󰌋",
+	Snippet = "",
+	Color = "󰏘",
+	File = "󰈙",
+	Reference = "󰈇",
+	Folder = "󰉋",
+	EnumMember = "",
+	Constant = "󰏿",
+	Struct = "󰙅",
+	Event = "",
+	Operator = "󰆕",
+	TypeParameter = "",
+	Copilot = "",
+	Array = "󰅪",
+	-- TypeParameter = "",
+}
+
 return {
 	{
 		"saghen/blink.compat",
@@ -46,6 +77,7 @@ return {
 				-- Set to 'mono' for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
 				-- Adjusts spacing to ensure icons are aligned
 				nerd_font_variant = "mono",
+				kind_icons = symbols,
 			},
 			snippets = { preset = "luasnip" },
 			-- default list of enabled providers defined so that you can extend it
@@ -63,12 +95,6 @@ return {
 						"lazydev",
 						"lsp",
 						"path",
-						"snippets",
-						"buffer",
-						"ripgrep",
-					},
-					http = {
-						"http",
 						"snippets",
 						"buffer",
 						"ripgrep",
@@ -98,24 +124,15 @@ return {
 					ripgrep = {
 						module = "blink-ripgrep",
 						name = "Ripgrep",
-						max_items = 3,
-						score_offset = -5,
 						---@module "blink-ripgrep"
 						---@type blink-ripgrep.Options
 						opts = {
 							backend = {
-								context_size = 5,
 								ripgrep = {
-									max_filesize = "1M",
 									ignore_paths = { "/Users/rsantacruz" },
 								},
 							},
-							prefix_min_len = 5,
 						},
-					},
-					http = {
-						name = "http",
-						module = "blink.compat.source",
 					},
 				},
 			},
