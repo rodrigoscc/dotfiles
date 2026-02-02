@@ -5,7 +5,6 @@ return {
 	root_markers = { ".luarc.json", ".luarc.jsonc" },
 	settings = {
 		Lua = {
-			completion = { callSnippet = "Replace" },
 			-- Using stylua for formatting.
 			format = { enable = false },
 			hint = {
