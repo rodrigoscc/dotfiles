@@ -8,6 +8,10 @@ return {
 				transparency = true,
 			},
 			highlight_groups = {
+				Pmenu = {
+					bg = "surface",
+					fg = "subtle",
+				},
 				WinBar = {
 					bg = "none",
 				},
@@ -103,18 +107,6 @@ return {
 				Headline3 = {
 					bg = "rose",
 					blend = 15,
-				},
-				BlinkPairsOrange = {
-					fg = "rose",
-				},
-				BlinkPairsPurple = {
-					fg = "iris",
-				},
-				BlinkPairsBlue = {
-					fg = "pine",
-				},
-				BlinkPairsRed = {
-					fg = "love",
 				},
 				BlinkCmpSignatureHelpBorder = {
 					link = "FloatBorder",
