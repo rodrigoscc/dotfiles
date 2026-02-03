@@ -34,6 +34,10 @@ vim.keymap.set("n", "<leader>tw", function()
 	vim.cmd.redrawstatus()
 end, { desc = "toggle wrap" })
 
+vim.keymap.set("n", "<leader>tn", function()
+	vim.wo.relativenumber = not vim.wo.relativenumber
+end, { desc = "toggle relative numbers" })
+
 -- Paste preserving previous copy
 vim.keymap.set({ "n", "v" }, "<leader>sp", [["_dP]], { desc = "special paste" })
 -- Delete preserving previous copy
