@@ -8,7 +8,7 @@ return {
 				lua = { "selene" },
 				gitcommit = { "commitlint" },
 				NeogitCommitMessage = { "commitlint" },
-				svelte = { "eslint" },
+				svelte = { "eslint", "oxlint" },
 				typescript = { "oxlint" },
 				typescriptreact = { "oxlint" },
 				javascript = { "oxlint" },
