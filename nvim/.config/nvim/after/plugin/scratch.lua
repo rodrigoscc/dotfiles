@@ -5,12 +5,16 @@ local filetype_extension = {
 	lua = ".lua",
 	go = ".go",
 	javascript = ".js",
+	typescript = ".js",
+	rust = ".rs",
 	json = ".json",
 	html = ".html",
 	yaml = ".yml",
 	text = ".txt",
 	csv = ".csv",
 	sql = ".sql",
+	sh = ".sh",
+	bash = ".sh",
 }
 
 local function new_scratch()
