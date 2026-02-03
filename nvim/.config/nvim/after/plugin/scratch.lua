@@ -98,11 +98,11 @@ vim.keymap.set(
 	"n",
 	"<leader>ns",
 	"<cmd>NewScratch<cr>",
-	{ desc = "[n]ew [s]cratch" }
+	{ desc = "new scratch" }
 )
 vim.keymap.set(
 	"n",
 	"<leader>fs",
 	"<cmd>FindScratch<cr>",
-	{ desc = "[f]ind [s]cratch" }
+	{ desc = "find scratch" }
 )

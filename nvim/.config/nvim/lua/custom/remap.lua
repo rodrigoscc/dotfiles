@@ -1,7 +1,7 @@
 local lazy = require("lazy")
 
-vim.keymap.set("n", "<leader>L", lazy.show, { desc = "show [l]azy" })
-vim.keymap.set("n", "<leader>M", "<cmd>Mason<cr>", { desc = "show [m]ason" })
+vim.keymap.set("n", "<leader>L", lazy.show, { desc = "show lazy" })
+vim.keymap.set("n", "<leader>M", "<cmd>Mason<cr>", { desc = "show mason" })
 
 vim.keymap.set("x", "J", ":move '>+1<CR>gv=gv", { silent = true })
 vim.keymap.set("x", "K", ":move '<-2<CR>gv=gv", { silent = true })
@@ -32,41 +32,26 @@ vim.keymap.set("n", "<C-w>t", "<C-w>T")
 vim.keymap.set("n", "<leader>tw", function()
 	vim.wo.wrap = not vim.wo.wrap
 	vim.cmd.redrawstatus()
-end, { desc = "[t]oggle [w]rap" })
+end, { desc = "toggle wrap" })
 
 -- Paste preserving previous copy
-vim.keymap.set(
-	{ "n", "v" },
-	"<leader>sp",
-	[["_dP]],
-	{ desc = "[s]pecial [p]aste" }
-)
+vim.keymap.set({ "n", "v" }, "<leader>sp", [["_dP]], { desc = "special paste" })
 -- Delete preserving previous copy
-vim.keymap.set(
-	{ "n", "v" },
-	"<leader>sd",
-	[["_d]],
-	{ desc = "[s]pecial [d]elete" }
-)
+vim.keymap.set({ "n", "v" }, "<leader>sd", [["_d]], { desc = "special delete" })
 
 vim.keymap.set(
 	{ "n", "v" },
 	"<leader>y",
 	[["+y]],
-	{ desc = "[y]ank to system clipboard" }
+	{ desc = "yank to system clipboard" }
 )
-vim.keymap.set(
-	"n",
-	"<leader>Y",
-	[["+Y]],
-	{ desc = "[y]ank to system clipboard" }
-)
+vim.keymap.set("n", "<leader>Y", [["+Y]], { desc = "yank to system clipboard" })
 
 vim.keymap.set(
 	"n",
 	"<leader>bf",
 	vim.lsp.buf.format,
-	{ desc = "[b]uffer [f]ormat" }
+	{ desc = "buffer format" }
 )
 
 -- This is going to get me cancelled
@@ -119,7 +104,7 @@ vim.keymap.set("n", "<leader>sf", function()
 		vim.cmd.PackerInstall()
 		vim.cmd.PackerCompile()
 	end
-end, { desc = "[s]ource [f]ile" })
+end, { desc = "source file" })
 
 vim.keymap.set("t", "<esc>", "<c-\\><c-n>")
 
@@ -137,14 +122,14 @@ vim.keymap.set(
 	"n",
 	"<leader>m",
 	"<cmd>tab split<cr>",
-	{ desc = "[m]aximize window to tab" }
+	{ desc = "maximize window to tab" }
 )
 
 vim.keymap.set("n", "<bs>", "<C-^>", { desc = "switch to last buffer" })
 
 vim.keymap.set("n", "<leader>tC", function()
 	vim.o.list = not vim.o.list
-end, { desc = "[t]oggle list [c]hars" })
+end, { desc = "toggle list chars" })
 
 local go_tests_query = vim.treesitter.query.parse(
 	"go",
@@ -261,7 +246,7 @@ vim.api.nvim_create_autocmd("FileType", {
 			"n",
 			"<localleader>d",
 			DebugGoTest,
-			{ buffer = true, desc = "go: [d]ebug" }
+			{ buffer = true, desc = "go: debug" }
 		)
 	end,
 })
@@ -285,13 +270,13 @@ vim.keymap.set(
 	"x",
 	"<leader>fj",
 	":!jq --indent 4<cr>",
-	{ desc = "[f]ormat [j]son" }
+	{ desc = "format json" }
 )
 vim.keymap.set(
 	"n",
 	"<leader>fj",
 	":'{+1,'}-1!jq --indent 4<cr>",
-	{ desc = "[f]ormat [j]son" }
+	{ desc = "format json" }
 )
 
 vim.keymap.set(

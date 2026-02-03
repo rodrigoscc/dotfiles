@@ -9,7 +9,7 @@ return {
 				function()
 					require("conform").format({ bufnr = 0 })
 				end,
-				desc = "[f]ormat [b]uffer",
+				desc = "format buffer",
 			},
 		},
 		opts = {
@@ -27,14 +27,14 @@ return {
 					"ruff_fix",
 					"ruff_format",
 				},
-				javascript = { "prettier" },
-				javascriptreact = { "prettier" },
-				typescript = { "prettier" },
-				typescriptreact = { "prettier" },
-				vue = { "prettier" },
-				svelte = { "prettier" },
-				css = { "prettier" },
-				html = { "prettier" },
+				javascript = { "oxfmt" },
+				javascriptreact = { "oxfmt" },
+				typescript = { "oxfmt" },
+				typescriptreact = { "oxfmt" },
+				vue = { "oxfmt" },
+				svelte = { "oxfmt" },
+				css = { "oxfmt" },
+				html = { "oxfmt" },
 				go = { "golines", "injected" }, -- golines run goimports and gofmt if found.
 				json = { "fixjson" },
 				sql = { "sql_formatter" },

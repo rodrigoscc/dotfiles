@@ -8,21 +8,21 @@ return {
 				function()
 					vim.cmd("DiffviewOpen -- ./") -- Making sure to show only the changes in the current working directory.
 				end,
-				{ desc = "[g]it [d]iff" },
+				{ desc = "git diff" },
 			},
 			{
 				"<leader>gD",
 				function()
 					vim.cmd("DiffviewOpen origin/HEAD...HEAD") -- Diff current branch to master/main branch in origin
 				end,
-				{ desc = "[g]it [D]iff with origin HEAD" },
+				{ desc = "git diff with origin HEAD" },
 			},
 			{
 				"<leader>gf",
 				function()
 					vim.cmd("DiffviewFileHistory %")
 				end,
-				{ desc = "[g]it [f]ile history" },
+				{ desc = "git file history" },
 			},
 		},
 		cmd = { "DiffviewOpen", "DiffviewFileHistory", "DiffviewLog" },

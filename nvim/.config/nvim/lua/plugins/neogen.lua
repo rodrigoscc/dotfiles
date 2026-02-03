@@ -6,7 +6,7 @@ return {
 			{
 				"<leader>id",
 				"<cmd>Neogen<cr>",
-				desc = "[i]nsert [d]ocumentation",
+				desc = "insert documentation",
 			},
 		},
 		opts = {

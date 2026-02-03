@@ -68,30 +68,20 @@ vim.keymap.set(
 	"n",
 	"<leader>ss",
 	Snacks.picker.spelling,
-	{ desc = "[s]pell [s]uggest" }
+	{ desc = "spell suggest" }
 )
 
-vim.keymap.set(
-	"n",
-	"<leader>ht",
-	Snacks.picker.help,
-	{ desc = "[h]elp [t]ags" }
-)
+vim.keymap.set("n", "<leader>ht", Snacks.picker.help, { desc = "help tags" })
 vim.keymap.set(
 	"n",
 	"<leader>hk",
 	Snacks.picker.keymaps,
-	{ desc = "[h]elp [k]eymaps" }
+	{ desc = "help keymaps" }
 )
 
-vim.keymap.set(
-	"n",
-	"<leader>cc",
-	Snacks.picker.commands,
-	{ desc = "[c]ommands" }
-)
+vim.keymap.set("n", "<leader>cc", Snacks.picker.commands, { desc = "commands" })
 
-vim.keymap.set("n", "<leader>rr", Snacks.picker.resume, { desc = "[r]esume" })
+vim.keymap.set("n", "<leader>rr", Snacks.picker.resume, { desc = "resume" })
 
 vim.keymap.set("n", "<leader>gb", function()
 	Snacks.picker.git_branches({
@@ -106,7 +96,7 @@ vim.keymap.set("n", "<leader>gb", function()
 			},
 		},
 	})
-end, { desc = "[g]it [b]ranches" })
+end, { desc = "git branches" })
 vim.keymap.set("n", "<leader>gl", function()
 	Snacks.picker.git_log({
 		layout = "ivy_split",
@@ -125,7 +115,7 @@ vim.keymap.set("n", "<leader>gl", function()
 			},
 		},
 	})
-end, { desc = "[g]it [l]ogs" })
+end, { desc = "git logs" })
 vim.keymap.set("n", "<leader>gL", function()
 	Snacks.picker.git_log_file({
 		layout = "ivy_split",
@@ -144,42 +134,42 @@ vim.keymap.set("n", "<leader>gL", function()
 			},
 		},
 	})
-end, { desc = "[g]it buffer [l]ogs" })
+end, { desc = "git buffer logs" })
 vim.keymap.set(
 	"n",
 	"<leader>gg",
 	Snacks.picker.git_status,
-	{ desc = "[g]it status" }
+	{ desc = "git status" }
 )
 
 vim.keymap.set(
 	"n",
 	"<leader>ir",
 	Snacks.picker.registers,
-	{ desc = "[i]nsert [r]egisters" }
+	{ desc = "insert registers" }
 )
 
 vim.keymap.set(
 	"n",
 	"<leader>T",
 	Snacks.picker.pickers,
-	{ desc = "[T]elescope builtins" }
+	{ desc = "Snacks builtins" }
 )
 
-vim.keymap.set("n", "<leader>bb", Snacks.picker.buffers, { desc = "[b]uffers" })
+vim.keymap.set("n", "<leader>bb", Snacks.picker.buffers, { desc = "buffers" })
 
 vim.keymap.set(
 	"n",
 	"<leader>D",
 	Snacks.picker.diagnostics,
-	{ desc = "[D]iagnostics" }
+	{ desc = "Diagnostics" }
 )
 
 vim.keymap.set("n", "<leader>fd", function()
 	Snacks.picker.files({
 		cwd = "~/.config/",
 	})
-end, { desc = "[f]ind [d]otfile" })
+end, { desc = "find dotfile" })
 
 vim.api.nvim_create_user_command("StartWorking", function()
 	smart_picker()
@@ -191,24 +181,24 @@ vim.keymap.set("n", "<leader>q", function()
 	Snacks.picker.grep({
 		dirs = files,
 	})
-end, { desc = "grep [q]uickfix" })
+end, { desc = "grep quickfix" })
 
 vim.keymap.set("n", "<leader>bd", function()
 	Snacks.bufdelete()
-end, { desc = "[b]uffer [d]elete" })
+end, { desc = "buffer delete" })
 
 vim.keymap.set(
 	"n",
 	"<leader>bo",
 	Snacks.bufdelete.other,
-	{ desc = "[b]uffer [o]nly" }
+	{ desc = "buffer only" }
 )
 
 vim.keymap.set(
 	"n",
 	"<leader>bD",
 	Snacks.bufdelete.all,
-	{ desc = "[b]uffer [D]elete all" }
+	{ desc = "buffer Delete all" }
 )
 
 local images_group =

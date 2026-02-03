@@ -2,47 +2,47 @@ vim.keymap.set(
 	"n",
 	"<leader>of",
 	":Obsidian quick_switch ", -- Purposely not pressing <CR> to allow entering an argument.
-	{ desc = "[f]ind [o]bsidian file" }
+	{ desc = "find obsidian file" }
 )
 vim.keymap.set(
 	"n",
 	"<leader>on",
 	"<cmd>Obsidian new<cr>",
-	{ desc = "[n]ew [o]bsidian" }
+	{ desc = "new obsidian" }
 )
 
 vim.keymap.set(
 	"n",
 	"<leader>o#",
 	"<cmd>Obsidian tags<cr>",
-	{ desc = "[o]bsidian [t]ags" }
+	{ desc = "obsidian tags" }
 )
 
 vim.keymap.set(
 	"n",
 	"<leader>.",
 	"<cmd>Obsidian tags projects<cr>",
-	{ desc = "[s]earch obsidian projects" }
+	{ desc = "search obsidian projects" }
 )
 
 vim.keymap.set(
 	"n",
 	"<leader>os",
 	"<cmd>Obsidian search<cr>",
-	{ desc = "[o]bsidian [s]earch" }
+	{ desc = "obsidian search" }
 )
 
 vim.keymap.set(
 	"n",
 	"<leader>oo",
 	"<cmd>Obsidian today<cr>",
-	{ desc = "[o]bsidian today" }
+	{ desc = "obsidian today" }
 )
 vim.keymap.set(
 	"n",
 	"<leader>oy",
 	"<cmd>Obsidian yesterday<cr>",
-	{ desc = "[o]bsidian [y]esterday" }
+	{ desc = "obsidian yesterday" }
 )
 
 local function new_todo()
@@ -57,13 +57,8 @@ local function new_todo()
 	end)
 end
 
-vim.keymap.set(
-	"n",
-	"<leader><space>",
-	new_todo,
-	{ desc = "[o]bsidian new [t]odo" }
-)
-vim.keymap.set("n", "<leader>[", new_todo, { desc = "[o]bsidian new [t]odo" })
+vim.keymap.set("n", "<leader><space>", new_todo, { desc = "obsidian new todo" })
+vim.keymap.set("n", "<leader>[", new_todo, { desc = "obsidian new todo" })
 
 vim.keymap.set("n", "<leader>ot", function()
 	Snacks.picker.grep({
@@ -127,7 +122,7 @@ vim.keymap.set("n", "<leader>ot", function()
 			hidden = { "preview" },
 		},
 	})
-end, { desc = "[o]bsidian [t]odos" })
+end, { desc = "obsidian todos" })
 
 vim.api.nvim_create_autocmd("User", {
 	pattern = "ObsidianNoteEnter",

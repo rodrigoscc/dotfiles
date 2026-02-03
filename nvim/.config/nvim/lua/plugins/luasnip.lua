@@ -43,7 +43,7 @@ return {
 				"n",
 				"<leader>es",
 				loaders.edit_snippet_files,
-				{ desc = "[e]dit [s]nippets" }
+				{ desc = "edit snippets" }
 			)
 
 			load({ paths = "./snippets" })

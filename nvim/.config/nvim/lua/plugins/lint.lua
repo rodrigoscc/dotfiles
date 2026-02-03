@@ -9,10 +9,10 @@ return {
 				gitcommit = { "commitlint" },
 				NeogitCommitMessage = { "commitlint" },
 				svelte = { "eslint" },
-				typescript = { "eslint" },
-				typescriptreact = { "eslint" },
-				javascript = { "eslint" },
-				javascriptreact = { "eslint" },
+				typescript = { "oxlint" },
+				typescriptreact = { "oxlint" },
+				javascript = { "oxlint" },
+				javascriptreact = { "oxlint" },
 				proto = { "buf_lint" },
 			}
 

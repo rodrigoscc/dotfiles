@@ -1,3 +1,3 @@
 vim.keymap.set("n", "<leader>Z", function()
 	Snacks.zen()
-end, { desc = "[z]en mode" })
+end, { desc = "zen mode" })

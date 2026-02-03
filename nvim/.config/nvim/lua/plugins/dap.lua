@@ -9,14 +9,14 @@ return {
 				function()
 					require("dap").toggle_breakpoint()
 				end,
-				{ desc = "[t]oggle [b]reakpoint" },
+				{ desc = "toggle breakpoint" },
 			},
 			{
 				"<leader>lb",
 				function()
 					require("dapui").float_element("breakpoints")
 				end,
-				{ desc = "[l]ist [b]reakpoints" },
+				{ desc = "list breakpoints" },
 			},
 			{
 				"<leader>bL",
@@ -28,7 +28,7 @@ return {
 						end
 					)
 				end,
-				{ desc = "[b]reakpoint [l]og message" },
+				{ desc = "breakpoint log message" },
 			},
 			{
 				"<leader>bc",
@@ -37,14 +37,14 @@ return {
 						require("dap").set_breakpoint(input, nil, nil)
 					end)
 				end,
-				{ desc = "[b]reakpoint [c]ondition" },
+				{ desc = "breakpoint condition" },
 			},
 			{
 				"<leader>td",
 				function()
 					require("dapui").toggle()
 				end,
-				{ desc = "[t]oggle [d]apui" },
+				{ desc = "toggle dapui" },
 			},
 			{
 				"<leader>cb",
@@ -52,49 +52,49 @@ return {
 					require("dap").clear_breakpoints()
 					vim.cmd("echo 'Breakpoints cleared!'")
 				end,
-				{ desc = "[c]lear [b]reakpoints" },
+				{ desc = "clear breakpoints" },
 			},
 			{
 				"<leader>dd",
 				function()
 					require("dap").continue()
 				end,
-				{ desc = "[d]ebug / continue" },
+				{ desc = "debug / continue" },
 			},
 			{
 				"<leader>dl",
 				function()
 					require("dap").run_last()
 				end,
-				{ desc = "[d]ebug [l]ast" },
+				{ desc = "debug last" },
 			},
 			{
 				"<leader>tr",
 				function()
 					require("dap").repl.toggle()
 				end,
-				{ desc = "[t]oggle [r]epl" },
+				{ desc = "toggle repl" },
 			},
 			{
 				"<leader>so",
 				function()
 					require("dap").step_over()
 				end,
-				{ desc = "[s]tep [o]ver" },
+				{ desc = "step over" },
 			},
 			{
 				"<leader>si",
 				function()
 					require("dap").step_into()
 				end,
-				{ desc = "[s]tep [i]nto" },
+				{ desc = "step into" },
 			},
 			{
 				"<leader>su",
 				function()
 					require("dap").step_out()
 				end,
-				{ desc = "[s]tep o[u]t" },
+				{ desc = "step out" },
 			},
 			{
 				"<F5>",
@@ -129,7 +129,7 @@ return {
 				function()
 					require("dap").focus_frame()
 				end,
-				{ desc = "[d]ap [f]ocus frame" },
+				{ desc = "dap focus frame" },
 			},
 		},
 		dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" },
@@ -262,7 +262,7 @@ return {
 			{
 				"<leader>tD",
 				"<cmd>DapViewToggle<cr>",
-				{ desc = "[t]oggle [D]ap view" },
+				{ desc = "toggle Dap view" },
 			},
 		},
 	},

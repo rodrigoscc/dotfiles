@@ -14,7 +14,7 @@ return {
 				"n",
 				"<leader>J",
 				treesj.toggle,
-				{ desc = "trees[J] toggle" }
+				{ desc = "treesj toggle" }
 			)
 		end,
 	},

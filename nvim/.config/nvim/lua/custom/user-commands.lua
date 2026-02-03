@@ -61,5 +61,5 @@ vim.keymap.set(
 	"n",
 	"<leader>ti",
 	"<cmd>ToggleInlayHints<cr>",
-	{ desc = "[t]oggle [i]nlay hints" }
+	{ desc = "toggle inlay hints" }
 )

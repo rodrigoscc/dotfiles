@@ -6,7 +6,7 @@ return {
 			{
 				"<leader>tu",
 				"<cmd>UndotreeToggle<cr>",
-				desc = "[t]oggle [u]ndo tree",
+				desc = "toggle undo tree",
 			},
 		},
 	},

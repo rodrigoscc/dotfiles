@@ -62,7 +62,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			{ "n", "v" },
 			"<leader>ca",
 			vim.lsp.buf.code_action,
-			{ desc = "[c]ode [a]ction" }
+			{ desc = "code action" }
 		)
 
 		vim.keymap.set("n", "]d", function()
@@ -128,12 +128,12 @@ end
 vim.keymap.set("n", "<leader>tf", function()
 	toggle_format_on_save()
 	vim.cmd.redrawstatus()
-end, { desc = "[t]oggle [f]ormat on save" })
+end, { desc = "toggle format on save" })
 
 vim.keymap.set("n", "<leader>rl", function()
 	vim.cmd("LspRestart")
 	vim.print("LSP Restarted!")
-end, { desc = "[r]estart [l]sp" })
+end, { desc = "restart lsp" })
 
 vim.diagnostic.config({
 	virtual_text = {
