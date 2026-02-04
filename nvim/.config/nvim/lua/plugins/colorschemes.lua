@@ -58,6 +58,31 @@ return {
 				NormalFloat = {
 					bg = "base", -- Less vibrant
 				},
+				DiagnosticVirtualTextError = {
+					bg = "none",
+					fg = "love",
+					inherit = false,
+				},
+				DiagnosticVirtualTextHint = {
+					bg = "none",
+					fg = "iris",
+					inherit = false,
+				},
+				DiagnosticVirtualTextInfo = {
+					bg = "none",
+					fg = "foam",
+					inherit = false,
+				},
+				DiagnosticVirtualTextOk = {
+					bg = "none",
+					fg = "leaf",
+					inherit = false,
+				},
+				DiagnosticVirtualTextWarn = {
+					bg = "none",
+					fg = "gold",
+					inherit = false,
+				},
 				QuickFixLine = {
 					bg = "overlay",
 				},
