@@ -5,12 +5,29 @@ return {
 		opts = {
 			styles = {
 				italic = false,
-				transparency = true,
 			},
 			highlight_groups = {
-				Pmenu = {
-					bg = "surface",
-					fg = "subtle",
+				-- custom transparency mode
+				Normal = {
+					bg = "none",
+				},
+				NormalNC = {
+					bg = "none",
+				},
+				StatusLine = {
+					bg = "none",
+				},
+				StatusLineNC = {
+					bg = "none",
+				},
+				TabLine = {
+					bg = "none",
+				},
+				TabLineFill = {
+					bg = "none",
+				},
+				TabLineSel = {
+					bg = "none",
 				},
 				WinBar = {
 					bg = "none",
@@ -23,12 +40,12 @@ return {
 					underline = true,
 					bg = "none",
 				},
+				-- custom transparency mode
 				QuickFixLine = {
-					bg = "iris",
-					blend = 25,
+					bg = "overlay",
 				},
 				Folded = {
-					bg = "overlay",
+					bg = "surface",
 					fg = "subtle",
 				},
 				Comment = {
