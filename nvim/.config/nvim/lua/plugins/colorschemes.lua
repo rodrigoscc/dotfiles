@@ -41,6 +41,11 @@ return {
 					bg = "none",
 				},
 				-- custom transparency mode
+				PmenuSel = {
+					fg = "none", -- Otherwise tailwind colors are gone
+					bg = "muted", -- Make the bg more noticeable
+					blend = 30,
+				},
 				QuickFixLine = {
 					bg = "overlay",
 				},
