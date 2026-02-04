@@ -95,6 +95,11 @@ local ViMode = {
 	-- evaluation and store it as a component attribute
 	init = function(self)
 		self.mode = vim.fn.mode(1) -- :h mode()
+
+		self.mode_name = self.mode_names[self.mode]
+		if self.mode_name == nil then
+			self.mode_name = ""
+		end
 	end,
 	-- Now we define some dictionaries to map the output of mode() to the
 	-- corresponding string and color. We can put these into `static` to compute
@@ -137,19 +142,22 @@ local ViMode = {
 			t = "TERMINAL",
 		},
 	},
-	provider = function(self)
-		local mode_name = self.mode_names[self.mode]
-		if mode_name == nil then
-			mode_name = ""
-		end
-
-		return "  " .. mode_name .. " "
-	end,
 	-- Same goes for the highlight. Now the foreground will change according to the current mode.
 	hl = function(self)
 		local mode = self.mode:sub(1, 1) -- get only the first mode character
 		return { fg = self.mode_colors[mode], bold = true }
 	end,
+	flexible = 2,
+	{
+		provider = function(self)
+			return "  " .. self.mode_name .. " "
+		end,
+	},
+	{
+		provider = function(self)
+			return "  "
+		end,
+	},
 }
 
 --[[
@@ -210,23 +218,24 @@ local FileIcon = {
 }
 
 local FileName = {
-	provider = function(self)
-		-- first, trim the pattern relative to the current directory. For other
-		-- options, see :h filename-modifers
-		local filename = vim.fn.fnamemodify(self.filename, ":.")
-		if filename == "" then
-			return "[No Name] "
+	init = function(self)
+		self.lfilename = vim.fn.fnamemodify(self.filename, ":.")
+		if self.lfilename == "" then
+			self.lfilename = "[No Name]"
 		end
-		-- now, if the filename would occupy more than 1/4th of the available
-		-- space, we trim the file path to its initials
-		-- See Flexible Components section below for dynamic truncation
-		if not conditions.width_percent_below(#filename, 0.25) then
-			filename = vim.fn.pathshorten(filename)
-		end
-
-		return filename .. " "
 	end,
 	hl = { fg = colors.iris },
+	flexible = 2,
+	{
+		provider = function(self)
+			return self.lfilename .. " "
+		end,
+	},
+	{
+		provider = function(self)
+			return vim.fn.pathshorten(self.lfilename) .. " "
+		end,
+	},
 }
 
 local FileFlags = {
