@@ -7,7 +7,6 @@ return {
 				italic = false,
 			},
 			highlight_groups = {
-				-- custom transparency mode
 				Normal = {
 					bg = "none",
 				},
@@ -40,11 +39,24 @@ return {
 					underline = true,
 					bg = "none",
 				},
-				-- custom transparency mode
+				Pmenu = {
+					bg = "base", -- Less vibrant
+				},
 				PmenuSel = {
 					fg = "none", -- Otherwise tailwind colors are gone
-					bg = "muted", -- Make the bg more noticeable
-					blend = 30,
+					bg = "overlay", -- Make the bg more noticeable
+				},
+				PmenuExtra = {
+					bg = "base", -- Less vibrant
+				},
+				FloatBorder = {
+					bg = "base", -- Less vibrant
+				},
+				FloatTitle = {
+					bg = "base", -- Less vibrant
+				},
+				NormalFloat = {
+					bg = "base", -- Less vibrant
 				},
 				QuickFixLine = {
 					bg = "overlay",
