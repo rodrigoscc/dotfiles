@@ -3,6 +3,10 @@ return {
 		"folke/noice.nvim",
 		event = "VeryLazy",
 		opts = {
+			cmdline = {
+				enabled = true, -- enables the Noice cmdline UI
+				view = "cmdline", -- view for rendering the cmdline. Change to `cmdline` to get a classic cmdline at the bottom
+			},
 			lsp = {
 				signature = {
 					enabled = false,
@@ -34,9 +38,7 @@ return {
 			presets = {
 				lsp_doc_border = true, -- add a border to hover docs and signature help
 				bottom_search = true,
-				command_palette = true,
 				long_message_to_split = true,
-				inc_rename = true,
 			},
 		},
 		dependencies = {
