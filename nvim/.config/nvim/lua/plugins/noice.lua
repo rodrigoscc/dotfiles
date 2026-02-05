@@ -13,7 +13,7 @@ return {
 					filter = false,
 					lua = false,
 					help = false,
-					input = false,
+					input = { view = "cmdline" },
 				},
 			},
 			lsp = {
