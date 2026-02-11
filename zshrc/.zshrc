@@ -86,10 +86,13 @@ alias gs="git status"
 alias ga="git add"
 alias gc="git commit"
 alias gl="git log --oneline"
+alias gd="git diff"
 
 alias pn="pnpm"
 
 alias ..="cd .."
+
+alias op="opencode --port"
 
 # Home and end keys.
 bindkey "^[[1~" beginning-of-line
