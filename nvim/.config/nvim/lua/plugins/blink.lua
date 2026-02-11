@@ -41,7 +41,7 @@ return {
 	},
 	{
 		"saghen/blink.cmp",
-		version = "*",
+		version = "v1.8.0",
 		dependencies = {
 			"mikavilpas/blink-ripgrep.nvim",
 		},
