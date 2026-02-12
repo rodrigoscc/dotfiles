@@ -677,7 +677,7 @@ local Nurl = {
 
 			return ""
 		end,
-		hl = { fg = colors.gold },
+		hl = { fg = colors.iris },
 	},
 }
 
