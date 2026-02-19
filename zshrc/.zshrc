@@ -45,10 +45,11 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 
 if [ -d /opt/homebrew/opt/zplug ]; then
     export ZPLUG_HOME=/opt/homebrew/opt/zplug
-    source $ZPLUG_HOME/init.zsh
 else
-    source /usr/share/zsh/scripts/zplug/init.zsh
+    export ZPLUG_HOME=$HOME/.zplug
 fi
+
+source $ZPLUG_HOME/init.zsh
 
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
 
@@ -179,6 +180,10 @@ rfv() (
 )
 
 # Has to be here after all zsh setup
+if [ -f $HOME/.fzf.zsh ]; then
+    source $HOME/.fzf.zsh
+fi
+
 if [ -x "$(command -v fzf)" ]; then
     # Set up fzf key bindings and fuzzy completion
     source <(fzf --zsh)
