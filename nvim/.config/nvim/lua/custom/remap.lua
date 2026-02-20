@@ -52,7 +52,7 @@ vim.keymap.set(
 vim.keymap.set("n", "<leader>Y", [["+Y]], { desc = "yank to system clipboard" })
 
 vim.keymap.set(
-	"n",
+	{ "n", "x" },
 	"<leader>bf",
 	vim.lsp.buf.format,
 	{ desc = "buffer format" }
@@ -364,13 +364,16 @@ local function super_gx()
 		return
 	end
 
-	local util = require("nurl.util")
+	local helpers = require("nurl.helpers")
+	local registry = require("nurl.registry")
 
-	local nurl_data = vim.b.nurl_data
+	local entry = registry:get(vim.b.nurl_data.handle_id)
+	local request = entry.handle.request
+
 	local win = vim.api.nvim_get_current_win()
 
-	local orig_headers = nurl_data.request.headers
-	local orig_url = util.url(nurl_data.request.url)
+	local orig_headers = request.headers
+	local orig_url = helpers.url(request.url)
 
 	cursor_url = complete_url(cursor_url, orig_url)
 
