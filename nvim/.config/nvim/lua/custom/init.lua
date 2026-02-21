@@ -11,7 +11,7 @@ local highlight_group =
 	vim.api.nvim_create_augroup("YankHighlight", { clear = true })
 vim.api.nvim_create_autocmd("TextYankPost", {
 	callback = function()
-		vim.highlight.on_yank({ higroup = "DiffChange", timeout = 300 })
+		vim.highlight.on_yank({ timeout = 200 })
 	end,
 	group = highlight_group,
 	pattern = "*",
