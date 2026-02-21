@@ -15,7 +15,8 @@ return {
 			},
 			picker = {
 				enabled = true,
-				layout = { preset = "ivy" },
+				-- using this layout so that looks more like fff.nvim
+				layout = { preset = "telescope" },
 				actions = {
 					diff_head = function(picker)
 						picker:close()
