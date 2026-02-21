@@ -117,7 +117,7 @@ vim.keymap.set("n", "<leader>ot", function()
 			return ret
 		end,
 		layout = {
-			preset = "vertical",
+			preset = "telescope",
 			layout = { width = 0.8 },
 			hidden = { "preview" },
 		},
