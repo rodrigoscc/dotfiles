@@ -154,6 +154,13 @@ vim.api.nvim_create_autocmd({ "BufReadPre", "BufNewFile" }, {
 			:map(function(file)
 				return vim.fn.fnamemodify(file, ":t:r")
 			end)
+			:filter(function(file)
+				if file:match("opencode") ~= nil then
+					return false
+				end
+
+				return true
+			end)
 			:totable()
 		vim.lsp.enable(servers)
 	end,
