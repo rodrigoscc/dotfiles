@@ -12,14 +12,7 @@ return {
 		},
 		config = function()
 			---@type opencode.Opts
-			vim.g.opencode_opts = {
-				provider = {
-					enabled = "tmux",
-					tmux = {
-						-- ...
-					},
-				},
-			}
+			vim.g.opencode_opts = {}
 
 			-- Required for `opts.events.reload`.
 			vim.o.autoread = true
