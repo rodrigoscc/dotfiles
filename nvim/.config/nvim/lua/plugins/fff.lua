@@ -20,32 +20,25 @@ return {
 		lazy = false,
 		keys = {
 			{
-				"ff", -- try it if you didn't it is a banger keybinding for a picker
+				"<C-p>", -- try it if you didn't it is a banger keybinding for a picker
 				function()
 					require("fff").find_files()
 				end,
 				desc = "FFFind files",
 			},
 			{
-				"fg",
-				function()
-					require("fff").live_grep()
-				end,
-				desc = "LiFFFe grep",
-			},
-			{
-				"fz",
+				"<leader>/",
 				function()
 					require("fff").live_grep({
 						grep = {
-							modes = { "fuzzy", "plain" },
+							modes = { "fuzzy", "plain", "regex" },
 						},
 					})
 				end,
 				desc = "Live fffuzy grep",
 			},
 			{
-				"fc",
+				"<leader>*",
 				function()
 					require("fff").live_grep({
 						query = vim.fn.expand("<cword>"),
