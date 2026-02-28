@@ -3,8 +3,11 @@ return {
 		"catgoose/nvim-colorizer.lua",
 		event = "BufReadPre",
 		opts = { -- set to setup table
-			user_default_options = {
-				tailwind = true,
+			options = {
+				parsers = {
+					css = true, -- preset: enables names, hex, rgb, hsl, oklch
+					tailwind = { enable = true },
+				},
 			},
 			filetypes = {
 				-- Do not want blink buffers to have colorizer on.
