@@ -31,6 +31,7 @@ return {
 				javascriptreact = { "oxfmt" },
 				typescript = { "oxfmt" },
 				typescriptreact = { "oxfmt" },
+				c = { "clang-format" },
 				vue = { "oxfmt" },
 				svelte = { "oxfmt" },
 				css = { "oxfmt" },

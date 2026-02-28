@@ -51,13 +51,6 @@ vim.keymap.set(
 )
 vim.keymap.set("n", "<leader>Y", [["+Y]], { desc = "yank to system clipboard" })
 
-vim.keymap.set(
-	{ "n", "x" },
-	"<leader>bf",
-	vim.lsp.buf.format,
-	{ desc = "buffer format" }
-)
-
 -- This is going to get me cancelled
 vim.keymap.set("i", "<C-c>", "<Esc>")
 
