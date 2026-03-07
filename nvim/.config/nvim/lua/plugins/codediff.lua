@@ -3,6 +3,29 @@ return {
 		"esmuellert/codediff.nvim",
 		dependencies = { "MunifTanjim/nui.nvim" },
 		cmd = "CodeDiff",
+		keys = {
+			{
+				"<leader>gd",
+				function()
+					vim.cmd.CodeDiff() -- Making sure to show only the changes in the current working directory.
+				end,
+				{ desc = "git diff" },
+			},
+			{
+				"<leader>gD",
+				function()
+					vim.cmd("CodeDiff main HEAD") -- Diff current branch to master/main branch in origin
+				end,
+				{ desc = "git diff with origin HEAD" },
+			},
+			{
+				"<leader>gf",
+				function()
+					vim.cmd("CodeDiff history")
+				end,
+				{ desc = "git file history" },
+			},
+		},
 		opts = {
 			explorer = { view_mode = "tree" },
 			keymaps = {
