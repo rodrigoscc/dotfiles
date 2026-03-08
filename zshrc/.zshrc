@@ -93,7 +93,7 @@ alias pn="pnpm"
 
 alias ..="cd .."
 
-alias op="opencode --port"
+alias oc="opencode --port"
 
 # Home and end keys.
 bindkey "^[[1~" beginning-of-line
