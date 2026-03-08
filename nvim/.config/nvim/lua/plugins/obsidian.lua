@@ -1,7 +1,7 @@
 return {
 	{
 		"obsidian-nvim/obsidian.nvim",
-		version = "v3.15.7",
+		version = "*",
 		ft = "markdown",
 		lazy = true,
 		cmd = {
@@ -22,7 +22,7 @@ return {
 				folder = "templates",
 			},
 			ui = {
-				bullets = {},
+				enable = false,
 			},
 			footer = { enabled = false },
 		},
