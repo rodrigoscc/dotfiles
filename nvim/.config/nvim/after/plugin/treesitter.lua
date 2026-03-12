@@ -35,6 +35,7 @@ require("nvim-treesitter.configs").setup({
 
 	ignore_install = {
 		"tmux", -- tmux grammar is broken
+		"dockerfile", -- dockerfile grammar is broken
 		"csv", -- csv grammar highlighting sucks
 	},
 
