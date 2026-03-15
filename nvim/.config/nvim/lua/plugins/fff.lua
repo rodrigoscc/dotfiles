@@ -9,10 +9,6 @@ return {
 		-- if you are using nixos
 		-- build = "nix run .#release",
 		opts = { -- (optional)
-			debug = {
-				enabled = true, -- we expect your collaboration at least during the beta
-				show_scores = true, -- to help us optimize the scoring system, feel free to share your scores!
-			},
 			prompt = " ",
 		},
 		-- No need to lazy-load with lazy.nvim.
@@ -20,7 +16,7 @@ return {
 		lazy = false,
 		keys = {
 			{
-				"<C-p>", -- try it if you didn't it is a banger keybinding for a picker
+				"<C-p>",
 				function()
 					require("fff").find_files()
 				end,
@@ -31,11 +27,11 @@ return {
 				function()
 					require("fff").live_grep({
 						grep = {
-							modes = { "fuzzy", "plain", "regex" },
+							modes = { "plain", "fuzzy", "regex" },
 						},
 					})
 				end,
-				desc = "Live fffuzy grep",
+				desc = "LiFFFe grep",
 			},
 			{
 				"<leader>*",
