@@ -4,7 +4,7 @@
   "Navigator.nvim": { "branch": "master", "commit": "91d86506ac2a039504d5205d32a1d4bc7aa57072" },
   "better-escape.nvim": { "branch": "master", "commit": "19a38aab94961016430905ebec30d272a01e9742" },
   "blink-ripgrep.nvim": { "branch": "main", "commit": "fe7ccf6238d66d94899927a040b9b2be106ee29b" },
-  "blink.cmp": { "branch": "main", "commit": "03cb9f9823e0a07b9ca3f00c981428b765c07ef7" },
+  "blink.cmp": { "branch": "main", "commit": "451168851e8e2466bc97ee3e026c3dcb9141ce07" },
   "blink.compat": { "branch": "main", "commit": "2ed6d9a28b07fa6f3bface818470605f8896408c" },
   "checkmate.nvim": { "branch": "main", "commit": "fc8edd6ecf8e4095ef878780e4bed83cc5c56c14" },
   "codediff.nvim": { "branch": "main", "commit": "93cd80c56f71af4671388c568a37d4c84c3ddefa" },
