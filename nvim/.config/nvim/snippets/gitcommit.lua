@@ -5,4 +5,6 @@ return {
 	s("pe", fmt([[perf: {}]], { i(1) })),
 	s("do", fmt([[docs: {}]], { i(1) })),
 	s("re", fmt([[refactor: {}]], { i(1) })),
+	s("ci", fmt([[ci: {}]], { i(1) })),
+	s("te", fmt([[test: {}]], { i(1) })),
 }
