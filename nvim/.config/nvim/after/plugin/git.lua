@@ -1,4 +1,4 @@
-local git_group = vim.api.nvim_create_augroup("git", { clear = true })
+local git_group = vim.api.nvim_create_augroup("rodrigosc/git", { clear = true })
 
 -- Quickly save and quit gitcommit windows.
 vim.api.nvim_create_autocmd("FileType", {

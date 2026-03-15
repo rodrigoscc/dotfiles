@@ -1,4 +1,4 @@
-local augroup = vim.api.nvim_create_augroup("MyOil", { clear = true })
+local augroup = vim.api.nvim_create_augroup("rodrigosc/oil", { clear = true })
 
 local function delete_missing_file_buffers()
 	local buffers_to_delete = {}

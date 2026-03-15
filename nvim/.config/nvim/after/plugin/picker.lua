@@ -180,7 +180,7 @@ vim.keymap.set(
 )
 
 local images_group =
-	vim.api.nvim_create_augroup("custom.snacks.image", { clear = true })
+	vim.api.nvim_create_augroup("rodrigosc/snacks_image", { clear = true })
 
 vim.keymap.set("n", "gK", function()
 	Snacks.image.hover()
