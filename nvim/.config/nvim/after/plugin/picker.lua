@@ -1,16 +1,5 @@
 local files_from_qf = require("custom.quickfix").files_from_qf
 
-local function smart_picker()
-	local cwd = vim.fn.getcwd()
-	local cwd_contains_dotfiles = string.find(cwd, "dotfiles") ~= nil
-
-	Snacks.picker.smart({
-		layout = { preview = false },
-		multi = { "git_status", "marks", "buffers", "files" },
-		hidden = cwd_contains_dotfiles,
-	})
-end
-
 vim.keymap.set("n", "<leader>pf", Snacks.picker.git_files)
 vim.keymap.set("n", "<leader>ff", Snacks.picker.files)
 
