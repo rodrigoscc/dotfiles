@@ -103,7 +103,7 @@ vim.keymap.set("n", "<leader>sf", function()
 	end
 end, { desc = "source file" })
 
-vim.keymap.set("t", "<esc>", "<c-\\><c-n>")
+-- vim.keymap.set("t", "<esc>", "<c-\\><c-n>")
 
 vim.keymap.set({ "n", "t" }, "<M-k>", "<cmd>NavigatorUp<cr>")
 vim.keymap.set({ "n", "t" }, "<M-j>", "<cmd>NavigatorDown<cr>")
