@@ -7,8 +7,6 @@ font-size = 13.0
 
 window-padding-balance = true
 
-cursor-color = #f6c177
-
 mouse-hide-while-typing = true
 
 macos-option-as-alt = true
