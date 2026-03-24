@@ -59,6 +59,12 @@
           ]
         },
         {
+          "type": "docker",
+          "style": "plain",
+          "foreground": "blue",
+          "template": "{{ if or (eq .Context \"desktop-linux\") (eq .Context \"default\") }}{{else}}  {{.Context}}{{ end }}"
+        },
+        {
           "properties": {
             "always_enabled": false,
             "cache_duration": "none"
