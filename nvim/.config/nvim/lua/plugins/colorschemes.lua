@@ -15,6 +15,9 @@ return {
 					fg = "muted",
 					inherit = false,
 				},
+				StatusLineTerm = {
+					bg = "none",
+				},
 				MiniTrailspace = {
 					underline = true,
 					bg = "none",

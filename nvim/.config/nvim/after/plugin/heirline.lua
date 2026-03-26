@@ -140,6 +140,7 @@ local ViMode = {
 			["r?"] = "CONFIRM",
 			["!"] = "SHELL",
 			t = "TERMINAL",
+			nt = "NTERMINAL",
 		},
 	},
 	-- Same goes for the highlight. Now the foreground will change according to the current mode.
