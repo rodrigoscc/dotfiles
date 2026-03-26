@@ -368,14 +368,18 @@ local VisualRange = {
 		local start_pos = vim.fn.line("v")
 		local end_pos = vim.fn.line(".")
 
+		local counts = vim.fn.wordcount()
+		local selected_chars = counts.visual_chars or 0
+
 		return string.format(
-			" %d:%d %dℓ",
+			" %d:%d %dL %dC",
 			start_pos,
 			end_pos,
-			math.abs(end_pos - start_pos) + 1 -- selected lines
+			math.abs(end_pos - start_pos) + 1, -- selected lines
+			selected_chars
 		)
 	end,
-	update = "CursorMoved",
+	update = { "CursorMoved", "ModeChanged" },
 	hl = { fg = colors.visual },
 }
 
