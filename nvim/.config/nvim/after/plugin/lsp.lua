@@ -51,7 +51,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
 		vim.keymap.set("n", "grt", vim.lsp.buf.type_definition, opts)
 		vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
-		vim.keymap.set("n", "gl", vim.diagnostic.open_float, opts)
 		vim.keymap.set("n", "grr", function()
 			Snacks.picker.lsp_references()
 		end, opts)
