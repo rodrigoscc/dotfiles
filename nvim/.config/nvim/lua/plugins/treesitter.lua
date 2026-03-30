@@ -32,6 +32,7 @@ return {
 				"markdown",
 				"markdown_inline",
 				"yaml",
+				"http",
 			})
 		end,
 	},
