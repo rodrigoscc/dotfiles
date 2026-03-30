@@ -3,7 +3,7 @@ return {
 	event = "VeryLazy",
 	opts = {
 		keymaps = {
-			useDefaults = true,
+			useDefaults = false,
 		},
 	},
 }
