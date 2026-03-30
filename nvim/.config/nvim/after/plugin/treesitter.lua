@@ -1,127 +1,28 @@
-require("nvim-treesitter.configs").setup({
-	-- A list of parser names, or 'all' (the four listed parsers should always be installed)
-	ensure_installed = {
-		"c",
-		"lua",
-		"vim",
-		"vimdoc",
-		"query",
-		"javascript",
-		"typescript",
-		"python",
-		"requirements",
-		"go",
-		"bash",
-		"regex",
-		"sql",
-		"json",
-		"gitcommit",
-		"html",
-		"css",
-		"scss",
-		"vue",
-		"svelte",
-		"markdown",
-		"markdown_inline",
-		"yaml",
-	},
+vim.keymap.set({ "x", "o" }, "aa", function()
+	require("nvim-treesitter-textobjects.select").select_textobject(
+		"@parameter.outer",
+		"textobjects"
+	)
+end)
+vim.keymap.set({ "x", "o" }, "ia", function()
+	require("nvim-treesitter-textobjects.select").select_textobject(
+		"@parameter.inner",
+		"textobjects"
+	)
+end)
 
-	-- Install parsers synchronously (only applied to `ensure_installed`)
-	sync_install = false,
+vim.keymap.set("n", "<leader>sn", function()
+	require("nvim-treesitter-textobjects.swap").swap_next("@parameter.inner")
+end)
+vim.keymap.set("n", "<leader>sp", function()
+	require("nvim-treesitter-textobjects.swap").swap_previous(
+		"@parameter.outer"
+	)
+end)
 
-	-- Automatically install missing parsers when entering buffer
-	-- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
-	auto_install = true,
-
-	ignore_install = {
-		"tmux", -- tmux grammar is broken
-		"dockerfile", -- dockerfile grammar is broken
-		"csv", -- csv grammar highlighting sucks
-	},
-
-	indent = {
-		enable = true,
-		-- disable = { "python" },
-	},
-	highlight = {
-		enable = true,
-		-- Setting this to true will run `:h syntax` and tree-sitter at the same time.
-		-- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
-		-- Using this option may slow down your editor, and you may see some duplicate highlights.
-		-- Instead of true it can also be a list of languages
-		additional_vim_regex_highlighting = false,
-	},
-	textobjects = {
-		select = {
-			enable = true,
-			lookahead = true, -- Automatically jump forward to textobj, similar to targets.vim
-			keymaps = {
-				-- You can use the capture groups defined in textobjects.scm
-				["aa"] = "@parameter.outer",
-				["ia"] = "@parameter.inner",
-
-				["af"] = "@function.outer",
-				["if"] = "@function.inner",
-
-				["ac"] = "@conditional.outer",
-				["ic"] = "@conditional.inner",
-
-				["aC"] = "@class.outer",
-				["iC"] = "@class.inner",
-
-				["ae"] = "@svelte.element",
-			},
-			-- More convenient than including it most of the time.
-			include_surrounding_whitespace = false,
-		},
-		move = {
-			enable = true,
-			set_jumps = true, -- whether to set jumps in the jumplist
-			goto_next_start = {
-				["]m"] = "@function.outer",
-			},
-			goto_next_end = {
-				["]M"] = "@function.outer",
-			},
-			goto_previous_start = {
-				["[m"] = "@function.outer",
-			},
-			goto_previous_end = {
-				["[M"] = "@function.outer",
-			},
-		},
-		swap = {
-			enable = true,
-			swap_next = {
-				["<leader>sn"] = "@parameter.inner",
-			},
-			swap_previous = {
-				["<leader>sp"] = "@parameter.inner",
-			},
-		},
-		lsp_interop = {
-			enable = true,
-			border = "rounded",
-			peek_definition_code = {
-				["gp"] = {
-					query = "@function.outer",
-					desc = "🌲peek function definition",
-				},
-				["gP"] = {
-					query = "@class.outer",
-					desc = "🌲peek class definition",
-				},
-			},
-		},
-	},
-	-- Disabled for now because of bug with treesitter.
-	incremental_selection = {
-		enable = true,
-		keymaps = {
-			-- init_selection = '<c-space>',
-			node_incremental = "<C-k>",
-			-- scope_incremental = '<c-s>',
-			node_decremental = "<C-j>",
-		},
-	},
-})
+vim.keymap.set({ "x", "o" }, "ae", function()
+	require("nvim-treesitter-textobjects.select").select_textobject(
+		"@svelte.element",
+		"textobjects"
+	)
+end)

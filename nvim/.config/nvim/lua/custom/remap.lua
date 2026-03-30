@@ -140,7 +140,7 @@ local go_tests_query = vim.treesitter.query.parse(
     receiver: (parameter_list (parameter_declaration type: (pointer_type (type_identifier) @suite_name)))
     name: (field_identifier) @method_name
     (#lua-match? @method_name "^Test.*"))
-  (function_declaration name: (identifier) @suite_function body: (block (expression_statement (call_expression function: (selector_expression) @suite_run (#eq? @suite_run "suite.Run") arguments: (argument_list (call_expression function: (identifier) @call (#eq? @call "new") arguments: (argument_list (type_identifier) @suite_name_2 (#eq? @suite_name @suite_name_2))))))))
+  (function_declaration name: (identifier) @suite_function body: (block (statement_list (expression_statement (call_expression function: (selector_expression) @suite_run (#eq? @suite_run "suite.Run") arguments: (argument_list (call_expression function: (identifier) @call (#eq? @call "new") arguments: (argument_list (type_identifier) @suite_name_2 (#eq? @suite_name @suite_name_2)))))))))
   )
 ]
 ]]
