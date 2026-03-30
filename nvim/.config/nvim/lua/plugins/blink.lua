@@ -91,6 +91,13 @@ return {
 					"ripgrep",
 				},
 				per_filetype = {
+					query = {
+						"omni",
+						"path",
+						"snippets",
+						"buffer",
+						"ripgrep",
+					},
 					lua = {
 						"lazydev",
 						"lsp",
