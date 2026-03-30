@@ -383,3 +383,11 @@ end
 vim.keymap.set("n", "gx", super_gx, { desc = "Super gx" })
 
 vim.keymap.set("n", "<leader>z", "1z=", { desc = "Quick spell fix" })
+
+vim.cmd.packadd("nvim.undotree")
+vim.keymap.set(
+	"n",
+	"<leader>tu",
+	"<cmd>Undotree<cr>",
+	{ desc = "toggle undo tree" }
+)
