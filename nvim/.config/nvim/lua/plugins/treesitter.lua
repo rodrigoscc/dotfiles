@@ -19,6 +19,8 @@ return {
 				"python",
 				"requirements",
 				"go",
+				"gomod",
+				"gosum",
 				"bash",
 				"regex",
 				"sql",
