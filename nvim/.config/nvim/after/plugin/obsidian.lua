@@ -25,12 +25,14 @@ vim.keymap.set(
 	{ desc = "search obsidian projects" }
 )
 
-vim.keymap.set(
-	"n",
-	"<leader>os",
-	"<cmd>Obsidian search<cr>",
-	{ desc = "obsidian search" }
-)
+vim.keymap.set("n", "<leader>os", function()
+	require("fff").live_grep({
+		cwd = "~/obsidian-vault/",
+		title = "Obsidian",
+		query = "*.md ",
+		grep = { modes = { "plain" } },
+	})
+end, { desc = "obsidian search" })
 
 vim.keymap.set(
 	"n",
