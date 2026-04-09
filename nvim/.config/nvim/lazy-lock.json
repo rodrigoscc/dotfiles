@@ -10,7 +10,7 @@
   "codediff.nvim": { "branch": "main", "commit": "b4305c10cc6335ca813ff5ca39a6a356f1131ece" },
   "conform.nvim": { "branch": "master", "commit": "086a40dc7ed8242c03be9f47fbcee68699cc2395" },
   "diffview.nvim": { "branch": "main", "commit": "4516612fe98ff56ae0415a259ff6361a89419b0a" },
-  "fff.nvim": { "branch": "main", "commit": "1c2c0633cdb933a9b4111d9e6dfa4a476a35ff9f" },
+  "fff.nvim": { "branch": "main", "commit": "210bc9e1c79e02a505ea3ec0950d7bc32549bc0f" },
   "flash.nvim": { "branch": "main", "commit": "fcea7ff883235d9024dc41e638f164a450c14ca2" },
   "gitsigns.nvim": { "branch": "main", "commit": "8d82c240f190fc33723d48c308ccc1ed8baad69d" },
   "harpoon": { "branch": "harpoon2", "commit": "87b1a3506211538f460786c23f98ec63ad9af4e5" },
