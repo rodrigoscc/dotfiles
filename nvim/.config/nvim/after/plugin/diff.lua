@@ -15,6 +15,12 @@ local function close_all_diff_windows_in_current_tab()
 end
 
 local function setup_diff_q_maps()
+	local bufname = vim.api.nvim_buf_get_name(0)
+
+	if bufname:match("diffview://") then
+		return
+	end
+
 	vim.keymap.set("n", "q", function()
 		if not vim.wo.diff then
 			return "q"
