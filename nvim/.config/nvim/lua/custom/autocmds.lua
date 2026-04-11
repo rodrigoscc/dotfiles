@@ -36,6 +36,7 @@ autocmd("FileType", {
 		"dap-view",
 		"dap-repl",
 		"fugitive",
+		"fugitiveblame",
 		"git",
 	},
 	callback = function(event)
