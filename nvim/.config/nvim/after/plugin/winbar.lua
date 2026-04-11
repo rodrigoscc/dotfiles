@@ -30,7 +30,9 @@ function _G.Winbar()
 		local short_sha = sha and sha:sub(1, 7) or ""
 
 		fugitive_prefix = (
-			short_sha ~= "" and (" %#Comment#@" .. short_sha .. "%*") or ""
+			short_sha ~= ""
+				and ("%#BufferCurrentTarget# @" .. short_sha .. " %*")
+			or ""
 		) .. " "
 	end
 
