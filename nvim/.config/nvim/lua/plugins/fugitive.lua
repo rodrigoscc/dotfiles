@@ -1,26 +1,20 @@
 return {
 	{
 		"tpope/vim-fugitive",
-		lazy = true,
-		cmd = { "G", "Git", "Gedit", "Gdiffsplit" },
+		lazy = false,
+		cmd = { "Git", "Gedit", "Gdiffsplit", "G" },
 		keys = {
 			{
 				"<leader>ga",
-				function()
-					vim.cmd("Git add %")
-				end,
+				"<cmd>Git add %<cr>",
 			},
 			{
 				"<leader>gc",
-				function()
-					vim.cmd("Git commit")
-				end,
+				"<cmd>Git commit<cr>",
 			},
 			{
 				"<leader>gp",
-				function()
-					vim.cmd("Git! -c push.autoSetupRemote=true push")
-				end,
+				"<cmd>Git! -c push.autoSetupRemote=true push<cr>",
 			},
 		},
 	},
