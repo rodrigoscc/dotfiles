@@ -22,12 +22,28 @@ function _G.Winbar()
 			.. "%* %#WinBar#%{v:lua.get_oil_winbar()}%*"
 	end
 
+	local fugitive_prefix = ""
+
+	local bufname = vim.api.nvim_buf_get_name(0)
+	if bufname:match("^fugitive://") then
+		local sha = bufname:match("^fugitive://.*/(%x+)/")
+		local short_sha = sha and sha:sub(1, 7) or ""
+
+		fugitive_prefix = (
+			short_sha ~= "" and (" %#Comment#@" .. short_sha .. "%*") or ""
+		) .. " "
+	end
+
 	if navic.is_available() then
-		return ("%%#%s#"):format(icon_hl)
+		return fugitive_prefix
+			.. ("%%#%s#"):format(icon_hl)
 			.. file_icon
 			.. "%* %#WinBar#%t%* %{%v:lua.require'nvim-navic'.get_location()%}"
 	else
-		return ("%%#%s#"):format(icon_hl) .. file_icon .. "%* %#WinBar#%t%*"
+		return fugitive_prefix
+			.. ("%%#%s#"):format(icon_hl)
+			.. file_icon
+			.. "%* %#WinBar#%t%*"
 	end
 end
 
