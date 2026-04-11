@@ -2,7 +2,7 @@ return {
 	{
 		"tpope/vim-fugitive",
 		lazy = true,
-		cmd = { "Git", "Gedit" },
+		cmd = { "Git", "Gedit", "Gdiffsplit" },
 		keys = {
 			{
 				"<leader>ga",
