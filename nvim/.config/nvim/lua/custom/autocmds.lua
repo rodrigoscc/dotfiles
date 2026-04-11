@@ -35,6 +35,7 @@ autocmd("FileType", {
 		"checkhealth",
 		"dap-view",
 		"dap-repl",
+		"fugitive",
 	},
 	callback = function(event)
 		vim.bo[event.buf].buflisted = false
