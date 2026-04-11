@@ -11,6 +11,8 @@ vim.keymap.set("x", ">", ">gv")
 
 vim.keymap.set("n", "J", "mzJ`z")
 
+vim.keymap.set("n", "<C-g>", "<cmd>Git<cr>", { desc = "Git" })
+
 vim.keymap.set("n", "<localleader>y", [[mzgg"+yG`z]], { desc = "copy buffer" })
 vim.keymap.set("n", "<localleader>c", [[ggVGc]], { desc = "change buffer" })
 
