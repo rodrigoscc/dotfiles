@@ -36,6 +36,7 @@ autocmd("FileType", {
 		"dap-view",
 		"dap-repl",
 		"fugitive",
+		"git",
 	},
 	callback = function(event)
 		vim.bo[event.buf].buflisted = false
