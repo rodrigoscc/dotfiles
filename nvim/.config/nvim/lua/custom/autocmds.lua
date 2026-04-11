@@ -35,12 +35,25 @@ autocmd("FileType", {
 		"checkhealth",
 		"dap-view",
 		"dap-repl",
+	},
+	callback = function(event)
+		vim.bo[event.buf].buflisted = false
+		vim.keymap.set(
+			"n",
+			"q",
+			"<cmd>close<cr>",
+			{ buffer = event.buf, silent = true }
+		)
+	end,
+})
+
+autocmd("FileType", {
+	pattern = {
 		"fugitive",
 		"fugitiveblame",
 		"git",
 	},
 	callback = function(event)
-		vim.bo[event.buf].buflisted = false
 		vim.keymap.set(
 			"n",
 			"q",
