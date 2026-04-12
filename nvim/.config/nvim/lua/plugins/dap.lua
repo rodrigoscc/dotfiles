@@ -1,7 +1,6 @@
 return {
-	{ "mfussenegger/nvim-dap", lazy = true },
 	{
-		"rcarriga/nvim-dap-ui",
+		"mfussenegger/nvim-dap",
 		lazy = true,
 		keys = {
 			{
@@ -10,13 +9,6 @@ return {
 					require("dap").toggle_breakpoint()
 				end,
 				{ desc = "toggle breakpoint" },
-			},
-			{
-				"<leader>lb",
-				function()
-					require("dapui").float_element("breakpoints")
-				end,
-				{ desc = "list breakpoints" },
 			},
 			{
 				"<leader>bL",
@@ -38,13 +30,6 @@ return {
 					end)
 				end,
 				{ desc = "breakpoint condition" },
-			},
-			{
-				"<leader>tD",
-				function()
-					require("dapui").toggle()
-				end,
-				{ desc = "toggle dapui" },
 			},
 			{
 				"<leader>cb",
@@ -76,25 +61,11 @@ return {
 				{ desc = "toggle repl" },
 			},
 			{
-				"<leader>so",
+				"<F1>",
 				function()
-					require("dap").step_over()
+					require("dap.ui.widgets").hover()
 				end,
-				{ desc = "step over" },
-			},
-			{
-				"<leader>si",
-				function()
-					require("dap").step_into()
-				end,
-				{ desc = "step into" },
-			},
-			{
-				"<leader>su",
-				function()
-					require("dap").step_out()
-				end,
-				{ desc = "step out" },
+				{ desc = "dap hover" },
 			},
 			{
 				"<F5>",
@@ -131,108 +102,57 @@ return {
 				end,
 				{ desc = "dap focus frame" },
 			},
+			{
+				"<leader>dc",
+				function()
+					require("dap").run_to_cursor()
+				end,
+				{ desc = "dap focus frame" },
+			},
+			{
+				"<leader>dt",
+				function()
+					require("dap").terminate({ hierarchy = true })
+				end,
+				{ desc = "dap focus frame" },
+			},
+			{
+				"]f",
+				function()
+					require("dap").down()
+				end,
+				{ desc = "dap down" },
+			},
+			{
+				"[f",
+				function()
+					require("dap").up()
+				end,
+				{ desc = "dap up" },
+			},
+		},
+	},
+	{
+		"rcarriga/nvim-dap-ui",
+		lazy = true,
+		keys = {
+			{
+				"<leader>lb",
+				function()
+					require("dapui").float_element("breakpoints")
+				end,
+				{ desc = "list breakpoints" },
+			},
+			{
+				"<leader>tD",
+				function()
+					require("dapui").toggle()
+				end,
+				{ desc = "toggle dapui" },
+			},
 		},
 		dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" },
-		config = function()
-			local dap, dapui = require("dap"), require("dapui")
-
-			dap.defaults.fallback.external_terminal = {
-				command = "tmux",
-				args = { "split-window", "-p", "20" },
-			}
-
-			-- Force debugee to be launched in a terminal
-			dap.defaults.fallback.force_external_terminal = true
-
-			dapui.setup()
-
-			-- dap.listeners.after.event_initialized["dapui_config"] = function()
-			-- 	dapui.open()
-			-- end
-			-- dap.listeners.before.event_terminated["dapui_config"] = function()
-			-- 	dapui.close()
-			-- end
-			-- dap.listeners.before.event_exited["dapui_config"] = function()
-			-- 	dapui.close()
-			-- end
-
-			require("dap.ext.vscode").load_launchjs()
-
-			dap.listeners.before.attach.dapui_config = function()
-				vim.cmd("DapViewOpen")
-				vim.api.nvim_exec_autocmds(
-					"User",
-					{ pattern = "DapSessionAttached" }
-				)
-			end
-			dap.listeners.before.launch.dapui_config = function()
-				vim.cmd("DapViewOpen")
-				vim.api.nvim_exec_autocmds(
-					"User",
-					{ pattern = "DapSessionLaunched" }
-				)
-			end
-
-			dap.listeners.before.event_terminated["statusline"] = function()
-				vim.api.nvim_exec_autocmds(
-					"User",
-					{ pattern = "DapSessionTerminated" }
-				)
-			end
-			dap.listeners.before.event_exited["statusline"] = function()
-				vim.api.nvim_exec_autocmds(
-					"User",
-					{ pattern = "DapSessionExited" }
-				)
-			end
-
-			vim.api.nvim_set_hl(
-				0,
-				"DapBreakpoint",
-				{ ctermbg = 0, fg = "#993939" }
-			)
-			vim.api.nvim_set_hl(
-				0,
-				"DapLogPoint",
-				{ ctermbg = 0, fg = "#61afef" }
-			)
-			vim.api.nvim_set_hl(
-				0,
-				"DapStopped",
-				{ ctermbg = 0, fg = "#98c379" }
-			)
-			vim.api.nvim_set_hl(
-				0,
-				"DapStoppedLine",
-				{ ctermbg = 0, bg = "#31353f" }
-			)
-
-			vim.fn.sign_define("DapBreakpoint", {
-				text = "",
-				texthl = "DapBreakpoint",
-				numhl = "DapBreakpoint",
-			})
-			vim.fn.sign_define("DapBreakpointCondition", {
-				text = "",
-				texthl = "DapBreakpoint",
-				numhl = "DapBreakpoint",
-			})
-			vim.fn.sign_define("DapBreakpointRejected", {
-				text = "",
-				texthl = "DiagnosticError",
-				numhl = "DiagnosticError",
-			})
-			vim.fn.sign_define(
-				"DapLogPoint",
-				{ text = "", texthl = "DapLogPoint", numhl = "DapLogPoint" }
-			)
-			vim.fn.sign_define("DapStopped", {
-				text = "",
-				texthl = "DapStopped",
-				linehl = "DapStoppedLine",
-				numhl = "DapStopped",
-			})
-		end,
+		opts = {},
 	},
 	{
 		"igorlfs/nvim-dap-view",

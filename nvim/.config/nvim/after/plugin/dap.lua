@@ -1,5 +1,60 @@
 local dap = require("dap")
 
+dap.defaults.fallback.external_terminal = {
+	command = "tmux",
+	args = { "split-window", "-p", "20" },
+}
+
+-- Force debugee to be launched in a terminal
+dap.defaults.fallback.force_external_terminal = true
+
+dap.listeners.before.attach.dapui_config = function()
+	vim.cmd("DapViewOpen")
+	vim.api.nvim_exec_autocmds("User", { pattern = "DapSessionAttached" })
+end
+dap.listeners.before.launch.dapui_config = function()
+	vim.cmd("DapViewOpen")
+	vim.api.nvim_exec_autocmds("User", { pattern = "DapSessionLaunched" })
+end
+
+dap.listeners.before.event_terminated["statusline"] = function()
+	vim.api.nvim_exec_autocmds("User", { pattern = "DapSessionTerminated" })
+end
+dap.listeners.before.event_exited["statusline"] = function()
+	vim.api.nvim_exec_autocmds("User", { pattern = "DapSessionExited" })
+end
+
+vim.api.nvim_set_hl(0, "DapBreakpoint", { ctermbg = 0, fg = "#993939" })
+vim.api.nvim_set_hl(0, "DapLogPoint", { ctermbg = 0, fg = "#61afef" })
+vim.api.nvim_set_hl(0, "DapStopped", { ctermbg = 0, fg = "#98c379" })
+vim.api.nvim_set_hl(0, "DapStoppedLine", { ctermbg = 0, bg = "#31353f" })
+
+vim.fn.sign_define("DapBreakpoint", {
+	text = "",
+	texthl = "DapBreakpoint",
+	numhl = "DapBreakpoint",
+})
+vim.fn.sign_define("DapBreakpointCondition", {
+	text = "",
+	texthl = "DapBreakpoint",
+	numhl = "DapBreakpoint",
+})
+vim.fn.sign_define("DapBreakpointRejected", {
+	text = "",
+	texthl = "DiagnosticError",
+	numhl = "DiagnosticError",
+})
+vim.fn.sign_define(
+	"DapLogPoint",
+	{ text = "", texthl = "DapLogPoint", numhl = "DapLogPoint" }
+)
+vim.fn.sign_define("DapStopped", {
+	text = "",
+	texthl = "DapStopped",
+	linehl = "DapStoppedLine",
+	numhl = "DapStopped",
+})
+
 local function find_python_path()
 	if vim.uv.fs_stat(".venv") then
 		return ".venv/bin/python"
