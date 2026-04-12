@@ -61,9 +61,9 @@ return {
 				{ desc = "toggle repl" },
 			},
 			{
-				"<F1>",
+				"<leader>dp",
 				function()
-					require("dap.ui.widgets").hover()
+					require("dap.ui.widgets").preview()
 				end,
 				{ desc = "dap hover" },
 			},
