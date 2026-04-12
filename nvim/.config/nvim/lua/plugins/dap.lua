@@ -40,7 +40,7 @@ return {
 				{ desc = "breakpoint condition" },
 			},
 			{
-				"<leader>td",
+				"<leader>tD",
 				function()
 					require("dapui").toggle()
 				end,
@@ -235,11 +235,6 @@ return {
 		end,
 	},
 	{
-		"theHamsta/nvim-dap-virtual-text",
-		opts = { virt_text_pos = "eol" },
-		dependencies = { "mfussenegger/nvim-dap" },
-	},
-	{
 		"igorlfs/nvim-dap-view",
 		---@module 'dap-view'
 		---@type dapview.Config
@@ -256,11 +251,14 @@ return {
 				},
 				default_section = "scopes",
 			},
+			virtual_text = {
+				enabled = true,
+			},
 		},
 		cmd = { "DapViewOpen" },
 		keys = {
 			{
-				"<leader>tD",
+				"<leader>td",
 				"<cmd>DapViewToggle<cr>",
 				{ desc = "toggle Dap view" },
 			},
