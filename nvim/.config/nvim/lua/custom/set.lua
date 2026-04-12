@@ -87,3 +87,5 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 
 vim.opt.isfname:append("?")
 vim.opt.isfname:append("&")
+
+vim.opt.nrformats = { "bin", "hex", "blank" }
