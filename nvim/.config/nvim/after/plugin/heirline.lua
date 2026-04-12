@@ -719,20 +719,104 @@ local statusline = {
 	{ Ruler },
 }
 
-local tabline = utils.make_tablist({
-	provider = function(self)
-		return (self and self.tabnr)
-				and "%" .. self.tabnr .. "T  " .. self.tabnr .. " %T"
-			or ""
+local Tabpage = {
+	init = function(self)
+		local winid = vim.api.nvim_tabpage_get_win(self.tabpage)
+		local bufnr = vim.api.nvim_win_get_buf(winid)
+		local filename = vim.api.nvim_buf_get_name(bufnr)
+
+		self.bufnr = bufnr
+		self.basename = vim.fn.fnamemodify(filename, ":t")
+
+		local ft = vim.bo[bufnr].filetype
+
+		self.icon = nil
+		self.icon_hl = nil
+
+		if ft == "fugitive" then
+			self.basename = "Git Status"
+		elseif ft == "git" or filename:match("^fugitive://") then
+			local label = vim.fn.fnamemodify(filename, ":t")
+			if label == "" then
+				label = "Git"
+			end
+
+			self.basename = label
+		elseif self.basename ~= "" then
+			local icon, icon_hl, is_default =
+				MiniIcons.get("file", vim.api.nvim_buf_get_name(0))
+
+			if not is_default then
+				self.icon = icon
+				self.icon_hl = icon_hl
+			else
+				self.icon, self.icon_hl = MiniIcons.get("filetype", ft)
+			end
+		else
+			self.basename = "[No Name]"
+		end
 	end,
 	hl = function(self)
 		if self.is_active then
-			return "TabLineSel"
+			return { bg = colors.surface }
 		else
 			return "TabLine"
 		end
 	end,
-})
+	-- Click region start
+	{
+		provider = function(self)
+			return "%" .. self.tabnr .. "T"
+		end,
+	},
+	{ provider = " " },
+	-- Tab number
+	{
+		provider = function(self)
+			return self.tabnr .. " "
+		end,
+		hl = function(self)
+			if self.is_active then
+				return { fg = colors.gold, bold = true }
+			else
+				return { fg = colors.muted }
+			end
+		end,
+	},
+	-- File icon
+	{
+		provider = function(self)
+			return self.icon and (self.icon .. " ") or ""
+		end,
+		hl = function(self)
+			if self.is_active then
+				return self.icon_hl
+			else
+				return { fg = colors.muted }
+			end
+		end,
+	},
+	-- File name
+	{
+		provider = function(self)
+			return self.basename
+		end,
+		hl = function(self)
+			if self.is_active then
+				return { fg = colors.text, bold = true }
+			else
+				return { fg = colors.subtle }
+			end
+		end,
+	},
+	{ provider = " " },
+	-- Click region end
+	{
+		provider = "%T",
+	},
+}
+
+local tabline = utils.make_tablist(Tabpage)
 
 -- Set global statusline
 vim.o.laststatus = 3
