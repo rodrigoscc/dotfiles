@@ -14,6 +14,8 @@ return {
 
 				return sn(nil, fmt([[{}: {}]], { t(ticket), i(1) }))
 			end
+
+			return sn(nil, fmt([[snms-{}: {}]], { i(1), i(2) }))
 		end),
 	}),
 }
