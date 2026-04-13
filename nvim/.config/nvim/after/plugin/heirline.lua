@@ -527,7 +527,7 @@ local TogglesElement = {
 		return false
 	end,
 	provider = function()
-		return "󰨙 "
+		return " 󰨙 "
 	end,
 	hl = { fg = colors.gold, bold = true },
 	utils.surround({ "[", "] " }, nil, {
