@@ -293,16 +293,27 @@ local SearchCount = {
 			self.search = search
 		end
 	end,
-	provider = function(self)
-		if self.search then
-			return string.format(
-				"[%d/%d]",
-				self.search.current,
-				math.min(self.search.total, self.search.maxcount)
-			)
-		end
-	end,
-	hl = { fg = colors.iris },
+	-- current match
+	{
+		provider = function(self)
+			if self.search then
+				return tostring(self.search.current)
+			end
+		end,
+		hl = { fg = colors.text, bold = true },
+	},
+	-- separator + total
+	{
+		provider = function(self)
+			if self.search then
+				local total = self.search.total
+				local maxcount = self.search.maxcount
+				local suffix = total > maxcount and "+" or ""
+				return "/" .. math.min(total, maxcount) .. suffix
+			end
+		end,
+		hl = { fg = colors.dim },
+	},
 }
 
 local DapElement = {
