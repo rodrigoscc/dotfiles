@@ -362,26 +362,44 @@ local DapElement = {
 }
 
 local VisualRange = {
-	condition = function(self)
-		return vim.fn.mode() == "v" or vim.fn.mode() == "V"
-	end,
-	provider = function()
-		local start_pos = vim.fn.line("v")
-		local end_pos = vim.fn.line(".")
-
-		local counts = vim.fn.wordcount()
-		local selected_chars = counts.visual_chars or 0
-
-		return string.format(
-			" %d:%d %dL %dC",
-			start_pos,
-			end_pos,
-			math.abs(end_pos - start_pos) + 1, -- selected lines
-			selected_chars
-		)
+	condition = function()
+		local mode = vim.fn.mode()
+		return mode == "v" or mode == "V" or mode == "\22"
 	end,
 	update = { "CursorMoved", "ModeChanged" },
-	hl = { fg = colors.visual },
+	-- icon
+	{
+		provider = " 󰒅 ",
+		hl = { fg = colors.visual, bold = true },
+	},
+	-- line count
+	{
+		provider = function()
+			local start_line = vim.fn.line("v")
+			local end_line = vim.fn.line(".")
+			return math.abs(end_line - start_line) + 1 .. "L"
+		end,
+		hl = { fg = colors.iris, bold = true },
+	},
+	-- character count
+	{
+		provider = function()
+			local chars = (vim.fn.wordcount()).visual_chars or 0
+			return " " .. chars .. "C"
+		end,
+		hl = { fg = colors.foam },
+	},
+	-- word count (only when meaningful)
+	{
+		provider = function()
+			local words = (vim.fn.wordcount()).visual_words or 0
+			if words > 1 then
+				return " " .. words .. "W"
+			end
+			return ""
+		end,
+		hl = { fg = colors.gold },
+	},
 }
 
 local MacroRec = {
