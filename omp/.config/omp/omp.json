@@ -1,5 +1,7 @@
 {
   "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
+  "version": 4,
+  "final_space": true,
   "palette": {
     "black": "#262B44",
     "blue": "#4B95E9",
@@ -8,11 +10,26 @@
     "orange": "#F07623",
     "red": "#D81E5B",
     "white": "#E0DEF4",
-    "yellow": "#F3AE35"
+    "yellow": "#F3AE35",
+    "base": "#191724",
+    "surface": "#1f1d2e",
+    "overlay": "#26233a",
+    "muted": "#6e6a86",
+    "subtle": "#908caa",
+    "text": "#e0def4",
+    "love": "#eb6f92",
+    "gold": "#f6c177",
+    "rose": "#ebbcba",
+    "pine": "#31748f",
+    "foam": "#9ccfd8",
+    "iris": "#c4a7e7",
+    "highlight_low": "#21202e",
+    "highlight_med": "#403d52",
+    "highlight_high": "#524f67"
   },
   "secondary_prompt": {
     "template": "❯❯ ",
-    "foreground": "magenta",
+    "foreground": "p:iris",
     "background": "transparent"
   },
   "blocks": [
@@ -23,54 +40,50 @@
         {
           "type": "session",
           "style": "plain",
-          "foreground": "#ffffff",
-          "template": "{{ if .SSHSession }}<magenta>(</>{{.HostName}}<magenta>)</> {{ end }}"
+          "foreground": "p:text",
+          "template": "{{ if .SSHSession }}<p:iris>(</>{{.HostName}}<p:iris>)</> {{ end }}"
         },
         {
-          "properties": {
-            "cache_duration": "5m",
-            "edge_format": "<white>%s</>",
-            "folder_separator_template": "<magenta>/</>",
+          "options": {
+            "edge_format": "<p:text>%s</>",
+            "folder_separator_template": "<p:iris>/</>",
             "style": "agnoster_full"
           },
           "template": "{{ .Path }}",
-          "foreground": "magenta",
+          "foreground": "p:iris",
           "background": "transparent",
           "type": "path",
           "style": "plain"
         },
         {
-          "properties": {
+          "options": {
             "branch_icon": "",
-            "branch_max_length": 25,
-            "cache_duration": "none",
             "fetch_status": true,
             "fetch_upstream_icon": false
           },
-          "template": " <p:grey>on</> {{ .HEAD }}{{if .BranchStatus }} {{ .BranchStatus }}{{ end }}</><magenta>{{ if .LatestTag }} <p:grey>ltag</> {{ .LatestTag }}{{ end }}</>",
-          "foreground": "magenta",
+          "template": " <p:muted>on</> {{ .HEAD }}{{if .BranchStatus }} {{ .BranchStatus }}{{ end }}</><p:iris>{{ if .LatestTag }} <p:pine> {{ .LatestTag }}{{ end }}</>",
+          "foreground": "p:iris",
           "background": "transparent",
           "type": "git",
           "style": "plain",
           "foreground_templates": [
-            "{{ if or (.Working.Changed) (.Staging.Changed) }}yellow{{ end }}",
-            "{{ if and (gt .Ahead 0) (gt .Behind 0) }}red{{ end }}",
-            "{{ if gt .Ahead 0 }}green{{ end }}"
+            "{{ if or (.Working.Changed) (.Staging.Changed) }}p:gold{{ end }}",
+            "{{ if and (gt .Ahead 0) (gt .Behind 0) }}p:love{{ end }}",
+            "{{ if gt .Ahead 0 }}p:rose{{ end }}"
           ]
         },
         {
           "type": "docker",
           "style": "plain",
-          "foreground": "blue",
+          "foreground": "p:blue",
           "template": "{{ if or (eq .Context \"desktop-linux\") (eq .Context \"default\") }}{{else}}  {{.Context}}{{ end }}"
         },
         {
-          "properties": {
-            "always_enabled": false,
-            "cache_duration": "none"
+          "options": {
+            "always_enabled": false
           },
           "template": "  {{ .String }}",
-          "foreground": "red",
+          "foreground": "p:love",
           "background": "transparent",
           "type": "status",
           "style": "plain"
@@ -81,7 +94,7 @@
       "type": "rprompt",
       "segments": [
         {
-          "properties": {
+          "options": {
             "cache_duration": "30m"
           },
           "template": "  {{ .Full }}",
@@ -91,7 +104,7 @@
           "style": "plain"
         },
         {
-          "properties": {
+          "options": {
             "cache_duration": "30m",
             "parse_mod_file": true
           },
@@ -102,7 +115,7 @@
           "style": "plain"
         },
         {
-          "properties": {
+          "options": {
             "cache_duration": "30m"
           },
           "template": "  {{ .Full }}{{ if .Venv }} ({{ .Venv }}){{end}}",
@@ -112,18 +125,12 @@
           "style": "plain"
         },
         {
-          "properties": {
-            "cache_duration": "none"
-          },
           "template": " took <red>{{ .FormattedMs }}</>",
           "type": "executiontime",
           "style": "plain"
         },
         {
-          "properties": {
-            "cache_duration": "none"
-          },
-          "template": " at <blue><b>{{ .CurrentDate | date \"15:04:05\" }}</b></>",
+          "template": " at <p:foam><b>{{ .CurrentDate | date \"15:04:05\" }}</b></>",
           "foreground": "white",
           "background": "transparent",
           "type": "time",
@@ -137,7 +144,7 @@
       "segments": [
         {
           "template": " ❯",
-          "foreground": "magenta",
+          "foreground": "p:iris",
           "background": "transparent",
           "type": "text",
           "style": "plain"
@@ -147,7 +154,7 @@
   ],
   "tooltips": [
     {
-      "properties": {
+      "options": {
         "display_default": true
       },
       "leading_diamond": "",
@@ -160,7 +167,5 @@
         "aws"
       ]
     }
-  ],
-  "version": 3,
-  "final_space": true
+  ]
 }
