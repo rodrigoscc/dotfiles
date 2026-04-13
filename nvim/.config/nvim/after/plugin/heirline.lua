@@ -297,7 +297,7 @@ local SearchCount = {
 	{
 		provider = function(self)
 			if self.search then
-				return tostring(self.search.current)
+				return " " .. tostring(self.search.current)
 			end
 		end,
 		hl = { fg = colors.text, bold = true },
