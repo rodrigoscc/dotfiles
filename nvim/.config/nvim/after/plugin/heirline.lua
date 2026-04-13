@@ -318,48 +318,89 @@ local DapElement = {
 		local dap = require("dap")
 		self.session = dap.session()
 
-		local name = ""
+		self.name = ""
+		self.adapter_type = ""
+
 		if self.session and self.session.config then
-			name = self.session.config.name or self.session.config.type or ""
+			self.name = self.session.config.name or ""
+			self.adapter_type = self.session.config.type or ""
 		end
 
-		self.name = name
-		self.lang = (self.session and self.session.filetype) or ""
+		self.is_stopped = self.session and self.session.stopped_thread_id ~= nil
+
+		self.func_name = nil
+		if self.is_stopped and self.session.current_frame then
+			self.func_name = self.session.current_frame.name
+		end
 	end,
-	update = {
-		"User",
-		pattern = {
-			"DapSessionAttached",
-			"DapSessionLaunched",
-			"DapSessionTerminated",
-			"DapSessionExited",
-			"DapStopped",
-			"DapContinued",
-		},
-	},
+	-- NOTE: intentionally no `update` field here. Heirline's per-window cache
+	-- (`_freeze_cache`) can re-freeze stale state before a scheduled redraw
+	-- runs, causing the component to get stuck. Without `update`, heirline
+	-- evaluates fresh on every redraw, and the autocmd below ensures redraws
+	-- happen when DAP state changes.
+	-- State-aware icon: paused vs running
 	{
-		provider = " ",
-		hl = { fg = colors.love, bold = true },
+		provider = function(self)
+			return self.is_stopped and "  " or "  "
+		end,
+		hl = function(self)
+			if self.is_stopped then
+				return { fg = colors.gold, bold = true }
+			else
+				return { fg = colors.love, bold = true }
+			end
+		end,
 	},
+	-- Adapter type badge
 	utils.surround({ "[", "]" }, nil, {
 		{
 			provider = function(self)
-				if self.lang == "" then
+				if self.adapter_type ~= "" then
+					return self.adapter_type
+				else
 					return "DAP"
 				end
-
-				return self.lang
 			end,
 			hl = { fg = colors.iris, bold = true },
 		},
 	}),
+	-- Session config name
 	{
 		provider = function(self)
-			return self.name ~= "" and (" " .. self.name) or ""
+			if self.name ~= "" then
+				return (" " .. self.name)
+			else
+				return ""
+			end
 		end,
-		hl = { fg = colors.visual },
+		hl = { fg = colors.foam },
+	},
+	-- Current function name when stopped
+	{
+		provider = function(self)
+			if self.func_name then
+				return (" @ " .. self.func_name)
+			else
+				return ""
+			end
+		end,
+		hl = { fg = colors.subtle },
 	},
 }
+
+vim.api.nvim_create_autocmd("User", {
+	pattern = {
+		"DapSessionAttached",
+		"DapSessionLaunched",
+		"DapSessionTerminated",
+		"DapSessionExited",
+		"DapStopped",
+		"DapContinued",
+	},
+	callback = function()
+		vim.cmd("redrawstatus")
+	end,
+})
 
 local VisualRange = {
 	condition = function()
