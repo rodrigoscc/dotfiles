@@ -26,6 +26,7 @@ local symbols = {
 	TypeParameter = "",
 	Copilot = "",
 	Array = "󰅪",
+	Ripgrep = "󰦨",
 	-- TypeParameter = "",
 }
 
@@ -77,7 +78,6 @@ return {
 				-- Set to 'mono' for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
 				-- Adjusts spacing to ensure icons are aligned
 				nerd_font_variant = "mono",
-				kind_icons = symbols,
 			},
 			snippets = { preset = "luasnip" },
 			-- default list of enabled providers defined so that you can extend it
@@ -166,9 +166,32 @@ return {
 				menu = {
 					draw = {
 						columns = {
-							{ "kind_icon" },
+							{ "kind_icon", gap = 1 },
 							{ "label", "label_description", gap = 1 },
 							{ "source_name" },
+						},
+						components = {
+							kind_icon = {
+								text = function(ctx)
+									return symbols[ctx.kind] or symbols["Text"]
+								end,
+								highlight = function(ctx)
+									local _, hl, _ = require("mini.icons").get(
+										"lsp",
+										ctx.kind
+									)
+									return hl
+								end,
+							},
+							kind = {
+								highlight = function(ctx)
+									local _, hl, _ = require("mini.icons").get(
+										"lsp",
+										ctx.kind
+									)
+									return hl
+								end,
+							},
 						},
 					},
 				},
