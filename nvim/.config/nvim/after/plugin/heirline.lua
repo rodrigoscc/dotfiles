@@ -804,6 +804,10 @@ local Tabpage = {
 		self.icon_hl = nil
 
 		if ft == "fugitive" then
+			local icon, icon_hl = MiniIcons.get("filetype", "git")
+			self.icon = icon
+			self.icon_hl = icon_hl
+
 			self.basename = "Git Status"
 		elseif ft == "git" or filename:match("^fugitive://") then
 			local label = vim.fn.fnamemodify(filename, ":t")
