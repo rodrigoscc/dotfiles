@@ -121,6 +121,10 @@ return {
 					bg = "none",
 					fg = "muted",
 				},
+				PmenuSel = {
+					bg = "overlay",
+					fg = "none",
+				},
 			},
 		},
 	},
