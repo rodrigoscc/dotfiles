@@ -125,6 +125,9 @@ return {
 					bg = "overlay",
 					fg = "none",
 				},
+				Pmenu = {
+					bg = "base",
+				},
 			},
 		},
 	},
