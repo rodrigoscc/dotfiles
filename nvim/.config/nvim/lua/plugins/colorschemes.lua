@@ -24,6 +24,7 @@ return {
 				},
 				QuickFixLine = {
 					bg = "overlay",
+					fg = "none",
 				},
 				Folded = {
 					bg = "surface",
