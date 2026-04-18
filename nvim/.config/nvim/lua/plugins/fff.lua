@@ -1,3 +1,11 @@
+---@return string
+local function root()
+	local git = require("custom.git")
+	local git_root = git.get_root()
+
+	return git_root or vim.uv.cwd() --[[@as string]]
+end
+
 return {
 	{
 		"dmtrKovalenko/fff.nvim",
@@ -18,7 +26,7 @@ return {
 			{
 				"<C-p>",
 				function()
-					require("fff").find_files()
+					require("fff").find_files_in_dir(root())
 				end,
 				desc = "FFFind files",
 			},
@@ -29,6 +37,7 @@ return {
 						grep = {
 							modes = { "plain", "fuzzy", "regex" },
 						},
+						cwd = root(),
 					})
 				end,
 				desc = "LiFFFe grep",
@@ -38,6 +47,7 @@ return {
 				function()
 					require("fff").live_grep({
 						query = vim.fn.expand("<cword>"),
+						cwd = root(),
 					})
 				end,
 				desc = "Search current word",
