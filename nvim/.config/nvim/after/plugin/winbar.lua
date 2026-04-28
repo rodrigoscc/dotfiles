@@ -26,7 +26,7 @@ function _G.Winbar()
 
 	local bufname = vim.api.nvim_buf_get_name(0)
 	if bufname:match("^fugitive://") then
-		local sha = bufname:match("^fugitive://.*/(%x+)/")
+		local sha = bufname:match("^fugitive://.-//(%x+)/")
 		local short_sha = sha and sha:sub(1, 7) or ""
 
 		fugitive_prefix = (
