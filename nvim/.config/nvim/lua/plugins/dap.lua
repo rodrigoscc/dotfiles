@@ -68,6 +68,13 @@ return {
 				{ desc = "dap hover" },
 			},
 			{
+				"<leader>dh",
+				function()
+					require("dap-view").hover()
+				end,
+				{ desc = "dap hover" },
+			},
+			{
 				"<F5>",
 				function()
 					require("dap").continue()
