@@ -44,7 +44,7 @@ return {
 		"saghen/blink.cmp",
 		version = "*",
 		dependencies = {
-			"mikavilpas/blink-ripgrep.nvim",
+			{ "mikavilpas/blink-ripgrep.nvim", version = "*" },
 		},
 		---@module 'blink.cmp'
 		---@type blink.cmp.Config
