@@ -64,10 +64,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			opts
 		)
 
-		if client:supports_method("textDocument/codeAction", bufnr) then
-			require("custom.lightbulb").attach_lightbulb(bufnr, client)
-		end
-
 		vim.keymap.set("n", "]d", function()
 			vim.g.set_jump(function()
 				vim.diagnostic.jump({ count = 1 })
