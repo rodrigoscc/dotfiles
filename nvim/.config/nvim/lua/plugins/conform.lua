@@ -38,7 +38,7 @@ return {
 				html = { "oxfmt" },
 				go = { "golines", "injected" }, -- golines run goimports and gofmt if found.
 				json = { "fixjson" },
-				sql = { "sql_formatter" },
+				sql = { "pg_format" },
 				sh = { "beautysh" },
 				bash = { "beautysh" },
 				zsh = { "beautysh" },
