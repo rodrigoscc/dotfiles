@@ -57,6 +57,17 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		vim.keymap.set("n", "gy", Snacks.picker.lsp_workspace_symbols, opts)
 		vim.keymap.set("n", "gY", Snacks.picker.lsp_symbols, opts)
 
+		vim.keymap.set(
+			"n",
+			"gra",
+			require("actions-preview").code_actions,
+			opts
+		)
+
+		if client:supports_method("textDocument/codeAction", bufnr) then
+			require("custom.lightbulb").attach_lightbulb(bufnr, client)
+		end
+
 		vim.keymap.set("n", "]d", function()
 			vim.g.set_jump(function()
 				vim.diagnostic.jump({ count = 1 })
