@@ -6,6 +6,32 @@ return {
 		opts = {
 			files = { "*.md" },
 			use_metadata_keymaps = false,
+			metadata = {
+				priority = {
+					style = function(context)
+						local value = context.value:lower()
+						if value == "high" then
+							return { fg = "#ff5555", bold = true }
+						elseif value == "medium" then
+							return { fg = "#ffb86c" }
+						elseif value == "low" then
+							return { fg = "#8be9fd" }
+						else -- fallback
+							return { fg = "#8be9fd" }
+						end
+					end,
+					get_value = function()
+						return "medium" -- Default priority
+					end,
+					choices = function()
+						return { "low", "medium", "high" }
+					end,
+					key = nil,
+					sort_order = 10,
+					jump_to_on_insert = false,
+					select_on_insert = false,
+				},
+			},
 			keys = {
 				["<CR>"] = {
 					rhs = "<cmd>Checkmate toggle<CR>",
@@ -23,19 +49,19 @@ return {
 					modes = { "n", "v" },
 				},
 				[",r"] = {
-					rhs = "<cmd>Checkmate remove_all_metadata<CR>",
+					rhs = "<cmd>Checkmate metadata remove priority<CR>",
 					modes = { "n", "v" },
 				},
 				[",h"] = {
-					rhs = "<cmd>Checkmate metadata toggle priority high<CR>",
+					rhs = "<cmd>Checkmate metadata add priority high<CR>",
 					modes = { "n", "v" },
 				},
 				[",m"] = {
-					rhs = "<cmd>Checkmate metadata toggle priority medium<CR>",
+					rhs = "<cmd>Checkmate metadata add priority medium<CR>",
 					modes = { "n", "v" },
 				},
 				[",l"] = {
-					rhs = "<cmd>Checkmate metadata toggle priority low<CR>",
+					rhs = "<cmd>Checkmate metadata add priority low<CR>",
 					modes = { "n", "v" },
 				},
 				[",s"] = {
