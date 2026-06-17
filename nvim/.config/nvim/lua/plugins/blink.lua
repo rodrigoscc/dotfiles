@@ -107,12 +107,10 @@ return {
 						"ripgrep",
 					},
 					markdown = {
+						"lsp",
 						"snippets",
 						"buffer",
 						"ripgrep",
-						"obsidian",
-						"obsidian_new",
-						"obsidian_tags",
 					},
 				},
 				providers = {
