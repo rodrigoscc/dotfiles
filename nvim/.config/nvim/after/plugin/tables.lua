@@ -967,42 +967,42 @@ vim.api.nvim_create_autocmd("FileType", {
 			{ "n" },
 			"<leader>st",
 			TableSort,
-			{ desc = "sort table" }
+			{ desc = "sort table", buffer = true }
 		)
 
 		vim.keymap.set(
 			{ "n" },
-			"<leader>dc",
+			"<leader>dC",
 			TableDeleteColumn,
-			{ desc = "delete column" }
+			{ desc = "delete column", buffer = true }
 		)
 
 		vim.keymap.set(
 			{ "n" },
 			"<leader>ml",
 			TableMoveColumnRight,
-			{ desc = "move column right" }
+			{ desc = "move column right", buffer = true }
 		)
 
 		vim.keymap.set(
 			{ "n" },
 			"<leader>mh",
 			TableMoveColumnLeft,
-			{ desc = "move column left" }
+			{ desc = "move column left", buffer = true }
 		)
 
 		vim.keymap.set(
 			{ "n" },
 			"<leader>ic",
 			TableInsertColumn,
-			{ desc = "insert column" }
+			{ desc = "insert column", buffer = true }
 		)
 
 		vim.keymap.set(
 			{ "n" },
 			"<leader>iC",
 			TableInsertColumnBefore,
-			{ desc = "insert column before" }
+			{ desc = "insert column before", buffer = true }
 		)
 	end,
 })
