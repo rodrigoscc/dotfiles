@@ -35,7 +35,7 @@ end)
 
 vim.keymap.set({ "x", "o" }, "ae", function()
 	require("nvim-treesitter-textobjects.select").select_textobject(
-		"@svelte.element",
+		"@html.element",
 		"textobjects"
 	)
 end)
