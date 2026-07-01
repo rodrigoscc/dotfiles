@@ -18,4 +18,5 @@ return {
 			},
 		},
 	},
+	{ "junegunn/gv.vim" },
 }
