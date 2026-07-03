@@ -2,8 +2,6 @@ export PATH=~/.config/bin:~/go/bin:~/.local/bin:/opt/nvim-linux64/bin:/usr/local
 export EDITOR=nvim
 
 if [[ $OSTYPE == darwin* ]]; then
-    export PATH=/opt/homebrew/bin:$PATH
-
     if [ -x "$(command -v brew)" ]; then
         export PATH=$(brew --prefix python)/libexec/bin:$(brew --prefix mysql-client)/bin:$PATH
     fi
@@ -190,5 +188,3 @@ if [ -x "$(command -v fzf)" ]; then
 fi
 
 source ~/fzf-git.sh
-
-export PATH=~/.opencode/bin:$PATH
