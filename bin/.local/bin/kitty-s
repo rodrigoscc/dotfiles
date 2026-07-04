@@ -1,0 +1,138 @@
+#!/usr/bin/env zsh
+
+set -e
+
+SSH_SESSION_NAME="ssh"
+SSH_SESSION_DIR="${XDG_DATA_HOME:-$HOME}/.config/kitty"
+SSH_SESSION_FILE="$SSH_SESSION_DIR/$SSH_SESSION_NAME.kitty-session"
+
+quote() {
+    printf '%q' "$1"
+}
+
+kitty_state() {
+    kitten @ ls 2> /dev/null || true
+}
+
+ssh_windows() {
+    local state=$1
+
+    [[ -z "$state" ]] && return
+
+    printf '%s' "$state" | jq -r '
+        .[]?.tabs[]?.windows[]?
+        | select(.user_vars.ssh_host? and .user_vars.ssh_host != "")
+        | [.user_vars.ssh_host, "existing", (.id | tostring)]
+        | @tsv
+    '
+}
+
+ssh_session_is_open() {
+    local state=$1
+
+    [[ -z "$state" ]] && return 1
+    [[ "$(printf '%s' "$state" | jq --arg session "$SSH_SESSION_NAME" '[.[]?.tabs[]?.windows[]? | select(.session_name == $session)] | length')" -gt 0 ]]
+}
+
+overlay_parent_exists() {
+    [[ "$(kitten @ ls --match state:overlay_parent 2> /dev/null | jq '[.[]?.tabs[]?.windows[]?] | length')" -gt 0 ]]
+}
+
+focus_window() {
+    local window_id=$1
+
+    kitten @ focus-window --match "id:$window_id"
+}
+
+goto_ssh_session() {
+    kitten @ action goto_session "$SSH_SESSION_FILE"
+}
+
+open_ssh_tab() {
+    local host=$1
+    local window_id
+
+    goto_ssh_session
+
+    window_id=$(kitten @ launch \
+            --match "session:$SSH_SESSION_NAME" \
+            --type=tab \
+            --tab-title "$host" \
+            --title "$host" \
+            --var "ssh_host=$host" \
+            --env "KITTY_SSH_HOST=$host" \
+            --add-to-session "$SSH_SESSION_NAME" \
+        ssh "$host")
+
+    focus_window "$window_id"
+}
+
+open_ssh_split() {
+    local location=$1
+    local host=$2
+    local source_args=()
+
+    goto_ssh_session
+
+    if overlay_parent_exists; then
+        source_args=(--source-window state:overlay_parent --next-to state:overlay_parent --add-to-session .)
+    fi
+
+    kitten @ launch \
+        --location="$location" \
+        --title "$host" \
+        --var "ssh_host=$host" \
+        --env "KITTY_SSH_HOST=$host" \
+        "${source_args[@]}" \
+        ssh "$host" > /dev/null
+}
+
+ssh_hosts=$(grep --extended-regexp '^Host ' ~/.ssh/config 2> /dev/null | \
+        grep -vE '(\*|\?)' | \
+        sed 's/^Host //' | \
+    sort -u || true)
+
+state=$(kitty_state)
+kitty_windows=$(ssh_windows "$state")
+
+host_entries=$(printf '%s\n' "$ssh_hosts" | while IFS= read -r host; do
+        [[ -z "$host" ]] && continue
+        printf '%s\thost\t%s\n' "$host" "$host"
+done)
+
+if [ -z "$kitty_windows" ]; then
+    fzf_input=$(printf '%s\n' "$host_entries")
+else
+    fzf_input=$(printf '%s\n%s\n' "$kitty_windows" "$host_entries")
+fi
+
+result=$(printf '%s\n' "$fzf_input" | fzf --header "SSH: Enter=session, C-v=vsplit, C-s=hsplit" --header-first --info=inline --no-sort --multi --bind="tab:toggle,ctrl-a:toggle-all" --expect="enter,ctrl-v,ctrl-s" --delimiter=$'\t' --with-nth=1,2 || true)
+
+key=$(printf '%s\n' "$result" | head -1)
+selection=$(printf '%s\n' "$result" | tail -n +2)
+
+if [[ -z "$selection" ]]; then
+    exit 0
+fi
+
+while IFS=$'\t' read -r host type value; do
+    [[ -z "$host" ]] && continue
+
+    if [[ "$type" == "existing" ]]; then
+        goto_ssh_session
+        focus_window "$value"
+        continue
+    fi
+
+    case "$key" in
+        ctrl-v)
+            open_ssh_split vsplit "$host"
+            ;;
+        ctrl-s)
+            open_ssh_split hsplit "$host"
+            ;;
+        *)
+            open_ssh_tab "$host"
+            ;;
+    esac
+done <<< "$selection"

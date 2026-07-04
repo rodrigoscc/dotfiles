@@ -1,0 +1,51 @@
+#!/usr/bin/env zsh
+
+dirs=$(zoxide query --list | while IFS= read -r path; do
+        [[ "$path" == *(Code|.config|dotfiles)* ]] || continue
+        printf '%s\t%s\tzoxide\n' "${path/#$HOME/~}" "$path"
+done)
+
+default_session_name="default"
+default_session_entry=$(printf "$default_session_name\t$default_session_name\tsession")
+
+session_dir="${XDG_DATA_HOME:-$HOME/.local/share}/kitty/sessions"
+sessions=$(fd --type f --extension kitty-session --absolute-path --format '{/.}	{}	session' . "$session_dir")
+
+all_entries=$(printf '%s\n%s\n%s\n' "$default_session_entry" "$sessions" "$dirs")
+
+selected=$(printf '%s\n' "$all_entries" | fzf --header="Switch to session" --header-first --info=inline --no-sort --delimiter=$'\t' --with-nth=1 --accept-nth='{3}:{2}')
+
+if [ -z "$selected" ]; then
+    exit 0
+fi
+
+selected_type="${selected%%:*}"
+selected_value="${selected#*:}"
+
+if [[ "$selected_type" == "zoxide" ]]; then
+    default_new_session_name="${selected_value:t}"
+    printf 'Session name [%s]: ' "$default_new_session_name"
+    IFS= read -r session_name
+
+    session_name="${session_name:-$default_new_session_name}"
+    session_name="${session_name%.kitty-session}"
+
+    if [[ -z "$session_name" || "$session_name" == */* ]]; then
+        print -ru2 -- "Invalid session name: $session_name"
+        exit 1
+    fi
+
+    session_file="$session_dir/$session_name.kitty-session"
+
+    if [[ -e "$session_file" ]]; then
+        print -ru2 -- "Session already exists: $session_file"
+        exit 1
+    fi
+
+    mkdir -p "$session_dir"
+    printf 'new_os_window\n\nnew_tab Neovim\ncd %s\nlaunch nvim %s\n' "$selected_value" "$session_file" > "$session_file"
+
+    selected_value="$session_file"
+fi
+
+kitten @ action goto_session "$selected_value"
