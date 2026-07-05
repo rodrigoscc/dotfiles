@@ -1,4 +1,6 @@
-. "$HOME/.cargo/env"
+if [ -f "$HOME/.cargo/env" ]; then
+    . "$HOME/.cargo/env"
+fi
 
 export PATH=~/.config/bin:~/go/bin:~/.local/bin:/opt/nvim-linux64/bin:/usr/local/go/bin:~/.luarocks/bin:~/.local/share/fnm/:~/.local/share/omarchy/bin:/opt/homebrew/bin/:~/.opencode/bin:$PATH
 
