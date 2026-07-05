@@ -9,9 +9,22 @@ default_session_name="default"
 default_session_entry=$(printf "$default_session_name\t$default_session_name\tsession")
 
 session_dir="${XDG_DATA_HOME:-$HOME/.local/share}/kitty/sessions"
-sessions=$(fd --type f --extension kitty-session --absolute-path --format '{/.}	{}	session' . "$session_dir")
 
-all_entries=$(printf '%s\n%s\n%s\n' "$default_session_entry" "$sessions" "$dirs")
+if [ -d "$session_dir" ]; then
+    sessions=$(fd --type f --extension kitty-session --absolute-path --format '{/.}	{}	session' . "$session_dir")
+else
+    sessions=""
+fi
+
+all_entries="$default_session_entry"
+
+if [ -n "$sessions" ]; then
+    all_entries="$all_entries\n$session\n"
+fi
+
+if [ -n "$dirs" ]; then
+    all_entries="$all_entries\n$dirs\n"
+fi
 
 selected=$(printf '%s\n' "$all_entries" | fzf --header="Switch to session" --header-first --info=inline --no-sort --delimiter=$'\t' --with-nth=1 --accept-nth='{3}:{2}')
 
