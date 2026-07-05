@@ -1,7 +1,14 @@
 return {
 	{
 		"catgoose/nvim-colorizer.lua",
-		event = "BufReadPre",
+		ft = {
+			"html",
+			"css",
+			"svelte",
+			"javascriptreact",
+			"typescriptreact",
+			"vue",
+		},
 		opts = { -- set to setup table
 			options = {
 				parsers = {
