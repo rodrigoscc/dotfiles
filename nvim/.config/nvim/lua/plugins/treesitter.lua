@@ -35,6 +35,7 @@ return {
 				"markdown_inline",
 				"yaml",
 				"http",
+				"toml",
 			})
 		end,
 	},
