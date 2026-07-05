@@ -62,7 +62,7 @@ open_ssh_tab() {
             --var "ssh_host=$host" \
             --env "KITTY_SSH_HOST=$host" \
             --add-to-session "$SSH_SESSION_NAME" \
-        ssh "$host")
+        kitten ssh "$host")
 
     focus_window "$window_id"
 }
@@ -84,7 +84,7 @@ open_ssh_split() {
         --var "ssh_host=$host" \
         --env "KITTY_SSH_HOST=$host" \
         "${source_args[@]}" \
-        ssh "$host" > /dev/null
+        kitten ssh "$host" > /dev/null
 }
 
 ssh_hosts=$(grep --extended-regexp '^Host ' ~/.ssh/config 2> /dev/null | \
