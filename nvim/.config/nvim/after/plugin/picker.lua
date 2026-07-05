@@ -138,6 +138,12 @@ vim.keymap.set("n", "<leader>fd", function()
 	})
 end, { desc = "find dotfile" })
 
+vim.keymap.set("n", "<leader>fk", function()
+	Snacks.picker.files({
+		cwd = "~/.local/share/kitty/sessions/",
+	})
+end, { desc = "find kitty sessions" })
+
 vim.api.nvim_create_user_command("StartWorking", function()
 	require("fff").find_files()
 end, {})
