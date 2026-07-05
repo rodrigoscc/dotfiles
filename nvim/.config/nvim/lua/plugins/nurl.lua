@@ -2,7 +2,13 @@ return {
 	{
 		"rodrigoscc/nurl.nvim",
 		dependencies = { "folke/snacks.nvim" },
-		opts = {},
+		opts = {
+			formatters = {
+				lua = {
+					cmd = { "stylua", "--column-width=80", "-" },
+				},
+			},
+		},
 		keys = {
 			{ "<leader>ee", "<cmd>Nurl env<cr>" },
 			{ "<leader>oe", "<cmd>Nurl env_file<cr>" },
@@ -13,30 +19,5 @@ return {
 			{ "g;", "<cmd>Nurl resend -2<cr>" },
 			{ "gG", "<cmd>Nurl history<cr>" },
 		},
-		config = function()
-			local nurl = require("nurl")
-			nurl.setup({
-				formatters = {
-					lua = {
-						cmd = { "stylua", "--column-width=80", "-" },
-					},
-				},
-			})
-
-			vim.api.nvim_create_autocmd({ "FileType" }, {
-				pattern = "lua",
-				callback = function()
-					vim.keymap.set("n", "R", function()
-						if vim.v.count == 0 then
-							vim.cmd("Nurl .")
-						else
-							vim.api.nvim_input(
-								":Nurl . url[" .. vim.v.count .. "]="
-							)
-						end
-					end, { buffer = true })
-				end,
-			})
-		end,
 	},
 }
