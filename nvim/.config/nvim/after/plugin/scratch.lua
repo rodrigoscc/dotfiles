@@ -95,6 +95,44 @@ local function find_scratch()
 	})
 end
 
+function find_scratch_fzf()
+	local fzf = require("fzf-lua")
+
+	fzf.fzf_exec(
+		"fd --type f --exec-batch stat -f '%SB > %N' -t '%Y-%m-%d %H:%M' | sort --reverse",
+		{
+			cwd = vim.g.scratch_dir,
+			fzf_opts = {
+				["--no-sort"] = true,
+				["--delimiter"] = " > ",
+			},
+			fn_transform = function(line)
+				local utils = require("fzf-lua.utils")
+
+				local parts = vim.split(line, " > ")
+
+				local item = utils.ansi_codes.magenta(parts[1])
+
+				item = item
+					.. " > "
+					.. table.concat(
+						vim.iter(parts):slice(2, #parts + 1):totable()
+					)
+
+				return item
+			end,
+			actions = {
+				["default"] = {
+					fn = function(r, opts)
+						require("fzf-lua").actions.file_edit(r, opts)
+					end,
+					field_index = "{2}",
+				},
+			},
+		}
+	)
+end
+
 vim.api.nvim_create_user_command("NewScratch", new_scratch, {})
 vim.api.nvim_create_user_command("FindScratch", find_scratch, {})
 

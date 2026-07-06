@@ -8,6 +8,7 @@ return {
 		---@type fzf-lua.Config|{}
 		---@diagnostic disable: missing-fields
 		opts = {
+			"telescope",
 			git = {
 				commits = {
 					cmd = [[git log --color --pretty=format:"%C(yellow)%h%Creset ]]

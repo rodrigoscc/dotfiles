@@ -126,6 +126,66 @@ vim.keymap.set("n", "<leader>ot", function()
 	})
 end, { desc = "obsidian todos" })
 
+function obsidian_todo_fzf()
+	local fzf = require("fzf-lua")
+
+	fzf.fzf_exec(
+		"rg --json --column --line-number --no-heading '\\- \\[ \\] (.+)' ~/obsidian-vault/",
+		{
+			file_icons = true,
+			fn_transform = function(line)
+				local utils = require("fzf-lua.utils")
+				local make_entry = require("fzf-lua.make_entry")
+
+				local entry = vim.json.decode(line)
+
+				if
+					entry.type == "match"
+					and entry.data.lines
+					and entry.data.lines.text
+				then
+					local path = entry.data.path.text
+					local line_number = entry.data.line_number
+
+					local todo, _ = entry.data.lines.text:gsub("%- %[ %] ", "")
+
+					local is_high_priority = todo:find("%@priority%(high%)")
+						~= nil
+					local is_medium_priority = todo:find("%@priority%(medium%)")
+						~= nil
+					local is_low_priority = todo:find("%@priority%(low%)")
+						~= nil
+
+					todo = vim.trim(todo)
+
+					if is_high_priority then
+						todo = utils.ansi_codes.red(todo)
+					elseif is_medium_priority then
+						todo = utils.ansi_codes.yellow(todo)
+					elseif is_low_priority then
+						todo = utils.ansi_codes.gray(todo)
+					end
+
+					return make_entry.file(
+						path
+							.. ":"
+							.. tostring(line_number)
+							.. ":"
+							.. utils.ansi_codes.magenta("TODO ")
+							.. todo,
+						{ file_icons = true, color_icons = true }
+					)
+				end
+
+				return nil
+			end,
+			actions = {
+				["default"] = require("fzf-lua").actions.file_edit,
+			},
+		}
+	)
+end
+
 vim.api.nvim_create_autocmd("User", {
 	pattern = "ObsidianNoteEnter",
 	callback = function(ev)
