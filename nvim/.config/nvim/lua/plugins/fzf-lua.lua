@@ -1,6 +1,7 @@
 return {
 	{
 		"ibhagwan/fzf-lua",
+		cmd = "FzfLua",
 		-- optional for icon support
 		-- or if using mini.icons/mini.nvim
 		dependencies = { "nvim-mini/mini.icons" },
