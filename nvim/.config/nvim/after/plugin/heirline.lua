@@ -1,3 +1,5 @@
+local lazy_config = require("lazy.core.config")
+
 local utils = require("heirline.utils")
 local conditions = require("heirline.conditions")
 
@@ -14,6 +16,21 @@ local pine = "#31748f"
 local love = "#eb6f92"
 local rose = "#ebbcba"
 local foam = "#9ccfd8"
+
+local function dap_if_loaded()
+	if
+		lazy_config.plugins["nvim-dap"]
+		and lazy_config.plugins["nvim-dap"]._.loaded
+	then
+		local ok, dap = pcall(require, "dap")
+
+		if ok then
+			return true, dap
+		end
+	end
+
+	return false, nil
+end
 
 local safe_get_highlight = function(...)
 	for _, hlname in ipairs({ ... }) do
@@ -318,8 +335,8 @@ local SearchCount = {
 
 local DapElement = {
 	condition = function()
-		local ok, dap = pcall(require, "dap")
-		if not ok then
+		local loaded, dap = dap_if_loaded()
+		if not loaded then
 			return false
 		end
 
@@ -758,7 +775,11 @@ local Nurl = {
 
 local statusline = {
 	hl = function()
-		local dap = require("dap")
+		local loaded, dap = dap_if_loaded()
+		if not loaded then
+			return { bg = colors.background }
+		end
+
 		local session = dap.session()
 
 		if session == nil then
