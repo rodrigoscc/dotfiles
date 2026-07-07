@@ -18,5 +18,5 @@ return {
 			},
 		},
 	},
-	{ "junegunn/gv.vim" },
+	{ "junegunn/gv.vim", cmd = "GV" },
 }
