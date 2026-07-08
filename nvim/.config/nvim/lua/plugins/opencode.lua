@@ -1,3 +1,12 @@
+local opencode_cmd = "opencode --port"
+---@type snacks.terminal.Opts
+local snacks_terminal_opts = {
+	win = {
+		position = "right",
+		enter = false,
+	},
+}
+
 return {
 	{
 		"NickvanDyke/opencode.nvim",
@@ -19,7 +28,10 @@ return {
 			{
 				"<C-]>",
 				function()
-					require("opencode").toggle()
+					require("snacks.terminal").toggle(
+						opencode_cmd,
+						snacks_terminal_opts
+					)
 				end,
 				desc = "Toggle opencode",
 			},
@@ -51,7 +63,16 @@ return {
 		},
 		config = function()
 			---@type opencode.Opts
-			vim.g.opencode_opts = {}
+			vim.g.opencode_opts = {
+				server = {
+					start = function()
+						require("snacks.terminal").open(
+							opencode_cmd,
+							snacks_terminal_opts
+						)
+					end,
+				},
+			}
 
 			-- Required for `opts.events.reload`.
 			vim.o.autoread = true
