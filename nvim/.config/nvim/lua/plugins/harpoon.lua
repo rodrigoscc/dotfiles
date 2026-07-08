@@ -20,25 +20,25 @@ return {
 				end,
 			},
 			{
-				"<F1>",
+				"<C-1>",
 				function()
 					require("harpoon"):list():select(1)
 				end,
 			},
 			{
-				"<F2>",
+				"<C-2>",
 				function()
 					require("harpoon"):list():select(2)
 				end,
 			},
 			{
-				"<F3>",
+				"<C-3>",
 				function()
 					require("harpoon"):list():select(3)
 				end,
 			},
 			{
-				"<F4>",
+				"<C-4>",
 				function()
 					require("harpoon"):list():select(4)
 				end,
