@@ -177,4 +177,16 @@ def {}():
 			)
 		end)
 	),
+	postfix(
+		{ trig = ".mdj", match_pattern = "[%w%.%_%-%[%]]+$" },
+		d(1, function(_, parent)
+			return sn(
+				nil,
+				t(
+					parent.snippet.env.POSTFIX_MATCH
+						.. '.model_dump(mode="json")'
+				)
+			)
+		end)
+	),
 }
