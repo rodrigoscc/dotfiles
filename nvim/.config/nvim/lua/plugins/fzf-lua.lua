@@ -12,6 +12,7 @@ return {
 			"telescope",
 			git = {
 				commits = {
+					-- Include ref names in commit lines (useful for tags)
 					cmd = [[git log --color --pretty=format:"%C(yellow)%h%Creset ]]
 						.. [[%Cgreen(%><(12)%cr%><|(12))%Creset%C(yellow)%d%Creset %s %C(blue)<%an>%Creset"]],
 				},
