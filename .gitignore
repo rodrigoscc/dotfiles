@@ -5,3 +5,5 @@ tmux-client-*.log
 **/tmux/plugins/
 iterm2/
 .nurl/
+
+kitty.d/
