@@ -16,6 +16,7 @@ return {
 				function()
 					require("opencode").ask("@this: ", { submit = true })
 				end,
+				mode = { "n", "x" },
 				desc = "Ask opencode",
 			},
 			{
@@ -23,6 +24,7 @@ return {
 				function()
 					require("opencode").select()
 				end,
+				mode = { "n", "x" },
 				desc = "Execute opencode action…",
 			},
 			{
@@ -40,6 +42,7 @@ return {
 				function()
 					return require("opencode").operator("@this ")
 				end,
+				mode = { "n", "x" },
 				expr = true,
 				desc = "Add range to opencode",
 			},
