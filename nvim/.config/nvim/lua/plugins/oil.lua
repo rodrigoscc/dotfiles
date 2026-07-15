@@ -46,6 +46,31 @@ return {
 						end
 					end,
 				},
+				["<C-f>"] = {
+					desc = "Pick other directory",
+					callback = function()
+						local opts = {}
+						opts.prompt = "Oil> "
+
+						opts.fn_transform = function(x)
+							local utils = require("fzf-lua.utils")
+							return utils.ansi_codes.magenta(x)
+						end
+
+						opts.actions = {
+							["default"] = function(selected)
+								local oil = require("oil")
+								oil.open(selected[1])
+							end,
+						}
+
+						local fzf = require("fzf-lua")
+						fzf.fzf_exec(
+							"fd --type d --hidden --exclude '.git/' --exclude 'node_modules/'",
+							opts
+						)
+					end,
+				},
 			},
 			float = {
 				max_width = 100,
