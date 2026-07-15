@@ -2,14 +2,22 @@ return {
 	{
 		"MunsMan/kitty-navigator.nvim",
 		lazy = false,
-		opts = {
-			keybindings = {
-				left = "<M-h>",
-				down = "<M-j>",
-				up = "<M-k>",
-				right = "<M-l>",
-			},
-		},
+		config = function()
+			local navigator = require("kitty-navigator")
+
+			vim.keymap.set({ "n", "t" }, "<M-h>", function()
+				navigator.navigate("h")
+			end, { silent = true })
+			vim.keymap.set({ "n", "t" }, "<M-l>", function()
+				navigator.navigate("l")
+			end, { silent = true })
+			vim.keymap.set({ "n", "t" }, "<M-k>", function()
+				navigator.navigate("k")
+			end, { silent = true })
+			vim.keymap.set({ "n", "t" }, "<M-j>", function()
+				navigator.navigate("j")
+			end, { silent = true })
+		end,
 	},
 	{
 		"mikesmithgh/kitty-scrollback.nvim",
