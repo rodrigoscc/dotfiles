@@ -1,4 +1,4 @@
-local opencode_cmd = "opencode --port"
+local opencode_cmd = "opencode --port --continue"
 ---@type snacks.terminal.Opts
 local snacks_terminal_opts = {
 	win = {
