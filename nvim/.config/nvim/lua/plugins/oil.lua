@@ -66,7 +66,7 @@ return {
 
 						local fzf = require("fzf-lua")
 						fzf.fzf_exec(
-							"fd --type d --hidden --exclude '.git/' --exclude 'node_modules/'",
+							"fd --type d --hidden --no-ignore --exclude '.git/' --exclude 'node_modules/'",
 							opts
 						)
 					end,
