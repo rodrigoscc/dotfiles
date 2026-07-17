@@ -130,7 +130,7 @@ function obsidian_todo_fzf()
 	local fzf = require("fzf-lua")
 
 	fzf.fzf_exec(
-		"rg --json --column --line-number --no-heading '\\- \\[ \\] (.+)' ~/obsidian-vault/",
+		"rg --json --column --line-number --sortr created --no-heading '\\- \\[ \\] (.+)' ~/obsidian-vault/",
 		{
 			file_icons = true,
 			fn_transform = function(line)
@@ -164,6 +164,8 @@ function obsidian_todo_fzf()
 						todo = utils.ansi_codes.yellow(todo)
 					elseif is_low_priority then
 						todo = utils.ansi_codes.gray(todo)
+					else
+						todo = utils.ansi_codes.white(todo)
 					end
 
 					return make_entry.file(
@@ -185,6 +187,7 @@ function obsidian_todo_fzf()
 		}
 	)
 end
+vim.keymap.set("n", "<leader>ot", obsidian_todo_fzf)
 
 vim.api.nvim_create_autocmd("User", {
 	pattern = "ObsidianNoteEnter",
