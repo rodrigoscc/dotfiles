@@ -94,7 +94,7 @@ augroup("rodrigosc/disable_autoformat", {
 	},
 })
 
-augroup("rodrigosc/treesitter_folding", {
+augroup("rodrigosc/treesitter_init", {
 	"FileType",
 	{
 		callback = function(args)
