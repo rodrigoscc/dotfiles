@@ -70,12 +70,12 @@ end, { expr = true })
 
 vim.keymap.set("n", "Q", "gq")
 
-vim.keymap.set("n", "<C-k>", "<cmd>cprev<CR>zz")
-vim.keymap.set("n", "<C-j>", "<cmd>cnext<CR>zz")
-vim.keymap.set("n", "<C-l>", "<cmd>cnfile<CR>")
-vim.keymap.set("n", "<C-h>", "<cmd>cpfile<CR>")
-vim.keymap.set("n", "<leader>k", "<cmd>lprev<CR>zz")
-vim.keymap.set("n", "<leader>j", "<cmd>lnext<CR>zz")
+vim.keymap.set("n", "<C-k>", "<cmd>execute 'cprev | normal zz'<cr>")
+vim.keymap.set("n", "<C-j>", "<cmd>execute 'cnext | normal zz'<cr>")
+vim.keymap.set("n", "<C-l>", "<cmd>execute 'cnfile | normal zz'<cr>")
+vim.keymap.set("n", "<C-h>", "<cmd>execute 'cpfile | normal zz'<cr>")
+vim.keymap.set("n", "<leader>k", "<cmd>execute 'lprev | normal zz'<cr>")
+vim.keymap.set("n", "<leader>j", "<cmd>exeucte 'lnext | normal zz'<cr>")
 
 -- Yup, these are actually useful
 vim.keymap.set("n", "j", "gj")
