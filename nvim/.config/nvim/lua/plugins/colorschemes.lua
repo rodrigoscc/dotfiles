@@ -129,6 +129,24 @@ return {
 				Pmenu = {
 					bg = "base",
 				},
+				FlashBackdrop = {
+					italic = false,
+					fg = "muted",
+					link = nil,
+				},
+				FlashLabel = {
+					bg = "none",
+					fg = "love",
+					bold = true,
+				},
+				FlashCurrent = {
+					bg = "none",
+					fg = "pine",
+				},
+				FlashMatch = {
+					bg = "none",
+					fg = "text",
+				},
 			},
 		},
 	},
