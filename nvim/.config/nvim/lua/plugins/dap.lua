@@ -399,9 +399,6 @@ return {
 				},
 				default_section = "scopes",
 			},
-			virtual_text = {
-				enabled = true,
-			},
 		},
 		cmd = { "DapViewOpen" },
 		keys = {
