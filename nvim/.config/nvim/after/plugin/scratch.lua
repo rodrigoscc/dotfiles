@@ -176,7 +176,7 @@ vim.keymap.set(
 
 vim.keymap.set(
 	"n",
-	"<F3>",
+	"<leader>sv",
 	"<cmd>AutoNewScratch<cr>",
 	{ desc = "auto new scratch" }
 )
