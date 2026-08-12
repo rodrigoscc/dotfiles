@@ -17,6 +17,20 @@ local filetype_extension = {
 	bash = ".sh",
 }
 
+local function create_scratch_with(filetype)
+	local extension = filetype_extension[filetype] or ""
+	local basename = "scratch." .. os.date("!%Y%m%d%H%M%S")
+
+	local fullname = vim.g.scratch_dir .. "/" .. basename .. extension
+
+	vim.cmd("split " .. fullname)
+
+	local buf = vim.api.nvim_get_current_buf()
+	vim.api.nvim_set_option_value("filetype", filetype, { buf = buf })
+
+	return buf
+end
+
 local function new_scratch()
 	vim.fn.mkdir(vim.g.scratch_dir, "p", "0o755")
 
@@ -39,31 +53,7 @@ local function new_scratch()
 				return
 			end
 
-			local extension = filetype_extension[filetype] or ""
-			local default_basename = "scratch." .. os.date("!%Y%m%d%H%M%S")
-
-			vim.ui.input({
-				prompt = "Create scratch file with base name: ",
-				default = default_basename,
-			}, function(basename)
-				if basename == nil then
-					return
-				end
-
-				local fullname = vim.g.scratch_dir
-					.. "/"
-					.. basename
-					.. extension
-
-				vim.cmd("split " .. fullname)
-
-				local buf = vim.api.nvim_get_current_buf()
-				vim.api.nvim_set_option_value(
-					"filetype",
-					filetype,
-					{ buf = buf }
-				)
-			end)
+			create_scratch_with(filetype)
 		end
 	)
 end
@@ -133,8 +123,43 @@ function find_scratch_fzf()
 	)
 end
 
+local function create_from_clipboard()
+	vim.fn.mkdir(vim.g.scratch_dir, "p", "0o755")
+
+	local clipboard = vim.fn.getreg("+")
+	if not clipboard then
+		return
+	end
+
+	local lines = vim.split(clipboard, "\n")
+
+	local sql_starts = {
+		DELETE = true,
+		INSERT = true,
+		MERGE = true,
+		SELECT = true,
+		UPDATE = true,
+		WITH = true,
+	}
+
+	local first_word = clipboard:match("^%s*(%a+)")
+
+	local is_sql = first_word and sql_starts[first_word:upper()]
+
+	if is_sql then
+		local buf = create_scratch_with("sql")
+
+		vim.api.nvim_buf_set_lines(buf, 0, -1, true, lines)
+
+		return
+	end
+
+	error("Unrecognized content in clipboard")
+end
+
 vim.api.nvim_create_user_command("NewScratch", new_scratch, {})
 vim.api.nvim_create_user_command("FindScratch", find_scratch, {})
+vim.api.nvim_create_user_command("AutoNewScratch", create_from_clipboard, {})
 
 vim.keymap.set(
 	"n",
@@ -147,4 +172,11 @@ vim.keymap.set(
 	"<leader>fs",
 	"<cmd>FindScratch<cr>",
 	{ desc = "find scratch" }
+)
+
+vim.keymap.set(
+	"n",
+	"<F3>",
+	"<cmd>AutoNewScratch<cr>",
+	{ desc = "auto new scratch" }
 )
