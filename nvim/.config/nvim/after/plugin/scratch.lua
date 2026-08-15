@@ -143,14 +143,18 @@ local function create_from_clipboard()
 	}
 
 	local first_word = clipboard:match("^%s*(%a+)")
+	local first_char = clipboard:match("^%s*(%a)")
 
 	local is_sql = first_word and sql_starts[first_word:upper()]
+	local is_json = first_char and (first_char == "{" or first_char == "[")
 
 	if is_sql then
 		local buf = create_scratch_with("sql")
-
 		vim.api.nvim_buf_set_lines(buf, 0, -1, true, lines)
-
+		return
+	elseif is_json then
+		local buf = create_scratch_with("json")
+		vim.api.nvim_buf_set_lines(buf, 0, -1, true, lines)
 		return
 	end
 
