@@ -127,13 +127,10 @@ if (( ${+terminfo[smkx]} && ${+terminfo[rmkx]} )); then
     add-zle-hook-widget -Uz zle-line-finish zle_application_mode_stop
 fi
 
-if [ "$TERM_PROGRAM" != "Apple_Terminal" ]; then
-    eval "$(oh-my-posh init zsh --config ~/.config/omp/omp.json)"
-fi
-
 # Add zsh functions to fpath (e.g. poetry completions).
 fpath+=~/.zfunc
 fpath+=~/.docker/completions
+fpath+=($HOME/.zsh/pure)
 autoload -Uz compinit && compinit
 
 # Rose pine fzf theme
@@ -188,3 +185,13 @@ if [ -x "$(command -v fzf)" ]; then
 fi
 
 source ~/fzf-git.sh
+
+# Run pure zsh prompt
+autoload -U promptinit; promptinit
+prompt pure
+
+zstyle :prompt:pure:environment:node_version show yes
+zstyle :prompt:pure:git:dirty detailed yes
+zstyle :prompt:pure:path:separator dim yes
+zstyle :prompt:pure:host show no
+zstyle :prompt:pure:path color magenta
