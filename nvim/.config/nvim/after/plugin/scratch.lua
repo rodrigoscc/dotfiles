@@ -143,7 +143,7 @@ local function create_from_clipboard()
 	}
 
 	local first_word = clipboard:match("^%s*(%a+)")
-	local first_char = clipboard:match("^%s*(%a)")
+	local first_char = clipboard:match("^%s*(.)")
 
 	local is_sql = first_word and sql_starts[first_word:upper()]
 	local is_json = first_char and (first_char == "{" or first_char == "[")
