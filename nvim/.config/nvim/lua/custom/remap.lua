@@ -5,6 +5,8 @@ vim.keymap.set("n", "<leader>M", "<cmd>Mason<cr>", { desc = "show mason" })
 
 vim.keymap.set("x", "J", ":move '>+1<CR>gv=gv", { silent = true })
 vim.keymap.set("x", "K", ":move '<-2<CR>gv=gv", { silent = true })
+vim.keymap.set("x", "H", "<gv")
+vim.keymap.set("x", "L", ">gv")
 
 vim.keymap.set("x", "<", "<gv")
 vim.keymap.set("x", ">", ">gv")
