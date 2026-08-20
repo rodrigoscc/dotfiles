@@ -124,6 +124,13 @@ return {
 				{ desc = "dap focus frame" },
 			},
 			{
+				"<leader>dr",
+				function()
+					require("dap").restart()
+				end,
+				{ desc = "dap focus frame" },
+			},
+			{
 				"]f",
 				function()
 					require("dap").down()
