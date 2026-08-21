@@ -158,7 +158,8 @@ local function create_from_clipboard()
 		return
 	end
 
-	error("Unrecognized content in clipboard")
+	local buf = create_scratch_with("text")
+	vim.api.nvim_buf_set_lines(buf, 0, -1, true, lines)
 end
 
 vim.api.nvim_create_user_command("NewScratch", new_scratch, {})
