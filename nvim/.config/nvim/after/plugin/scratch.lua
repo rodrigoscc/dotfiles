@@ -15,6 +15,7 @@ local filetype_extension = {
 	sql = ".sql",
 	sh = ".sh",
 	bash = ".sh",
+	svelte = ".svelte",
 }
 
 local function create_scratch_with(filetype)
@@ -123,15 +124,10 @@ function find_scratch_fzf()
 	)
 end
 
-local function create_from_clipboard()
+local function create(content, filetype)
 	vim.fn.mkdir(vim.g.scratch_dir, "p", "0o755")
 
-	local clipboard = vim.fn.getreg("+")
-	if not clipboard then
-		return
-	end
-
-	local lines = vim.split(clipboard, "\n")
+	local lines = vim.split(content, "\n")
 
 	local sql_starts = {
 		DELETE = true,
@@ -142,29 +138,71 @@ local function create_from_clipboard()
 		WITH = true,
 	}
 
-	local first_word = clipboard:match("^%s*(%a+)")
-	local first_char = clipboard:match("^%s*(.)")
+	local first_word = content:match("^%s*(%a+)")
+	local first_char = content:match("^%s*(.)")
 
-	local is_sql = first_word and sql_starts[first_word:upper()]
-	local is_json = first_char and (first_char == "{" or first_char == "[")
+	if filetype == nil then
+		local is_sql = first_word and sql_starts[first_word:upper()]
+		local is_json = first_char and (first_char == "{" or first_char == "[")
 
-	if is_sql then
-		local buf = create_scratch_with("sql")
-		vim.api.nvim_buf_set_lines(buf, 0, -1, true, lines)
-		return
-	elseif is_json then
-		local buf = create_scratch_with("json")
-		vim.api.nvim_buf_set_lines(buf, 0, -1, true, lines)
+		if is_sql then
+			filetype = "sql"
+		elseif is_json then
+			filetype = "json"
+		else
+			filetype = "text"
+		end
+	end
+
+	local buf = create_scratch_with(filetype)
+	vim.api.nvim_buf_set_lines(buf, 0, -1, true, lines)
+end
+
+local function create_from_register(register)
+	if register == nil then
+		register = '"'
+	end
+
+	local content = vim.fn.getreg(register)
+	if not content then
 		return
 	end
 
-	local buf = create_scratch_with("text")
-	vim.api.nvim_buf_set_lines(buf, 0, -1, true, lines)
+	create(content)
+end
+
+local function create_from_region(start_pos, end_pos, region_type, exclusive)
+	local opts = { type = region_type }
+
+	if exclusive ~= nil then
+		opts.exclusive = exclusive
+	end
+
+	local lines = vim.fn.getregion(start_pos, end_pos, opts)
+
+	create(table.concat(lines, "\n"), vim.bo.filetype)
+end
+
+function scratch_create_operator(operator_type)
+	local region_types = {
+		char = "v",
+		line = "V",
+		block = "\22",
+	}
+
+	create_from_region(
+		vim.fn.getpos("'["),
+		vim.fn.getpos("']"),
+		region_types[operator_type],
+		false
+	)
 end
 
 vim.api.nvim_create_user_command("NewScratch", new_scratch, {})
 vim.api.nvim_create_user_command("FindScratch", find_scratch, {})
-vim.api.nvim_create_user_command("AutoNewScratch", create_from_clipboard, {})
+vim.api.nvim_create_user_command("AutoNewScratch", function(opts)
+	create_from_register(opts.reg)
+end, { register = true })
 
 vim.keymap.set(
 	"n",
@@ -179,9 +217,19 @@ vim.keymap.set(
 	{ desc = "find scratch" }
 )
 
-vim.keymap.set(
-	"n",
-	"<leader>sv",
-	"<cmd>AutoNewScratch<cr>",
-	{ desc = "auto new scratch" }
-)
+vim.keymap.set("n", "gp", function()
+	create_from_register(vim.v.register)
+end, { desc = "auto new scratch" })
+
+vim.keymap.set("n", "gP", function()
+	create_from_register("+")
+end, { desc = "auto new scratch from clipboard" })
+
+vim.keymap.set("n", "gs", function()
+	vim.go.operatorfunc = "v:lua.scratch_create_operator"
+	return "g@"
+end, { expr = true, desc = "create scratch from motion" })
+
+vim.keymap.set("x", "gs", function()
+	create_from_region(vim.fn.getpos("v"), vim.fn.getpos("."), vim.fn.mode())
+end, { desc = "create scratch from selection" })
