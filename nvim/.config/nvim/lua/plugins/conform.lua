@@ -49,7 +49,7 @@ return {
 			},
 			formatters = {
 				golines = {
-					prepend_args = { "-m", "80", "--no-reformat-tags" },
+					prepend_args = { "--no-reformat-tags" },
 				},
 				stylua = {
 					prepend_args = { "--column-width=80" },
