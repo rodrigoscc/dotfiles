@@ -55,7 +55,7 @@ if [[ "$selected_type" == "zoxide" ]]; then
     fi
 
     mkdir -p "$session_dir"
-    printf 'new_os_window\n\nnew_tab Neovim\ncd %s\nlaunch nvim %s\n' "$selected_value" "$session_file" > "$session_file"
+    printf 'new_os_window\n\nnew_tab Main\ncd %s\nlaunch zsh\n\nnew_tab Neovim\ncd %s\nlaunch nvim %s\n' "$selected_value" "$selected_value" "$session_file" > "$session_file"
 
     selected_value="$session_file"
 fi
