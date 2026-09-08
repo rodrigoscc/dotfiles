@@ -75,11 +75,11 @@ eval "$(zoxide init zsh)"
 alias v=nvim
 alias vv="nvim +StartWorking"
 
-alias ls="eza --hyperlink"
-alias ll="eza --long --hyperlink"
-alias la="eza --long --all --hyperlink"
-alias lt="eza --tree --hyperlink --ignore-glob='node_modules|.git'"
-alias lta="eza --tree --all --hyperlink --ignore-glob='node_modules|.git'"
+alias ls="eza --hyperlink=auto"
+alias ll="eza --long --hyperlink=auto"
+alias la="eza --long --all --hyperlink=auto"
+alias lt="eza --tree --hyperlink=auto --ignore-glob='node_modules|.git'"
+alias lta="eza --tree --all --hyperlink=auto --ignore-glob='node_modules|.git'"
 
 alias gs="git status"
 alias ga="git add"
