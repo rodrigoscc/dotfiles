@@ -195,3 +195,9 @@ zstyle :prompt:pure:git:dirty detailed yes
 zstyle :prompt:pure:path:separator dim yes
 zstyle :prompt:pure:host show no
 zstyle :prompt:pure:path color magenta
+
+export PNPM_HOME="$HOME/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME/bin:"*) ;;
+  *) export PATH="$PNPM_HOME/bin:$PATH" ;;
+esac
