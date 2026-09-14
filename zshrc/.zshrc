@@ -198,6 +198,8 @@ zstyle :prompt:pure:path color magenta
 
 export PNPM_HOME="$HOME/.local/share/pnpm"
 case ":$PATH:" in
-  *":$PNPM_HOME/bin:"*) ;;
-  *) export PATH="$PNPM_HOME/bin:$PATH" ;;
+    *":$PNPM_HOME/bin:"*) ;;
+    *) export PATH="$PNPM_HOME/bin:$PATH" ;;
 esac
+
+export PATH="$HOME/.opencode/bin:$PATH"
