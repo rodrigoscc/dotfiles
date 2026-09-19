@@ -18,6 +18,25 @@ vim.keymap.set("n", "<C-g>", "<cmd>tab Git<cr>", { desc = "Git" })
 vim.keymap.set("n", "<localleader>y", [[mzgg"+yG`z]], { desc = "copy buffer" })
 vim.keymap.set("n", "<localleader>c", [[ggVGc]], { desc = "change buffer" })
 
+local function copy_json_as_lua(lines)
+	local text = vim.fn.join(lines, "\n")
+	local lua_table = vim.json.decode(text)
+	local lua_table_raw = vim.inspect(lua_table)
+	vim.fn.setreg("+", lua_table_raw)
+	vim.print("Lua table copied to clipboard")
+end
+
+vim.keymap.set("n", "<localleader>l", function()
+	copy_json_as_lua(vim.api.nvim_buf_get_lines(0, 0, -1, false))
+end, { desc = "copy JSON as lua table" })
+
+vim.keymap.set("x", "<localleader>l", function()
+	local lines = vim.fn.getregion(vim.fn.getpos("'<"), vim.fn.getpos("'>"), {
+		type = vim.fn.visualmode(),
+	})
+	copy_json_as_lua(lines)
+end, { desc = "copy selected JSON as lua table" })
+
 local function send_buffer_to_tmux(pane)
 	local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
 	local text = vim.fn.join(lines, "\n")
