@@ -148,7 +148,11 @@ vim.diagnostic.config({
 
 vim.api.nvim_create_autocmd({ "BufReadPre", "BufNewFile" }, {
 	once = true,
-	callback = function()
+	-- Scheduled because vim.lsp.enable() after startup runs
+	-- `doautoall FileType`, which sets did_filetype(). When this fires nested
+	-- in another autocmd (e.g. :restart restoring its session from UIEnter)
+	-- that makes filetype detection skip the buffer being read.
+	callback = vim.schedule_wrap(function()
 		-- Extend neovim's client capabilities with the completion ones.
 		vim.lsp.config("*", {
 			capabilities = require("blink.cmp").get_lsp_capabilities(nil, true),
@@ -169,5 +173,5 @@ vim.api.nvim_create_autocmd({ "BufReadPre", "BufNewFile" }, {
 			end)
 			:totable()
 		vim.lsp.enable(servers)
-	end,
+	end),
 })
