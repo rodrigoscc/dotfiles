@@ -1,4 +1,5 @@
 local lazy = require("lazy")
+local helpers = require("nurl.helpers")
 
 vim.keymap.set("n", "<leader>L", lazy.show, { desc = "show lazy" })
 vim.keymap.set("n", "<leader>M", "<cmd>Mason<cr>", { desc = "show mason" })
@@ -373,30 +374,28 @@ end
 
 local function super_gx()
 	local cursor_url = vim.fn.expand("<cfile>")
-	if not vim.b.nurl_data then
+
+	local request = Nurl.get_request()
+	if not request then
+		-- Default gx implementation if cursor isn't in a Nurl response buffer.
 		vim.ui.open(cursor_url)
 		return
 	end
 
-	local helpers = require("nurl.helpers")
-	local registry = require("nurl.registry")
-
-	local entry = registry:get(vim.b.nurl_data.handle_id)
-	local request = entry.handle.request
-
-	local win = vim.api.nvim_get_current_win()
-
+	-- Will send the same headers, since they may include authentication.
 	local orig_headers = request.headers
 	local orig_url = helpers.url(request.url)
 
 	cursor_url = complete_url(cursor_url, orig_url)
 
 	if vim.v.count == 0 then
+		-- Display response in the current window
 		Nurl.send(
 			{ cursor_url, headers = orig_headers },
-			{ display = { win = win } }
+			{ display = { win = vim.api.nvim_get_current_win() } }
 		)
 	else
+		-- Create new window if a count is given before pressing `gx`.
 		Nurl.send({ cursor_url, headers = orig_headers }, { display = true })
 	end
 end
