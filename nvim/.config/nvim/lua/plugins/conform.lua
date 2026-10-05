@@ -33,7 +33,7 @@ return {
 				typescriptreact = { "oxfmt" },
 				c = { "clang-format" },
 				vue = { "oxfmt" },
-				svelte = { "oxfmt" },
+				svelte = { "prettier" },
 				css = { "oxfmt" },
 				html = { "oxfmt" },
 				go = { "golines", "injected" }, -- golines run goimports and gofmt if found.
