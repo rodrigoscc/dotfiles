@@ -63,3 +63,43 @@ vim.keymap.set(
 	"<cmd>ToggleInlayHints<cr>",
 	{ desc = "toggle inlay hints" }
 )
+
+local function copy_code_ref(opts)
+	local path = vim.fn.expand("%:.")
+	if path == "" then
+		vim.notify("Buffer has no file", vim.log.levels.WARN)
+		return
+	end
+
+	local line1, line2 = opts.line1, opts.line2
+
+	-- <cmd> mappings stay in visual mode and pass no range, so read the live selection
+	if vim.fn.mode():match("[vV\22]") then
+		line1, line2 = vim.fn.line("v"), vim.fn.line(".")
+		if line1 > line2 then
+			line1, line2 = line2, line1
+		end
+
+		vim.api.nvim_feedkeys(vim.keycode("<esc>"), "n", false)
+	end
+
+	local ref = "@" .. path .. "#L" .. line1
+	if line1 ~= line2 then
+		ref = ref .. "-" .. line2
+	end
+
+	vim.fn.setreg("+", ref)
+	vim.print(ref .. " copied to clipboard")
+end
+
+vim.api.nvim_create_user_command("CopyRef", copy_code_ref, {
+	desc = "Copy file:line reference for agents",
+	range = true,
+})
+
+vim.keymap.set(
+	{ "n", "x" },
+	"go",
+	"<cmd>CopyRef<cr>",
+	{ desc = "Copy file:line ref" }
+)
